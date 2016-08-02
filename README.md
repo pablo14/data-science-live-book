@@ -1,3 +1,3 @@
 # Data Science Live Book
 
-Test
+A book to learn data science, data analysis and machine learning, suitable for all ages.
