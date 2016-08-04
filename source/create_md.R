@@ -1,7 +1,7 @@
 library(knitr)
 
-## INTRODUCTION
-knit("introduction/INDEX_introduction.Rmd", "../introduction/INDEX_introduction.md")
+## README
+knit("readme/readme.Rmd", "../README.md")
 
 ## SELECTING BEST VARIABLES
 knit("selecting_best_variables/introduction.Rmd", "../selecting_best_variables/introduction.md")
