@@ -1,0 +1,82 @@
+# Data Science Live Book
+
+A book to learn data science, data analysis and machine learning, suitable for all ages!
+
+## Introduction
+
+This book covers common aspects in predictive modeling:
+
++  A. **Data Preparation** / **Data Profiling**
++  B. **Selecting best variables (dataviz)**
++  C. **Assessing model performance**
++  D. **Miscellaneous**
+
+And it is heavly based on the `funModeling` package. Please install before starting:
+
+`install.packages("funModeling")`
+
+
+As you can see, model creation is not included, while _almost_ everything else does. 
+
+Model creation consumes around **10%** of almost any predictive modeling project; `funModeling` will try to cover remaining 90%. 
+
+It´s not only the function itself, but the explanation of how to interpret results. This brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations andor using languages.
+
+
+## `funModeling` quick start
+
+```{r, results="hide"}
+## Loading funModeling !
+suppressMessages(library(funModeling))
+
+# loading data frame
+data(heart_disease)
+```
+
+### Part A: Data Preparation / Profiling
+
+When a new data set arrives...:
+
+```{r}
+df_status(heart_disease)
+```
+
+And if there are some outliers... top or bottom values can be removed using:
+```{r, results="hide"}
+data_2=prep_outliers(data = heart_disease,  type='set_na', top_percent  = 0.01)
+```
+
+
+
+##### Full info at: 
+
+
+
+
+
+### Part B: Selecting best variables (dataviz)
+
+**Overview:** `cross_plot` discretizes input variable automatically exposing thei relationship against a target variable.
+
+```{r,  fig.height=3, fig.width=7}
+cross_plot(data=heart_disease, str_input="age", str_target="has_heart_disease")
+```
+
+```{r,  fig.height=3, fig.width=5}
+plotar(data=heart_disease, str_input="age", str_target="has_heart_disease", plot_type="histdens")
+
+```
+
+`plotar` and `cross_plot` can plot all numerical variables at once, as well as export each graph to a high quality _png image_.
+
+##### Full info at: 
+
+### Part C: Assessing model performance
+
+Full info at: 
+
+### Part D: Miscellaneous
+
+##### Full info at: 
+
+

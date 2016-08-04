@@ -1,0 +1,34 @@
+Correlation table against target variable
+=====
+
+**What it does?** It retrieves the well known `R statistic` -which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+
+
+```{r}
+correlation_table(data=heart_disease, str_target="has_heart_disease")
+```
+
+`R statistic` goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
+Squaring this number returns the `R squared` statistic (aka `R2`), which goes from `0` _no correlation_ to `1` _high correlation_. 
+
+### C.1) R2 bias problem
+
+**R statistic is highly influenced by outliers and non-linear relationships.**
+
+Outliers can be treated with `prep_outliers` function, present in this package.
+
+Take a look at the **Anscombe's quartet**. These 4 relationships are quite different, but all of them have the same R2: 0.816.
+
+
+```{r, out.width = 400, fig.retina = NULL, echo=F}
+library(knitr)
+include_graphics("anscombe_quartet.png")
+```
+
+
+
+Last plot, and more info about correlation can be found at: [Correlation and dependence](https://en.wikipedia.org/wiki/Correlation_and_dependence)
+
+<br>
+
+<br>
