@@ -1,6 +1,11 @@
 Target Profiling with `cross_plot` (dataViz)
 ===
 
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "../selecting_best_variables")
+```
+
 ### Example 1: Is gender correlated with heart disease?
 ```{r variable_importance_c1, results="hide", fig.height=4, fig.width=8}
 cross_gender=cross_plot(heart_disease, str_input="gender", str_target="has_heart_disease")
