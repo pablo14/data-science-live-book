@@ -1,7 +1,9 @@
 Assessing Model Performance
 ====
 
-**Overview**: Once the predictive model is developed with `training` data, it should be compared with `test` data (which wasn't seen by the model before). Here is presented a wrapper for the **ROC Curve** and **AUC** (area under ROC) and  the **KS** (Kolmogorov-Smirnov).
+### What is this about?
+
+Once the predictive model is developed with `training` data, it should be compared with `test` data (which wasn't seen by the model before). Here is presented a wrapper for the **ROC Curve** and **AUC** (area under ROC) and  the **KS** (Kolmogorov-Smirnov).
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
