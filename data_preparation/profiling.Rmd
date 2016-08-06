@@ -8,7 +8,7 @@ Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to 
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "../data_preparation")
+opts_knit$set(base.dir = "data_preparation")
 ```
 
 ```{r lib, results="hide"}
