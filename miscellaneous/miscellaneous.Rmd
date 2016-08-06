@@ -1,17 +1,15 @@
----
-title: "Miscellaneous"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Miscellaneous}
-  \usepackage[utf8]{inputenc}
-  fig_caption: yes
----
-
 Miscellaneous
 ====
 
-Here are some functions that don't fit in the data preparation, selecting best variables nor model accuracy testing
+### What is this about?
+
+Here are some functions that don't fit in the other sections.
+
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "miscellaneous")
+```
 
 ```{r lib, results="hide"}
 ## Loading funModeling !

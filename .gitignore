@@ -11,3 +11,5 @@ model_performance/model_performance.html
 selecting_best_variables/correlation.html
 selecting_best_variables/cross_plot.html
 selecting_best_variables/introduction.html
+selecting_best_variables/plotar_histdens.html
+selecting_best_variables/plotar_boxplot.html

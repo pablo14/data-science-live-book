@@ -8,7 +8,7 @@ Density histograms are quite common in any book/resource when plotting distribut
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "../selecting_best_variables")
+opts_knit$set(base.dir = "selecting_best_variables")
 ```
 
 ```{r, results='hide',  fig.height=2, fig.width=4}

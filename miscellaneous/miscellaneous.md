@@ -1,9 +1,7 @@
-Miscellaneous
+Assessing Model Performance
 ====
 
-### What is this about?
-
-Here are some functions that don't fit in the data preparation, selecting best variables nor model accuracy testing
+**Overview**: Once the predictive model is developed with `training` data, it should be compared with `test` data (which wasn't seen by the model before). Here is presented a wrapper for the **ROC Curve** and **AUC** (area under ROC) and  the **KS** (Kolmogorov-Smirnov).
 
 
 
@@ -14,94 +12,63 @@ suppressMessages(library(funModeling))
 data(heart_disease)
 ```
 
-
-<br>
-
------------------------
-
-## Part A) Comparing vectors
-
-**What it does?**: Get the elements present (and not) between 2 vectors.
-
-**Machine Learning purpose:** It's a common practise to run several times a variable selecting algorithm, getting in every run different variables. _So what are the new variables?_ and, _what are the ones that are not present anymore?_
-
+### Creating the model
 
 ```r
-v1=c("height","weight","age")
-v2=c("height","weight","location","q_visits")
-
-res=v_compare(vector_x=v1, vector_y=v2)
-```
-
-```
-## [1] "Coincident in both: 2"
-## [1] "Rows not present in X: 2"
-## [1] "Rows not present in Y: 1"
-```
-
-```r
-# Print the keys (or values) that didn't match
-res
-```
-
-```
-## $present_in_both
-## [1] "height" "weight"
-## 
-## $rows_not_in_X
-## [1] "location" "q_visits"
-## 
-## $rows_not_in_Y
-## [1] "age"
-```
-
-<br>
-
------------------------
-
-## Part B) Sampling training and test data
-
-**What it does?** Split input data into training and test set, retrieving always same sample by setting the seed.
-
-It's important to encapsulate sampling generation in a function so it will return always the same sample (change default sample by modifying `seed` parameter).
-
-
-```r
-# Training and test data. Percentage of training cases default value=80%.
+## Training and test data. Percentage of training cases default value=80%.
 index_sample=get_sample(data=heart_disease, percentage_tr_rows=0.8)
 
-# It returns a TRUE/FALSE vector same length as 'data' param. TRUE represents that that particular will be hold for training data
-
 ## Generating the samples
-data_tr=heart_disease[index_sample,]
-data_ts=heart_disease[-index_sample,] # excluding all rows that belong to training
+data_tr=heart_disease[index_sample,] 
+data_ts=heart_disease[-index_sample,]
 
-# percentage_tr_rows: range value from 0.1 to 0.99, default value=0.8 (80 percent of training data)
+
+## Creating the model only with training data
+fit_glm=glm(has_heart_disease ~ age + oldpeak, data=data_tr, family = binomial)
 ```
 
------------------------
-
-## Part C) Filter variables from data frame by -string- name
-
-Based on the variables name present in `str_input`, it returns the original data frame (`keep=T`), or it deletes all except the desired ones.
-
+### ROC, AUC and KS performance metrics
 
 ```r
-# Selecting variables
-my_data_1=filter_vars(mtcars, str_input=c('mpg', 'cyl'))
-colnames(my_data_1)
+## Performance metrics for Training Data
+model_performance(fit=fit_glm, data = data_tr, target_var = "has_heart_disease")
 ```
 
+![plot of chunk model_perfomance2](figure/model_perfomance2-1.png)
+
 ```
-## [1] "mpg" "cyl"
+## 
+## -----------
+##  AUC   KS  
+## ----- -----
+## 0.759 0.406
+## -----------
 ```
 
 ```r
-# Deleting all except desiered variables
-my_data_2=filter_vars(mtcars, str_input=c('mpg', 'cyl', 'qsec', 'vs'), keep=FALSE)
-colnames(my_data_2)
+## Performance metrics for Test Data
+model_performance(fit=fit_glm, data = data_ts, target_var = "has_heart_disease")
 ```
 
+![plot of chunk model_perfomance2](figure/model_perfomance2-2.png)
+
 ```
-## [1] "disp" "hp"   "drat" "wt"   "am"   "gear" "carb"
+## 
+## -----------
+##  AUC   KS  
+## ----- -----
+## 0.748 0.456
+## -----------
 ```
+
+**Key notes**
+
+* The **higher** the KS and AUC, the **better** the performance is.
+    + KS range: from 0 to 1.
+    + AUC range: from 0.5 to 1.
+* Performance metrics should be **similar** between training and test set.
+
+**Final comments**
+
+* KS and AUC focus on similar aspects: How well the model distinguishes the class to predict.
+* ROC and AUC article: https://en.wikipedia.org/wiki/Receiver_operating_characteristic

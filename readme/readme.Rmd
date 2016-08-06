@@ -2,7 +2,7 @@
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "../readme")
+opts_knit$set(base.dir = "readme")
 ```
 
 A book to learn data science, data analysis and machine learning, suitable for all ages!

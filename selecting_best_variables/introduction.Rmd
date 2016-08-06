@@ -8,7 +8,7 @@ This chapter will cover three types of plots which aim to understand what are th
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "../selecting_best_variables")
+opts_knit$set(base.dir = "selecting_best_variables")
 ```
 
 * **Overview**:

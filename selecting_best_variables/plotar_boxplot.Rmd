@@ -7,7 +7,7 @@ The use of Boxplots in importance variable analysis gives a quick view on how di
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "../selecting_best_variables")
+opts_knit$set(base.dir = "selecting_best_variables")
 ```
 
 ```{r variable_importance2b,  fig.height=2, fig.width=4}
