@@ -9,4 +9,4 @@
     * [Histogram Density (dataViz)](selecting_best_variables/plotar_histdens.md)
     * [Correlation](selecting_best_variables/correlation.md)
 * [Assesing Model Performance](model_performance/model_performance.md)
-* [Miscellaneous](Miscellaneous/miscellaneous.md)
+* [Miscellaneous](miscellaneous/miscellaneous.md)
