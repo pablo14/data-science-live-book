@@ -1,5 +1,10 @@
-Target Profiling with Histograms
+Profiling Target with BoxPlots
 ===
+
+### What is this about?
+
+The use of Boxplots in importance variable analysis gives a quick view on how different the quartiles are among the different values in a binary target variable.
+
 
 
 
@@ -39,5 +44,10 @@ plotar(data=heart_disease, str=c('max_heart_rate', 'resting_blood_pressure'),  s
 ```
 
 <br>
+
+* **Key in mind this when using Histograms & BoxPlots** They are nice to see when the variable:
+    + Has a good spread -not concentrated on a bunch of _3, 4..6.._ different values, **and**
+    + It has not really extreme outliers... _(this point can be treated with `prep_outliers` function present in this package)_
+	
 <br>
 

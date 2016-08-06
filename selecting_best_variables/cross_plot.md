@@ -1,6 +1,10 @@
 Target Profiling with `cross_plot` (dataViz)
 ===
 
+### What is this about?
+
+This plot intent to show in real scenarios if a variable is or not important, making a visual summary of it, _(by grouping numerical variables into bins/groups)_.
+
 
 
 ### Example 1: Is gender correlated with heart disease?

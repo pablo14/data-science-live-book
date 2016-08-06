@@ -1,5 +1,12 @@
-Target Profiling with Histograms
+Profiling Target with Density Histograms
 ===
+
+### What is this about?
+
+Density histograms are quite common in any book/resource when plotting distributions. To use them in selecting variables gives a quick view on how well certain variable separates the class.
+
+
+
 
 
 ```r
@@ -42,5 +49,11 @@ plotar(data=heart_disease, str=c('resting_blood_pressure', 'max_heart_rate'),  s
 And the model will see the same... if the curves are quite overlapped, like it is in `resting_blood_pressure`, then it's **not a good predictor** as if they were **more spaced** -like `max_heart_rate`.
 
 <br>
+
+
+* **Key in mind this when using Histograms & BoxPlots** They are nice to see when the variable:
+    + Has a good spread -not concentrated on a bunch of _3, 4..6.._ different values, **and**
+    + It has not really extreme outliers... _(this point can be treated with `prep_outliers` function present in this package)_
+	
 <br>
 

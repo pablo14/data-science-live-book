@@ -3,19 +3,18 @@ Assessing Model Performance
 
 **Overview**: Once the predictive model is developed with `training` data, it should be compared with `test` data (which wasn't seen by the model before). Here is presented a wrapper for the **ROC Curve** and **AUC** (area under ROC) and  the **KS** (Kolmogorov-Smirnov).
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "../model_performance")
-```
 
-```{r lib, results="hide"}
+
+
+```r
 ## Loading funModeling !
 suppressMessages(library(funModeling))
 data(heart_disease)
 ```
 
 ### Creating the model
-```{r model_perfomance1}
+
+```r
 ## Training and test data. Percentage of training cases default value=80%.
 index_sample=get_sample(data=heart_disease, percentage_tr_rows=0.8)
 
@@ -26,16 +25,40 @@ data_ts=heart_disease[-index_sample,]
 
 ## Creating the model only with training data
 fit_glm=glm(has_heart_disease ~ age + oldpeak, data=data_tr, family = binomial)
-
 ```
 
 ### ROC, AUC and KS performance metrics
-```{r model_perfomance2,  fig.height=3, fig.width=4}
+
+```r
 ## Performance metrics for Training Data
 model_performance(fit=fit_glm, data = data_tr, target_var = "has_heart_disease")
+```
 
+![plot of chunk model_perfomance2](figure/model_perfomance2-1.png)
+
+```
+## 
+## -----------
+##  AUC   KS  
+## ----- -----
+## 0.759 0.406
+## -----------
+```
+
+```r
 ## Performance metrics for Test Data
 model_performance(fit=fit_glm, data = data_ts, target_var = "has_heart_disease")
+```
+
+![plot of chunk model_perfomance2](figure/model_perfomance2-2.png)
+
+```
+## 
+## -----------
+##  AUC   KS  
+## ----- -----
+## 0.748 0.456
+## -----------
 ```
 
 **Key notes**

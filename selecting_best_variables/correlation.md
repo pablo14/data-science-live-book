@@ -1,7 +1,11 @@
 Correlation table against target variable
 =====
 
-**What it does?** It retrieves the well known `R statistic` -which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+### What is this about?
+
+It retrieves the well known `R statistic` -which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+
+
 
 
 
@@ -34,7 +38,7 @@ Outliers can be treated with `prep_outliers` function, present in this package.
 Take a look at the **Anscombe's quartet**. These 4 relationships are quite different, but all of them have the same R2: 0.816.
 
 
-<img src="anscombe_quartet.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="400" />
+<img src="anscombe_quartet.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="400" />
 
 
 

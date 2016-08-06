@@ -1,0 +1,57 @@
+Profiling Data
+====
+
+
+### What is this about? 
+
+Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here an approach to cover the very first step in data modeling. 
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "../data_preparation")
+```
+
+```{r lib, results="hide"}
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
+### Checking NA, zeros, data type and unique values
+```{r df_status}
+my_data_status=df_status(heart_disease)
+```
+* `q_zeros`: quantity of zeros (`p_zeros`: in percentage)
+* `q_inf`:  quantity of infinite values (`p_na`: in percentage)
+* `q_na`:  quantity of NA (`p_na`: in percentage)
+* `type`: factor or numeric
+* `unique`: quantity of unique values
+
+#### Why are these metrics important?
+* **Zeros**: Variables with **lots of zeros** may be not useful for modeling, and in some cases it may dramatically bias the model.
+* **NA**: Several models automatically exclude rows with NA (**random forest**, for example). As a result, the final model can be biased due to several missing rows because of only one variable. For example, if the data contains only one out of 100 variables with 90% of NAs, the model will be training with only 10% of original rows.
+* **Inf**: Infinite values may lead to an unexpected behavior in some functions in R.
+* **Type**: Some variables are encoded as numbers, but they are codes or categories, and the models **don't handle them** in the same way.
+* **Unique**: Factor/categorical variables with a high number of different values (~30), tend to do overfitting if categories have low representative, (**decision tree**, for example).
+
+#### Filtering unwanted cases
+Function `df_status` takes a data frame and returns a the status table to quickly remove unwanted cases.
+
+
+**Removing variables with high number of NA/zeros**
+```{r df_status3}
+# Removing variables with 60% of zero values
+vars_to_remove=subset(my_data_status, my_data_status$p_zeros > 60)
+vars_to_remove["variable"]
+
+## Keeping all except vars_to_remove 
+heart_disease_2=heart_disease[, !(names(heart_disease) %in% vars_to_remove[,"variable"])]
+
+```
+
+**Ordering data by percentage of zeros**
+```{r df_status4}
+my_data_status[order(-my_data_status$p_zeros), c('variable', 'p_zeros')] 
+```
+
+<br>

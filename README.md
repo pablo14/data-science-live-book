@@ -1,5 +1,7 @@
 # Data Science Live Book
 
+
+
 A book to learn data science, data analysis and machine learning, suitable for all ages!
 
 ## Introduction
@@ -107,14 +109,14 @@ cross_plot(data=heart_disease, str_input="age", str_target="has_heart_disease")
 ## [1] "Plotting transformed variable 'age' with 'equal_freq', (too many values). Disable with 'auto_binning=FALSE'"
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 
 ```r
 plotar(data=heart_disease, str_input="age", str_target="has_heart_disease", plot_type="histdens")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
 `plotar` and `cross_plot` can plot all numerical variables at once, as well as export each graph to a high quality _png image_.
 

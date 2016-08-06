@@ -1,8 +1,15 @@
 Correlation table against target variable
 =====
 
-**What it does?** It retrieves the well known `R statistic` -which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+### What is this about?
 
+It retrieves the well known `R statistic` -which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "../selecting_best_variables")
+```
 
 ```{r}
 correlation_table(data=heart_disease, str_target="has_heart_disease")
