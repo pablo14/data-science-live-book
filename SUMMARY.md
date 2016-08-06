@@ -1,6 +1,6 @@
 # Summary
 
-* [Data Preparation]
+* [Data Preparation]()
     * (data_preparation/profiling.md)
     * (data_preparation/outliers_treatment.md)
 * [Selecting Best Variables](selecting_best_variables/introduction.md)
