@@ -6,12 +6,19 @@
 library(knitr)
 opts_knit$set(base.dir = "readme")
 ```
+
  
 <img src="readme/logo4.JPG" width="300px" alt="Data Science Heroes">
 
 <br>
 
-### A book to learn data science, data analysis and machine learning, suitable for all ages!
+<center> <h3>_A book to learn data science, data analysis and machine learning, suitable for all ages!_</h3> </center>
+
+
+<br>
+
+<img src="readme/space.png" width="150px" alt="Data Science Heroes" align="center">
+
 
 <br>
 
@@ -44,7 +51,7 @@ And it is heavly based on the `funModeling` package. Please install before start
 
 
 <div>
-Book source code & bugs <a href="https://github.com/pablo14/data-science-live-book" target="blank">
+<a href="https://github.com/pablo14/data-science-live-book" target="blank">Book source code & bugs 
 <img src="http://datascienceheroes.com/img/blog/github_logo.PNG" style="  float:left; width:20px; margin:auto;" alt="Github Data Science Live Book">
 </a><span style=""></span>
 </div>
@@ -69,7 +76,9 @@ Book source code & bugs <a href="https://github.com/pablo14/data-science-live-bo
 <br>
 
 
+_This book is under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Attribution-NonCommercial-ShareAlike 4.0 International</a> license._
 
+ 
 
 
 
