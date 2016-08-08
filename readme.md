@@ -16,7 +16,7 @@
 <br>
 
 <p align="center">
-<img src="readme/space.png" width="150px" alt="Data Science Heroes" align="center">
+<img src="readme/cover_logo.png" width="150px" alt="Data Science Heroes" align="center">
 </p>
 
 <br>
