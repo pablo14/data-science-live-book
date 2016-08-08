@@ -32,7 +32,7 @@ This book covers common aspects in predictive modeling:
 
 _Creating & interpreting Predictive Models coming soon_
 
-And it is heavly based on the `funModeling` package. Please install before starting :) 
+And it is heavly based on the `funModeling` package from the <a href="https://cloud.r-project.org">R language</a> . Please install before starting :) 
 
 `install.packages("funModeling")`
 
@@ -51,14 +51,14 @@ And it is heavly based on the `funModeling` package. Please install before start
 
 <div>
 <a href="https://github.com/pablo14/data-science-live-book" target="blank">Book source code & bugs 
-<img src="http://datascienceheroes.com/img/blog/github_logo.PNG" style="  float:left; width:20px; margin:auto;" alt="Github Data Science Live Book">
+<img src="http://datascienceheroes.com/img/blog/github_logo.PNG" style="  float:left; width:20px; margin:auto;max-width:20px" alt="Github Data Science Live Book">
 </a><span style=""></span>
 </div>
 
 
 <div>
 <a href="http://blog.datascienceheroes.com" target="blank">
-<img src="http://datascienceheroes.com/img/blog/logo_dsh.png" alt="Data Science Heroes Blog" style="align:left; float:left; width:20px; margin:auto;" style="border-radius:5px;">DSH Blog
+<img src="http://datascienceheroes.com/img/blog/logo_dsh.png" alt="Data Science Heroes Blog" style="align:left; float:left; width:20px; margin:auto;max-width:20px" style="border-radius:5px;">DSH Blog
 </a>
 </div>
 <div>
@@ -67,8 +67,8 @@ And it is heavly based on the `funModeling` package. Please install before start
 <div>
 
 <a href="https://www.facebook.com/datasciheroes" target="blank">
-<img src="http://datascienceheroes.com/img/blog/fb_logo.PNG" style="width:20px; margin:auto;" alt="Data Science Heroes Facebook"></a> and <a href="https://twitter.com/DataSciHeroes" target="blank">
-<img src="http://datascienceheroes.com/img/blog/twitter_logo.PNG" style="width:20px; margin:auto;" alt="Data Science Heroes Twitter">
+<img src="http://datascienceheroes.com/img/blog/fb_logo.PNG" style="width:20px; margin:auto;max-width:20px" alt="Data Science Heroes Facebook"></a> and <a href="https://twitter.com/DataSciHeroes" target="blank">
+<img src="http://datascienceheroes.com/img/blog/twitter_logo.PNG" style="width:20px; margin:auto;max-width:20px" alt="Data Science Heroes Twitter">
 </a>
 </div>
 
