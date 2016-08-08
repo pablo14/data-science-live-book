@@ -4,18 +4,20 @@
 
 
 
- 
+<p align="center">
 <img src="readme/logo4.JPG" width="300px" alt="Data Science Heroes" align="center">
+</p>
 
 <br>
 
-<center>_<h3>A book to learn data science, data analysis and machine learning, suitable for all ages!</h3>_</center>
+<center><i><h3>A book to learn data science, data analysis and machine learning, suitable for all ages!</h3></i></center>
 
 
 <br>
 
+<p align="center">
 <img src="readme/space.png" width="150px" alt="Data Science Heroes" align="center">
-
+</p>
 
 <br>
 
