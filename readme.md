@@ -5,11 +5,11 @@
 
 
  
-<img src="readme/logo4.JPG" width="300px" alt="Data Science Heroes">
+<img src="readme/logo4.JPG" width="300px" alt="Data Science Heroes" align="center">
 
 <br>
 
-<center> <h3>_A book to learn data science, data analysis and machine learning, suitable for all ages!_</h3> </center>
+<center>_<h3>A book to learn data science, data analysis and machine learning, suitable for all ages!</h3>_</center>
 
 
 <br>

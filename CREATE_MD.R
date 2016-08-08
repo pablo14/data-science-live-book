@@ -24,7 +24,7 @@ knit("miscellaneous/miscellaneous.Rmd", "miscellaneous/miscellaneous.md")
 ###         HTMLs             ###         
 #################################
 ## README
-knit2html("readme/readme.Rmd", "README.md");file.remove("README.md")
+knit2html("readme/readme.Rmd", "README.md")
 
 ## SELECTING BEST VARIABLES
 knit2html("selecting_best_variables/introduction.Rmd", "selecting_best_variables/introduction.html");file.remove("introduction.md")
