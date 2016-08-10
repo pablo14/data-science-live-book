@@ -33,7 +33,7 @@ This book covers common aspects in predictive modeling:
 +  C. **Assessing model performance**
 +  D. **Miscellaneous**
 
-_Creating & interpreting Predictive Models coming soon_
+
 
 And it is heavly based on the `funModeling` package from the <a href="https://cloud.r-project.org">R language</a> . Please install before starting :) 
 
@@ -43,6 +43,11 @@ And it is heavly based on the `funModeling` package from the <a href="https://cl
 
 * Model creation consumes around **10%** of almost any predictive modeling project; `funModeling` will try to cover remaining 90%. 
 * It's not only the function itself, but the explanation of how to interpret results. This brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+
+<br>
+
+#### Why a _live book_?
+Hopefully this book barerly has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
 
 <br>
 
