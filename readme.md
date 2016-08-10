@@ -5,7 +5,7 @@
 
 
 <p align="center">
-<img src="readme/logo4.JPG" width="300px" alt="Data Science Heroes" align="center">
+<img src="readme/logo6c.png" width="300px" alt="Data Science Heroes" align="center">
 </p>
 
 <br>
