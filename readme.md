@@ -44,7 +44,7 @@ And it is heavly based on the `funModeling` package from the <a href="https://cl
 <br>
 
 #### Why a _live book_?
-Hopefully this book barerly has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
+Hopefully this book barely has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
 
 <br>
 
