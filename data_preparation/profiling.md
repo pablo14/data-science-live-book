@@ -12,6 +12,13 @@ Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to 
 ```r
 ## Loading funModeling !
 suppressMessages(library(funModeling))
+```
+
+```
+## Warning: package 'funModeling' was built under R version 3.2.5
+```
+
+```r
 data(heart_disease)
 ```
 
@@ -58,7 +65,7 @@ my_data_status=df_status(heart_disease)
 ## 16      2
 ```
 * `q_zeros`: quantity of zeros (`p_zeros`: in percentage)
-* `q_inf`:  quantity of infinite values (`p_na`: in percentage)
+* `q_inf`:  quantity of infinite values (`p_inf`: in percentage)
 * `q_na`:  quantity of NA (`p_na`: in percentage)
 * `type`: factor or numeric
 * `unique`: quantity of unique values

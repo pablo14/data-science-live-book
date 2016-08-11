@@ -22,7 +22,7 @@ data(heart_disease)
 my_data_status=df_status(heart_disease)
 ```
 * `q_zeros`: quantity of zeros (`p_zeros`: in percentage)
-* `q_inf`:  quantity of infinite values (`p_na`: in percentage)
+* `q_inf`:  quantity of infinite values (`p_inf`: in percentage)
 * `q_na`:  quantity of NA (`p_na`: in percentage)
 * `type`: factor or numeric
 * `unique`: quantity of unique values
