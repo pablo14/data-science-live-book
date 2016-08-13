@@ -22,9 +22,9 @@ data(heart_disease)
 
 ## Part A) Comparing vectors
 
-**What it does?**: Get the elements present (and not) between 2 vectors.
+**What does it do?**: Get the elements present (and not) between 2 vectors.
 
-**Machine Learning purpose:** It's a common practise to run several times a variable selecting algorithm, getting in every run different variables. _So what are the new variables?_ and, _what are the ones that are not present anymore?_
+**Machine Learning purpose:** It's a common practice to run several times a variable selecting algorithm, getting in every run different variables. _So what are the new variables?_ and, _what are the ones that are not present anymore?_
 
 
 ```r
@@ -64,7 +64,7 @@ res
 
 **What it does?** Split input data into training and test set, retrieving always same sample by setting the seed.
 
-It's important to encapsulate sampling generation in a function so it will return always the same sample (change default sample by modifying `seed` parameter).
+It's important to encapsulate sampling generation in a function so it will return always the same sample (change the default sample by modifying the `seed` parameter).
 
 
 ```r
@@ -84,7 +84,7 @@ data_ts=heart_disease[-index_sample,] # excluding all rows that belong to traini
 
 ## Part C) Filter variables from data frame by -string- name
 
-Based on the variables name present in `str_input`, it returns the original data frame (`keep=T`), or it deletes all except the desired ones.
+Based on the variable names present in `str_input`, it returns the data frame with only the requested columns (`keep=T`), or it deletes the specified ones (`keep=F`).
 
 
 ```r
