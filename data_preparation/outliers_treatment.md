@@ -3,8 +3,8 @@ Treatment of Outliers
 
 ### What is this about?
 
-`prep_outliers` function tries to automatize as much as it can be outliers preparation. It focus on the values that influence heavily the mean.
-It sets an `NA` or stop at a certain value all outliers for the desired variables.
+`prep_outliers` function tries to automatize as much as it can be outliers preparation. It focus on the values that heavily influence the mean.
+It sets an `NA` or stops at a certain value all outliers for the desired variables.
 <br>
 
 
@@ -19,22 +19,20 @@ data(heart_disease)
 ```
 
 
-**Outlier threshold**: The method to detect them is based on percentile, flagging as outlier if the value is on the top X % (commonly 0.5%, 1%, 2%). Setting parameter `top_percent` in `0.01` will flag all values on the top 1%.
-
-<br>
+**Outlier threshold**: The method to detect them is based on the percentile, flagging as an outlier if the value is on the top X % (commonly 0.5%, 1%, 2%). Setting the parameter `top_percent` in `0.01` will flag all values on the top 1%.
 
 Same logic goes for the lowest values, setting parameter `bottom_percent` in 0.01 will flag as an outlier the lowest 1% of all values.
 
-**Models highly affected by a biased mean**: linear regression, logistic regression, kmeans, decision trees. Random forest deals better with outliers. 
+**Models highly affected by a biased mean**: linear regressions, logistic regressions, kmeans, decision trees. Random forest deals better with outliers. 
  
-**Automatization**: `prep_outliers` skip all factor/char columns, so it can receive a whole data frame, removing outliers by finally, returning a the _cleaned_ data.
+**Automatization**: `prep_outliers` skips all factor/char columns, so it can receive a whole data frame, removing outliers by finally, returning a the _cleaned_ data.
 
 <br>
  
 This function covers two typical scenarios (parameter `type`):
 
 * Case 1: Descriptive statistics / data profiling
-* Case 2: Data for predictive model
+* Case 2: Data for the predictive model
 
 
 ### Case 1: `type='set_na'`
@@ -44,7 +42,7 @@ In this case all outliers are converted into `NA`, thus applying most of the des
 
 ### Case 2: `type='stop'`
 
-Last case will cause that all rows with `NA` values will lost when a machine learning model is created. To avoid this, but keep controlled the outliers, all values flagged as outlier will be converted to the threshold value.
+The previous case will cause that all rows with `NA` values will be lost when a machine learning model is trained. To avoid this, but keep the outliers controlled, all values flagged as outlier will be converted to the threshold value.
 
 **Key notes**: 
 
@@ -181,7 +179,7 @@ summary(df_treated4$var1)
 ```
 
 ### Plots
-Note when `type='set_na'` last points disappear
+Note that when `type='set_na'`, the last points disappear
 
 ```r
 ggplot(df_treated3, aes(x=var1)) + geom_histogram(binwidth=.5) + ggtitle("Setting type='set_na' (var1)")

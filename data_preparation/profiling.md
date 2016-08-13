@@ -2,9 +2,9 @@ Profiling Data
 ====
 
 
-### What is this about? 
+### What is this about?
 
-Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here an approach to cover the very first step in data modeling. 
+Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
 
 
 
@@ -12,13 +12,6 @@ Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to 
 ```r
 ## Loading funModeling !
 suppressMessages(library(funModeling))
-```
-
-```
-## Warning: package 'funModeling' was built under R version 3.2.5
-```
-
-```r
 data(heart_disease)
 ```
 
@@ -75,10 +68,10 @@ my_data_status=df_status(heart_disease)
 * **NA**: Several models automatically exclude rows with NA (**random forest**, for example). As a result, the final model can be biased due to several missing rows because of only one variable. For example, if the data contains only one out of 100 variables with 90% of NAs, the model will be training with only 10% of original rows.
 * **Inf**: Infinite values may lead to an unexpected behavior in some functions in R.
 * **Type**: Some variables are encoded as numbers, but they are codes or categories, and the models **don't handle them** in the same way.
-* **Unique**: Factor/categorical variables with a high number of different values (~30), tend to do overfitting if categories have low representative, (**decision tree**, for example).
+* **Unique**: Factor/categorical variables with a high number of different values (~30), tend to do overfitting if categories have low cardinality, (**decision trees**, for example).
 
 #### Filtering unwanted cases
-Function `df_status` takes a data frame and returns a the status table to quickly remove unwanted cases.
+The function `df_status` takes a data frame and returns a the status table to quickly remove unwanted cases.
 
 
 **Removing variables with high number of NA/zeros**
@@ -97,14 +90,14 @@ vars_to_remove["variable"]
 ```
 
 ```r
-## Keeping all except vars_to_remove 
+## Keeping all except vars_to_remove
 heart_disease_2=heart_disease[, !(names(heart_disease) %in% vars_to_remove[,"variable"])]
 ```
 
 **Ordering data by percentage of zeros**
 
 ```r
-my_data_status[order(-my_data_status$p_zeros), c('variable', 'p_zeros')] 
+my_data_status[order(-my_data_status$p_zeros), c('variable', 'p_zeros')]
 ```
 
 ```
