@@ -13,7 +13,9 @@ This plot intent to show in real scenarios if a variable is or not important, ma
 cross_gender=cross_plot(heart_disease, str_input="gender", str_target="has_heart_disease")
 ```
 
-![plot of chunk variable_importance_c1](figure/variable_importance_c1-1.png)
+```
+## Error in eval(expr, envir, enclos): could not find function "cross_plot"
+```
 
 Last two plots have the same data source, showing the distribution of `has_heart_disease` in terms of `gender`. The one on the left shows in percentage value, while the one on the right shows in absolute value.
 
@@ -54,7 +56,9 @@ For numerical variables, `cross_plot` has by default the `auto_binning=T`, which
 cross_plot(heart_disease, str_input="max_heart_rate", str_target="has_heart_disease")
 ```
 
-![plot of chunk variable_importance_c2](figure/variable_importance_c2-1.png)
+```
+## Error in eval(expr, envir, enclos): could not find function "cross_plot"
+```
 
 ### Example 3: Manual binning
 If you don't want the automatic binning, then set the `auto_binning=F` in `cross_plot` function.
@@ -64,12 +68,18 @@ For example, creating `oldpeak_2` based on equal frequency, with 3 buckets.
 
 ```r
 heart_disease$oldpeak_2=equal_freq(var=heart_disease$oldpeak, n_bins = 3)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "equal_freq"
+```
+
+```r
 summary(heart_disease$oldpeak_2)
 ```
 
 ```
-## [0.0,0.2) [0.2,1.5) [1.5,6.2] 
-##       106       107        90
+## Error in summary(heart_disease$oldpeak_2): object 'heart_disease' not found
 ```
 
 Plotting the binned variable (`auto_binning = F`):
@@ -78,7 +88,9 @@ Plotting the binned variable (`auto_binning = F`):
 cross_oldpeak_2=cross_plot(heart_disease, str_input="oldpeak_2", str_target="has_heart_disease", auto_binning = F)
 ```
 
-![plot of chunk variable_importance_c4](figure/variable_importance_c4-1.png)
+```
+## Error in eval(expr, envir, enclos): could not find function "cross_plot"
+```
 
 #### **Conclusion**
 This new plot based on `oldpeak_2` shows clearly how: the likelihood of **having heart disease increases** as **oldpeak_2 increases** as well. *Again, it gives an order to the data.*
@@ -89,10 +101,19 @@ Converting variable `max_heart_rate` into a one of 10 bins:
 
 ```r
 heart_disease$max_heart_rate_2=equal_freq(var=heart_disease$max_heart_rate, n_bins = 10)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "equal_freq"
+```
+
+```r
 cross_plot(heart_disease, str_input="max_heart_rate_2", str_target="has_heart_disease")
 ```
 
-![plot of chunk variable_importance_c5](figure/variable_importance_c5-1.png)
+```
+## Error in eval(expr, envir, enclos): could not find function "cross_plot"
+```
 
 At a first glance, `max_heart_rate_2` shows a negative and linear relationship, however there are some buckets which add noise to the relationship. For example, the bucket `(141, 146]` has a higher heart disease rate than the previous bucket, and it was expected to have a lower. *This could be noise in data.* 
 
@@ -101,10 +122,19 @@ At a first glance, `max_heart_rate_2` shows a negative and linear relationship, 
 
 ```r
 heart_disease$max_heart_rate_3=equal_freq(var=heart_disease$max_heart_rate, n_bins = 5)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "equal_freq"
+```
+
+```r
 cross_plot(heart_disease, str_input="max_heart_rate_3", str_target="has_heart_disease")
 ```
 
-![plot of chunk variable_importance_c6](figure/variable_importance_c6-1.png)
+```
+## Error in eval(expr, envir, enclos): could not find function "cross_plot"
+```
 
 **Conclusion**: As it can be seen, now the relationship is much clean and clear. Bucket *'N'* has a higher rate than *'N+1'*, which implies a negative correlation.
 

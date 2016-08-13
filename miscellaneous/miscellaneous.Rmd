@@ -44,7 +44,7 @@ res
 
 ## Part B) Sampling training and test data
 
-**What it does?** Split input data into training and test set, retrieving always same sample by setting the seed.
+**What does it does?** Split input data into training and test set, retrieving always same sample by setting the seed.
 
 It's important to encapsulate sampling generation in a function so it will return always the same sample (change the default sample by modifying the `seed` parameter).
 
