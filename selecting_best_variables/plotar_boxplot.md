@@ -9,6 +9,13 @@ The use of Boxplots in importance variable analysis gives a quick view on how di
 
 
 ```r
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
+
+```r
 plotar(data=heart_disease, str_input="age", str_target="has_heart_disease", plot_type = "boxplot")
 ```
 

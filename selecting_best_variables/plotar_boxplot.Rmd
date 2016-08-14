@@ -10,6 +10,12 @@ library(knitr)
 opts_knit$set(base.dir = "selecting_best_variables")
 ```
 
+```{r lib, results="hide"}
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
 ```{r variable_importance2b,  fig.height=2, fig.width=4}
 plotar(data=heart_disease, str_input="age", str_target="has_heart_disease", plot_type = "boxplot")
 ```

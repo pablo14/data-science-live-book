@@ -12,6 +12,7 @@ Density histograms are quite common in any book/resource when plotting distribut
 ```r
 ## Loading funModeling !
 suppressMessages(library(funModeling))
+data(heart_disease)
 ```
 
 

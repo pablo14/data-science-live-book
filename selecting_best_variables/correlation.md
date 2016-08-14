@@ -9,6 +9,14 @@ It retrieves the well known `R statistic` -which measures **linear** correlation
 
 
 
+
+```r
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
+
 ```r
 correlation_table(data=heart_disease, str_target="has_heart_disease")
 ```

@@ -11,6 +11,13 @@ library(knitr)
 opts_knit$set(base.dir = "selecting_best_variables")
 ```
 
+
+```{r lib, results="hide"}
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
 ```{r}
 correlation_table(data=heart_disease, str_target="has_heart_disease")
 ```

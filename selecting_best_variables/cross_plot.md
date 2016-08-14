@@ -7,6 +7,13 @@ This plot intent to show in real scenarios if a variable is or not important, ma
 
 
 
+
+```r
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
 ### Example 1: Is gender correlated with heart disease?
 
 ```r
