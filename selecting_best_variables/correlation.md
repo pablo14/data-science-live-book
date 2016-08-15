@@ -37,7 +37,7 @@ correlation_table(data=heart_disease, str_target="has_heart_disease")
 `R statistic` goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
 Squaring this number returns the `R squared` statistic (aka `R2`), which goes from `0` _no correlation_ to `1` _high correlation_. 
 
-### C.1) R2 bias problem
+### R2 bias problem
 
 **R statistic is highly influenced by outliers and non-linear relationships.**
 
