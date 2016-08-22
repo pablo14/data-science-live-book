@@ -1,0 +1,55 @@
+Predicting Heart Disease with Decision Trees
+=====
+
+### What is this about?
+
+This case study covers the creation of a predictive model in which, based on patients clinical trials, we'll create  predict if the patient is likely to have a heart disease.
+
+
+With the help of R you’ll get complex easy-to-read insights based on clinical trials. Hopefully this technology will be available to help everyone. 
+
+
+
+From this point, you’ll also know what are the most important variables, and what values they must take in order to increase heart disease likelihood.
+
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "case_study_1_decision_trees")
+```
+
+
+```{r lib, results="hide"}
+## Loading funModeling !
+suppressMessages(library(funModeling))
+data(heart_disease)
+```
+
+```{r}
+correlation_table(data=heart_disease, str_target="has_heart_disease")
+```
+
+`R statistic` goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
+Squaring this number returns the `R squared` statistic (aka `R2`), which goes from `0` _no correlation_ to `1` _high correlation_. 
+
+### R2 bias problem
+
+**R statistic is highly influenced by outliers and non-linear relationships.**
+
+Outliers can be treated with `prep_outliers` function, present in this package.
+
+Take a look at the **Anscombe's quartet**. These 4 relationships are quite different, but all of them have the same R2: 0.816.
+
+
+```{r, out.width = 400, fig.retina = NULL, echo=F}
+library(knitr)
+include_graphics("anscombe_quartet.png")
+```
+
+
+
+Last plot, and more info about correlation can be found at: [Correlation and dependence](https://en.wikipedia.org/wiki/Correlation_and_dependence)
+
+<br>
+
+<br>
