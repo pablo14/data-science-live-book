@@ -35,7 +35,15 @@ When you need to analyze different percentiles across the classes to predict. No
 
 
 ### Boxplot: Good vs. Bad variable
-plotar(data=heart_disease, str=c('max_heart_rate', 'resting_blood_pressure'),  str_target="has_heart_disease", plot_type = "boxplot")
+
+Using more than 1 variable as inputs is useful in order to quickly compare boxplots, and thus getting the best variables...
+
+
+```r
+plotar(data=heart_disease, str_input=c('max_heart_rate', 'resting_blood_pressure'),  str_target="has_heart_disease", plot_type = "boxplot")
+```
+
+![plot of chunk variable_importance2e](figure/variable_importance2e-1.png)![plot of chunk variable_importance2e](figure/variable_importance2e-2.png)
 
 `max_heart_rate` is clearly a better predictor than `resting_blood_pressure`.
 
@@ -48,10 +56,8 @@ _Statistical tests: percentiles are another used feature used by them in order t
 
 
 ```r
-plotar(data=heart_disease, str=c('max_heart_rate', 'resting_blood_pressure'),  str_target="has_heart_disease", plot_type = "boxplot", path_out = "my_awsome_folder")
+plotar(data=heart_disease, str_input=c('max_heart_rate', 'resting_blood_pressure'),  str_target="has_heart_disease", plot_type = "boxplot", path_out = "my_awsome_folder")
 ```
-
-![plot of chunk variable_importance_2c](figure/variable_importance_2c-1.png)![plot of chunk variable_importance_2c](figure/variable_importance_2c-2.png)
 
 <br>
 
