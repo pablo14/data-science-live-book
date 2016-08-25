@@ -1,26 +1,45 @@
-Predicting Heart Disease with Decision Trees
+Scoring Foundations
 =====
+
+```{r, out.width = 400, fig.retina = NULL, echo=F}
+library(knitr)
+#include_graphics("heart.png")
+```
+
+### The intuition behind
+
+Events can occur, or not... altough we don't have _tomorrow's newspaper_, we can make a good guess about how is it going to be.
+
+The future is undoublty attached to *uncertanty*, and this uncertanty can be estimated.
+
+This estimation is the _value of truth_ of an event to happen, therefore a probabilist value between 0 and 1.
+
+### Wait! What? Some examples...
+
+
+
+
+
+
+
+There are events in opposition in the world, like going / going down, buy/not buy, to do certain thing or not. These will be facts, (no entropy) after they occured, we don't know with certanty if 
+
+
+It's an estimation of the probability of ceratin event to occur -_i.e. having  heart disease_-, commongly in the range of [0 to 1]. 
+
 
 ### What is this about?
 
 This case study covers the creation of a predictive model, based on patients clinical trials, that predicts the likelihood of having heart disease.
 
 
-```{r, out.width = 400, fig.retina = NULL, echo=F}
-library(knitr)
-include_graphics("heart.png")
-```
-
-### Part 1) Want some backround theory?
 
 This project will achieve two goals, but others can need only one of them.
 
 * A) *Scoring*: Create an score that measures heart disease likelihood, and
 * B) *Descriptive*: Extract the rules (IF-THEN) that lead to a high/low score.
 
-*What is an score?*
 
-It's an estimation of the probability of ceratin event to occur -_i.e. having  heart disease_-, commongly in the range of [0 to 1]. 
 
 _Going deeply..._
 # IMAGEN DE ZOOM O ALGO

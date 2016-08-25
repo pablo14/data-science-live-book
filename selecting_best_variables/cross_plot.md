@@ -124,7 +124,7 @@ cross_plot(heart_disease, str_input="max_heart_rate_3", str_target="has_heart_di
 ```
 It creates the folder `my_plots` into the working directory. 
 
-### Example 4: `cross_plot` on multiple variables
+### Example 5: `cross_plot` on multiple variables
 Imagine you want to run cross_plot for several variables at the same time. To achieve this goal just define a vector containing the variable names.
 
 If you want to analyze these 3 variables: 
