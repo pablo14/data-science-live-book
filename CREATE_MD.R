@@ -42,3 +42,6 @@ knit2html("model_performance/model_performance.Rmd", "model_performance/model_pe
 
 ## MISCELLANEOUS
 knit2html("miscellaneous/miscellaneous.Rmd", output = "miscellaneous/miscellaneous.html");file.remove("miscellaneous.md")
+
+## SCORING
+knit2html("scoring/scoring.Rmd", output = "scoring/scoring.html");file.remove("scoring.md")
