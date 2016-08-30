@@ -38,7 +38,7 @@ _Something similar is what an **statistical test** sees: they measured **how dif
 <br>
 <br>
 
-### A.1) Hist. Dens.: Good vs. Bad variable
+### Good vs. Bad variable
 
 ```{r variable_importance2,  fig.height=2, fig.width=4}
 plotar(data=heart_disease, str=c('resting_blood_pressure', 'max_heart_rate'),  str_target="has_heart_disease", plot_type = "histdens")
