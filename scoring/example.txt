@@ -1,0 +1,16 @@
+id	target	score
+1	yes	0.8
+2	no	0.2
+3	no	0.14
+4	yes	0.98
+5	yes	0.4
+6	no	0.23
+7	no	0.21
+8	no	0.87
+9	no	0.11
+10	no	0.5
+11	yes	0.89
+12	no	0.11
+13	no	0.34
+14	no	0.23
+15	yes	0.85
