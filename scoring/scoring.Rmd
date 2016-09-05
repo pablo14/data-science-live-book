@@ -36,14 +36,16 @@ Simplified approach:
 * Question: _Is this person going to have a heart disease?_ 
 * Answer: "No"
 
-But there is the need of having more control over 
-
-Complete approach: 
+But there is something else before the "Yes/No" answer, and this is the score:
 
 * Question: _What is the likelihood for this person of having heart disease?_
 * Answer: "25%"
 
+<br>
+So first you get the score, and then according to your needs you set the **cut point**. And this is **really** important.
 
+
+### Let see an example
 
 
 
