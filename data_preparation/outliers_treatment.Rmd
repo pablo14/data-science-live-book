@@ -25,7 +25,7 @@ data(heart_disease)
 
 Same logic goes for the lowest values, setting parameter `bottom_percent` in 0.01 will flag as an outlier the lowest 1% of all values.
 
-**Models highly affected by a biased mean**: linear regressions, logistic regressions, kmeans, decision trees. Random forest deals better with outliers. 
+**These models are highly affected by a biased mean** :cry:: linear regressions, logistic regressions, kmeans, decision trees. Random forest deals better with outliers. 
  
 **Automatization**: `prep_outliers` skips all factor/char columns, so it can receive a whole data frame, removing outliers by finally, returning a the _cleaned_ data.
 

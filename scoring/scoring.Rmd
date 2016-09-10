@@ -80,8 +80,60 @@ May be it is understood, but the score usually refers to the less representative
 
 Now the table is ordered by score descendently.
 
-Several examples only mention how to extract the final class, may be due to the default cut point in 0.5 that almost every alghoritm have, leading this to a not-optimal result. 
+Several examples only mention how to extract the final class, may be due to the default cut point in `0.5` that almost every alghoritm have, leading this to a not-optimal result. 
 
-**Accuracy Metric or Confution Matrix must always be attached to a certain cut point.**
+**Accuracy Metric or Confusion Matrix must always be attached to a certain cut point.**
 
 <br>
+
+After assigning the cut point, we can see the clasification result getting the famous: 
+
+* :white_check_mark:**True Positive** (TP): It's _true_, that the classification is _positive_, or, "the model hitted correctly the positive (`yes`) class".
+* :white_check_mark:**True Negative** (TN): Same as before, but with negative class (`no`).
+* :x:**False Positive** (FP): It's _false_, that the classification is _positive_, or, "the model missed, it predicted `yes` but the result was `no`
+* :x:**False Negative** (FN): Same as before, but with negative class, "the model predicted negative, but it was positive", or, "the model predicted `no`, but the class was `yes`"
+
+
+<img src='tbl_example_4.png' width='500px'> 
+
+
+### The best and the worst escenario
+
+**The analysis of extremes will help us to find the right balance**
+
+:thumbsup: The best escenario is when **TP** and **TN** rates are 100%. That means the model correctly predicts all the `yes` and all the `no`; _(as a result, **FP** and **FN** rates are 0%)_.
+
+But wait :raised_hand:! If you find a perfect classification, probably it's because of overfitting!
+
+:thumbsdown: The worst escenario -the opposite to last example- is when **FP** and **FN** rates are 100%. Not even randomness can achieve such a awful escenario. 
+
+_Why?_ If classes are balanced, 50/50, flipping a coin will assert around half of the results. This is common baseline to test if the model if better than randomness.
+
+<br>
+<br>
+
+In the example provided, class distribution is 5 for `yes`, and 10 for `no`; so: 33,3% (5/15) is `yes`. 
+
+:question: **Trivia**: Does a model which correcltly predict this 33.3% -TP rate=100%- a good one?
+
+_Answer_: It depends on your needs. 
+
+
+A classifier that always predicts `yes`, will have a TP of 100%, but is absolutly useless since the FP rate will be quite high -a lot of `yes` will be actually `no`. ROC 
+
+
+
+
+
+👍
+
+
+
+
+
+
+
+
+
+
+
