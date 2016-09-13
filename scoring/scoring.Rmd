@@ -8,15 +8,19 @@ opts_knit$set(base.dir = "scoring")
 
 ### The intuition behind
 
-Events can occur, or not... altough we don't have _tomorrow's newspaper_, we can make a good guess about how is it going to be.
+> Events can occur, or not... altough we don't have _tomorrow's newspaper_ :newspaper:, we can make a good guess about how is it going to be.
 
 The future is undoublty attached to *uncertanty*, and this uncertanty can be estimated.
 
+<br>
+
 ### And there are diferents targets...
 
-By now this book will cover the classical: Yes/No target -also known as binary or multiclass prediction.
+By now this book will cover the classical: `Yes`/`No` target -also known as binary or multiclass prediction.
 
 So, this estimation is the _value of truth_ of an event to happen, therefore a probabilist value between 0 and 1.
+
+<br>
 
 ### Hey what? 
 
@@ -26,6 +30,8 @@ Some examples:
 - Is certain event going to happen in the next weeks? 
 
 The answers to last questions are True or False, but **the essense is to have an score**, or a number indicating the likelihood of certain event to happen.
+
+<br>
 
 ### But we need more control...
 
@@ -58,6 +64,15 @@ Example table showing the following
 
 Forgetting about input variables... After the creation of the predictive model, like a random forest, we are interested in the **scores**. Even though our final goal is to deliver a `yes`/`no` predicted variable.
 
+
+For example, following 2 sentences express the same: _The likelihood of being `yes` is `0.8`_ <=> _The likelihood of being `no` is `0.2`_
+
+May be it is understood, but the score usually refers to the less representative class: `yes`.
+
+--- 
+
+**R Syntax** -_skip it if you don't want to see code_-
+
 Following sentence will return the score:
 
 `score = predict(randomForestModel, data, type = "prob")[, 2]`
@@ -70,9 +85,9 @@ The `predict` function + `prob` parameter returns a matrix of 15 rows and 2 colu
 
 Since target variable can be `no` or `yes`, the `[, 2]` return the likelihood of being -in this case- `yes` (which is the complement of the `no` likelihood).
 
-For example, following 2 sentences express the same: _The likelihood of being `yes` is `0.8`_ <=> _The likelihood of being `no` is `0.2`_
+--- 
 
-May be it is understood, but the score usually refers to the less representative class: `yes`.
+<br>
 
 ### It's all about the cut point
 
@@ -80,9 +95,9 @@ May be it is understood, but the score usually refers to the less representative
 
 Now the table is ordered by score descendently.
 
-Several examples only mention how to extract the final class, may be due to the default cut point in `0.5` that almost every alghoritm have, leading this to a not-optimal result. 
+It's to see how to extract the final class having by default the cut point in `0.5`. Tweeking the cut point will lead into a better classification.
 
-**Accuracy Metric or Confusion Matrix must always be attached to a certain cut point.**
+> Accuracy metric or confusion matrix are always attached to a certain cut point value.
 
 <br>
 
@@ -96,16 +111,17 @@ After assigning the cut point, we can see the clasification result getting the f
 
 <img src='tbl_example_4.png' width='500px'> 
 
+<br>
 
 ### The best and the worst escenario
 
-**The analysis of extremes will help us to find the right balance**
+> The analysis of extremes will help to find the right balance
 
 :thumbsup: The best escenario is when **TP** and **TN** rates are 100%. That means the model correctly predicts all the `yes` and all the `no`; _(as a result, **FP** and **FN** rates are 0%)_.
 
 But wait :raised_hand:! If you find a perfect classification, probably it's because of overfitting!
 
-:thumbsdown: The worst escenario -the opposite to last example- is when **FP** and **FN** rates are 100%. Not even randomness can achieve such a awful escenario. 
+:thumbsdown: The worst escenario -the opposite to last example- is when **FP** and **FN** rates are 100%. Not even randomness can achieve such an awful escenario. 
 
 _Why?_ If classes are balanced, 50/50, flipping a coin will assert around half of the results. This is common baseline to test if the model if better than randomness.
 
@@ -114,16 +130,31 @@ _Why?_ If classes are balanced, 50/50, flipping a coin will assert around half o
 
 In the example provided, class distribution is 5 for `yes`, and 10 for `no`; so: 33,3% (5/15) is `yes`. 
 
-:question: **Trivia**: Does a model which correcltly predict this 33.3% -TP rate=100%- a good one?
+<br>
+
+---
+
+### Comparing classifiers
+
+#### Comparing classification results
+
+:question: **Trivia**: Does a model which correcltly predict this 33.3% (TP rate=100%) a good one?
 
 _Answer_: It depends on your needs. 
 
 
-A classifier that always predicts `yes`, will have a TP of 100%, but is absolutly useless since the FP rate will be quite high -a lot of `yes` will be actually `no`. ROC 
+A classifier that always predicts `yes`, will have a TP of 100%, but is absolutly useless since the FP rate will be quite high -a lot of `yes` will be actually `no`.
+
+#### Comparing ordering label based on score 
+
+A classifier must be trustful, and this is what **ROC** curves measures when plotting the TP rates against the FP. The focus is on how well the score orders the label, ideally all the positive labels must be at the top, and the negative ones at the bottom. 
 
 
+<img src='tbl_example_5.png' width='500px'> 
 
+<br>
 
+`model 1` will have a higher Area Under Roc Curve (AUC) than `model 2`.
 
 👍
 
