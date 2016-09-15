@@ -1,4 +1,4 @@
-Scoring Foundations
+Predictive Modeling Foundation (binary) 
 =====
 
 ```{r ,results="hide", echo=FALSE}
@@ -22,7 +22,7 @@ So, this estimation is the _value of truth_ of an event to happen, therefore a p
 
 <br>
 
-### Hey what? 
+### Hey what? :hushed:
 
 Some examples:
 - Is this client going to buy this product?
@@ -71,7 +71,7 @@ May be it is understood, but the score usually refers to the less representative
 
 --- 
 
-**R Syntax** -_skip it if you don't want to see code_-
+:raised_hand: **R Syntax** -_skip it if you don't want to see code_-
 
 Following sentence will return the score:
 
@@ -89,7 +89,7 @@ Since target variable can be `no` or `yes`, the `[, 2]` return the likelihood of
 
 <br>
 
-### It's all about the cut point
+### It's all about the cut point :straight_ruler:
 
 <img src='tbl_example_3.png' width='250px'> 
 
@@ -148,22 +148,28 @@ A classifier that always predicts `yes`, will have a TP of 100%, but is absolutl
 
 #### Comparing ordering label based on score 
 
-A classifier must be trustful, and this is what **ROC** curves measures when plotting the TP vs FP rates. 
+A classifier must be trustful, and this is what **ROC** curves measures when plotting the TP vs FP rates. The higher the proportion of TP over FP, the higher the Area Under Roc Curve (AUC) is.
 
-> The intuition behind ROC curve is to get an **score sanity measure** regarding how well it orders the label. Ideally all the positive labels must be at the top, and the negative at the bottom. 
+> The intuition behind ROC curve is to get an **sanity measure** regarding the **score**: how well it orders the label. Ideally all the positive labels must be at the top, and the negative at the bottom. 
 
+
+<br>
 
 <img src='tbl_example_5.png' width='500px'> 
 
 <br>
 
-`model 1` will have a higher Area Under Roc Curve (AUC) than `model 2`.
-
-<img src='4_models_roc.png' width='500px'> 
+`model 1` will have a higher AUC than `model 2`.
 
 Wikipedia has an extensive and good article on this: https://en.wikipedia.org/wiki/Receiver_operating_characteristic
 
+There is the comparission of 4 models, given a cutpoint of 0.5:
 
+<img src='4_models_roc.png' width='500px'> 
+
+Also there is table with the calculations for building the confusion matrix (or contingency table):
+
+<img src='wiki_confusion_matrix.png' width='600px'> 
 
 
 

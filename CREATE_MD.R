@@ -1,5 +1,10 @@
 library(knitr)
 
+name='scoring'
+folder='scoring'
+knit(sprintf("%s/%s.Rmd", folder, name), sprintf("%s.md", name))
+knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name));file.remove(sprintf("%s.md", name))
+
 ## README
 knit("readme/readme.Rmd", "README.md")
 
