@@ -173,11 +173,79 @@ Also there is table with the calculations for building the confusion matrix (or 
 
 
 
+<br>
+
+---
+
+### Hands on R!
+
+```{r, eval=F}
+
+# install.packages("rpivotTable") 
+# rpivotTable: it creates a pivot table dinamically, it also supports plots, more info at: https://github.com/smartinsightsfromdata/rpivotTable
+
+library(rpivotTable)
+
+## reading the data
+data=read.delim(file="example.txt", sep="\t", header = T, stringsAsFactors=F)
+
+```
+
+#### Cut point @ `0.5`
+
+Classical confusion matrix, indicating how many cases fall in the intersection of real vs predictived value:
+
+```{r, eval=F}
+data$predicted_target=ifelse(data$score>=0.5, "yes", "no")
+
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
+
+```
 
 
+<img src="count_1.png" width='300px'> 
 
 
+Another view, now each column sums **100%**. Good to answer the following questions: 
 
+
+```{r, eval=F}
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
+
+```
+
+<img src="percentage_1.png" width='300px'> 
+
+* _What is the percentage of real `yes` values captured by the model? Answer: 80%_ Also known as **Precision** (PPV)
+* _What is the percentage of `yes` threw by the model? 40%._ 
+
+So, from last two senteces: 
+
+**The model throws 4 out 10 predictions as `yes`. From this segment -the `yes`- it hits 80%.**
+
+Other view: The model correctly hits 3 cases for each 10 `yes` predictions _(0.4/0.8=3.2, or 3, rounding down)_.
+
+
+Note: Last way of analysis can be found when building a association rules (market basket analysis), and a decision tree model.
+
+
+#### Cut point @ `0.4`
+
+```{r, eval=F}
+data$predicted_target=ifelse(data$score>=0.4, "yes", "no")
+
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
+
+```
+
+#### Cut point @ `0.8`
+
+```{r, eval=F}
+data$predicted_target=ifelse(data$score>=0.8, "yes", "no")
+
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
+
+```
 
 
 
