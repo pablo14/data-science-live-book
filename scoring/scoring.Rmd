@@ -221,32 +221,50 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 So, from last two senteces: 
 
-**The model throws 4 out 10 predictions as `yes`. From this segment -the `yes`- it hits 80%.**
+**The model throws 4 out 10 predictions as `yes`, and from this segment -the `yes`- it hits 80%.**
+
+<br>
 
 Other view: The model correctly hits 3 cases for each 10 `yes` predictions _(0.4/0.8=3.2, or 3, rounding down)_.
 
-
 Note: Last way of analysis can be found when building a association rules (market basket analysis), and a decision tree model.
 
+<br>
 
 #### Cut point @ `0.4`
+
+Time to change the cut point to `0.4`, so the amount of `yes` will be higher:
 
 ```{r, eval=F}
 data$predicted_target=ifelse(data$score>=0.4, "yes", "no")
 
-rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
 
 ```
 
+<img src="percentage_2.png" width='300px'> 
+
+Now the model captures `100%` of `yes` (TP), total amount of `yes` produced by the model increased to `46.7%`, but at no cost since the *TN and FP remained the same* :thumbsup:. 
+
+<br>
+
 #### Cut point @ `0.8`
+
+Want to decrease the FP rate? Set the cut point to a higher value, for example: `0.8`, which will cause the `yes` produced by the model decreases:
 
 ```{r, eval=F}
 data$predicted_target=ifelse(data$score>=0.8, "yes", "no")
 
-rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
 
 ```
 
+<img src="percentage_3.png" width='300px'> 
 
+<br>
 
+Now the FP rate decreased to `10%` (from `20%`), and the model still captures the `80%` of TP which is the same rate as the one obtained with a cut point of `0.5` :thumbsup:.
 
+**Decreasing the cut point to `0.8` improved the model at no cost :champagne:.**
+
+<br>
