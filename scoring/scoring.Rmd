@@ -268,3 +268,14 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 **Decreasing the cut point to `0.8` improved the model at no cost :champagne:.**
 
 <br>
+
+#### Conclusions
+
+This chapter has focused on the escense of predicting binary variable: To produce an score or likelihood number which **orders** the target variable.
+
+Performance metrics appear when this score is developed, and they measure the quality in target class separation.
+
+Finally, there is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept.
+
+
+
