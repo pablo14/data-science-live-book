@@ -1,9 +1,19 @@
 library(knitr)
 
-name='scoring'
-folder='scoring'
-knit(sprintf("%s/%s.Rmd", folder, name), sprintf("%s.md", name))
-knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name));file.remove(sprintf("%s.md", name))
+create_files <- function(name, folder)
+{
+	knit(sprintf("%s/%s.Rmd", folder, name), sprintf("%s.md", name))
+	knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name));file.remove(sprintf("%s.md", name))
+}
+
+create_files('scoring', 'scoring')
+create_files('gain_lift', 'model_performance')
+
+
+
+## README
+knit("readme/readme.Rmd", "README.md")
+
 
 ## README
 knit("readme/readme.Rmd", "README.md")

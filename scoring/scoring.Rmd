@@ -150,7 +150,7 @@ A classifier that always predicts `yes`, will have a TP of 100%, but is absolutl
 
 A classifier must be trustful, and this is what **ROC** curves measures when plotting the TP vs FP rates. The higher the proportion of TP over FP, the higher the Area Under Roc Curve (AUC) is.
 
-> The intuition behind ROC curve is to get an **sanity measure** regarding the **score**: how well it orders the label. Ideally all the positive labels must be at the top, and the negative at the bottom. 
+> The intuition behind ROC curve is to get an **sanity measure** regarding the **score**: how well it orders the label. Ideally all the positive labels must be at the top, and the negative ones at the bottom. 
 
 
 <br>
@@ -179,6 +179,8 @@ Also there is table with the calculations for building the confusion matrix (or 
 
 ### Hands on R!
 
+We'll be analyzing 3 scenarios based on 3 cut-points.
+
 ```{r, eval=F}
 
 # install.packages("rpivotTable") 
@@ -191,7 +193,7 @@ data=read.delim(file="example.txt", sep="\t", header = T, stringsAsFactors=F)
 
 ```
 
-#### Cut point @ `0.5`
+#### **Scenario 1** Cut point @ `0.5`
 
 Classical confusion matrix, indicating how many cases fall in the intersection of real vs predictived value:
 
@@ -231,7 +233,7 @@ Note: Last way of analysis can be found when building a association rules (marke
 
 <br>
 
-#### Cut point @ `0.4`
+#### **Scenario 2** Cut point @ `0.4`
 
 Time to change the cut point to `0.4`, so the amount of `yes` will be higher:
 
@@ -248,7 +250,7 @@ Now the model captures `100%` of `yes` (TP), total amount of `yes` produced by t
 
 <br>
 
-#### Cut point @ `0.8`
+#### **Scenario 3** Cut point @ `0.8`
 
 Want to decrease the FP rate? Set the cut point to a higher value, for example: `0.8`, which will cause the `yes` produced by the model decreases:
 
@@ -271,11 +273,11 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 
 #### Conclusions
 
-This chapter has focused on the escense of predicting binary variable: To produce an score or likelihood number which **orders** the target variable.
+* This chapter has focused on the escense of predicting binary variable: To produce an score or likelihood number which **orders** the target variable.
 
-Performance metrics appear when this score is developed, and they measure the quality in target class separation.
+* A predictive model maps the input with the output.
 
-Finally, there is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept.
+* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. It can be addressed by ROC curves and lift/gain charts.
 
 
 
