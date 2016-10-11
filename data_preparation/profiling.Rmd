@@ -55,3 +55,28 @@ my_data_status[order(-my_data_status$p_zeros), c('variable', 'p_zeros')]
 ```
 
 <br>
+
+
+### Profiling character/factor variable
+
+Frequency or distribution analysis made it simple by `freq` function. It retrieves the distribution in a table and a plot (by default) which shows the distribution in absolut and relative numbers.
+
+If you want the distribution for two variables: 
+
+```{r fig.height=3, fig.width=5}
+freq(data=heart_disease, str_input = c('thal','chest_pain'))
+```
+
+As well as remaining `funModeling` functions, if `str_input` is missing it will run for all factor or character variables present in given data frame:
+
+```{r, eval=F}
+freq(data=heart_disease)
+```
+<br>
+
+Also, as the other plot function in the package, there is the need of exporting plots, add the `path_out` parameter (it will create the folder if it's not created yet)
+
+```{r, eval=F}
+freq(data=heart_disease, path_out='my_folder')
+```
+
