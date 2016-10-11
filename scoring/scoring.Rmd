@@ -1,4 +1,4 @@
-Predictive Modeling Foundation (binary) 
+Predictive Modeling Foundation (binary outcome) 
 =====
 
 ```{r ,results="hide", echo=FALSE}
@@ -9,6 +9,8 @@ opts_knit$set(base.dir = "scoring")
 ### The intuition behind
 
 > Events can occur, or not... altough we don't have _tomorrow's newspaper_ :newspaper:, we can make a good guess about how is it going to be.
+
+<img src="cover.png" width='150px'> 
 
 The future is undoublty attached to *uncertanty*, and this uncertanty can be estimated.
 
@@ -115,7 +117,7 @@ After assigning the cut point, we can see the clasification result getting the f
 
 ### The best and the worst escenario
 
-> The analysis of extremes will help to find the right balance
+> The analysis of extremes will help to finding the middle point.
 
 :thumbsup: The best escenario is when **TP** and **TN** rates are 100%. That means the model correctly predicts all the `yes` and all the `no`; _(as a result, **FP** and **FN** rates are 0%)_.
 
@@ -205,7 +207,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 ```
 
 
-<img src="count_1.png" width='300px'> 
+<img src="count_1.png" width='400px'> 
 
 
 Another view, now each column sums **100%**. Good to answer the following questions: 
@@ -216,7 +218,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 ```
 
-<img src="percentage_1.png" width='300px'> 
+<img src="percentage_1.png" width='400px'> 
 
 * _What is the percentage of real `yes` values captured by the model? Answer: 80%_ Also known as **Precision** (PPV)
 * _What is the percentage of `yes` threw by the model? 40%._ 
@@ -244,7 +246,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 ```
 
-<img src="percentage_2.png" width='300px'> 
+<img src="percentage_2.png" width='400px'> 
 
 Now the model captures `100%` of `yes` (TP), total amount of `yes` produced by the model increased to `46.7%`, but at no cost since the *TN and FP remained the same* :thumbsup:. 
 
@@ -261,7 +263,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 ```
 
-<img src="percentage_3.png" width='300px'> 
+<img src="percentage_3.png" width='400px'> 
 
 <br>
 
@@ -277,7 +279,7 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 
 * A predictive model maps the input with the output.
 
-* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. It can be addressed by ROC curves and lift/gain charts.
+* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. This live book addresses model performance by <a href="http://livebook.datascienceheroes.com/model_performance/roc.html"> ROC curves</a> and <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html"> lift & gain charts</a>
 
 
 

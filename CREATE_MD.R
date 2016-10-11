@@ -8,6 +8,7 @@ create_files <- function(name, folder)
 
 create_files('scoring', 'scoring')
 create_files('gain_lift', 'model_performance')
+create_files('introduction', 'model_performance')
 
 
 
