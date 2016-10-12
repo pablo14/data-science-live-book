@@ -3,14 +3,14 @@ Gain and Lift Analysis
 
 ### What is this about?
 
-Both metrics are extremly useful to validate the predictive model (binary outcome) quality. More info about scoring (here)[http://livebook.datascienceheroes.com/scoring/scoring.html]
+Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring (here)[http://livebook.datascienceheroes.com/scoring/scoring.html]
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
 opts_knit$set(base.dir = "model_performance")
 ```
 
-Make sure you have the latest `funModeling` version (> 1.3).
+Make sure you have the latest `funModeling` version (>= 1.3).
 
 ```{r lib, results="hide"}
 ## Loading funModeling
@@ -32,14 +32,14 @@ Then `Gain` column accumlates the postive class, for each 10% of rows - `Populat
 
 So for first row, it can be read as:
 
-_"First 10 percent of population, ordered by score, colects 20.86% of total positive cases"_
+_"The first 10 percent of the population, ordered by score, collects 20.86% of total positive cases"_
 
 For example, if we are sending emails based on this model, and we have budget to reach only **20%** of our users, how many responses we should expect to get?  Answer: **35.97%**
 
-If we don't use a model, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the dashed line, which starts in 0% and ends in 100%. Hopefuly with the predictive model we'll beat the randomness.
+If we don't use a model, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the dashed line, which starts in 0% and ends in 100%. Hopefully with the predictive model we'll beat the randomness.
 
 
-**Lift** column represents the ratio, between the `Gain` and the _gain by chance_. Taking as an example the Population=20%, the model is **1.8 times better** than randomness.
+The **Lift** column represents the ratio, between the `Gain` and the _gain by chance_. Taking as an example the Population=20%, the model is **1.8 times better** than randomness.
 
 <br>
 
@@ -56,8 +56,8 @@ The cut point allows us to segment the data.
 
 ### Comparing models
 
-In a good model, the gain will reach the 100% "at the begining" of the population, representing that it separates the classes.
+In a good model, the gain will reach the 100% "at the beginning" of the population, representing that it separates the classes.
 
-When comparing models, a quick metric is to see if the gain at the begining of the population (10-30%) is higher.  
+When comparing models, a quick metric is to see if the gain at the beginning of the population (10-30%) is higher.  
 
 As a result, the model with a higher gain at the begining will have captured more information from data.
