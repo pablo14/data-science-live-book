@@ -12,15 +12,15 @@ opts_knit$set(base.dir = "scoring")
 
 <img src="cover.png" width='150px'> 
 
-The future is undoublty attached to *uncertanty*, and this uncertanty can be estimated.
+The future is undoubtedly attached to *uncertainty*, and this uncertainty can be estimated.
 
 <br>
 
 ### And there are diferents targets...
 
-By now this book will cover the classical: `Yes`/`No` target -also known as binary or multiclass prediction.
+For now this book will cover the classical: `Yes`/`No` target -also known as binary or multiclass prediction.
 
-So, this estimation is the _value of truth_ of an event to happen, therefore a probabilist value between 0 and 1.
+So, this estimation is the _value of truth_ of an event to happen, therefore a probabilistic value between 0 and 1.
 
 <br>
 
@@ -29,15 +29,15 @@ So, this estimation is the _value of truth_ of an event to happen, therefore a p
 Some examples:
 - Is this client going to buy this product?
 - Is this patient going to get better?
-- Is certain event going to happen in the next weeks? 
+- Is certain event going to happen in the next few weeks? 
 
-The answers to last questions are True or False, but **the essense is to have an score**, or a number indicating the likelihood of certain event to happen.
+The answers to these last questions are True or False, but **the essense is to have an score**, or a number indicating the likelihood of certain event to happen.
 
 <br>
 
 ### But we need more control...
 
-Many machine learning resources shows the simplified version -wich is good to start- getting the final class as an output. Let's say:
+Many machine learning resources shows the simplified version -which is good to start- getting the final class as an output. Let's say:
 
 Simplified approach:
 
@@ -67,7 +67,7 @@ Example table showing the following
 Forgetting about input variables... After the creation of the predictive model, like a random forest, we are interested in the **scores**. Even though our final goal is to deliver a `yes`/`no` predicted variable.
 
 
-For example, following 2 sentences express the same: _The likelihood of being `yes` is `0.8`_ <=> _The likelihood of being `no` is `0.2`_
+For example, the following 2 sentences express the same: _The likelihood of being `yes` is `0.8`_ <=> _The likelihood of being `no` is `0.2`_
 
 May be it is understood, but the score usually refers to the less representative class: `yes`.
 
@@ -79,11 +79,11 @@ Following sentence will return the score:
 
 `score = predict(randomForestModel, data, type = "prob")[, 2]`
 
-Please note for other models this sintax may vary a little, but the concept **will remain the same**. Even for other languages.
+Please note for other models this syntax may vary a little, but the concept **will remain the same**. Even for other languages.
 
 Where `prob` indicates we want the probabilities (or scores). 
 
-The `predict` function + `prob` parameter returns a matrix of 15 rows and 2 columns: the 1st indicates the likelihood of being `no` while the 2nd one indicates the same for class `yes`.
+The `predict` function + `type="prob"` parameter returns a matrix of 15 rows and 2 columns: the 1st indicates the likelihood of being `no` while the 2nd one indicates the same for class `yes`.
 
 Since target variable can be `no` or `yes`, the `[, 2]` return the likelihood of being -in this case- `yes` (which is the complement of the `no` likelihood).
 
@@ -95,15 +95,15 @@ Since target variable can be `no` or `yes`, the `[, 2]` return the likelihood of
 
 <img src='tbl_example_3.png' width='250px'> 
 
-Now the table is ordered by score descendently.
+Now the table is ordered by descending score.
 
-It's to see how to extract the final class having by default the cut point in `0.5`. Tweeking the cut point will lead into a better classification.
+This is meant to see how to extract the final class having by default the cut point in `0.5`. Tweaking the cut point will lead into a better classification.
 
-> Accuracy metric or confusion matrix are always attached to a certain cut point value.
+> Accuracy metrics or the confusion matrix are always attached to a certain cut point value.
 
 <br>
 
-After assigning the cut point, we can see the clasification result getting the famous: 
+After assigning the cut point, we can see the classification results getting the famous: 
 
 * :white_check_mark:**True Positive** (TP): It's _true_, that the classification is _positive_, or, "the model hitted correctly the positive (`yes`) class".
 * :white_check_mark:**True Negative** (TN): Same as before, but with negative class (`no`).
@@ -117,7 +117,7 @@ After assigning the cut point, we can see the clasification result getting the f
 
 ### The best and the worst escenario
 
-> The analysis of extremes will help to finding the middle point.
+> The analysis of the extremes will help to find the middle point.
 
 :thumbsup: The best escenario is when **TP** and **TN** rates are 100%. That means the model correctly predicts all the `yes` and all the `no`; _(as a result, **FP** and **FN** rates are 0%)_.
 
@@ -125,7 +125,7 @@ But wait :raised_hand:! If you find a perfect classification, probably it's beca
 
 :thumbsdown: The worst escenario -the opposite to last example- is when **FP** and **FN** rates are 100%. Not even randomness can achieve such an awful escenario. 
 
-_Why?_ If classes are balanced, 50/50, flipping a coin will assert around half of the results. This is common baseline to test if the model if better than randomness.
+_Why?_ If the classes are balanced, 50/50, flipping a coin will assert around half of the results. This is common baseline to test if the model is better than randomness.
 
 <br>
 <br>
@@ -140,9 +140,9 @@ In the example provided, class distribution is 5 for `yes`, and 10 for `no`; so:
 
 #### Comparing classification results
 
-:question: **Trivia**: Does a model which correcltly predict this 33.3% (TP rate=100%) a good one?
+:question: **Trivia**: Is a model which correcltly predict this 33.3% (TP rate=100%) a good one?
 
-_Answer_: It depends on how many 'yes', the model said. 
+_Answer_: It depends on how many 'yes', the model predicted. 
 
 <br>
 A classifier that always predicts `yes`, will have a TP of 100%, but is absolutly useless since lots of `yes` will be actually `no`. As a matter of fact, FP rate will be high.
@@ -169,7 +169,7 @@ There is the comparission of 4 models, given a cutpoint of 0.5:
 
 <img src='4_models_roc.png' width='500px'> 
 
-Also there is table with the calculations for building the confusion matrix (or contingency table):
+Also there is a table with the calculations for building the confusion matrix (or contingency table):
 
 <img src='wiki_confusion_matrix.png' width='600px'> 
 
@@ -197,7 +197,7 @@ data=read.delim(file="example.txt", sep="\t", header = T, stringsAsFactors=F)
 
 #### **Scenario 1** Cut point @ `0.5`
 
-Classical confusion matrix, indicating how many cases fall in the intersection of real vs predictived value:
+Classical confusion matrix, indicating how many cases fall in the intersection of real vs predicted value:
 
 ```{r, eval=F}
 data$predicted_target=ifelse(data$score>=0.5, "yes", "no")
@@ -221,17 +221,17 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 <img src="percentage_1.png" width='400px'> 
 
 * _What is the percentage of real `yes` values captured by the model? Answer: 80%_ Also known as **Precision** (PPV)
-* _What is the percentage of `yes` threw by the model? 40%._ 
+* _What is the percentage of `yes` thrown by the model? 40%._ 
 
-So, from last two senteces: 
+So, from the last two senteces: 
 
-**The model throws 4 out 10 predictions as `yes`, and from this segment -the `yes`- it hits 80%.**
+**The model throws 4 out of 10 predictions as `yes`, and from this segment -the `yes`- it hits 80%.**
 
 <br>
 
 Other view: The model correctly hits 3 cases for each 10 `yes` predictions _(0.4/0.8=3.2, or 3, rounding down)_.
 
-Note: Last way of analysis can be found when building a association rules (market basket analysis), and a decision tree model.
+Note: The last way of analysis can be found when building a association rules (market basket analysis), and a decision tree model.
 
 <br>
 
@@ -248,7 +248,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 <img src="percentage_2.png" width='400px'> 
 
-Now the model captures `100%` of `yes` (TP), total amount of `yes` produced by the model increased to `46.7%`, but at no cost since the *TN and FP remained the same* :thumbsup:. 
+Now the model captures `100%` of `yes` (TP), so the total amount of `yes` produced by the model increased to `46.7%`, but at no cost since the *TN and FP remained the same* :thumbsup:. 
 
 <br>
 
@@ -275,11 +275,11 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 
 #### Conclusions
 
-* This chapter has focused on the escense of predicting binary variable: To produce an score or likelihood number which **orders** the target variable.
+* This chapter has focused on the essence of predicting a binary variable: To produce an score or likelihood number which **orders** the target variable.
 
 * A predictive model maps the input with the output.
 
-* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. This live book addresses model performance by <a href="http://livebook.datascienceheroes.com/model_performance/roc.html"> ROC curves</a> and <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html"> lift & gain charts</a>
+* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. This live book addresses model performance by <a href="http://livebook.datascienceheroes.com/model_performance/roc.html"> ROC curves</a> and <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html"> lift &amp; gain charts</a>
 
 
 
