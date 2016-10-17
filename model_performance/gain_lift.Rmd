@@ -3,7 +3,7 @@ Gain and Lift Analysis
 
 ### What is this about?
 
-Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring (here)[http://livebook.datascienceheroes.com/scoring/scoring.html]
+Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring <a href="http://livebook.datascienceheroes.com/scoring/scoring.html">here</a>.
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
@@ -68,7 +68,7 @@ As a result, the model with a higher gain at the begining will have captured mor
 
 _Let's ilustrate it..._
 
-<img src='model_comparison.png' width='500px'> 
+<img src='model_comparison.png' width='570px'> 
 
 **Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of population, while model 2 reaches a similar proportion approaching the 20% of population. _Model 1 is better._
 
