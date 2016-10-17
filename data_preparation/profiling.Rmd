@@ -59,6 +59,8 @@ my_data_status[order(-my_data_status$p_zeros), c('variable', 'p_zeros')]
 
 ### Profiling character/factor variable
 
+_Make sure you have the latest funModeling version (>= 1.3)._
+
 Frequency or distribution analysis is made simple by the `freq` function. It retrieves the distribution in a table and a plot (by default) which shows the distribution in absolute and relative numbers.
 
 If you want the distribution for two variables: 

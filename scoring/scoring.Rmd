@@ -24,7 +24,7 @@ So, this estimation is the _value of truth_ of an event to happen, therefore a p
 
 <br>
 
-### Hey what? :hushed:
+### Say what? :hushed:
 
 Some examples:
 - Is this client going to buy this product?

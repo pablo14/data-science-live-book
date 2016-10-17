@@ -34,16 +34,20 @@ So for first row, it can be read as:
 
 _"The first 10 percent of the population, ordered by score, collects 20.86% of total positive cases"_
 
-For example, if we are sending emails based on this model, and we have budget to reach only **20%** of our users, how many responses we should expect to get?  Answer: **35.97%**
-
-If we don't use a model, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the dashed line, which starts in 0% and ends in 100%. Hopefully with the predictive model we'll beat the randomness.
-
-
-The **Lift** column represents the ratio, between the `Gain` and the _gain by chance_. Taking as an example the Population=20%, the model is **1.8 times better** than randomness.
+For example, if we are sending emails based on this model, and we have budget to reach only **20%** of our users, how many responses we should expect to get?  **Answer: 35.97%**
 
 <br>
 
-### Using the cut point
+### What about not using a model?
+
+If we **don't use a model**, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the **dashed line**, which starts in 0% and ends in 100%. Hopefully with the predictive model we'll beat the randomness.
+
+
+The **Lift** column represents the ratio, between the `Gain` and the _gain by chance_. Taking as an example the Population=20%, the model is **1.8 times better** than randomness :muscle:💪.
+
+<br>
+
+### Using the cut point :scissors:
 
 What value of the score reaches 30% of population? 
 Answer: `0.56`
@@ -60,4 +64,14 @@ In a good model, the gain will reach the 100% "at the beginning" of the populati
 
 When comparing models, a quick metric is to see if the gain at the beginning of the population (10-30%) is higher.  
 
-As a result, the model with a higher gain at the begining will have captured more information from data.
+As a result, the model with a higher gain at the begining will have captured more information from data :wink:.
+
+_Let's ilustrate it..._
+
+<img src='model_comparison.png' width='500px'> 
+
+**Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of population, while model 2 reaches a similar proportion approaching the 20% of population. _Model 1 is better._
+
+**Lift analysis**: Same as before, but also it is susupicious hat not every lift number follow a decreasing pattern. May be the model is not ordering the first percentiles of population.
+ Same ordering concepts as seen in <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html">`cross_plot`</a>
+

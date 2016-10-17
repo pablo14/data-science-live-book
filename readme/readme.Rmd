@@ -27,18 +27,19 @@ opts_knit$set(base.dir = "readme")
 
 ## _What does it cover?_
 
-This book covers common aspects in predictive modeling:
+This live book (`#dsLiveBook`) covers common aspects in predictive modeling:
 
 +  A. **Data Preparation** / **Data Profiling**
 +  B. **Selecting best variables (dataviz)**
-+  C. **Assessing model performance**
-+  D. **Miscellaneous**
++  C. **Scoring**
++  D. **Assessing model performance**
++  F. **Miscellaneous**
 
+ 
 
+And it is heavly based on the `funModeling` package from the <a href="https://cloud.r-project.org">R language</a>. It's recommended install it -alongside the <a href="https://www.rstudio.com/products/rstudio/download">Rstudio IDE.</a>- before continue :) 
 
-And it is heavly based on the `funModeling` package from the <a href="https://cloud.r-project.org">R language</a> . Please install before starting :) 
-
-`install.packages("funModeling")`
+Installing funModeling: `install.packages("funModeling")`
 
 
 
