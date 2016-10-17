@@ -166,10 +166,6 @@ There is the comparission of 4 models, given a cutpoint of 0.5:
 
 <img src='4_models_roc.png' width='500px'> 
 
-Also there is a table with the calculations for building the confusion matrix (or contingency table):
-
-<img src='wiki_confusion_matrix.png' width='600px'> 
-
 
 
 <br>
@@ -265,7 +261,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 Now the FP rate decreased to `10%` (from `20%`), and the model still captures the `80%` of TP which is the same rate as the one obtained with a cut point of `0.5` :thumbsup:.
 
-**Decreasing the cut point to `0.8` improved the model at no cost.** :champagne:
+**Decreasing the cut point to `0.8` improved the model at no cost.**
 
 <br>
 
