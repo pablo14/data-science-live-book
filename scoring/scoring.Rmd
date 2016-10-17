@@ -269,7 +269,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 Now the FP rate decreased to `10%` (from `20%`), and the model still captures the `80%` of TP which is the same rate as the one obtained with a cut point of `0.5` :thumbsup:.
 
-**Decreasing the cut point to `0.8` improved the model at no cost :champagne:.**
+**Decreasing the cut point to `0.8` improved the model at no cost.** :champagne:
 
 <br>
 

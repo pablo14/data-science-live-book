@@ -108,7 +108,7 @@ After assigning the cut point, we can see the classification results getting the
 * :x:**False Negative** (FN): Same as before, but with negative class, "the model predicted negative, but it was positive", or, "the model predicted `no`, but the class was `yes`"
 
 
-<img src='tbl_example_4.png' width='500px'> 
+<img src='tbl_example_4.png' width='700px'> 
 
 <br>
 
@@ -154,7 +154,7 @@ A classifier must be trustful, and this is what **ROC** curves measures when plo
 
 <br>
 
-<img src='tbl_example_5.png' width='500px'> 
+<img src='tbl_example_5.png' width='600px'> 
 
 <br>
 
@@ -265,7 +265,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 Now the FP rate decreased to `10%` (from `20%`), and the model still captures the `80%` of TP which is the same rate as the one obtained with a cut point of `0.5` :thumbsup:.
 
-**Decreasing the cut point to `0.8` improved the model at no cost :champagne:.**
+**Decreasing the cut point to `0.8` improved the model at no cost.** :champagne:
 
 <br>
 
