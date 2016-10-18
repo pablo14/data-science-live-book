@@ -79,18 +79,17 @@ In a good model, the gain will reach the 100% "at the beginning" of the populati
 
 When comparing models, a quick metric is to see if the gain at the beginning of the population (10-30%) is higher.  
 
-As a result, the model with a higher gain at the begining will have captured more information from data :wink:.
+As a result, the model with a higher gain at the begining will have captured more information from data. :wink:
 
-_Let's ilustrate it..._
+Let's ilustrate it...
 
-<img src='model_comparison.png' width='560px'> 
+<img src='model_comparison.png' width='600px'> 
+
+<a href="http://livebook.datascienceheroes.com/smodel_performance/model_comparison.png>enlarge image</a>
+ 
 
 
-<a href="http://livebook.datascienceheroes.com/model_performance/model_comparison.png">click here to enlarge image</a> 
-*<br>
-
-
-*Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of population, while model 2 reaches a similar proportion approaching the 20% of population. _Model 1 is better._
+**Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of population, while model 2 reaches a similar proportion approaching the 20% of population. _Model 1 is better._
 
 **Lift analysis**: Same as before, but also it is susupicious hat not every lift number follow a decreasing pattern. May be the model is not ordering the first percentiles of population.
  Same ordering concepts as seen in <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html">`cross_plot`</a>
