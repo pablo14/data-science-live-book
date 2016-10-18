@@ -68,7 +68,8 @@ As a result, the model with a higher gain at the begining will have captured mor
 
 Let's ilustrate it...
 
-<img src='model_comparison.png' width='600px'> 
+<a href="http://datascienceheroes.com/img/blog/model_comparison.png" target="blank"> <img src='model_comparison.png' width='600px'> </a>
+
 
 
 
