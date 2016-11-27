@@ -1,0 +1,39 @@
+Model Validation Methodological Aspects (Not Time Dependant)
+===
+
+### What is this about?
+
+Once you've built a predictive model, how sure you are it captured general patterns, and not just the seen data (overfitting)? 
+
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "model_performance")
+```
+
+<br>
+
+#### What sort of data?
+
+Unlike <a href='http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html'>time dependant models</a> in this case you'll have an snapshot of the data, no new information will be generated through time. 
+
+For example some health data reasearch picked from a reduced amount of people, a survey, some data available on internet for practicing purposes. The `heart_disease` data coming in `funModeling` package is other example. 
+
+<br>
+
+### Cross-Validate data
+
+**How to?**
+
+
+Further reading: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r">an extensive approach on Cross-validation</a>
+
+#### Bootstrapping further reading
+ 
+* From <a href='http://stats.stackexchange.com/questions/26088/explaining-to-laypeople-why-bootstrapping-works' target='blank'>stats.stackexchange.com</a> 
+* <a href="https://www.stat.auckland.ac.nz/~wild/BootAnim/" target="blank">Visual animation</a> from Auckland's University. 
+
+, but the intution behind is to take data samples -with replacement-, so we can be sure about the "real" value of the error. 
+
+
+
