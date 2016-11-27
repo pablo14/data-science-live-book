@@ -1,0 +1,87 @@
+Model Time Dependant Validation
+===
+
+### What is this about?
+
+To test if model's predictions were effectively accurate in the "future" (unseen data). 
+
+This simulates when the model goes live on production. Or, that the patterns captured are general -thus not overfitted-. 
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "model_performance")
+```
+
+**Scenario**
+
+If data is generated along time and -let's say- every day you have new cases like _"page visits on a web page"_, or _"new patients arriving to a medical center"_, one strong validation is the **Out-Of-Time** approach.
+
+
+### Out-Of-Time Validation Example
+
+**How to?**
+
+Imagine you are building the model on **Jan-01**,  then to build the model keep with all the data **before Oct-31**. Between these two dates, there are 2 months.
+
+When predicting a **binary/two class variable** (or multi-class), it's quite straight-forward: with the model we built -with data <= Oct-31; we score the data on that day, and then we measure how the users/patients/persons/cases evolved during those two months.
+
+
+Since the output of a binary model should be a number indicating the likelihood for each case to belong to a certain class (<a href="http://livebook.datascienceheroes.com/scoring/scoring.html" tagrget="blank">scoring chapter</a>), you test what the model "_said_" on Oct-31 **against what it really happened on "Jan-01"**. 
+
+<br>
+
+**Validation workflow**
+
+<img src="categorical_variable.png" width="600px">
+
+
+#### How about a numerical target variable?
+
+
+Now the common sense and/or business needs is more present. A numerical outcome can take any value, it can increase or decrease through time, so we may consider these 2 scenarios attached to defining a threshold of success.
+
+
+**Example scenario**: If you are measuring certain app usage, the normal thing is as the days pass, the users use it more.
+
+
+<br>
+
+#### Case A: Convert the numerical target into a categorical
+
+
+For an app user, she/he can be more active through time-measured in page views, for example-, so to do an out of time validation we would predict if she/he will visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc. 
+
+
+Last examples can be:
+Binary: "yes/no" above average.
+Multi-label: "low increase"/"mid increase"/"high increase"
+
+
+<br>
+
+#### Case B: Leave it numerical (linear regression)
+
+
+Examples:
+Predicting the concentration of certain substance in blood. 
+Predicting page visits
+Time series analysis
+
+
+We also have in these cases the difference between: **"what was expected" vs "what it is"**.
+
+
+This difference can be any number. This is the error, or residuals (from the time series point of view).
+
+
+This error can be studied through so many different techniques, here's a quick example:
+
+<br>
+
+<img src="numerical_variable.png" width="500px">
+
+**Common error measurments:**Follow <a href="https://www.otexts.org/fpp/2/5">this link</a> contains information about common error analysis based on **Time Series**, but also apply to the described case (linear regression).
+
+
+
+<br>
