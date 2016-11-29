@@ -1,9 +1,9 @@
-Model Validation Methodological Aspects (Not Time Dependant)
-===
+# Methodological Aspects on Model Validation
+## Not Time Dependant
 
 ### What is this about?
 
-Once you've built a predictive model, how sure you are it captured general patterns, and not just the seen data (overfitting)? 
+Once we've built a predictive model, how sure are we about the quality? Did it captured general patterns _-information-_ and not particular cases _-noise-_? 
 
 
 ```{r ,results="hide", echo=FALSE}
@@ -15,18 +15,83 @@ opts_knit$set(base.dir = "model_performance")
 
 #### What sort of data?
 
-Unlike <a href='http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html'>time dependant models</a> in this case you'll have an snapshot of the data, no new information will be generated through time. 
+Unlike <a href='http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html'>time dependant models</a> in this case you'll have an data's snapshot at certain point of time, no new information will be generated. 
 
-For example some health data reasearch picked from a reduced amount of people, a survey, some data available on internet for practicing purposes. The `heart_disease` data coming in `funModeling` package is other example. 
+For example some health data reasearch picked from a reduced amount of people, a survey, some data available on internet for practicing purposes. It's not possible to add new cases either it's expensive or impossible.
+
+The `heart_disease` data coming in `funModeling` package is other example. 
 
 <br>
 
-### Cross-Validate data
+### Reducing unexpected behavior
 
-**How to?**
+When a model is trained it just sees a part of a reality. It's a sample from a populuation that cannot be totally seen. 
+
+There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics arer attached to variance, which implies getting different values if you remove some cases and then fit a new model, you'll see an _slighty_ different value.
+
+**But why removing cases?**
+
+There is no sense in removing cases like that, but it gets an idea about how sensible the accuracy metric is, remember you're working with a sample from an _unknown_ populuation. 
+
+> If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurated in all cases, we wouldn't need all of this. 
+
+> As far as we always analyze samples, we just need to getting closer to the _real truthness_ of data thorugh repetition, re-sampling, cross-validation, and so on...
+
+<br>
+
+### Let's illustrate this with Cross-Validation (CV)
+
+<img src="k-fold_cross_validation.png" width="400px" alt="Cross-Validation">
+<a href="http://sebastianraschka.com/faq/docs/evaluate-a-model.html" target="blank">Image source</a>
+
+<br>
+
+#### CV short summary
+
+* Splits the data into random groups, normally 10, equally sized. These groups are commonly called `folds`, represented by 'k' letter.
+* Take 9 folds, build a model, and then apply the model to the remaining fold (the one which was lef-out). This will return the accuracy metric you want: accuracy, ROC, Kappa, etc. Use accuracy in this example.
+* Repeat this `k` times (10 in our example). So we'll get 10 different accuracies. Final result will be the average of all of them. 
+
+This average will be the one to take the decision if a model is good or not, also to include it in a report. 
+
+<br>
+
+#### Practical example
+
+There 150 rows in `iris` data frame, using <a href="http://topepo.github.io/caret/index.html">caret package</a> so building a `random forest` with `caret` using `cross-validation` will end up in the -internal- construction of 10 random forest, each one based on 135 rows (9/10 * 150), and reporting an accuracy based on remaining 15 (1/10 * 150) cases. This procedure 10 times.
+
+This part of the output: 
+
+<img src="caret_cross_validation_output.png">
+
+`Summary of sample sizes: 135, 135, 135, 135, 135, 135, ... `, each 135 represents a training sample, 10 in total but the output is shrinked.
+
+Rather a single number -the average-, we can see a distribution:
+
+<img="accuracy_bootstrapping.png">
+
+<img="accuracy_distribution.png" width="200px">
+
+* The min/max accuracy will be between 0.86 and 1.
+* The mean is the one reported by `caret`
+* 50% of times it will be ranged between `[0.93-1]`
+
+#### What to use in practice?
+
+It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`.  In `caret` it is called `repeatedcv`. And using the average of the desiered metric. Using the `ROC` for being less biased to unbalanced target variable. Check [scoring chapter].
+
+Since these validation techniques are **time consuming**, consider choosing a model which will be built fast. 
+
+**Random Forest** are an excelent option given fast and accurate results.
 
 
-Further reading: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r">an extensive approach on Cross-validation</a>
+The people from Win-Vector.com published some time ago <a href="http://www.win-vector.com/blog/2014/12/the-geometry-of-classifiers/" target="blank">the-geometry-of-classifiers</a> based on <a href="http://jmlr.csail.mit.edu/papers/volume15/delgado14a/delgado14a.pdf" target="blank">this paper</a>. Both tested several alghoritms on different data sets, obtaining that random forest had 
+
+
+
+#### Further reading
+Extensive tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r">Cross validation for predictive analytics using r</a>
+
 
 #### Bootstrapping further reading
  

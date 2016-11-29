@@ -1,0 +1,56 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+In this post we
+
+Cross-validation
+Boostra
+
+```{r}
+library(caret)
+
+### Getting to the data
+data(iris)
+input_data = iris[,1:4]
+target = iris[,5]
+
+## Setting fixed seed for reproducibility (so you'll get same results). Using Fibonnacci numbers for fun ;)
+my_seeds=c(1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393)
+
+## Getting Accuracy metrics with Bootstrapping
+fit_rf_bootstrapping = train(input_data,
+                            target, 
+                            method="rf", 
+                            tuneGrid = data.frame(mtry=1),
+                            trControl=trainControl(method='boot', seeds=my_seeds))
+
+
+## Plotting 
+plot(resampleHist(fit_rf_bootstrapping))
+
+```
+
+```{r}
+print(fit_rf_bootstrapping)
+
+mean(fit_rf_bootstrapping$resample$Accuracy)
+```
+
+```{r}
+## Getting Accuracy metrics with Cross-Validation
+fit_rf_cv = train(input_data,
+                   target,
+                   method="rf", 
+                   tuneGrid = data.frame(mtry=1),
+                   trControl = trainControl(method="cv", number=10, seeds=my_seeds[1:11])
+                   )
+
+plot(resampleHist(fit_rf_cv))
+
+print(fit_rf_cv)
+
+mean(fit_rf_cv$resample$Accuracy)
+```
