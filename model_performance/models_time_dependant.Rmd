@@ -88,3 +88,7 @@ This error can be studied through so many different techniques, here's a quick e
 
 
 <br>
+
+### Final toughts
+
+We've review 

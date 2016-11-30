@@ -1,0 +1,38 @@
+Introduction
+===
+
+### What is this about?
+
+In practice, 90% of the time is spent in data preparation this book</a> does't -yet- empirical information about how model performance increases by preparing the data.
+
+And this includes:
+
+#### Remove outliers 
+
+Yes, model deals with this, but some noise will affect results anyway. 
+If we need to report the variables used in the model, we'll end up removing outliers to not see an histogram with only one bar, and/or show not a biased mean. 
+It's better to show a non-biased number than justifying the model "will handle" extreme values.
+
+
+
+#### Don't use information from the future
+<img src="back_to_the_future.png" width='200px'> 
+
+Common mistake when building the first model in a project, for example:
+
+If an user 
+
+#### Play fair: Let the data to develop their behavior
+
+
+
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "data_preparation")
+```
+
+
+
+
+<br>

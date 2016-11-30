@@ -42,10 +42,7 @@ resampleHist(fit_rf_cv)
 fit_rf_cv
 
 mean(fit_rf_cv$resample$Accuracy)
-
-fit_rf_cv$resample
-fit_rf_cv$
-$Accuracy
+summary(fit_rf_cv$resample$Accuracy)
 
 
 ########
