@@ -41,7 +41,8 @@ There is no sense in removing cases like that, but it gets an idea about how sen
 
 > If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurated in all cases, we wouldn't need all of this. 
 
-> As far as we always analyze samples, we just need to getting closer to the _real truthness_ of data thorugh repetition, re-sampling, cross-validation, and so on...
+> As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data thorugh repetition , re-sampling, cross-validation, and so on...
+
 
 <br>
 
@@ -49,7 +50,7 @@ There is no sense in removing cases like that, but it gets an idea about how sen
 
 <img src="k-fold_cross_validation.png" width="400px" alt="Cross-Validation">
 
-Source: [1]
+_Credit image: Sebastian Raschka_ Ref. [1]
 
 <br>
 
@@ -85,11 +86,36 @@ Rather a single number -the average-, we can see a distribution:
 
 <br>
 
-#### What to use in practice?
+### But what is Error?
 
-It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`.  In `caret` it is called `repeatedcv`. And using the average of the desiered metric. Using the `ROC` for being less biased to unbalanced target variable. Check [scoring chapter].
+The sum of **Bias**, **Variance** and the **_unexplained error_** -inner noise in data, or the one that the model will never be able to reduce. 
 
-Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, test different confirgurations, try different variables in a "short" amount of time. **<a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" target="blank">**Random Forest</a>** are an excelent option given **fast** and **accurated** results [2]. 
+These 3 elements represents the error reported.
+
+#### What is Bias and Variance ?
+
+* **Bias** is related to the randomness in data. By doing re-sampling (like **Bootstrapping**), it decreases.
+Incresing complexity in models, for example by adding variables, will reduce variance but it will increase bias.  
+* **Variance** is related to the differences obtaining for the application of different models to the same input case.  _For example one case can be classified as "true" with one model, and "false" with other._ **Cross-validation** is a technique to reduces it.
+
+<img src="bias_variance.png" width="300px">
+
+_Image credit: Scott Fortmann-Roe_ Ref. [3]
+
+<br>
+
+Bias and variance are related in the sense that if one goes down the other goes up, so it's a tradeoff between them.
+
+Note: For a deeper coverage about bias and variance please go to Ref. [3] at the bottom of the page.
+ 
+
+### Some advices on practice?
+
+It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`. Other: `5 fold CV, repeated 3 times`.
+
+And using the average of the desiered metric. Using the `ROC` for being less biased to unbalanced target variable.
+
+Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, test different confirgurations, try different variables in a "short" amount of time. **<a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" target="blank">**Random Forest</a>** are an excelent option given **fast** and **accurated** results. Ref. [2]. 
 
 **A parenthesis in random forest...**
 
@@ -102,6 +128,7 @@ In general terms each tree had been built using:
 
 <br>
 
+
 ### Don't forget: Data Preparation
 
 Tweeking input data by transforming and cleaning it, will impact on model quality. Sometimes more than optimizing the model through its parameters. 
@@ -111,7 +138,7 @@ This book has a <a href="http://livebook.datascienceheroes.com/data_preparation/
 ### Final toughts
 
 * Validating the models through re-sampling / cross-validation help us to estimate the "real" error in present in data. If the model will run in a future, it will be the expected error to have.
-* Another advantage is **model tunning**, avoiding the overfitting in selecting best parameters for certain model, <a href="https://topepo.github.io/caret/model-training-and-tuning.html" target="blank">Example in `caret`</a> 
+* Another advantage is **model tunning**, avoiding the overfitting in selecting best parameters for certain model, <a href="https://topepo.github.io/caret/model-training-and-tuning.html" target="blank"> Example in `caret`</a>. The equivalent in **Python** is <a href="http://scikit-learn.org/stable/modules/cross_validation.html"  target="blank">Sikit Learn</a>: 
 * To have many opinions / samples / folds tend to produce 
 
 > The best test is the one made by you, suited to your data and needs. 
@@ -122,12 +149,14 @@ Try different models and analyze the tradeoff between time consumption and any a
 
 #### Further reading
  
-* Tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r">Cross validation for predictive analytics using r</a>
-* Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm">Comparing Different Species of Cross-Validation</a>  
-* [1] Image source: <a href="http://sebastianraschka.com/faq/docs/evaluate-a-model.html" target="blank">Image source</a>
-* [2] More on Random Forest overall performance: <a href="http://jmlr.csail.mit.edu/papers/volume15/delgado14a/delgado14a.pdf">Do we Need Hundreds of Classiers to Solve Real World Classication Problems?</a>
-* Rob Hyndman (the creator of `forecast` package) <a href="http://robjhyndman.com/hyndsight/crossvalidation/">Why every statistician should know about cross-validation?</a> 
+* Tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r" target="blank">Cross validation for predictive analytics using r</a>
+* Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm"  target="blank">Comparing Different Species of Cross-Validation</a>  
 
+**References:**
+* [1] Image source: <a href="http://sebastianraschka.com/faq/docs/evaluate-a-model.html" target="blank">Image source</a>
+* [2] More on Random Forest overall performance: <a href="http://jmlr.csail.mit.edu/papers/volume15/delgado14a/delgado14a.pdf"  target="blank">Do we Need Hundreds of Classiers to Solve Real World Classication Problems?</a>
+* <a href="http://robjhyndman.com/hyndsight/crossvalidation/">Why every statistician should know about cross-validation?</a> by Rob Hyndman, creator of `forecast` package.
+* [3] Image source: <a href="http://scott.fortmann-roe.com/docs/BiasVariance.html"  target="blank">Understanding the Bias-Variance Tradeoff</a>. It contains an intutitive way of understanding error through bias and variance.
 
 
 
