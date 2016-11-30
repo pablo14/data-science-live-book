@@ -21,17 +21,18 @@ For example some health data reasearch picked from a reduced amount of people, a
 
 The `heart_disease` data coming in `funModeling` package is other example. 
 
+
 <br>
 
 ### Reducing unexpected behavior
 
 When a model is trained it just sees a part of a reality. It's a sample from a populuation that cannot be totally seen. 
 
-There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics are attached to variance, which implies getting different values if you remove some cases and then fit a new model, you'll see an _slighty_ different value. 
+There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics are **attached to variance**, which implies **getting different values** if you remove some cases and then fit a new model, you'll see an _slighty_ different value. 
 
-Imagine we fit a model and achieve an accuracy of "`81`", now remove 10% of the cases, fit a new model, the accuracy now is: `78.4`. What is the real accuracy? The one obtained with 100% of data or the other one? For example if the model will run live on production, it will see other cases and the accuracy point will move to a new one. 
+Imagine we fit a model and achieve an accuracy of "`81`", now remove 10% of the cases, fit a new model, the accuracy now is: `78.4`. **What is the real accuracy?** The one obtained with 100% of data or the other based on 90%? For example if the model will run live on production, it will sees **other cases** and the accuracy point will move to a new one. 
 
-_So what is the real value? The one to report?_ Resampling and cross-validation techniques will average -base on different sampling and testing criteria- in order to retrieve an approximation to the most trusted value.
+_So what is the real value? The one to report?_ **Resampling** and **cross-validation** techniques will average -base on different sampling and testing criteria- in order to retrieve an approximation to the most trusted value.
 
 <br> 
 
@@ -151,6 +152,9 @@ Try different models and analyze the tradeoff between time consumption and any a
  
 * Tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r" target="blank">Cross validation for predictive analytics using r</a>
 * Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm"  target="blank">Comparing Different Species of Cross-Validation</a>  
+* The cross-validation approach can also be applied to time dependant models, check the other chapter: <a href="http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html" target="blank">Methodological aspects on time dependant models</a>.
+
+<br>
 
 **References:**
 * [1] Image source: <a href="http://sebastianraschka.com/faq/docs/evaluate-a-model.html" target="blank">Image source</a>

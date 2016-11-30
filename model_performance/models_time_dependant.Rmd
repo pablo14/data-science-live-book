@@ -5,7 +5,7 @@
 
 Once you've built a predictive model, how sure you are it captured general patterns, and not just the seen data (overfitting)?. 
 
-Will it perform well when it will be on production / running live?
+Will it perform well when it will be on production / running live? What will be the expected error?
 
 
 ```{r ,results="hide", echo=FALSE}
@@ -52,14 +52,13 @@ Now the common sense and/or business needs is more present. A numerical outcome 
 
 #### Case A: Convert the numerical target into categorical?
 
-
-For an app user, she/he can be more active through time-measured in page views, for example-, so to do an out of time validation we would predict if she/he will visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc. 
+For an app user, she/he can be more active through time-measured in page views, so to do an out of time validation we would predict if the user visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc. 
 
 
 Last examples can be:
 
-* Binary: "yes/no" above average.
-* Multi-label: "low increase"/"mid increase"/"high increase"
+* **Binary**: "yes/no" above average.
+* **Multi-label**: "low increase"/"mid increase"/"high increase"
 
 
 <br>
@@ -69,12 +68,11 @@ Last examples can be:
 Examples:
 
 * Predicting the concentration of certain substance in blood. 
-* Predicting page visits
-* Time series analysis
+* Predicting page visits.
+* Time series analysis.
 
 
 We also have in these cases the difference between: **"what was expected" vs "what it is"**.
-
 
 This difference can take any number. This is the error, or residuals.
 
@@ -84,11 +82,10 @@ This error can be studied through so many different techniques, here's a quick e
 
 <img src="numerical_variable.png" width="500px">
 
-**Common error measurments:**Follow <a href="https://www.otexts.org/fpp/2/5">this link</a> contains information about common error analysis based on **Time Series**, but also apply to the described case (linear regression).
-
 
 <br>
 
-### Final toughts
+#### Wait a second... Does anyone mention "error" and "distribution"? 
 
-We've review 
+Time to go to next chapter: <a href="http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html" target="blank">Methodological Aspects on Model Performance</a>
+
