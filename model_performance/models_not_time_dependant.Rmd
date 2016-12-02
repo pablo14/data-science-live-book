@@ -3,7 +3,7 @@
 
 ### What is this about?
 
-Once we've built a predictive model, how sure we are about its quality? Did it captured general patterns _-information-_ (excluding the _-noise-_)? 
+Once we've built a predictive model, how sure we are about its quality? Did it captured general patterns _-information-_ (excluding the _-noise-_)?
 
 
 ```{r ,results="hide", echo=FALSE}
@@ -15,34 +15,34 @@ opts_knit$set(base.dir = "model_performance")
 
 #### What sort of data?
 
-Unlike <a href='http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html'>time dependant models</a> in this case you'll have an data's snapshot at certain point of time, no new information will be generated. 
+Unlike <a href='http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html'>time dependant models</a> in this case you'll have an data's snapshot at certain point of time, no new information will be generated.
 
-For example some health data reasearch picked from a reduced amount of people, a survey, some data available on internet for practicing purposes. It's not possible to add new cases either it's expensive or impossible.
+For example some health data research picked from a reduced amount of people, a survey, some data available on internet for practicing purposes. It's not possible to add new cases either it's expensive or impossible.
 
-The `heart_disease` data coming in `funModeling` package is other example. 
+The `heart_disease` data coming in `funModeling` package is other example.
 
 
 <br>
 
 ### Reducing unexpected behavior
 
-When a model is trained it just sees a part of a reality. It's a sample from a populuation that cannot be totally seen. 
+When a model is trained it just sees a part of a reality. It's a sample from a population that cannot be totally seen.
 
-There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics are **attached to variance**, which implies **getting different values** if you remove some cases and then fit a new model, you'll see an _slighty_ different value. 
+There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics are **attached to variance**, which implies **getting different values** if you remove some cases and then fit a new model, you'll see an _slightly_ different value.
 
-Imagine we fit a model and achieve an accuracy of "`81`", now remove 10% of the cases, fit a new model, the accuracy now is: `78.4`. **What is the real accuracy?** The one obtained with 100% of data or the other based on 90%? For example if the model will run live on production, it will sees **other cases** and the accuracy point will move to a new one. 
+Imagine we fit a model and achieve an accuracy of "`81`", now remove 10% of the cases, fit a new model, the accuracy now is: `78.4`. **What is the real accuracy?** The one obtained with 100% of data or the other based on 90%? For example if the model will run live on production, it will sees **other cases** and the accuracy point will move to a new one.
 
-_So what is the real value? The one to report?_ **Resampling** and **cross-validation** techniques will average -base on different sampling and testing criteria- in order to retrieve an approximation to the most trusted value.
+_So what is the real value? The one to report?_ **Re-sampling** and **cross-validation** techniques will average -base on different sampling and testing criteria- in order to retrieve an approximation to the most trusted value.
 
-<br> 
+<br>
 
 **But why removing cases?**
 
-There is no sense in removing cases like that, but it gets an idea about how sensible the accuracy metric is, remember you're working with a sample from an *_unknown populuation_*. 
+There is no sense in removing cases like that, but it gets an idea about how sensible the accuracy metric is, remember you're working with a sample from an *_unknown population_*.
 
-> If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurated in all cases, we wouldn't need all of this. 
+> If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurate in all cases, we wouldn't need all of this.
 
-> As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data thorugh repetition , re-sampling, cross-validation, and so on...
+> As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data through repetition , re-sampling, cross-validation, and so on...
 
 
 <br>
@@ -58,10 +58,10 @@ _Credit image: Sebastian Raschka_ Ref. [1]
 #### CV short summary
 
 * Splits the data into random groups, let's say `10`, equally sized. These groups are commonly called `folds`, represented by `'k'` letter.
-* Take `9` folds, build a model, and then apply the model to the remaining fold (the one which was lef-out). This will return the accuracy metric you want: accuracy, ROC, Kappa, etc. Use accuracy in this example.
-* Repeat this `k` times (`10` in our example). So we'll get `10` different accuracies. Final result will be the average of all of them. 
+* Take `9` folds, build a model, and then apply the model to the remaining fold (the one which was left-out). This will return the accuracy metric you want: accuracy, ROC, Kappa, etc. Use accuracy in this example.
+* Repeat this `k` times (`10` in our example). So we'll get `10` different accuracies. Final result will be the average of all of them.
 
-This average will be the one to take the decision if a model is good or not, and also to include it in a report. 
+This average will be the one to take the decision if a model is good or not, and also to include it in a report.
 
 <br>
 
@@ -69,7 +69,7 @@ This average will be the one to take the decision if a model is good or not, and
 
 There 150 rows in `iris` data frame, using <a href="http://topepo.github.io/caret/index.html">caret package</a> so building a `random forest` with `caret` using `cross-validation` will end up in the -internal- construction of 10 random forest, each one based on 135 rows (9/10 * 150), and reporting an accuracy based on remaining 15 (1/10 * 150) cases. This procedure 10 times.
 
-This part of the output: 
+This part of the output:
 
 <img src="caret_cross_validation_output.png">
 
@@ -89,74 +89,79 @@ Rather a single number -the average-, we can see a distribution:
 
 ### But what is Error?
 
-The sum of **Bias**, **Variance** and the **_unexplained error_** -inner noise in data, or the one that the model will never be able to reduce. 
+The sum of **Bias**, **Variance** and the **_unexplained error_** -inner noise in data, or the one that the model will never be able to reduce.
 
 These 3 elements represents the error reported.
 
 #### What is Bias and Variance ?
 
 * **Bias** is related to the randomness in data. By doing re-sampling (like **Bootstrapping**), it decreases.
-Incresing complexity in models, for example by adding variables, will reduce variance but it will increase bias.  
+Increasing complexity in models, for example by adding variables, will reduce variance but it will increase bias. 
 * **Variance** is related to the differences obtaining for the application of different models to the same input case.  _For example one case can be classified as "true" with one model, and "false" with other._ **Cross-validation** is a technique to reduces it.
+
 
 <img src="bias_variance.png" width="300px">
 
-_Image credit: Scott Fortmann-Roe_ Ref. [3]
+_Image credit: Scott Fortmann-Roe_ [3]
 
 <br>
 
-Bias and variance are related in the sense that if one goes down the other goes up, so it's a tradeoff between them.
+Bias and variance are related in the sense that if one goes down the other goes up, so it's a **tradeoff** between them.
 
-Note: For a deeper coverage about bias and variance please go to Ref. [3] at the bottom of the page.
+* **Bootstrapping** is most used when estimating a parameter.
+* **Cross-Validation** is the choice when choosing among different predictive models.
+* Coming soon a post in Data Science Heroes Blog explaining their differences
+
+Note: For a deeper coverage about bias and variance please go to [3] at the bottom of the page.
  
 
-### Some advices on practice?
+### Any advices on practise?
 
 It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`. Other: `5 fold CV, repeated 3 times`.
 
-And using the average of the desiered metric. Using the `ROC` for being less biased to unbalanced target variable.
+And using the average of the desired metric. Using the `ROC` for being less biased to unbalanced target variable.
 
-Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, test different confirgurations, try different variables in a "short" amount of time. **<a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" target="blank">**Random Forest</a>** are an excelent option given **fast** and **accurated** results. Ref. [2]. 
+Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, test different configurations, try different variables in a "short" amount of time. **<a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" target="blank">**Random Forest</a>** are an excelent option given **fast** and **accurate** results. Ref. [2].
 
 **A parenthesis in random forest...**
 
-This model uses a resampling technique (bootrsapping), to build `N` trees (normally hundreds/thousands), where each one had seen sample of the data. Final decision is the average of all trees which were built having seen **different information**, plus, each one used a **different a set of variables** so they try to be not correlated between them:
+This model uses a re-sampling technique (bootrsapping), to build `N` trees (normally hundreds/thousands), where each one had seen sample of the data. Final decision is the average of all trees which were built having seen **different information**, plus, each one used a **different a set of variables** so they try to be not correlated between them:
 
-In general terms each tree had been built using: 
+In general terms each tree had been built using:
 
 * **Different input data** (samples)
-* **Different input variables.** 
+* **Different input variables.**
 
 <br>
 
 
 ### Don't forget: Data Preparation
 
-Tweeking input data by transforming and cleaning it, will impact on model quality. Sometimes more than optimizing the model through its parameters. 
-This book has a <a href="http://livebook.datascienceheroes.com/data_preparation/introduction.html">Data Preparation</a> section in early stage. 
+Tweeking input data by transforming and cleaning it, will impact on model quality. Sometimes more than optimizing the model through its parameters.
+<a href="http://livebook.datascienceheroes.com/data_preparation/introduction.html">Data Preparation</a> chapter of this book is under heavy development. Coming soon.
 
 
 ### Final toughts
 
 * Validating the models through re-sampling / cross-validation help us to estimate the "real" error in present in data. If the model will run in a future, it will be the expected error to have.
-* Another advantage is **model tunning**, avoiding the overfitting in selecting best parameters for certain model, <a href="https://topepo.github.io/caret/model-training-and-tuning.html" target="blank"> Example in `caret`</a>. The equivalent in **Python** is <a href="http://scikit-learn.org/stable/modules/cross_validation.html"  target="blank">Sikit Learn</a>: 
-* To have many opinions / samples / folds tend to produce 
+* Another advantage is **model tunning**, avoiding the overfitting in selecting best parameters for certain model, <a href="https://topepo.github.io/caret/model-training-and-tuning.html" target="blank"> Example in `caret`</a>. The equivalent in **Python** is <a href="http://scikit-learn.org/stable/modules/cross_validation.html"  target="blank">Sikit Learn</a>.
+* The best test is the one made by you, suited to your data and needs. Try different models and analyze the tradeoff between time consumption and any accuracy metric.
 
-> The best test is the one made by you, suited to your data and needs. 
+> These re-sampling techniques could be one of the powerfull tools behind the sites like stackoverflow.com or collaborative open-source software. To have many opinions in order to produce a less-biased solution.
 
-Try different models and analyze the tradeoff between time consumption and any accuracy metric.
 
 <br>
 
 #### Further reading
  
 * Tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r" target="blank">Cross validation for predictive analytics using r</a>
-* Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm"  target="blank">Comparing Different Species of Cross-Validation</a>  
+* Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm"  target="blank">Comparing Different Species of Cross-Validation</a> 
 * The cross-validation approach can also be applied to time dependant models, check the other chapter: <a href="http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html" target="blank">Methodological aspects on time dependant models</a>.
 
 <br>
 
 **References:**
+
 * [1] Image source: <a href="http://sebastianraschka.com/faq/docs/evaluate-a-model.html" target="blank">Image source</a>
 * [2] More on Random Forest overall performance: <a href="http://jmlr.csail.mit.edu/papers/volume15/delgado14a/delgado14a.pdf"  target="blank">Do we Need Hundreds of Classiers to Solve Real World Classication Problems?</a>
 * <a href="http://robjhyndman.com/hyndsight/crossvalidation/">Why every statistician should know about cross-validation?</a> by Rob Hyndman, creator of `forecast` package.

@@ -3,10 +3,9 @@
 
 ### What is this about?
 
-Once you've built a predictive model, how sure you are it captured general patterns, and not just the seen data (overfitting)?. 
+Once you've built a predictive model, how sure you are it captured general patterns, and not just the seen data (overfitting)?.
 
 Will it perform well when it will be on production / running live? What will be the expected error?
-
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
@@ -30,17 +29,23 @@ Imagine you are building the model on **Jan-01**,  then to build the model keep 
 When predicting a **binary/two class variable** (or multi-class), it's quite straight-forward: with the model we built -with data <= Oct-31; we score the data on that day, and then we measure how the users/patients/persons/cases evolved during those two months.
 
 
-Since the output of a binary model should be a number indicating the likelihood for each case to belong to a certain class (<a href="http://livebook.datascienceheroes.com/scoring/scoring.html" tagrget="blank">scoring chapter</a>), you test what the **model "_said_" on Oct-31 against what it really happened on "Jan-01"**. 
+Since the output of a binary model should be a number indicating the likelihood for each case to belong to a certain class (<a href="http://livebook.datascienceheroes.com/scoring/scoring.html" target="blank">scoring chapter</a>), you test what the **model "_said_" on Oct-31 against what it really happened on "Jan-01"**.
 
 <br>
 
 **So validation workflow looks something like...**
 
-<img src="categorical_variable.png" width="600px">
+<img src="model_validation_workflow.png" width="600px" alt="Model performance workflow">
 
+#### Using Gain and Lift Analysis
+
+<img src="gain_lift.png" width="300px" alt="Gain and lift analysis">
+
+This analysis explained in <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html" target="blank">other chapter</a> of the book can be used following the out-of-time validation.
+
+Keeping only with those cases that were `negative` on `Oct-31`, we get the `score` returned by the model on that date, and `target` variable is the value that those cases were on `Jan-1`.
 
 ### How about a numerical target variable?
-
 
 Now the common sense and/or business needs is more present. A numerical outcome can take any value, it can increase or decrease through time, so we may consider these 2 scenarios to help us thinking what we consider success.
 
@@ -52,7 +57,7 @@ Now the common sense and/or business needs is more present. A numerical outcome 
 
 #### Case A: Convert the numerical target into categorical?
 
-For an app user, she/he can be more active through time-measured in page views, so to do an out of time validation we would predict if the user visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc. 
+For an app user, she/he can be more active through time-measured in page views, so to do an out of time validation we would predict if the user visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc.
 
 
 Last examples can be:
@@ -67,7 +72,7 @@ Last examples can be:
 
 Examples:
 
-* Predicting the concentration of certain substance in blood. 
+* Predicting the concentration of certain substance in blood.
 * Predicting page visits.
 * Time series analysis.
 
@@ -76,16 +81,28 @@ We also have in these cases the difference between: **"what was expected" vs "wh
 
 This difference can take any number. This is the error, or residuals.
 
-This error can be studied through so many different techniques, here's a quick example:
-
-<br>
-
 <img src="numerical_variable.png" width="500px">
 
+This error should be **white noise** [1]. It follows a normal curve when mainly there are some logical properties:
+
+* The error should be **around 0** -_the model must tend its error to 0_-.
+* The standard deviation from this error **must be finite** -to avoid unpredictable outliers-.
+* No correlation between the errors.
+* **Normal distribution**: expect the majority of errors around 0, having the biggest ones in a **less proportion** as the error increases -likelihood of finding bigger errors decreases exponentially.
+
+<img src="normal_error_curve.png" width="400px" alt="Error curve following a normal distribution">
 
 <br>
 
-#### Wait a second... Does anyone mention "error" and "distribution"? 
 
-Time to go to next chapter: <a href="http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html" target="blank">Methodological Aspects on Model Performance</a>
+#### Final thoughts
 
+* **Out-of-Time Validation** is an strong validation tool to simulate the running of the model on production with data that may **not need to depend on sampling**.
+
+* The **error analysis** is big chapter in data science. Time to go to next chapter will try to cover key-concepts on this: <a href="http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html" target="blank">Methodological aspects on not time dependant models</a>
+
+<br>
+
+**References:**
+
+* [1] See **Time series analysis and regression** section in: <a href="https://en.wikipedia.org/wiki/White_noise">White noise (wikipedia)</a>
