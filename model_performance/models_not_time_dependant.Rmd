@@ -93,12 +93,15 @@ The sum of **Bias**, **Variance** and the **_unexplained error_** -inner noise i
 
 These 3 elements represents the error reported.
 
-#### What is Bias and Variance ?
+#### What is the nature of Bias and Variance ?
 
-* **Bias** is related to the randomness in data. By doing re-sampling (like **Bootstrapping**), it decreases.
-Increasing complexity in models, for example by adding variables, will reduce variance but it will increase bias. 
-* **Variance** is related to the differences obtaining for the application of different models to the same input case.  _For example one case can be classified as "true" with one model, and "false" with other._ **Cross-validation** is a technique to reduces it.
+When the model doesn't work well, there may be several causes:
 
+* **Model too complicated**: Let's say lots of input variables, which casuses **high variance**. The model will overfit on training data, having a low accuracy on test data.
+* **Model too simple**: On the other hand, the model may not be capturing the information from the data.
+* **Not enough input data**: Data forms shapes in a n-dimensional space (where `n` is all the input+target variables). If there are not enough points, the surface is not enough developed.
+
+More info in [4].
 
 <img src="bias_variance.png" width="300px">
 
@@ -123,14 +126,12 @@ And using the average of the desired metric. Using the `ROC` for being less bias
 
 Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, test different configurations, try different variables in a "short" amount of time. **<a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" target="blank">**Random Forest</a>** are an excelent option given **fast** and **accurate** results. Ref. [2].
 
-**A parenthesis in random forest...**
+Other good option is: **gradient boosting machine**, it has more paramaters to tune than random forest, but at least in R its implementation works really.
 
-This model uses a re-sampling technique (bootrsapping), to build `N` trees (normally hundreds/thousands), where each one had seen sample of the data. Final decision is the average of all trees which were built having seen **different information**, plus, each one used a **different a set of variables** so they try to be not correlated between them:
+#### Going back to bias and variance
 
-In general terms each tree had been built using:
-
-* **Different input data** (samples)
-* **Different input variables.**
+** Random forest focus on decreasing bias, while...
+** gradient boosting machine focus on decreasing variance. [5]
 
 <br>
 
@@ -165,7 +166,9 @@ Tweeking input data by transforming and cleaning it, will impact on model qualit
 * [1] Image source: <a href="http://sebastianraschka.com/faq/docs/evaluate-a-model.html" target="blank">Image source</a>
 * [2] More on Random Forest overall performance: <a href="http://jmlr.csail.mit.edu/papers/volume15/delgado14a/delgado14a.pdf"  target="blank">Do we Need Hundreds of Classiers to Solve Real World Classication Problems?</a>
 * <a href="http://robjhyndman.com/hyndsight/crossvalidation/">Why every statistician should know about cross-validation?</a> by Rob Hyndman, creator of `forecast` package.
-* [3] Image source: <a href="http://scott.fortmann-roe.com/docs/BiasVariance.html"  target="blank">Understanding the Bias-Variance Tradeoff</a>. It contains an intutitive way of understanding error through bias and variance.
+* [3] Image source: <a href="http://scott.fortmann-roe.com/docs/BiasVariance.html" target="blank">Understanding the Bias-Variance Tradeoff</a>. It contains an intutitive way of understanding error through bias and variance through a animation.
+* [4] <a href="http://www.kdnuggets.com/2015/06/machine-learning-more-data-better-algorithms.html" target="blank">In Machine Learning, What is Better: More Data or better Algorithms</a> 
+* [5] <a href="http://stats.stackexchange.com/questions/173390/gradient-boosting-tree-vs-random-forest" target="blank">Gradient boosting machine vs random forest</a>
 
 
 
