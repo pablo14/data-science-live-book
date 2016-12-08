@@ -19,7 +19,7 @@ opts_knit$set(base.dir = "model_performance")
 
 #### What sort of data?
 
-It has other approach rather than the one covered on <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html'>Out-of-Time Validation</a>. This approach could be used even when there is not possible to filter cases by date, for example having a data's snapshot at certain point of time, when no new information will be generated.
+It has other approach rather than the one covered on <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html' target="blank">Out-of-Time Validation</a>. This approach could be used even when there is not possible to filter cases by date, for example having a data's snapshot at certain point of time, when no new information will be generated.
 
 For example some health data research from a reduced amount of people, a survey, or some data available on internet for practicing purposes. It's either expensive, not practical, unethical or even impossible to add new cases. The `heart_disease` data coming in `funModeling` package is such an example.
 
@@ -172,7 +172,7 @@ But each opinion has to be reliable, imagine asking for medical diagnostic to di
  
 * Tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r" target="blank">Cross validation for predictive analytics using r</a>
 * Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm"  target="blank">Comparing Different Species of Cross-Validation</a> 
-* The cross-validation approach can also be applied to time dependant models, check the other chapter: <a href="http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html" target="blank">Methodological aspects on time dependant models</a>.
+* The cross-validation approach can also be applied to time dependant models, check the other chapter: <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html' target="blank">Out-of-Time Validation</a>.
 
 <br>
 
