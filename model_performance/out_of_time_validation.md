@@ -35,7 +35,7 @@ Since the output of a binary model should be a number indicating the likelihood 
 <img src="model_validation_workflow.png" width="600px" alt="Model performance workflow">
 
 
-_<a href="http://datascienceheroes.com/img/blog/lift_gain.png" target="Blank">Enlarge image.</a>_
+_<a href="http://datascienceheroes.com/img/blog/model_validation_workflow.png" target="Blank">Enlarge image.</a>_
 
 <br>
 

@@ -51,7 +51,7 @@ Most of the concepts are independent from the language, the focus is on general 
 
 <br>
 
-_Why a _live book_?_
+_Why a _live book_ ?_
 Hopefully this book barely has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
 
 <br>

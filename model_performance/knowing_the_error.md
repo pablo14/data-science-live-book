@@ -12,12 +12,9 @@ Once we've built a predictive model, how sure we are about it's quality? Did it 
 
 #### What sort of data?
 
-Unlike <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html'>time dependant models</a> in this case you'll have an data's snapshot at certain point of time, no new information will be generated.
+It has other approach rather than the one covered on <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html'>Out-of-Time Validation</a>. This approach could be used even when there is not possible to filter cases by date, for example having a data's snapshot at certain point of time, when no new information will be generated.
 
-For example some health data research from a reduced amount of people, a survey, or some data available on internet for practicing purposes. It's either expensive, not practical, unethical or even impossible to add new cases.
-
-The `heart_disease` data coming in `funModeling` package is such an example.
-
+For example some health data research from a reduced amount of people, a survey, or some data available on internet for practicing purposes. It's either expensive, not practical, unethical or even impossible to add new cases. The `heart_disease` data coming in `funModeling` package is such an example.
 
 <br>
 
