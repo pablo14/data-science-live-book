@@ -1,5 +1,5 @@
 # Methodological Aspects on Model Validation
-## Not Time Dependant
+## Knowing the Error
 
 ### What's this about?
 
@@ -15,7 +15,7 @@ opts_knit$set(base.dir = "model_performance")
 
 #### What sort of data?
 
-Unlike <a href='http://livebook.datascienceheroes.com/model_performance/models_time_dependant.html'>time dependant models</a> in this case you'll have an data's snapshot at certain point of time, no new information will be generated.
+Unlike <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html'>time dependant models</a> in this case you'll have an data's snapshot at certain point of time, no new information will be generated.
 
 For example some health data research from a reduced amount of people, a survey, or some data available on internet for practicing purposes. It's either expensive, not practical, unethical or even impossible to add new cases.
 
@@ -97,11 +97,11 @@ These 3 elements represent the error reported.
 
 When the model doesn't work well, there may be several causes:
 
-* **Model too complicated**: Let's say we have lots of input variables, which casuses **high variance**. The model will overfit on training data, having a low accuracy on test data.
-* **Model too simple**: On the other hand, the model may not be capturing all the information from the data.
-* **Not enough input data**: Data forms shapes in a n-dimensional space (where `n` is all the input+target variables). If there are not enough points, the surface is not developed well enough.
+* **Model too complicated**: Let's say we have lots of input variables, which is related to **high variance**. The model will overfit on training data, having a low accuracy on unseen data due to its particularization.
+* **Model too simple**: On the other hand, the model may not be capturing all the information from the data due to its simplicity. This is related to **high bias**.
+* **Not enough input data**: Data forms shapes in a n-dimensional space (where `n` is all the input+target variables). If there are not enough points, this shape is not developed well enough.
 
-More info in [4].
+More info here in [4].
 
 <img src="bias_variance.png" width="300px">
 
@@ -115,8 +115,7 @@ Bias and variance are related in the sense that if one goes down the other goes 
 * **Cross-Validation** is the choice when choosing among different predictive models.
 * Coming soon a post in Data Science Heroes Blog explaining their differences
 
-Note: For a deeper coverage about bias and variance please go to [3] at the bottom of the page.
- 
+Note: For a deeper coverage about bias and variance please go to [3] and [4] at the bottom of the page.
 
 ### Any advices on practice?
 

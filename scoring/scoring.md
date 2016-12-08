@@ -1,4 +1,4 @@
-Predictive Modeling Foundation (binary outcome) 
+The Importance of Scoring Data
 =====
 
 
@@ -18,6 +18,13 @@ The future is undoubtedly attached to *uncertainty*, and this uncertainty can be
 For now this book will cover the classical: `Yes`/`No` target -also known as binary or multiclass prediction.
 
 So, this estimation is the _value of truth_ of an event to happen, therefore a probabilistic value between 0 and 1.
+
+#### two-label vs. multi-label outcome : 
+
+Please note this chapter is written for a binary outcome (two-label outcome), but **multi-label** target can be seen as a general approach of a binary-class.
+
+For example, having a target with 4 different values, there can be 4 models that predict the likelihood of belonging to certain class, or not. And then a higher model which takes the results of those 4 models and predict the final class.
+
 
 <br>
 

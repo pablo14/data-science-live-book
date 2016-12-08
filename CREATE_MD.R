@@ -6,13 +6,20 @@ create_files <- function(name, folder)
 	knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name));file.remove(sprintf("%s.md", name))
 }
 
-create_files('scoring', 'scoring')
+
 create_files('gain_lift', 'model_performance')
-create_files('roc', 'model_performance')
 create_files('introduction', 'model_performance')
+create_files('out_of_time_validation', 'model_performance')
+create_files('knowing_the_error', 'model_performance')
+
+#create_files('roc', 'model_performance')
+
+create_files('scoring', 'scoring')
 create_files('profiling', 'data_preparation')
 
 knit("readme/readme.Rmd", "README.md")
+
+#########
 
 
 ## README
@@ -33,7 +40,7 @@ knit("data_preparation/profiling.Rmd", "data_preparation/profiling.md")
 knit("model_performance/model_performance.Rmd", "model_performance/model_performance.md")
 
 ## MISCELLANEOUS
-knit("miscellaneous/miscellaneous.Rmd", "miscellaneous/miscellaneous.md")
+#knit("miscellaneous/miscellaneous.Rmd", "miscellaneous/miscellaneous.md")
 
 #################################
 ###         HTMLs             ###         
@@ -56,7 +63,7 @@ knit2html("data_preparation/profiling.Rmd", "data_preparation/profiling.html");f
 knit2html("model_performance/model_performance.Rmd", "model_performance/model_performance.html");file.remove("model_performance.md")
 
 ## MISCELLANEOUS
-knit2html("miscellaneous/miscellaneous.Rmd", output = "miscellaneous/miscellaneous.html");file.remove("miscellaneous.md")
+#knit2html("miscellaneous/miscellaneous.Rmd", output = "miscellaneous/miscellaneous.html");file.remove("miscellaneous.md")
 
 ## SCORING
 knit2html("scoring/scoring.Rmd", output = "scoring/scoring.html");file.remove("scoring.md")

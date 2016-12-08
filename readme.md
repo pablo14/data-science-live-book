@@ -6,7 +6,7 @@
 
 
 <p align="center">
-<img src="readme/logo6c.png" width="300px" alt="Data Science Heroes" align="center">
+<img src="readme/logo6c.png" width="200px" alt="Data Science Heroes" align="center">
 </p>
 
 <br>
@@ -22,33 +22,40 @@
 
 <br>
 
+### Last update: 2016-12-16
+
 ## _What does it cover?_
 
 This live book (`#dsLiveBook`) covers common aspects in predictive modeling:
 
 +  A. **Data Preparation** / **Data Profiling**
 +  B. **Selecting best variables (dataviz)**
-+  C. **Scoring**
++  C. **Scoring Data**
 +  D. **Assessing model performance**
-+  F. **Miscellaneous**
 
- 
+#### Upcoming updates
 
-And it is heavly based on the `funModeling` package from the <a href="https://cloud.r-project.org">R language</a>. It's recommended install it -alongside the <a href="https://www.rstudio.com/products/rstudio/download">Rstudio IDE.</a>- before continue :) 
+More info about methodological aspects in data preparation.
 
-Installing funModeling: `install.packages("funModeling")`
+#### What programming language do I need?
 
-
-
-* Model creation consumes around **10%** of almost any predictive modeling project; `funModeling` will try to cover remaining 90%. 
-* It's not only the function itself, but the explanation of how to interpret results. This brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+Most of the concepts are independent from the language, the focus is on general concepts. But when technical example is required it is done in <a href="https://cloud.r-project.org">R language</a>, using the `funModeling` package which you can install by doing: `install.packages("funModeling")`
 
 <br>
 
-#### Why a _live book_?
+#### Book Focus
+
+* Model creation consumes around **10%** of almost any predictive modeling project; `funModeling` will try to cover remaining 90%.
+* It's not only the function itself, but the explanation of how to interpret results. This brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+
+
+<br>
+
+_Why a _live book_?_
 Hopefully this book barely has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
 
 <br>
+
 
 
 -------
@@ -57,7 +64,7 @@ Hopefully this book barely has an end, it will be updated periodically. Next pla
 
 
 <div>
-<a href="https://github.com/pablo14/data-science-live-book" target="blank">Book source code & bugs 
+<a href="https://github.com/pablo14/data-science-live-book" target="blank">Book source code & bugs
 <img src="http://datascienceheroes.com/img/blog/github_logo.PNG" height="20" width="20" style="  float:left; margin:auto;" alt="Github Data Science Live Book">
 </a><span style=""></span>
 </div>
@@ -82,8 +89,3 @@ _First published at: <a href="http://livebook.datascienceheroes.com">livebook.da
 
 
 _This book is under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Attribution-NonCommercial-ShareAlike 4.0 International</a> license._
-
- 
-
-
-

@@ -3,7 +3,7 @@ Gain and Lift Analysis
 
 ### What is this about?
 
-Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring <a href="http://livebook.datascienceheroes.com/scoring/scoring.html">here</a>.
+Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring data <a href="http://livebook.datascienceheroes.com/scoring/scoring.html">here</a>.
 
 
 

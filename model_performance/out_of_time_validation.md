@@ -1,5 +1,5 @@
 # Methodological Aspects on Model Validation
-## Time Dependant
+## Out-of-Time Validation
 
 ### What's this about?
 
@@ -7,10 +7,7 @@ Once you've built a predictive model, how sure you are it captured general patte
 
 Will it perform well when it will be on production / running live? What is the expected error?
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "model_performance")
-```
+
 
 <br>
 
@@ -29,13 +26,18 @@ Imagine you are building the model on **Jan-01**, then to build the model you us
 When predicting a **binary/two class variable** (or multi-class), it's quite straight-forward: with the model we've built -with data <= **Oct-31**- we score the data on that exact day, and then we measure how the users/patients/persons/cases evolved during those two months.
 
 
-Since the output of a binary model should be a number indicating the likelihood for each case to belong to a certain class (<a href="http://livebook.datascienceheroes.com/scoring/scoring.html" target="blank">scoring chapter</a>), you test what the **model "_said_" on Oct-31 against what it really happened on "Jan-01"**.
+Since the output of a binary model should be a number indicating the likelihood for each case to belong to a certain class (<a href="http://livebook.datascienceheroes.com/scoring/scoring.html" target="blank">Scoring Data</a> chapter), you test what the **model "_said_" on Oct-31 against what it really happened on "Jan-01"**.
 
 <br>
 
 **So the validation workflow looks something like...**
 
 <img src="model_validation_workflow.png" width="600px" alt="Model performance workflow">
+
+
+_<a href="http://datascienceheroes.com/img/blog/lift_gain.png" target="Blank">Enlarge image.</a>_
+
+<br>
 
 #### Using Gain and Lift Analysis
 
@@ -99,7 +101,7 @@ If the model is good, this error should be **white noise** [1]. It follows a nor
 
 * **Out-of-Time Validation** is an strong validation tool to simulate the running of the model on production with data that may **not need to depend on sampling**.
 
-* The **error analysis** is a big chapter in data science. Time to go to next chapter which will try to cover key-concepts on this: <a href="http://livebook.datascienceheroes.com/model_performance/models_not_time_dependant.html" target="blank">Methodological aspects on not time dependant models</a>
+* The **error analysis** is a big chapter in data science. Time to go to next chapter which will try to cover key-concepts on this: <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html" target="blank">Knowing the error</a>
 
 <br>
 
