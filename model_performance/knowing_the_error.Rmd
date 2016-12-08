@@ -1,6 +1,10 @@
 # Methodological Aspects on Model Validation
 ## Knowing the Error
 
+<img src="magnifier.png" width="200px" alt="Error in predictive models">
+
+<br>
+
 ### What's this about?
 
 Once we've built a predictive model, how sure we are about it's quality? Did it capture general patterns _-information-_ (excluding the _-noise-_)?
@@ -68,15 +72,15 @@ There 150 rows in the `iris` data frame, using <a href="http://topepo.github.io/
 
 This part of the output:
 
-<img src="caret_cross_validation_output.png">
+<img src="caret_cross_validation_output.png" alt="cross-validation">
 
 `Summary of sample sizes: 135, 135, 135, 135, 135, 135, ... `, each 135 represents a training sample, 10 in total but the output is truncated.
 
 Rather a single number -the average-, we can see a distribution:
 
-<img src="accuracy_distribution_plot.png" width="300px" alt="accuracy on predictive models">
+<img src="accuracy_distribution_plot.png" width="300px" alt="Accuracy on predictive models">
 
-<img src="accuracy_distribution.png" width="200px">
+<img src="accuracy_distribution.png" width="300px" alt="Accuracy on predictive models">
 
 * The min/max accuracy will be between `~0.8` and `~1`.
 * The mean is the one reported by `caret`.
@@ -106,7 +110,20 @@ _Image credit: Scott Fortmann-Roe_ [3]
 
 <br>
 
-Bias and variance are related in the sense that if one goes down the other goes up, so it's a **tradeoff** between them.
+#### Complexity vs Accuracy Tradeoff
+
+<img src="complexity_accuracy_balance.png" width="100px"" alt="Complexity vs accuracy balance in predictive models">
+
+Bias and variance are related in the sense that if one goes down the other goes up, so it's a **tradeoff** between them. A practical example of this is on 
+Akaike Information Criterion (AIC) model quality measure. 
+
+**AIC** is used as an heuristic to pick the best **time series model** in the `auto.arima` function inside `forecast` package in `R` [6]. It chooses the model with the lowest AIC.
+
+The lower the better: The accuracy in prediction will lower the value, while the number of parameters will increase it.
+
+<br>
+
+#### Bootstrapping vs Cross-Validation
 
 * **Bootstrapping** is mostly used when estimating a parameter.
 * **Cross-Validation** is the choice when choosing among different predictive models.
@@ -146,6 +163,8 @@ The <a href="http://livebook.datascienceheroes.com/data_preparation/introduction
 
 > These re-sampling techniques could be among the powerful tools behind the sites like stackoverflow.com or collaborative open-source software. To have many opinions in order to produce a less-biased solution.
 
+But each opinion has to be reliable, imagine asking for medical diagnostic to different doctors.
+
 
 <br>
 
@@ -165,9 +184,5 @@ The <a href="http://livebook.datascienceheroes.com/data_preparation/introduction
 * [3] Image source: <a href="http://scott.fortmann-roe.com/docs/BiasVariance.html" target="blank">Understanding the Bias-Variance Tradeoff</a>. It contains an intutitive way of understanding error through bias and variance through a animation.
 * [4] <a href="http://www.kdnuggets.com/2015/06/machine-learning-more-data-better-algorithms.html" target="blank">In Machine Learning, What is Better: More Data or better Algorithms</a> 
 * [5] <a href="http://stats.stackexchange.com/questions/173390/gradient-boosting-tree-vs-random-forest" target="blank">Gradient boosting machine vs random forest</a>
-
-
-
-
-
+* [6] <a href="https://www.otexts.org/fpp/8/7" target="blank">ARIMA modelling in R</a>
 

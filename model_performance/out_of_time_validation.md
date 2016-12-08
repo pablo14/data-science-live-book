@@ -1,6 +1,8 @@
 # Methodological Aspects on Model Validation
 ## Out-of-Time Validation
 
+<img src="calendar.png" width="100px" alt="Error in predictive models">
+
 ### What's this about?
 
 Once you've built a predictive model, how sure you are it captured general patterns, and not just the data it has seen (overfitting)?.
