@@ -134,7 +134,7 @@ It depends on the data, but it's common to find examples cases `10 fold CV`, plu
 
 And using the average of the desired metric. It's also recommended to use the `ROC` for being less biased to unbalanced target variables.
 
-Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, testing different configurations, trying different variables in a "short" amount of time. **<a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" target="blank">**Random Forest</a>** are an excellent option which gives **fast** and **accurate** results. Ref. [2].
+Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, testing different configurations, trying different variables in a "short" amount of time. <a href="https://en.wikipedia.org/wiki/Random_forest" target="blank">Random Forest</a> are an excellent option which gives **fast** and **accurate** results. Ref. [2].
 
 Another good option is: **gradient boosting machines**, it has more paramaters to tune than random forest, but at least in R it's implementation works really fast.
 
