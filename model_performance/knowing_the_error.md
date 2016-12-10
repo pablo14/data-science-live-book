@@ -109,7 +109,7 @@ _Image credit: Scott Fortmann-Roe_ [3]
 
 #### Complexity vs Accuracy Tradeoff
 
-<img src="complexity_accuracy_balance.png" width="100px"" alt="Complexity vs accuracy balance in predictive models">
+<img src="complexity_accuracy_balance.png" width="100px" alt="Complexity vs accuracy balance in predictive models">
 
 Bias and variance are related in the sense that if one goes down the other goes up, so it's a **tradeoff** between them. A practical example of this is on 
 Akaike Information Criterion (AIC) model quality measure. 
