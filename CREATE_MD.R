@@ -2,8 +2,14 @@ library(knitr)
 
 create_files <- function(name, folder)
 {
-	knit(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.md", folder, name))
-	knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name));file.remove(sprintf("%s.md", name))
+  if(name!='readme')
+  {
+	  knit(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.md", folder, name))
+	  knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name));file.remove(sprintf("%s.md", name))
+  } else {
+    knit(sprintf("%s/%s.Rmd", folder, name), sprintf("%s.md", folder, name))
+    knit2html(sprintf("%s/%s.Rmd", folder, name), sprintf("%s/%s.html", folder, name))
+  }
 }
 
 
@@ -11,6 +17,7 @@ create_files('gain_lift', 'model_performance')
 create_files('introduction', 'model_performance')
 create_files('out_of_time_validation', 'model_performance')
 create_files('knowing_the_error', 'model_performance')
+create_files('readme', 'readme')
 
 #create_files('roc', 'model_performance')
 

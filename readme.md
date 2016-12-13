@@ -45,17 +45,17 @@ Most of the concepts are independent from the language, the focus is on general 
 
 #### Book Focus
 
-* Model creation consumes around **10%** of almost any predictive modeling project; `funModeling` will try to cover remaining 90%.
-* It's not only the function itself, but the explanation of how to interpret results. This brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+* **Stimulate intuition** behind concepts: The explanation of how to interpret results brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+
+* Regarding technical aspects.... model creation consumes around **10%** of almost any predictive modeling project; the **Live Book** and `funModeling` will try to cover remaining 90%.
 
 
 <br>
 
-_Why a _live book_ ?_
+_Why a live book ?_
 Hopefully this book barely has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
 
 <br>
-
 
 
 -------
@@ -64,7 +64,7 @@ Hopefully this book barely has an end, it will be updated periodically. Next pla
 
 
 <div>
-<a href="https://github.com/pablo14/data-science-live-book" target="blank">Book source code & bugs
+<a href="https://github.com/pablo14/data-science-live-book" target="blank">Book source code & bugs 
 <img src="http://datascienceheroes.com/img/blog/github_logo.PNG" height="20" width="20" style="  float:left; margin:auto;" alt="Github Data Science Live Book">
 </a><span style=""></span>
 </div>
@@ -89,3 +89,8 @@ _First published at: <a href="http://livebook.datascienceheroes.com">livebook.da
 
 
 _This book is under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Attribution-NonCommercial-ShareAlike 4.0 International</a> license._
+
+ 
+
+
+

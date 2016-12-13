@@ -3,13 +3,10 @@
 
 <br>
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "readme")
-```
+
 
 <p align="center">
-<img src="readme/logo6c.png" width="300px" alt="Data Science Heroes" align="center">
+<img src="readme/logo6c.png" width="200px" alt="Data Science Heroes" align="center">
 </p>
 
 <br>
@@ -25,30 +22,37 @@ opts_knit$set(base.dir = "readme")
 
 <br>
 
+### Last update: 2016-12-16
+
 ## _What does it cover?_
 
 This live book (`#dsLiveBook`) covers common aspects in predictive modeling:
 
 +  A. **Data Preparation** / **Data Profiling**
 +  B. **Selecting best variables (dataviz)**
-+  C. **Scoring**
++  C. **Scoring Data**
 +  D. **Assessing model performance**
-+  F. **Miscellaneous**
 
- 
+#### Upcoming updates
 
-And it is heavly based on the `funModeling` package from the <a href="https://cloud.r-project.org">R language</a>. It's recommended install it -alongside the <a href="https://www.rstudio.com/products/rstudio/download">Rstudio IDE.</a>- before continue :) 
+More info about methodological aspects in data preparation.
 
-Installing funModeling: `install.packages("funModeling")`
+#### What programming language do I need?
 
-
-
-* Model creation consumes around **10%** of almost any predictive modeling project; `funModeling` will try to cover remaining 90%. 
-* It's not only the function itself, but the explanation of how to interpret results. This brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+Most of the concepts are independent from the language, the focus is on general concepts. But when technical example is required it is done in <a href="https://cloud.r-project.org">R language</a>, using the `funModeling` package which you can install by doing: `install.packages("funModeling")`
 
 <br>
 
-#### Why a _live book_?
+#### Book Focus
+
+* **Stimulate intuition** behind concepts: The explanation of how to interpret results brings a deeper understanding of **what is being done**, boosting the freedom to use that knowledge in other situations regardless of the language.
+
+* Regarding technical aspects.... model creation consumes around **10%** of almost any predictive modeling project; the **Live Book** and `funModeling` will try to cover remaining 90%.
+
+
+<br>
+
+_Why a live book ?_
 Hopefully this book barely has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
 
 <br>
