@@ -30,11 +30,13 @@ It's better to show a non-biased number than justifying the model "will handle" 
 
 Common mistake when starting a new predictive model project, for example:
 
-Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a software application, and this software has a ficticious feature called it `Feature A`:
+Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `Feature A`:
 
 
 ```{r echo=FALSE}
-d1=data.frame(user_id=rep(1:10), feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"), full_subscription=c(c("yes","yes","yes","no","yes","no","no","no","no","no"))) 
+d1=data.frame(user_id=rep(1:10), 
+              feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
+              full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
 knitr::kable(d1, digits = 2)
 ```
 
@@ -49,16 +51,30 @@ We build the predictive model, we got a perfect accuracy, and an inspection thro
 
 #### Play fair with data, let it to develop their behavior
 
-Expanding the table of last example, we've got:
+If a **numerical variable** increases as time moves -for example the quantity of pages visit-, we may need to define an **observation time window** to analyze data in order to not bias data input. That is:
 
-```{r echo=FALSE}
-d2=data.frame(user_id=rep(1:10), q_pages_total=c(150, 5, 123, 10, 131, 5, 2, 39, 21, 25), signup_date=c(), full_subscription=c(c("yes","yes","yes","no","yes","no","no","no","no","no"))) 
-knitr::kable(d2, digits = 2)
-```
+**Selecting the minimun time:**
+
+In using a web application it may be time since user creation, in drug analysis it could be the time since the patient took the medicine.
+
+**Selecting the maximun time**
+
+It's not the same to get an user with 50 page views in 3 months since signup, than 50 page views in 3 days. Here the average page views since creation may help.
+
+Don't defining a maximun, we may lead to think that a user is each day more likely to adqcuiere full subscription since he is acumulating 'page views'. In this point the average time to get full may be useful, if this value is 4 months, we could add 2 more months as a 'bonus time' and then **excluding all the user behavior** after the 6th month to create the model.
 
 
+TODO: add plot containing 2 vertical lines explaning the min and max date.
+------
 
 
+ then extracting conslusions like: "Likelihood of adcquiere full subscription increases as page visits increases" may be **biassed**.
 
+The higher the page views, the higher the likelihood of getting full subscription. However we should define a time window to analyze data. 
 
 <br>
+
+
+
+
+
