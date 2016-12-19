@@ -5,11 +5,7 @@ Introduction
 
 In practice, 90% of the time is spent in data preparation this book</a> does't have -yet- empirical information about how model performance increases by preparing the data.
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "data_preparation")
-#opts_chunk$set(cache=TRUE, cache.path = 'DocumentName_cache/', fig.path='figure/')
-```
+
 
 <style type="text/css">
 .table {
@@ -43,12 +39,19 @@ Common mistake when starting a new predictive model project, for example:
 Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `Feature A`:
 
 
-```{r echo=FALSE}
-d1=data.frame(user_id=rep(1:10), 
-              feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
-              full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
-knitr::kable(d1, digits = 2)
-```
+
+| user_id|feature_A |full_subscription |
+|-------:|:---------|:-----------------|
+|       1|yes       |yes               |
+|       2|yes       |yes               |
+|       3|yes       |yes               |
+|       4|no        |no                |
+|       5|yes       |yes               |
+|       6|no        |no                |
+|       7|no        |no                |
+|       8|no        |no                |
+|       9|no        |no                |
+|      10|no        |no                |
 
 
 We build the predictive model, we got a perfect accuracy, and an inspection throws the following: _"100% of users that have full subscription, uses Feature A"_. Some predictive algorithms report variable importance, thus `feature_A` will be at the top.
@@ -72,12 +75,7 @@ Eassiest solutions are: setting minimun since begin, and the maximun as the whol
 
 **Example:** 
 
-```{r echo=FALSE, fig.height=2, fig.width=3}
-library(ggplot2)
-d4=data.frame(user=c('Laura','Laura','Laura','Laura','Laura','Tim','Tim','Tim','Tim','Tim', 'Laura','Laura'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
-pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7)
-plot(pd4)
-```
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
 
 User `Laura` starts knowing `feature_A` from day 3, and after 5 days she has more use on this feature than `Tim` who started using it from day 0.  

@@ -19,6 +19,8 @@ create_files('out_of_time_validation', 'model_performance')
 create_files('knowing_the_error', 'model_performance')
 create_files('readme', 'readme')
 
+create_files('introduction', 'data_preparation')
+
 #create_files('roc', 'model_performance')
 
 create_files('scoring', 'scoring')

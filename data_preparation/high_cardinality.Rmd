@@ -1,0 +1,96 @@
+High Cardinality Variable
+===
+
+### What is this about?
+
+A **high cardinality** variable is one in which it can take _many_ different values. For example country. 
+
+This chapter will cover some implications of not treating, and possible methods to deal with them.
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+#opts_knit$set(base.dir = "data_preparation")
+```
+ 
+<style type="text/css">
+.table {
+    width: 40%;
+}
+</style>
+
+<br> 
+
+### High Cardinality in Descriptive Statistics
+
+Following example contains a survey of 1000 cases, with 2 columns: `country` and `flu`, indicating the having of such ilness in last month.
+
+```{r , message=F}
+library(funModeling) 
+```
+
+```{r}
+data_country=read.delim('country.txt', header = T, stringsAsFactors = F)
+
+# plotting first 10 rows
+head(data_country)
+
+# exploring data
+df_status(data_country)
+
+```
+
+Last table shows there are **74 different countries**, and 91.1% of people who have not flu -`has_flu=0`.
+
+But many of them has almost have no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep with those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Paretto rule.
+
+```{r fig.height=3}
+# 'freq' function, from 'funModeling' package, retrieves the cumulative_percentage that will help to do the cut. 
+country_freq=freq(data_country, 'country', plot = F)
+
+# Since 'country_freq' is an ordered table by frequency, let's inspect the first 10 rows with the most share.
+country_freq[1:10,]
+```
+
+
+So 10 countries represent more the 70% of cases. We can assign the category `other` to remaining cases and plot:
+
+```{r}
+data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'country'], data_country$country, 'other')
+freq(data_country, 'country_2')
+```
+
+**Final comments:**
+
+Low representative categories are sometimes errors in data, such as having: `Egypt`, `Eggypt.`, and may give some evidence in bad habbits collecting data and/or possible errors when collecting from the source.
+
+There is no general rule, just to shrink data, it depends on each case.
+
+<br>
+
+### High Cardinality in Predictive Modeling
+
+Assigning `other` to the long-tail may destroy the information of the variable, regarding another one to predict.
+
+Country data from last example have a predictable variable: `has_flu`, so we can create a model to predict it based on `country`.
+
+```{r}
+library(randomForest)
+library(gbm)
+
+data_country$country=as.factor(data_country$country)
+data_country$has_flu=as.factor(data_country$has_flu)
+fit_rf=randomForest(as.factor(has_flu) ~ country, data=data_country)
+fit_gbm=gbm(as.factor(has_flu) ~ country, data=data_country)
+fit_gbm$cv.folds
+
+```
+
+
+
+The tradeoff between the **representation of the data** (how many rows has certain category), and here is to find a correct balance.
+
+
+
+
+
+
