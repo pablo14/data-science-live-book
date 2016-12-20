@@ -34,12 +34,12 @@ data_country=read.delim('country.txt', header = T, stringsAsFactors = F)
 # plotting first 10 rows
 head(data_country)
 
-# exploring data
-df_status(data_country)
+# exploring data, excluding person id.
+Hmisc::describe(data_country[,-1])
 
 ```
 
-Last table shows there are **74 different countries**, and 91.1% of people who have not flu -`has_flu=0`.
+Last table shows there are **74 different countries**, and 9% of people who had flu -`has_flu="yes"`.
 
 But many of them has almost have no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep with those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Paretto rule.
 
@@ -67,27 +67,6 @@ There is no general rule, just to shrink data, it depends on each case.
 
 <br>
 
-### High Cardinality in Predictive Modeling
-
-Assigning `other` to the long-tail may destroy the information of the variable, regarding another one to predict.
-
-Country data from last example have a predictable variable: `has_flu`, so we can create a model to predict it based on `country`.
-
-```{r}
-library(randomForest)
-library(gbm)
-
-data_country$country=as.factor(data_country$country)
-data_country$has_flu=as.factor(data_country$has_flu)
-fit_rf=randomForest(as.factor(has_flu) ~ country, data=data_country)
-fit_gbm=gbm(as.factor(has_flu) ~ country, data=data_country)
-fit_gbm$cv.folds
-
-```
-
-
-
-The tradeoff between the **representation of the data** (how many rows has certain category), and here is to find a correct balance.
 
 
 

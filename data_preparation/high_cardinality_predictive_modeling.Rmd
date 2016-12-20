@@ -1,0 +1,128 @@
+High Cardinality in Predictive Modeling
+===
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+#opts_knit$set(base.dir = "data_preparation")
+```
+
+ 
+<style type="text/css">
+.table {
+    width: 40%;
+}
+</style>
+
+### What is this about?
+
+As we've seen in the other chapter (LINK) we keep the categories with the major representative. But how about having another a variable to predict? That is, to predict `has_flu` based on `country`.
+
+Using last method may destroy the information of the variable, thus lose predictive power. 
+
+<br>
+
+### But is it necesary to re-group the variable?
+
+It depends on the case, but quick answer is yes. In this chapter we will see one case in which this data preparation increases overall accuracy (measure by Area Under Roc Curve).
+
+There is a tradeoff between the **representation of the data** (how many rows has each category), and how each category is related to an the outcome variable. E.g.: some countries are more related to persons with flu than others.
+
+```{r}
+data_country=read.delim('country.txt', header = T, stringsAsFactors = F)
+
+# plotting first 10 rows
+head(data_country)
+
+# exploring data, excluding person id.
+Hmisc::describe(data_country[,-1])
+```
+
+<br>
+
+### The case :mag_right:
+
+The predictive model will try map certain values with certain outcomes, in our case target variable is binary, roughly speaking: 
+
+```{r}
+
+```
+```{r , message=F}
+library(funModeling) 
+```
+
+<br>
+
+#### Don't predictive models handle this?
+
+We're going trough this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs. 
+
+First model has not treated data, and second one has been treated by the function in `funModeling` package.
+
+We're measuring the precision based on ROC area, ranged from 0.5 to 1, the higher the number the better the model is. We are going to use cross-validation to be more _sure_ about the value. [1]
+
+```{r}
+## Building the first model, without reducing cardinality.
+library(caret)
+fitControl <- trainControl(method = "cv", 
+                           number = 4, 
+                           classProbs = TRUE,
+                           summaryFunction = twoClassSummary)
+
+
+fit_gbm_1 <- train(has_flu ~ country, 
+                 data = data_country, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 verbose = FALSE,
+                 metric = "ROC")
+
+sprintf("Area under ROC curve is: %s", round(max(fit_gbm_1$results$ROC),2))
+```
+
+
+Now we do the same model with the same parameters, but with the data preparation we did before.
+
+<br> 
+
+
+```{r}
+## Building the second model, country_group is based on country.
+fit_gbm_2 <- train(has_flu ~ country_group, 
+                   data = data_country, 
+                   method = "gbm", 
+                   trControl = fitControl,
+                   verbose = FALSE,
+                   metric = "ROC")
+
+
+sprintf("Area under ROC curve is: %s", round(max(fit_gbm_2$results$ROC),2))
+
+```
+
+Now the ROC is 0.74, which is xxx% higher than previous model.
+
+We've used one of the most robust models, **gradient boosting machine**, and we've increased the performance. If we try other model, for example logistic regression, which is more sensible to dirty data, we'll get a higher difference between reducing and not reducing cardinality. This can be checked deleting `verbose=FALSE` parameter and changing `method=glm` (`glm` implies logistic regression).
+
+<br>
+
+### What we've got "for-free"
+
+Knowing how categories fell into groups give us information that -in some cases- is good to report. Each element between the group try to share similar behavior -in terms of representativity and prediction power-.
+
+<br>
+
+### Final toughts
+
+_Should we always reduce the cardinality?_
+
+It depends: Two tests on a simple data are not enough to extrapolate to all cases. Hopefully it will be a good kick-off to the reader to start doing her/his own optimizations.
+
+What we talked at the begining respect to **destroy the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [2]
+
+<br>
+
+**References:**
+
+* [1] The importance of cross-validation is explained in the: <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html">Knowing the Error</a> chapter.
+* This can be study using the function described in the chapter: <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html">Cross Plot (data viz)</a>.
+
