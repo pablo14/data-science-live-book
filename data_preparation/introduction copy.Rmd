@@ -1,0 +1,96 @@
+Introduction
+===
+
+### What is this about?
+
+In practice, 90% of the time is spent in data preparation this book</a> does't have -yet- empirical information about how model performance increases by preparing the data.
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+opts_knit$set(base.dir = "data_preparation")
+```
+
+<style type="text/css">
+.table {
+    width: 40%;
+}
+</style>
+
+#### Remove outliers 
+
+Yes, model deals with this, but some noise will affect results anyway. 
+If we need to report the variables used in the model, we'll end up removing outliers to not see an histogram with only one bar, and/or show not a biased mean. 
+It's better to show a non-biased number than justifying the model "will handle" extreme values.
+
+<br>
+
+#### Don't use information from the future
+
+<img src="back_to_the_future.png" width='250px'> 
+
+Common mistake when starting a new predictive model project, for example:
+
+Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `Feature A`:
+
+
+```{r echo=FALSE}
+d1=data.frame(user_id=rep(1:10), 
+              feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
+              full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
+knitr::kable(d1, digits = 2)
+```
+
+
+We build the predictive model, we got a perfect accuracy, and an inspection throws the following: _"100% of users that have full subscription, uses Feature A"_. Some predictive algorithms report variable importance, thus `feature_A` will be at the top.
+
+**The problem is:** `feature_A` is only availble **after the user pays** the full subcription. It cannot be used.
+
+**The key message is**: Don't trust in perfect variables, nor perfect models. 
+
+<br>
+
+#### Play fair with data, let it to develop their behavior
+
+Expanding the table of last example, we've got:
+
+```{r echo=FALSE}
+d3=data.frame(user_id=rep(1:10), 
+              q_pages_total=c(250, 60, 123, 13, 131, 5, 141, 39, 21, 25),
+              full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no"),
+              days_since_signup=c(270, 120, 172, 15, 151, 10, 7, 40, 9, 20)
+    ) 
+ 
+knitr::kable(d3, digits = 2)
+```
+
+Where `q_pages_total` which represents quantity of web pages the user visited and `days_since_signup`, is the time spent between user signup.
+
+Let's look at the `q_pages_total` against target variable: 
+
+```{r echo=FALSE}
+library(funModeling)
+plotar(data=d3, str_input = 'q_pages_total', str_target = 'full_subscription', plot_type = 'boxplot')
+#d_avg3=group_by(d3, full_subscription) %>% summarise(avg_q_total_pages=mean(q_pages_total));d_avg3
+
+#d3_2=mutate(d3, avg_pages_day=q_pages_total/days_since_signup)
+#d_avg2=group_by(d3_2, full_subscription) %>% summarise(mean(avg_pages_day));d_avg2
+
+# lo q quiero decir es: 
+
+```
+
+The higher the page views, the higher the likelihood of getting full subscription. However we should define a time window to analyze data. Take a look at user_id = 7, he's been using the platform 
+<br>
+
+If a numerical variable increases as time move forward -for example quantity of pages visits- then extracting conslusions like: "Likelihood of adcquiere full subscription increases as page visits increases" may be **biassed**.
+
+User A: 15 days to go full susbscription
+User B: 9 days to go full subscription
+User C: 30 days and not go full subs.
+
+...Now we need to predict:
+
+User C: 2 days in the web application, will she go full? 
+
+
+

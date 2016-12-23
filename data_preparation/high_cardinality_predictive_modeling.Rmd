@@ -1,9 +1,9 @@
-High Cardinality in Predictive Modeling
+High Cardinality Variable in Predictive Modeling
 ===
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-#opts_knit$set(base.dir = "data_preparation")
+#opts_knit$set(base.dir = "data_preparation") ## TODO: DESCOMENTAR ANTES DE PUBLICAR
 ```
 
  
@@ -15,7 +15,7 @@ library(knitr)
 
 ### What is this about?
 
-As we've seen in the other chapter (LINK) we keep the categories with the major representative. But how about having another a variable to predict? That is, to predict `has_flu` based on `country`.
+As we've seen in the other chapter (TODO: add link) we keep the categories with the major representative. But how about having another a variable to predict? That is, to predict `has_flu` based on `country`.
 
 Using last method may destroy the information of the variable, thus lose predictive power. 
 
@@ -27,8 +27,13 @@ It depends on the case, but quick answer is yes. In this chapter we will see one
 
 There is a tradeoff between the **representation of the data** (how many rows has each category), and how each category is related to an the outcome variable. E.g.: some countries are more related to persons with flu than others.
 
+```{r , message=F}
+# Loading funModeling which contains functions to deal with this.
+library(funModeling) 
+```
+
+
 ```{r}
-data_country=read.delim('country.txt', header = T, stringsAsFactors = F)
 
 # plotting first 10 rows
 head(data_country)
@@ -43,12 +48,46 @@ Hmisc::describe(data_country[,-1])
 
 The predictive model will try map certain values with certain outcomes, in our case target variable is binary, roughly speaking: 
 
-```{r}
 
+```{r}
+## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
+country_profiling=categ_analysis(data=data_country, str_input="country", str_target = "has_flu")
+
+## Displaying first 6 elements
+#head(country_profiling)
+country_profiling
 ```
-```{r , message=F}
-library(funModeling) 
-```
+
+We've a complete profiling of `country` regarding the target variable `has_flu`. Each row represent an unique category of `str_input` variable, and each row an attribute that defines each category in terms of representativity and likelihood.  
+
+Note 1: _First 4 columns are automatically adjust to the names specified in `str_input` and `str_target`, we're going to use the names for this examples, but keep in mind if we specified other parameters this names will change. Last 2 columns will remain always the same._
+
+Note 2: _`has_flu` variable has values `yes` and `no`, `categ_analysis` assigns internally the number 1 to the less representative class, `yes` in this case, in order to calculate the mean, sum and percentage._
+
+These are the metrics returned by `categ_analysis`:
+
+* `country`: name of each category in `str_input` variable
+* `sum_has_flu`: summatory of `has_flu="yes"` values
+* `perc_has_flu`: share of `yes` values across categories. This column sums `1.00`.
+* `mean_has_flu`: average number of `has_flu="yes"` for that category. It is the likelihood.
+* `q_rows`: quantity of rows that, regardless the `has_flu` variable, fell in that category. It's the distribution of `str_input`. This column sums the total of rows analyzed.
+* `perc_rows`: related to `q_rows` it represents the share of each category. This column sums `1.00`
+
+**What conclussions can we draw from this?**
+
+Reading example based on 1st row `France`: 
+
+* 41 persons has flu (`sum_has_flu=41`). These 41 persons represent almost 50% of total persons having flu (`perc_has_flu=0.494`). 
+* Likelihood of having flu in France is 14.2% (`mean_has_flu=0.142`)
+* Total rows from France=288 -out of 910-. This is the `q_rows` variable; `perc_rows` is the same number but in percentage.
+
+Regardless the filter by country, we've got:
+
+* Column `sum_has_flu` sums the total persons with flu present in data.
+* Column `perc_has_flu` sums `1.00` -or 100%
+* Column `q_rows` sums total rows present in `data_country` data frame.
+* Column `perc_rows` sums `1.00` -or 100%.
+
 
 <br>
 
@@ -105,19 +144,21 @@ We've used one of the most robust models, **gradient boosting machine**, and we'
 
 <br>
 
-### What we've got "for-free"
+### What we've got "for-free" from the grouping?
 
-Knowing how categories fell into groups give us information that -in some cases- is good to report. Each element between the group try to share similar behavior -in terms of representativity and prediction power-.
+Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativity and prediction power-. 
+
+If `Argentine` and `Chile` are in `group_1`, then they are the same, and this is how the model will _see_ it.
 
 <br>
 
 ### Final toughts
 
-_Should we always reduce the cardinality?_
+* _Should we always reduce the cardinality?_ It depends, Two tests on a simple data are not enough to extrapolate to all cases. Hopefully it will be a good kick-off to the reader to start doing her/his own optimizations.
 
-It depends: Two tests on a simple data are not enough to extrapolate to all cases. Hopefully it will be a good kick-off to the reader to start doing her/his own optimizations.
+* What was mention at the begining respect to **destroy the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [2]
 
-What we talked at the begining respect to **destroy the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [2]
+* The trade-off between representation of the data, and predictive power can be seen as a _fractal_ to what is desiered when building a predictive model, a correct balance between complexity (quantity of variables), and predictive power without incurring in overfitting. Re-grouping categorical variables helps to **reduce overfiting**.
 
 <br>
 
