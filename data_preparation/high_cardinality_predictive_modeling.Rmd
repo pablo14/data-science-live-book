@@ -3,7 +3,7 @@ High Cardinality Variable in Predictive Modeling
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-#opts_knit$set(base.dir = "data_preparation") ## TODO: DESCOMENTAR ANTES DE PUBLICAR
+#opts_knit$set(base.dir = "data_preparation") ## TODO: DESCOMENTAR ANTES DE PUBLICAR; library("funModeling",lib.loc="/Users/oblaphouses/Library/R/3.3/library")
 ```
 
  
@@ -39,8 +39,8 @@ library(dplyr)
 # plotting first 10 rows
 head(data_country)
 
-# exploring data, excluding person id.
-Hmisc::describe(data_country[,-1])
+# exploring data
+Hmisc::describe(data_country)
 ```
 
 <br>
@@ -169,20 +169,59 @@ TODO: COMPLETE
 
 This procedure uses the `kmeans` clustering technique and the table returned by `categ_analysis` in order to create groups -clusters- which contain categories which exhibit similar behavior in terms of:
 
-* `sum_target`: groups with no positive target or all may be not relevant, on the other hand,  
-* `mean_target`: useful to get those categories with high/low likelihood of having positive values
-* `perc_rows`: useful to get TODO: COMPLETE
+* `sum_target`
+* `mean_target`
+* `perc_rows`
+
+The combination of all of them will lead to find groups considering likelihood and representativity.
 
 
+**Hands on R:**
+
+We define `n_groups` parameter, it's the number of desiered groups. The number is relative to the data and the number of total categories. But a general number would be between 3 and 10.
+
+Function `auto_grouping` comes in `funModeling` >=1.6. Please note that `target` parameter only supports by now binary variable.
+
+_Note: `seed` parameter is optional, assigning a number will retrieve always the same results._
+```{r}
+## Reducing the cardinality
+country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8, seed = 999)
+```
+
+`auto_grouping` returns a list containing 3 objects:
+
+`recateg_results`: Is a data frame with is useful to profile each group (`country_rec`). The predictive model will _see_ these groups:
 
 ```{r}
-country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8)
 country_groups$recateg_results
 ```
+
+Last table is ordered by mean_target, so we can quickly see groups maximizing and minimizing the likelihood. 
+
+We'll analyze `group_5` at the end.
+
+* `group_3` is the most common, it is present in 31.6% of cases and mean_target (likelihood) is 14.2%. 
+* Eexcluding `group_5` by now, `group_4` has the highest likelihood, while `group_8` has the lowest. Both have good representativity: 11.9 and 14.7 of all input rows.
+* `group_6` and `group_8` are pretty similar, they can be one group since likelihood is 0 in both cases.
+
+**How about `group_5`?**
+
+We see that is the group with the most likelihood, 75% `has_flu`. This is a cluster of outlier, here are the categories with low-representativity and high likelihood. `Malasia` and `Mexico` are here. 
+
+If we are more cautelous about false positive, we can consider that this group has not enough information and assign it to `group_8` so it will have no influence to increase likelihood of predicting flu, because `mean_target=0`. Or, we can assign to an average group like `group_3`.
 
 ```{r}
 data_country=data_country %>% inner_join(country_groups$df_equivalence)
 ```
+
+ 
+### How about handling new categories when the predictive model is on production?
+
+Let's imagine a new country appears, `new_country_hello_world`, predictive models will fail since they were trained with fixed values. One technique is to assign a group which has `mean_target=0`. 
+
+It's similar to the case in last example. But the difference lies in `group_5` would fit better in a mid-likelihood group than a complete new value.
+
+After some time we should re-build the model with all new values, otherwise we would be penalizing `new_country_hello_world` if it has a good likelihood.
 
 <br>
 
