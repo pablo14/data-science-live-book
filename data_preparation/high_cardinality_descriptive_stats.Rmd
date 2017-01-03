@@ -28,18 +28,24 @@ Following example contains a survey of 1000 cases, with 2 columns: `country` and
 library(funModeling) 
 ```
 
-```{r}
-data_country=read.delim('country.txt', header = T, stringsAsFactors = F)
+`data_country` data comes inside `funModeling` package (please update to release 1.6).
 
+Quick `data_country` profiling (first 10 rows)
+
+```{r fig.height=6, fig.width=4}
 # plotting first 10 rows
-head(data_country)
+head(data_country, 10)
 
-# exploring data, excluding person id.
-Hmisc::describe(data_country[,-1])
-
+# exploring data, displaying only first 10 rows
+head(freq(data_country, "country"), 10)
 ```
 
-Last table shows there are **74 different countries**, and 9% of people who had flu -`has_flu="yes"`.
+```{r fig.height=2, fig.width=2}
+# exploring data
+freq(data_country, "has_flu")
+```
+
+Last table shows there are **70 different countries**, and ~9% of people who had flu -`has_flu="yes"`.
 
 But many of them has almost have no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep with those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Paretto rule.
 
@@ -59,7 +65,9 @@ data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'count
 freq(data_country, 'country_2')
 ```
 
-**Final comments:**
+<br> 
+
+### Final comments
 
 Low representative categories are sometimes errors in data, such as having: `Egypt`, `Eggypt.`, and may give some evidence in bad habbits collecting data and/or possible errors when collecting from the source.
 
@@ -67,8 +75,8 @@ There is no general rule, just to shrink data, it depends on each case.
 
 <br>
 
-
-
+**Next recommended chapter: <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html"
+>High Cardinality Variable in Predictive Modeling</a>**
 
 
 

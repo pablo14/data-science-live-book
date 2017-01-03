@@ -15,11 +15,21 @@ library(knitr)
 
 ### What is this about?
 
-As we've seen in the other chapter (TODO: add link) we keep the categories with the major representative. But how about having another a variable to predict? That is, to predict `has_flu` based on `country`.
+As we've seen in the other chapter (<a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">Reducing categories in descriptive stats</a>) we keep the categories with the major representative. But how about having another a variable to predict? That is, to predict `has_flu` based on `country`.
 
 Using last method may destroy the information of the variable, thus lose predictive power. In this chapter we'll go further in the method described before, using an automatic grouping function -`auto_grouping`- surfing the structure of the variable, giving some ideas about how to opmtize a categorical variable, but more important: encouraging the reader to perform her-his own optmizations.
 
-_Note: Other name to reduce cardinality is: **encoding**._
+Other literature name this re-grouping as cardinality reduction or **encoding**.
+
+<br>
+
+**What are we going to review in this chapter?**
+
+* Concept of representativeness of data (sample size).
+* Sample size having a target or outcome variable.
+* From R: Present a method to help reducing cardinality and profiling categoric variable.
+* A practical before-and-after example reducing cardinality and insights extraction.
+* How different models such as random forest or gradfient boosting machine deal with categorical variables.
 
 <br>
 
@@ -27,41 +37,56 @@ _Note: Other name to reduce cardinality is: **encoding**._
 
 It depends on the case, but quick answer is yes. In this chapter we will see one case in which this data preparation increases overall accuracy (measure by Area Under Roc Curve).
 
-There is a tradeoff between the **representation of the data** (how many rows has each category), and how each category is related to an the outcome variable. E.g.: some countries are more related to persons with flu than others.
+There is a tradeoff between the **representation of the data** (how many rows has each category), and how is each category related to an the outcome variable. E.g.: some countries are more related to persons with flu than others.
+
 
 ```{r , message=F}
-# Loading funModeling which contains functions to deal with this.
+# Loading funModeling >=1.6 which contains functions to deal with this. 
 library(funModeling)
 library(dplyr)
 ```
 
+`data_country` data comes inside `funModeling` package (please update to release 1.6).
 
-```{r}
+Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6).
 
+Quick `data_country` profiling (first 10 rows)
+
+```{r fig.height=6, fig.width=4}
 # plotting first 10 rows
-head(data_country)
+head(data_country, 10)
 
-# exploring data
-freq(select(data_country, -person))
+# exploring data, displaying only first 10 rows
+head(freq(data_country, "country"), 10)
 ```
+
+```{r fig.height=2, fig.width=2}
+# exploring data
+freq(data_country, "has_flu")
+```
+
 
 <br>
 
 ### The case :mag_right:
 
-The predictive model will try map certain values with certain outcomes, in our case target variable is binary, roughly speaking:
+The predictive model will try map certain values with certain outcomes, in our case target variable is binary.
+
+We'll compute a complete profiling of `country` regarding the target variable `has_flu` based on `categ_analysis`. 
+
+Each row represent an unique category of `input` variable, and each row an attribute that defines each category in terms of representative and likelihood. 
 
 
 ```{r}
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
-## Displaying first 6 elements
+## Displaying first 10 elements
 #head(country_profiling)
 country_profiling
 ```
 
-We've a complete profiling of `country` regarding the target variable `has_flu`. Each row represent an unique category of `input` variable, and each row an attribute that defines each category in terms of representative and likelihood. 
+<br>
 
 * Note 1: _First column automatically adjust its name based on `input` variable_
 * Note 2: _`has_flu` variable has values `yes` and `no`, `categ_analysis` assigns internally the number **1** to the less representative class, `yes` in this case, in order to calculate the mean, sum and percentage._
@@ -131,11 +156,7 @@ Next there are some ideas to treat this:
 
 Keep all cases with at least certain % of representation in data. Let's say to rename those countries which have less than 1% of presence in data to `others`.
 
-Example of this can be found at: TODO: INSERT LINK TO ...
-
 ```{r}
-country_profiling
-
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
 countries_high_rep=filter(country_profiling, perc_rows>0.01) %>% .$country
@@ -187,7 +208,7 @@ Create a category `other` based on the distribution is not a good idea here.
 
 **Conclusion:**
 
-Despite the fact this is a prepared example, there are some data preparations techniques that can be really useful in terms of accuracy but they need some supervision. This supervision can be controlled helped by algorithms.
+Despite the fact this is a prepared example, there are some data preparations techniques that can be really useful in terms of accuracy but they need some supervision. This supervision can be helped by algorithms.
 
 <br>
 
@@ -238,7 +259,7 @@ We see that is the group with the most likelihood, 75% `has_flu`. This is a clus
 If we are more cautelous about false positive, we can consider that this group has not enough information and assign it to `group_8`, so it will have no influence in increasing the likelihood of predicting flu,(`mean_target=0`). Or, we can assign to an average group like `group_3`.
 
 
-```{r, hide=T}
+```{r, message=F}
 data_country=data_country %>% inner_join(country_groups$df_equivalence)
 ```
 Now we do the additional transformations replacing:
@@ -248,6 +269,13 @@ Now we do the additional transformations replacing:
 data_country$country_rec=ifelse(data_country$country_rec == "group_5", "group_3", data_country$country_rec)
 data_country$country_rec=ifelse(data_country$country_rec == "group_6", "group_8", data_country$country_rec)
 ```
+
+Checking the final grouping (`country_rec` variable):
+```{r}
+categ_analysis(data=data_country, input="country_rec", target = "has_flu")
+```
+
+Now each group seems to have a good sample size, and values `mean_target` shows a decreasing pattern where each don't appear to be so high and is well distributed in the `0.176` to `0`  range. [1]
 
 <br>
 
@@ -260,7 +288,13 @@ It's similar to the case in last example. But the difference lies in `group_5` w
 
 After some time we should re-build the model with all new values, otherwise we would be penalizing `new_country_hello_world` if it has a good likelihood.
 
+In short words:
+
+_A new category appears? >>> Send to the least meaningful group. After a while, re-analyze its impact._
+
 <br>
+
+---
 
 ### Don't predictive models handle high cardinality? Part 1
 
@@ -268,9 +302,9 @@ We're going trough this by building two predictive models: Gradient Boosting Mac
 
 First model has not treated data, and second one has been treated by the function in `funModeling` package.
 
-We're measuring the precision based on ROC area, ranged from 0.5 to 1, the higher the number the better the model is. We are going to use cross-validation to be more _sure_ about the value. [1]
+We're measuring the precision based on ROC area, ranged from 0.5 to 1, the higher the number the better the model is. We are going to use cross-validation to be more _sure_ about the value. The importance of cross-validate results is treated in <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html" target="blank">Knowing the error</a> chapter.
 
-```{r, hide=T}
+```{r, message=F, warning=F}
 ## Building the first model, without reducing cardinality.
 library(caret)
 fitControl <- trainControl(method = "cv",
@@ -312,16 +346,20 @@ fit_gbm_2 <- train(has_flu ~ country_rec,
 sprintf("Area under ROC curve is: %s", round(max(fit_gbm_2$results$ROC),2));
 ```
 
-Now the ROC is **~0.73**, which is an improvement of **+10%** higher than previous model.
+Now the ROC is ~ **0.71**, which is an improvement of ~ **6%** than previous model.
 
 
 **A short comment about last test:**
 
-We've used one of the most robust models, **gradient boosting machine** [3], and we've increased the performance. If we try other model, for example <a href="https://en.wikipedia.org/wiki/Logistic_regression" target="blank">logistic regression</a>, which is more sensible to dirty data, we'll get a higher difference between reducing and not reducing cardinality. This can be checked deleting `verbose=FALSE` parameter and changing `method=glm` (`glm` implies logistic regression).
+We've used one of the most robust models, **gradient boosting machine**, and we've increased the performance. If we try other model, for example <a href="https://en.wikipedia.org/wiki/Logistic_regression" target="blank">logistic regression</a>, which is more sensible to dirty data, we'll get a higher difference between reducing and not reducing cardinality. This can be checked deleting `verbose=FALSE` parameter and changing `method=glm` (`glm` implies logistic regression).
+
+In _further reading_ there is a benchmark of different treatments for categorical variables and how each one increase or decrease the accuracy.
 
 <br>
 
 ### Don't predictive models handle high cardinality? Part 2
+
+Let's review how some models deal with this:
 
 **Decision Trees**: Tend to select variables with high cardinality at the top, thus giving more importance above others, based on the information gain. In practise, it is an evidence of overfitting. This model would be good to see the difference between reduce or not high cardinality variable.
 
@@ -338,7 +376,7 @@ That is: 69 input variables are representing the countries but in flag columns. 
 
 This opens a new chapter which is going to be covered in this book :) : **Feature engineering** or **selecting best variables**. It is a high recommended practise to first select those variables which carries the most information, and then create the predictive model.
 
-Conclusion: reducing the cardinality will reduce the quantity of variables in these models.
+**Conclusion: reducing the cardinality will reduce the quantity of variables in these models.**
 
 <br>
 
@@ -352,6 +390,8 @@ However if you read up to here you may explore your own having the same idea in 
 
 The same goes for multi-nominal output variable, there will be some categories more related to certain values. For example predicting the epidemic degree: `high`, `mid` or `low` based on the city. There will be some cities more correlated with a high epidemic level than others.
 
+<br>
+
 ### What we've got as an "extra-gift" from the grouping?
 
 Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativeness and prediction power-.
@@ -360,12 +400,36 @@ If `Argentine` and `Chile` are in `group_1`, then they are the same, and this is
 
 <br>
 
+### Representativeness or sample size
+
+This concept is on the analysis of any categorical variable, but it's a very common topic in data science and statistics: <a href="https://en.wikipedia.org/wiki/Sample_size_determination" target="blank">**sample size**</a>. How much data is it needed to see the pattern _well developed?_.
+
+In a categorical variable: How many cases of category "`X`" do we need to trust in the correlation between "`X`" value and a target value? This is what we've analyzed.
+
+In general terms: the more difficult the event to predict, the more cases we need...
+
+Further in this book we'll cover this topic from other point of views making the link back to this page.
+
+<br>
+
 ### Final toughts
 
-* We saw two cases to reduce cardinality, the first one doesn't care about target variable, which can be dangerous in predictive model, while the second does the reduction by grouping categories which share similar behavior.
+* We saw two cases to reduce cardinality, the first one doesn't care about target variable, which can be dangerous in predictive model, while the second does, creating a new variable based the affinity of each input category.
+
+* Key concept: **representativeness** of each category regarding itself, and regarding to the event to predict.
+
+* What was mention at the beginning respect to **destroy the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
 
 * _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate to all cases. Hopefully it will be a good kick-off to the reader to start doing her-his own optimizations.
 
+<br> 
 
-* What was mention at the beginning respect to **destroy the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [2]
+
+**Further reading:**
+
+* [1] It can be study with <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
+
+
+* It contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
+
 
