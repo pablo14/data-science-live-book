@@ -75,8 +75,7 @@ There is no general rule, just to shrink data, it depends on each case.
 
 <br>
 
-**Next recommended chapter: <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html"
->High Cardinality Variable in Predictive Modeling</a>**
+**Next recommended chapter: <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Predictive Modeling</a>**
 
 
 
