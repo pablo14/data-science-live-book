@@ -9,7 +9,7 @@ This chapter will cover some implications of not treating, and possible methods 
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-#opts_knit$set(base.dir = "data_preparation")
+opts_knit$set(base.dir = "data_preparation")
 ```
  
 <style type="text/css">

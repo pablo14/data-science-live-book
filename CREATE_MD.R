@@ -12,6 +12,10 @@ create_files <- function(name, folder)
   }
 }
 
+create_files('high_cardinality_descriptive_stats', 'data_preparation')
+create_files('high_cardinality_predictive_modeling', 'data_preparation')
+
+
 
 create_files('gain_lift', 'model_performance')
 create_files('introduction', 'model_performance')
@@ -25,7 +29,7 @@ create_files('introduction', 'data_preparation')
 #create_files('roc', 'model_performance')
 
 create_files('scoring', 'scoring')
-create_files('profiling', 'data_preparation')
+
 
 knit("readme/readme.Rmd", "README.md")
 

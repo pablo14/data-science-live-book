@@ -1,10 +1,7 @@
 High Cardinality Variable in Predictive Modeling
 ===
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "data_preparation") ## TODO: DESCOMENTAR ANTES DE PUBLICAR; library("funModeling",lib.loc="/Users/oblaphouses/Library/R/3.3/library")
-```
+
 
  
 <style type="text/css">
@@ -40,7 +37,8 @@ It depends on the case, but quick answer is yes. In this chapter we will see one
 There is a tradeoff between the **representation of the data** (how many rows has each category), and how is each category related to an the outcome variable. E.g.: some countries are more related to persons with flu than others.
 
 
-```{r , message=F}
+
+```r
 # Loading funModeling >=1.6 which contains functions to deal with this. 
 library(funModeling)
 library(dplyr)
@@ -52,17 +50,59 @@ Profiling `data_country`, which comes inside `funModeling` package (please updat
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r fig.height=6, fig.width=4}
+
+```r
 # plotting first 10 rows
 head(data_country, 10)
+```
 
+```
+##     person     country has_flu
+## 478    478      France      no
+## 990    990      Brazil      no
+## 606    606      France      no
+## 575    575 Philippines      no
+## 806    806      France      no
+## 232    232      France      no
+## 422    422      Poland      no
+## 347    347     Romania      no
+## 858    858     Finland      no
+## 704    704      France      no
+```
+
+```r
 # exploring data, displaying only first 10 rows
 head(freq(data_country, "country"), 10)
 ```
 
-```{r fig.height=2, fig.width=2}
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+
+```
+##           country frequency percentage cumulative_perc
+## 1          France       288      31.65           31.65
+## 2          Turkey        67       7.36           39.01
+## 3           China        65       7.14           46.15
+## 4         Uruguay        63       6.92           53.07
+## 5  United Kingdom        45       4.95           58.02
+## 6       Australia        41       4.51           62.53
+## 7         Germany        30       3.30           65.83
+## 8          Canada        19       2.09           67.92
+## 9     Netherlands        19       2.09           70.01
+## 10          Japan        18       1.98           71.99
+```
+
+
+```r
 # exploring data
 freq(data_country, "has_flu")
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+
+```
+##   has_flu frequency percentage cumulative_perc
+## 1      no       827      90.88           90.88
+## 2     yes        83       9.12          100.00
 ```
 
 
@@ -77,13 +117,159 @@ We'll compute a complete profiling of `country` regarding the target variable `h
 Each row represent an unique category of `input` variable, and each row an attribute that defines each category in terms of representative and likelihood. 
 
 
-```{r}
+
+```r
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
 ## Displaying first 10 elements
 #head(country_profiling)
 country_profiling
+```
+
+```
+##                      country mean_target sum_target perc_target q_rows
+## 1                   Malaysia       1.000          1       0.012      1
+## 2                     Mexico       0.667          2       0.024      3
+## 3                   Portugal       0.200          1       0.012      5
+## 4             United Kingdom       0.178          8       0.096     45
+## 5                    Uruguay       0.175         11       0.133     63
+## 6                     Israel       0.167          1       0.012      6
+## 7                Switzerland       0.167          1       0.012      6
+## 8                     Canada       0.158          3       0.036     19
+## 9                     France       0.142         41       0.494    288
+## 10                 Argentina       0.111          1       0.012      9
+## 11                   Germany       0.100          3       0.036     30
+## 12                 Australia       0.098          4       0.048     41
+## 13                   Romania       0.091          1       0.012     11
+## 14                     Spain       0.091          1       0.012     11
+## 15                    Sweden       0.083          1       0.012     12
+## 16               Netherlands       0.053          1       0.012     19
+## 17                    Turkey       0.030          2       0.024     67
+## 18       Asia/Pacific Region       0.000          0       0.000      1
+## 19                   Austria       0.000          0       0.000      1
+## 20                Bangladesh       0.000          0       0.000      3
+## 21                   Belgium       0.000          0       0.000     15
+## 22    Bosnia and Herzegovina       0.000          0       0.000      1
+## 23                    Brazil       0.000          0       0.000     13
+## 24                  Bulgaria       0.000          0       0.000      9
+## 25                  Cambodia       0.000          0       0.000      3
+## 26                     Chile       0.000          0       0.000      2
+## 27                     China       0.000          0       0.000     65
+## 28                Costa Rica       0.000          0       0.000      2
+## 29                   Croatia       0.000          0       0.000      2
+## 30                    Cyprus       0.000          0       0.000      1
+## 31            Czech Republic       0.000          0       0.000      1
+## 32                   Denmark       0.000          0       0.000      6
+## 33        Dominican Republic       0.000          0       0.000      1
+## 34                     Egypt       0.000          0       0.000      2
+## 35                   Finland       0.000          0       0.000      4
+## 36                     Ghana       0.000          0       0.000      1
+## 37                    Greece       0.000          0       0.000      1
+## 38                  Honduras       0.000          0       0.000      4
+## 39                 Hong Kong       0.000          0       0.000      9
+## 40                 Indonesia       0.000          0       0.000      6
+## 41 Iran, Islamic Republic of       0.000          0       0.000      1
+## 42                   Ireland       0.000          0       0.000      1
+## 43               Isle of Man       0.000          0       0.000      1
+## 44                     Italy       0.000          0       0.000     10
+## 45                     Japan       0.000          0       0.000     18
+## 46        Korea, Republic of       0.000          0       0.000      4
+## 47                    Latvia       0.000          0       0.000      1
+## 48                 Lithuania       0.000          0       0.000      1
+## 49                Luxembourg       0.000          0       0.000      1
+## 50                     Malta       0.000          0       0.000      2
+## 51      Moldova, Republic of       0.000          0       0.000      1
+## 52                Montenegro       0.000          0       0.000      1
+## 53                   Morocco       0.000          0       0.000      5
+## 54               New Zealand       0.000          0       0.000      4
+## 55                    Norway       0.000          0       0.000      6
+## 56                  Pakistan       0.000          0       0.000      3
+## 57     Palestinian Territory       0.000          0       0.000      1
+## 58                      Peru       0.000          0       0.000      2
+## 59               Philippines       0.000          0       0.000      7
+## 60                    Poland       0.000          0       0.000     13
+## 61        Russian Federation       0.000          0       0.000      5
+## 62              Saudi Arabia       0.000          0       0.000      3
+## 63                   Senegal       0.000          0       0.000      1
+## 64                 Singapore       0.000          0       0.000      8
+## 65                  Slovenia       0.000          0       0.000      1
+## 66              South Africa       0.000          0       0.000      8
+## 67                    Taiwan       0.000          0       0.000      3
+## 68                  Thailand       0.000          0       0.000      2
+## 69                   Ukraine       0.000          0       0.000      6
+## 70                   Vietnam       0.000          0       0.000      1
+##    perc_rows
+## 1      0.001
+## 2      0.003
+## 3      0.005
+## 4      0.049
+## 5      0.069
+## 6      0.007
+## 7      0.007
+## 8      0.021
+## 9      0.316
+## 10     0.010
+## 11     0.033
+## 12     0.045
+## 13     0.012
+## 14     0.012
+## 15     0.013
+## 16     0.021
+## 17     0.074
+## 18     0.001
+## 19     0.001
+## 20     0.003
+## 21     0.016
+## 22     0.001
+## 23     0.014
+## 24     0.010
+## 25     0.003
+## 26     0.002
+## 27     0.071
+## 28     0.002
+## 29     0.002
+## 30     0.001
+## 31     0.001
+## 32     0.007
+## 33     0.001
+## 34     0.002
+## 35     0.004
+## 36     0.001
+## 37     0.001
+## 38     0.004
+## 39     0.010
+## 40     0.007
+## 41     0.001
+## 42     0.001
+## 43     0.001
+## 44     0.011
+## 45     0.020
+## 46     0.004
+## 47     0.001
+## 48     0.001
+## 49     0.001
+## 50     0.002
+## 51     0.001
+## 52     0.001
+## 53     0.005
+## 54     0.004
+## 55     0.007
+## 56     0.003
+## 57     0.001
+## 58     0.002
+## 59     0.008
+## 60     0.014
+## 61     0.005
+## 62     0.003
+## 63     0.001
+## 64     0.009
+## 65     0.001
+## 66     0.009
+## 67     0.003
+## 68     0.002
+## 69     0.007
+## 70     0.001
 ```
 
 <br>
@@ -130,9 +316,20 @@ When developing predictive models, we may be interested in those values which in
 
 Easy, take `country_profiling` in a descending order by `mean_target`:
 
-```{r}
+
+```r
 # Ordering country_profiling by mean_target and then take the first 6 countries
 arrange(country_profiling, -mean_target) %>%  head(.)
+```
+
+```
+##          country mean_target sum_target perc_target q_rows perc_rows
+## 1       Malaysia       1.000          1       0.012      1     0.001
+## 2         Mexico       0.667          2       0.024      3     0.003
+## 3       Portugal       0.200          1       0.012      5     0.005
+## 4 United Kingdom       0.178          8       0.096     45     0.049
+## 5        Uruguay       0.175         11       0.133     63     0.069
+## 6         Israel       0.167          1       0.012      6     0.007
 ```
 
 <br>
@@ -156,21 +353,44 @@ Next there are some ideas to treat this:
 
 Keep all cases with at least certain % of representation in data. Let's say to rename those countries which have less than 1% of presence in data to `others`.
 
-```{r}
+
+```r
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
 countries_high_rep=filter(country_profiling, perc_rows>0.01) %>% .$country
 
 ## If not in countries_high_rep then assign `other` category
 data_country$country_new=ifelse(data_country$country %in% countries_high_rep, data_country$country, "other")
-
 ```
 
 Checking again the likelihood:
 
-```{r}
+
+```r
 country_profiling_new=categ_analysis(data=data_country, input="country_new", target = "has_flu")
 country_profiling_new
+```
+
+```
+##       country_new mean_target sum_target perc_target q_rows perc_rows
+## 1  United Kingdom       0.178          8       0.096     45     0.049
+## 2         Uruguay       0.175         11       0.133     63     0.069
+## 3          Canada       0.158          3       0.036     19     0.021
+## 4          France       0.142         41       0.494    288     0.316
+## 5         Germany       0.100          3       0.036     30     0.033
+## 6       Australia       0.098          4       0.048     41     0.045
+## 7         Romania       0.091          1       0.012     11     0.012
+## 8           Spain       0.091          1       0.012     11     0.012
+## 9          Sweden       0.083          1       0.012     12     0.013
+## 10    Netherlands       0.053          1       0.012     19     0.021
+## 11          other       0.041          7       0.084    170     0.187
+## 12         Turkey       0.030          2       0.024     67     0.074
+## 13        Belgium       0.000          0       0.000     15     0.016
+## 14         Brazil       0.000          0       0.000     13     0.014
+## 15          China       0.000          0       0.000     65     0.071
+## 16          Italy       0.000          0       0.000     10     0.011
+## 17          Japan       0.000          0       0.000     18     0.020
+## 18         Poland       0.000          0       0.000     13     0.014
 ```
 
 We've reduced the quantity of countries drastically -**74% less**- only by shrinking less representative at 1%. Obtaining 18 out of 70 countries.
@@ -181,7 +401,8 @@ Likelihood of target variable has been stabilised a little more in `other` categ
 
 Watch out about applying this technique blindly. Sometimes in **high unbalanced** target prediction -e.g. **anomaly detection**- the abnormal behavior is present in less than 1% of cases.
 
-```{r}
+
+```r
 # replicating the data
 d_abnormal=data_country
 
@@ -193,9 +414,27 @@ ab_analysis=categ_analysis(d_abnormal, input = "country", target = "abnormal")
 
 ## displaying only first 6 elements
 head(ab_analysis)
+```
 
+```
+##               country mean_target sum_target perc_target q_rows perc_rows
+## 1              Brazil           1         13       0.867     13     0.014
+## 2               Chile           1          2       0.133      2     0.002
+## 3           Argentina           0          0       0.000      9     0.010
+## 4 Asia/Pacific Region           0          0       0.000      1     0.001
+## 5           Australia           0          0       0.000     41     0.045
+## 6             Austria           0          0       0.000      1     0.001
+```
+
+```r
 #
 freq(d_abnormal, "abnormal", plot = F)
+```
+
+```
+##   abnormal frequency percentage cumulative_perc
+## 1       no       895      98.35           98.35
+## 2      yes        15       1.65          100.00
 ```
 
 _How many abnormal values are there?_
@@ -231,7 +470,8 @@ Function `auto_grouping` comes in `funModeling` >=1.6. Please note that `target`
 
 _Note: `seed` parameter is optional, assigning a number will retrieve always the same results._
 
-```{r}
+
+```r
 ## Reducing the cardinality
 country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8, seed = 999)
 ```
@@ -240,8 +480,21 @@ country_groups=auto_grouping(data = data_country, input = "country", target="has
 
 `recateg_results`: Is a data frame with is useful to profile each group (`country_rec`). The predictive model will _see_ these groups:
 
-```{r}
+
+```r
 country_groups$recateg_results
+```
+
+```
+##   country_rec mean_target sum_target perc_target q_rows perc_rows
+## 1     group_5       0.750          3       0.036      4     0.004
+## 2     group_4       0.176         19       0.229    108     0.119
+## 3     group_7       0.167          6       0.072     36     0.040
+## 4     group_3       0.142         41       0.494    288     0.316
+## 5     group_1       0.090         12       0.145    133     0.146
+## 6     group_2       0.015          2       0.024    132     0.145
+## 7     group_6       0.000          0       0.000     75     0.082
+## 8     group_8       0.000          0       0.000    134     0.147
 ```
 
 Last table is ordered by mean_target, so we can quickly see groups maximizing and minimizing the likelihood.
@@ -259,20 +512,33 @@ We see that is the group with the most likelihood, 75% `has_flu`. This is a clus
 If we are more cautelous about false positive, we can consider that this group has not enough information and assign it to `group_8`, so it will have no influence in increasing the likelihood of predicting flu,(`mean_target=0`). Or, we can assign to an average group like `group_3`.
 
 
-```{r, message=F}
+
+```r
 data_country=data_country %>% inner_join(country_groups$df_equivalence)
 ```
 Now we do the additional transformations replacing:
 `group_5` by `group_3`; and `group_6` by `group_8`.
 
-```{r, hide=T}
+
+```r
 data_country$country_rec=ifelse(data_country$country_rec == "group_5", "group_3", data_country$country_rec)
 data_country$country_rec=ifelse(data_country$country_rec == "group_6", "group_8", data_country$country_rec)
 ```
 
 Checking the final grouping (`country_rec` variable):
-```{r}
+
+```r
 categ_analysis(data=data_country, input="country_rec", target = "has_flu")
+```
+
+```
+##   country_rec mean_target sum_target perc_target q_rows perc_rows
+## 1     group_4       0.176         19       0.229    108     0.119
+## 2     group_7       0.167          6       0.072     36     0.040
+## 3     group_3       0.151         44       0.530    292     0.321
+## 4     group_1       0.090         12       0.145    133     0.146
+## 5     group_2       0.015          2       0.024    132     0.145
+## 6     group_8       0.000          0       0.000    209     0.230
 ```
 
 Now each group seems to have a good sample size, and values `mean_target` shows a decreasing pattern where each don't appear to be so high and is well distributed in the `0.176` to `0`  range. [1]
@@ -304,7 +570,8 @@ First model has not treated data, and second one has been treated by the functio
 
 We're measuring the precision based on ROC area, ranged from 0.5 to 1, the higher the number the better the model is. We are going to use cross-validation to be more _sure_ about the value. The importance of cross-validate results is treated in <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html" target="blank">Knowing the error</a> chapter.
 
-```{r, message=F, warning=F}
+
+```r
 ## Building the first model, without reducing cardinality.
 library(caret)
 fitControl <- trainControl(method = "cv",
@@ -319,31 +586,30 @@ fit_gbm_1 <- train(has_flu ~ country,
                  trControl = fitControl,
                  verbose = FALSE,
                  metric = "ROC")
-
-
 ```
 
-```{r}
+
+```r
 sprintf("Area under ROC curve is: %s", round(max(fit_gbm_1$results$ROC),2))
+```
+
+```
+## [1] "Area under ROC curve is: 0.66"
 ```
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
 
 <br>
 
-```{r, hide=T, echo=F}
-## Building the second model, country_group is based on country.
-fit_gbm_2 <- train(has_flu ~ country_rec,
-                   data = data_country,
-                   method = "gbm",
-                   trControl = fitControl,
-                   verbose = FALSE,
-                   metric = "ROC")
 
+
+
+```r
+sprintf("Area under ROC curve is: %s", round(max(fit_gbm_2$results$ROC),2));
 ```
 
-```{r}
-sprintf("Area under ROC curve is: %s", round(max(fit_gbm_2$results$ROC),2));
+```
+## [1] "Area under ROC curve is: 0.73"
 ```
 
 Now the ROC is ~ **0.71**, which is an improvement of ~ **6%** than previous model.
@@ -367,9 +633,16 @@ Let's review how some models deal with this:
 
 **Gradient Boosting Machine** and **Logistic Regression** converts internally categorical variables into flag or dummy variables. In the example we saw about countries, it implies the -internal- creation of 70 flag variables. Checking the model we created before:
 
-```{r}
+
+```r
 # Checking the first model...
 fit_gbm_1$finalModel
+```
+
+```
+## A gradient boosted model with bernoulli loss function.
+## 100 iterations were performed.
+## There were 69 predictors of which 8 had non-zero influence.
 ```
 
 That is: 69 input variables are representing the countries but in flag columns. 14 variables were not relevant to make the prediction.
