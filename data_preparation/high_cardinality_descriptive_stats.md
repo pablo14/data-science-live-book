@@ -9,12 +9,7 @@ This chapter will cover some implications of not treating, and possible methods 
 
 
  
-<style type="text/css">
-.table {
-    width: 40%;
-}
-</style>
-
+ 
 <br> 
 
 ### High Cardinality in Descriptive Statistics
