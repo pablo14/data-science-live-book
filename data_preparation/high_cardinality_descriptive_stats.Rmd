@@ -12,12 +12,7 @@ library(knitr)
 opts_knit$set(base.dir = "data_preparation")
 ```
  
-<style type="text/css">
-.table {
-    width: 40%;
-}
-</style>
-
+ 
 <br> 
 
 ### High Cardinality in Descriptive Statistics

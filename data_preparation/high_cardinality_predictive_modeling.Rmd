@@ -81,8 +81,6 @@ Each row represent an unique category of `input` variable, and each row an attri
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
-## Displaying first 10 elements
-#head(country_profiling)
 country_profiling
 ```
 
