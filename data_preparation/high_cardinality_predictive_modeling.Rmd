@@ -310,23 +310,24 @@ fitControl <- trainControl(method = "cv",
 
 
 fit_gbm_1 <- train(has_flu ~ country,
-                 data = data_country,
-                 method = "gbm",
-                 trControl = fitControl,
-                 verbose = FALSE,
-                 metric = "ROC")
+                   data = data_country,
+                   method = "gbm",
+                   trControl = fitControl,
+                   verbose = FALSE,
+                   metric = "ROC")
 
 
 ```
 
 ```{r}
-sprintf("Area under ROC curve is: %s", round(max(fit_gbm_1$results$ROC),2))
+roc=round(mean(fit_gbm_1$results$ROC),2)
+sprintf("Area under ROC curve is: %s", roc)
 ```
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
 
 <br>
-
+  
 ```{r, hide=T, echo=F}
 ## Building the second model, country_group is based on country.
 fit_gbm_2 <- train(has_flu ~ country_rec,
@@ -339,11 +340,17 @@ fit_gbm_2 <- train(has_flu ~ country_rec,
 ```
 
 ```{r}
-sprintf("Area under ROC curve is: %s", round(max(fit_gbm_2$results$ROC),2));
+new_roc=round(mean(fit_gbm_2$results$ROC),2)
+sprintf("New ROC value is: %s", new_roc);
 ```
 
-Now the ROC is ~ **0.71**, which is an improvement of ~ **6%** compared to the previous model.
+Then we can calculate % of improvement over first roc value:
+  
+```{r}
+sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
+```
 
+Not bad, isn't it?
 
 **A short comment about last test:**
 

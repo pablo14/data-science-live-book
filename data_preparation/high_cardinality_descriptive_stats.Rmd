@@ -1,11 +1,12 @@
 High Cardinality Variable
 ===
-
+  
 ### What is this about?
+  
+A **high cardinality** variable is one in which it can take _many_ different values. For example country. 
 
-A **high cardinality** variable is one that can take _many_ different values. For example country. 
+This chapter will cover cardinality reduction based on Pareto rule, using the `freq` function which gives a quick view about where the most of values are concentrated and variable distribution.
 
-This chapter will cover some implications of not treating, and possible methods to deal with them.
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
