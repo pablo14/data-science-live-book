@@ -480,10 +480,10 @@ It's similar to the case in last example. But the difference lies in `group_5` w
 
 After some time we should re-build the model with all new values, otherwise we would be penalizing `new_country_hello_world` if it has a good likelihood.
 
-In short words:
+💡 In short words:
 
-_A💡  new category appears? Send to the least meaningful group. After a while, re-analyze its impact._
- Does it have a mid or high likelihood? Change it to the most suitable group.
+_A new category appears? Send to the least meaningful group. After a while, re-analyze its impact. Does it have a mid or high likelihood? Change it to the most suitable group._
+
 <br>
 
 ---
@@ -593,9 +593,9 @@ This opens a new chapter which is going to be covered in this book 😉: **Featu
 
 ---
 
-### Numerical or multi-nominal target variable
+### Numerical or multi-nominal target variable 📏
 
-Th 📏e book covered only the target as a binary variable, it is planned in a future to cover numerical and multi-value target.
+The book covered only the target as a binary variable, it is planned in a future to cover numerical and multi-value target.
 
 However if you read up to here you may explore on your own having the same idea in mind. In numerical variables, for example forecasting `page visits` on a web site, there will be certain categories of an input variable which will be more related with a high value on visits, while there are others than are more correlated with low values.
 
@@ -603,7 +603,7 @@ The same goes for multi-nominal output variable, there will be some categories m
 
 <br>
 
-### What we've got as an "extra-gift" from the grouping?
+### What we've got as an "extra-🎁"  from the grouping?
 
 Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativeness and prediction power-.
 
