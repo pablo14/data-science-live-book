@@ -418,7 +418,7 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 ### Final toughts
 
-* We saw two cases to reduce cardinality, the first one doesn't care about the target variable, which can be dangerous in a predictive model, while the second does, creating a new variable based the affinity of each input category.
+* We saw two cases to reduce cardinality, the first one doesn't care about the target variable, which can be dangerous in a predictive model, while the second does. It creates a new variable based on the affinity -and representativity- of each input category to the target variable.
 
 * Key concept: **representativeness** of each category regarding itself, and regarding to the event to predict.
 
