@@ -1,6 +1,6 @@
 library(knitr)
 
-setwd("~/repos/data-science-live-book")
+
 
 create_files <- function(name, folder)
 {
@@ -14,6 +14,7 @@ create_files <- function(name, folder)
   }
 }
 
+setwd("~/repos/data-science-live-book")
 create_files('high_cardinality_descriptive_stats', 'data_preparation')
 create_files('high_cardinality_predictive_modeling', 'data_preparation')
 

@@ -15,7 +15,7 @@ This chapter will cover cardinality reduction based on Pareto rule, using the `f
 
 ### High Cardinality in Descriptive Statistics
 
-The following example contains a survey of 1000 cases, with 2 columns: `country` and `flu`, which indicates having such illness in the last month.
+The following example contains a survey of 910 cases, with 3 columns: `person`, `country` and `has_flu`, which indicates having such illness in the last month.
 
 
 ```r
