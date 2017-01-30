@@ -28,7 +28,7 @@ library(funModeling)
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r fig.height=6, fig.width=4}
+```{r fig.height=7, fig.width=5}
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -36,7 +36,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-```{r fig.height=2, fig.width=2}
+```{r fig.height=2, fig.width=4}
 # exploring data
 freq(data_country, "has_flu")
 ```

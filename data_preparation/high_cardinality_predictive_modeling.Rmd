@@ -142,7 +142,7 @@ How about `Mexico`? 2 out of 3 have flu... it seems still low. However `Uruguay`
 
 Next there are some ideas to treat this:
 
---
+---
 
 #### Case 1: Reducing by re-categorizing less representative values
 
@@ -231,10 +231,11 @@ country_groups$df_equivalence
 
 `auto_grouping` returns a list containing 3 objects:
 
-* 1. `df_equivalence`: data frame which contains a table to map old to new values.
-* 2. `fit_cluster`: k-means model used to reduce the cardinality (values are scaled).
-* 3. `recateg_results`: data frame containing the profiling of each group (egarding target variable., first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many categories of the input variable (as seen in `df_equivalence`).
-TLet's explore how the new groups behave, this is what te predictive model will _see_ 
+* `df_equivalence`: data frame which contains a table to map old to new values.
+* `fit_cluster`: k-means model used to reduce the cardinality (values are scaled).
+* `recateg_results`: data frame containing the profiling of each group regarding target variable, first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many categories of the input variable (as seen in `df_equivalence`).
+
+Let's explore how the new groups behave, this is what the predictive model will _see_:
 
 ```{r}
 country_groups$recateg_results
@@ -428,11 +429,13 @@ Further in this book we'll cover this topic from other points of view linking ba
 <br> 
 
 
-**Further reading:**
-
-* [1] It can be studied with the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
-
+#### Further reading
 
 * Following link contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
 
+<br>
+
+*References:* 
+
+* [1] It can be studied with the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
 
