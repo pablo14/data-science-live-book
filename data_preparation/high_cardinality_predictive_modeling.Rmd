@@ -59,7 +59,7 @@ freq(data_country, "has_flu")
 
 <br>
 
-### The case :mag_right:
+### The case 🔎
 
 The predictive model will try to map certain values with certain outcomes, in our case the target variable is binary.
 
@@ -287,8 +287,8 @@ After some time we should re-build the model with all new values, otherwise we w
 
 In short words:
 
-_A new category appears? >>> Send to the least meaningful group. After a while, re-analyze its impact._
-
+_A💡  new category appears? Send to the least meaningful group. After a while, re-analyze its impact._
+ Does it have a mid or high likelihood? Change it to the most suitable group.
 <br>
 
 ---
@@ -378,7 +378,7 @@ fit_gbm_1$finalModel
 
 That is: 69 input variables are representing the countries but in flag columns. 14 variables were not relevant to make the prediction.
 
-This opens a new chapter which is going to be covered in this book :) : **Feature engineering** or **selecting best variables**. It is a high recommended practise to first select those variables which carries the most information, and then create the predictive model.
+This opens a new chapter which is going to be covered in this book 😉: **Feature engineering** or **selecting best variables**. It is a high recommended practise to first select those variables which carries the most information, and then create the predictive model.
 
 **Conclusion: reducing the cardinality will reduce the quantity of variables in these models.**
 
@@ -388,7 +388,7 @@ This opens a new chapter which is going to be covered in this book :) : **Featur
 
 ### Numerical or multi-nominal target variable
 
-The book covered only the target as a binary variable, it is planned in a future to cover numerical and multi-value target.
+Th 📏e book covered only the target as a binary variable, it is planned in a future to cover numerical and multi-value target.
 
 However if you read up to here you may explore on your own having the same idea in mind. In numerical variables, for example forecasting `page visits` on a web site, there will be certain categories of an input variable which will be more related with a high value on visits, while there are others than are more correlated with low values.
 
