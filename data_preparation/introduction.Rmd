@@ -11,11 +11,6 @@ opts_knit$set(base.dir = "data_preparation")
 #opts_chunk$set(cache=TRUE, cache.path = 'DocumentName_cache/', fig.path='figure/')
 ```
 
-<style type="text/css">
-.table {
-    width: 40%;
-}
-</style>
 
 ### Removing outliers 
 

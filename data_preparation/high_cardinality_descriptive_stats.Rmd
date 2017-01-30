@@ -1,4 +1,4 @@
-High Cardinality Variable
+High Cardinality Variable in Descriptive Stats
 ===
   
 ### What is this about?
@@ -41,6 +41,8 @@ head(freq(data_country, "country"), 10)
 freq(data_country, "has_flu")
 ```
 
+<br>
+
 The last table shows there are **70 different countries**, and ~9% of people who had flu -`has_flu="yes"`.
 
 But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Pareto principle.
@@ -53,6 +55,7 @@ country_freq=freq(data_country, 'country', plot = F)
 country_freq[1:10,]
 ```
 
+<br>
 
 So 10 countries represent more the 70% of cases. We can assign the category `other` to the remaining cases and plot:
 
@@ -67,7 +70,7 @@ freq(data_country, 'country_2')
 
 Low representative categories are sometimes errors in data, such as having: `Egypt`, `Eggypt.`, and may give some evidence in bad habbits collecting data and/or possible errors when collecting from the source.
 
-There is no general rule, just to shrink data, it depends on each case.
+There is no general rule to shrink data, it depends on each case.
 
 <br>
 

@@ -2,6 +2,8 @@
 
 * [Data Preparation]()
     * [Profiling](data_preparation/profiling.md)
+    * [High Cardinality in Descriptive Stats](data_preparation/high_cardinality_descriptive_stats.md)
+    * [High Cardinality in Predictive Modeling](data_preparation/high_cardinality_predictive_modeling.md)
     * [Outliers Treatment](data_preparation/outliers_treatment.md)
 * [Selecting Best Variables](selecting_best_variables/introduction.md)
     * [Cross Plot (dataViz)](selecting_best_variables/cross_plot.md)

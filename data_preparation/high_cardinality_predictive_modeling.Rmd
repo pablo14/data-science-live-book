@@ -3,16 +3,14 @@ High Cardinality Variable in Predictive Modeling
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "data_preparation") ## TODO: DESCOMENTAR ANTES DE PUBLICAR; library("funModeling",lib.loc="/Users/oblaphouses/Library/R/3.3/library")
+opts_knit$set(base.dir = "data_preparation") 
 ```
-
-
 
 ### What is this about?
 
 As we've seen in the other chapter (<a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">Reducing categories in descriptive stats</a>) we keep the categories with the major representativeness. But how about having another variable to predict with it? That is, to predict `has_flu` based on `country`.
 
-Using the last method may destroy the information of the variable, thus it loses predictive power. In this chapter we'll go further in the method described before, using an automatic grouping function -`auto_grouping`- surfing through the structure of the variable, giving some ideas about how to optimize a categorical variable, but more importantly: encouraging the reader to perform her-his own optimizations.
+Using the last method may destroy the information of the variable, thus it **loses predictive power**. In this chapter we'll go further in the method described before, using an automatic grouping function -`auto_grouping`- surfing through the structure of the variable, giving some ideas about how to optimize a categorical variable, but more importantly: encouraging the reader to perform her-his own optimizations.
 
 Other literature name this re-grouping as cardinality reduction or **encoding**.
 
@@ -70,12 +68,15 @@ We'll compute a complete profiling of `country` regarding the target variable `h
 Each row represent an unique category of `input` variable, and each row an attribute that defines each category in terms of representativeness and likelihood. 
 
 
-```{r}
+```{r, results='hide'}
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
-country_profiling
+## Printing first 40 rows (countries) out of 70.
+head(country_profiling, 40)
 ```
+
+<img src="country_profiling.png" alt="profiling country for predictive modeling">
 
 <br>
 
@@ -113,7 +114,7 @@ Regardless of the filter by country, we've got:
 ---
 
 
-### Analysis for Predictive Modeling
+### Analysis for Predictive Modeling 🔮
 
 When developing predictive models, we may be interested in those values which increases the likelihood of certain event. In our case:
 
@@ -145,7 +146,7 @@ Next there are some ideas to treat this:
 
 #### Case 1: Reducing by re-categorizing less representative values
 
-Keep all cases with at least certain % of representation in data. Let's say to rename those countries which have less than 1% of presence in data to `others`.
+Keep all cases with at least certain percentage of representation in data. Let's say to rename those countries which have less than 1% of presence in data to `others`.
 
 ```{r}
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
@@ -225,11 +226,15 @@ _Note: the `seed` parameter is optional, but assigning a number will retrieve al
 ```{r}
 ## Reducing the cardinality
 country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8, seed = 999)
+country_groups$df_equivalence
 ```
 
 `auto_grouping` returns a list containing 3 objects:
 
-`recateg_results`: Is a data frame wich is useful to profile each group (`country_rec`). The predictive model will _see_ these groups:
+* 1. `df_equivalence`: data frame which contains a table to map old to new values.
+* 2. `fit_cluster`: k-means model used to reduce the cardinality (values are scaled).
+* 3. `recateg_results`: data frame containing the profiling of each group (egarding target variable., first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many categories of the input variable (as seen in `df_equivalence`).
+TLet's explore how the new groups behave, this is what te predictive model will _see_ 
 
 ```{r}
 country_groups$recateg_results
@@ -339,7 +344,7 @@ new_roc=round(mean(fit_gbm_2$results$ROC),2)
 sprintf("New ROC value is: %s", new_roc);
 ```
 
-Then we can calculate % of improvement over first roc value:
+Then we can calculate the percentage of improvement over first roc value:
   
 ```{r}
 sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
@@ -416,7 +421,7 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 * Key concept: **representativeness** of each category regarding itself, and regarding to the event to predict.
 
-* What was mentioned at the beginning respect to **destroyING the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
+* What was mentioned at the beginning respect to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
 
 * _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate to all cases. Hopefully it will be a good kick-off to the reader to start doing her-his own optimizations.
 
@@ -428,6 +433,6 @@ Further in this book we'll cover this topic from other points of view linking ba
 * [1] It can be studied with the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
 
 
-* It contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
+* Following link contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
 
 

@@ -1,11 +1,12 @@
-High Cardinality Variable
+High Cardinality Variable in Descriptive Stats
 ===
-
+  
 ### What is this about?
-
+  
 A **high cardinality** variable is one in which it can take _many_ different values. For example country. 
 
-This chapter will cover some implications of not treating, and possible methods to deal with them.
+This chapter will cover cardinality reduction based on Pareto rule, using the `freq` function which gives a quick view about where the most of values are concentrated and variable distribution.
+
 
 
  
@@ -14,7 +15,7 @@ This chapter will cover some implications of not treating, and possible methods 
 
 ### High Cardinality in Descriptive Statistics
 
-Following example contains a survey of 1000 cases, with 2 columns: `country` and `flu`, indicating the having of such ilness in last month.
+The following example contains a survey of 1000 cases, with 2 columns: `country` and `flu`, which indicates having such illness in the last month.
 
 
 ```r
@@ -80,9 +81,11 @@ freq(data_country, "has_flu")
 ## 2     yes        83       9.12          100.00
 ```
 
-Last table shows there are **70 different countries**, and ~9% of people who had flu -`has_flu="yes"`.
+<br>
 
-But many of them has almost have no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep with those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Paretto rule.
+The last table shows there are **70 different countries**, and ~9% of people who had flu -`has_flu="yes"`.
+
+But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Pareto principle.
 
 
 ```r
@@ -107,8 +110,9 @@ country_freq[1:10,]
 ## 10          Japan        18       1.98           71.99
 ```
 
+<br>
 
-So 10 countries represent more the 70% of cases. We can assign the category `other` to remaining cases and plot:
+So 10 countries represent more the 70% of cases. We can assign the category `other` to the remaining cases and plot:
 
 
 ```r
@@ -139,7 +143,7 @@ freq(data_country, 'country_2')
 
 Low representative categories are sometimes errors in data, such as having: `Egypt`, `Eggypt.`, and may give some evidence in bad habbits collecting data and/or possible errors when collecting from the source.
 
-There is no general rule, just to shrink data, it depends on each case.
+There is no general rule to shrink data, it depends on each case.
 
 <br>
 

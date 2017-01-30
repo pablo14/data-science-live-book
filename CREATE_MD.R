@@ -1,5 +1,7 @@
 library(knitr)
 
+setwd("~/repos/data-science-live-book")
+
 create_files <- function(name, folder)
 {
   if(name!='readme')

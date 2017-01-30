@@ -3,18 +3,11 @@ High Cardinality Variable in Predictive Modeling
 
 
 
- 
-<style type="text/css">
-.table {
-    width: 40%;
-}
-</style>
-
 ### What is this about?
 
-As we've seen in the other chapter (<a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">Reducing categories in descriptive stats</a>) we keep the categories with the major representative. But how about having another a variable to predict? That is, to predict `has_flu` based on `country`.
+As we've seen in the other chapter (<a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">Reducing categories in descriptive stats</a>) we keep the categories with the major representativeness. But how about having another variable to predict with it? That is, to predict `has_flu` based on `country`.
 
-Using last method may destroy the information of the variable, thus lose predictive power. In this chapter we'll go further in the method described before, using an automatic grouping function -`auto_grouping`- surfing the structure of the variable, giving some ideas about how to opmtize a categorical variable, but more important: encouraging the reader to perform her-his own optmizations.
+Using the last method may destroy the information of the variable, thus it **loses predictive power**. In this chapter we'll go further in the method described before, using an automatic grouping function -`auto_grouping`- surfing through the structure of the variable, giving some ideas about how to optimize a categorical variable, but more importantly: encouraging the reader to perform her-his own optimizations.
 
 Other literature name this re-grouping as cardinality reduction or **encoding**.
 
@@ -26,15 +19,15 @@ Other literature name this re-grouping as cardinality reduction or **encoding**.
 * Sample size having a target or outcome variable.
 * From R: Present a method to help reducing cardinality and profiling categoric variable.
 * A practical before-and-after example reducing cardinality and insights extraction.
-* How different models such as random forest or gradfient boosting machine deal with categorical variables.
+* How different models such as random forest or a gradient boosting machine deals with categorical variables.
 
 <br>
 
 ### But is it necessary to re-group the variable?
 
-It depends on the case, but quick answer is yes. In this chapter we will see one case in which this data preparation increases overall accuracy (measure by Area Under Roc Curve).
+It depends on the case, but the quick answer is yes. In this chapter we will see one case in which this data preparation increases overall accuracy (measuring by the Area Under Roc Curve).
 
-There is a tradeoff between the **representation of the data** (how many rows has each category), and how is each category related to an the outcome variable. E.g.: some countries are more related to persons with flu than others.
+There is a tradeoff between the **representation of the data** (how many rows each category has), and how is each category related to the outcome variable. E.g.: some countries are more related to persons with flu than others.
 
 
 
@@ -43,8 +36,6 @@ There is a tradeoff between the **representation of the data** (how many rows ha
 library(funModeling)
 library(dplyr)
 ```
-
-`data_country` data comes inside `funModeling` package (please update to release 1.6).
 
 Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6).
 
@@ -110,11 +101,11 @@ freq(data_country, "has_flu")
 
 ### The case :mag_right:
 
-The predictive model will try map certain values with certain outcomes, in our case target variable is binary.
+The predictive model will try to map certain values with certain outcomes, in our case the target variable is binary.
 
 We'll compute a complete profiling of `country` regarding the target variable `has_flu` based on `categ_analysis`. 
 
-Each row represent an unique category of `input` variable, and each row an attribute that defines each category in terms of representative and likelihood. 
+Each row represent an unique category of `input` variable, and each row an attribute that defines each category in terms of representativeness and likelihood. 
 
 
 
@@ -122,157 +113,15 @@ Each row represent an unique category of `input` variable, and each row an attri
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
-country_profiling
+## Printing first 40 rows (countries) out of 70.
+head(country_profiling, 40)
 ```
 
-```
-##                      country mean_target sum_target perc_target q_rows
-## 1                   Malaysia       1.000          1       0.012      1
-## 2                     Mexico       0.667          2       0.024      3
-## 3                   Portugal       0.200          1       0.012      5
-## 4             United Kingdom       0.178          8       0.096     45
-## 5                    Uruguay       0.175         11       0.133     63
-## 6                     Israel       0.167          1       0.012      6
-## 7                Switzerland       0.167          1       0.012      6
-## 8                     Canada       0.158          3       0.036     19
-## 9                     France       0.142         41       0.494    288
-## 10                 Argentina       0.111          1       0.012      9
-## 11                   Germany       0.100          3       0.036     30
-## 12                 Australia       0.098          4       0.048     41
-## 13                   Romania       0.091          1       0.012     11
-## 14                     Spain       0.091          1       0.012     11
-## 15                    Sweden       0.083          1       0.012     12
-## 16               Netherlands       0.053          1       0.012     19
-## 17                    Turkey       0.030          2       0.024     67
-## 18       Asia/Pacific Region       0.000          0       0.000      1
-## 19                   Austria       0.000          0       0.000      1
-## 20                Bangladesh       0.000          0       0.000      3
-## 21                   Belgium       0.000          0       0.000     15
-## 22    Bosnia and Herzegovina       0.000          0       0.000      1
-## 23                    Brazil       0.000          0       0.000     13
-## 24                  Bulgaria       0.000          0       0.000      9
-## 25                  Cambodia       0.000          0       0.000      3
-## 26                     Chile       0.000          0       0.000      2
-## 27                     China       0.000          0       0.000     65
-## 28                Costa Rica       0.000          0       0.000      2
-## 29                   Croatia       0.000          0       0.000      2
-## 30                    Cyprus       0.000          0       0.000      1
-## 31            Czech Republic       0.000          0       0.000      1
-## 32                   Denmark       0.000          0       0.000      6
-## 33        Dominican Republic       0.000          0       0.000      1
-## 34                     Egypt       0.000          0       0.000      2
-## 35                   Finland       0.000          0       0.000      4
-## 36                     Ghana       0.000          0       0.000      1
-## 37                    Greece       0.000          0       0.000      1
-## 38                  Honduras       0.000          0       0.000      4
-## 39                 Hong Kong       0.000          0       0.000      9
-## 40                 Indonesia       0.000          0       0.000      6
-## 41 Iran, Islamic Republic of       0.000          0       0.000      1
-## 42                   Ireland       0.000          0       0.000      1
-## 43               Isle of Man       0.000          0       0.000      1
-## 44                     Italy       0.000          0       0.000     10
-## 45                     Japan       0.000          0       0.000     18
-## 46        Korea, Republic of       0.000          0       0.000      4
-## 47                    Latvia       0.000          0       0.000      1
-## 48                 Lithuania       0.000          0       0.000      1
-## 49                Luxembourg       0.000          0       0.000      1
-## 50                     Malta       0.000          0       0.000      2
-## 51      Moldova, Republic of       0.000          0       0.000      1
-## 52                Montenegro       0.000          0       0.000      1
-## 53                   Morocco       0.000          0       0.000      5
-## 54               New Zealand       0.000          0       0.000      4
-## 55                    Norway       0.000          0       0.000      6
-## 56                  Pakistan       0.000          0       0.000      3
-## 57     Palestinian Territory       0.000          0       0.000      1
-## 58                      Peru       0.000          0       0.000      2
-## 59               Philippines       0.000          0       0.000      7
-## 60                    Poland       0.000          0       0.000     13
-## 61        Russian Federation       0.000          0       0.000      5
-## 62              Saudi Arabia       0.000          0       0.000      3
-## 63                   Senegal       0.000          0       0.000      1
-## 64                 Singapore       0.000          0       0.000      8
-## 65                  Slovenia       0.000          0       0.000      1
-## 66              South Africa       0.000          0       0.000      8
-## 67                    Taiwan       0.000          0       0.000      3
-## 68                  Thailand       0.000          0       0.000      2
-## 69                   Ukraine       0.000          0       0.000      6
-## 70                   Vietnam       0.000          0       0.000      1
-##    perc_rows
-## 1      0.001
-## 2      0.003
-## 3      0.005
-## 4      0.049
-## 5      0.069
-## 6      0.007
-## 7      0.007
-## 8      0.021
-## 9      0.316
-## 10     0.010
-## 11     0.033
-## 12     0.045
-## 13     0.012
-## 14     0.012
-## 15     0.013
-## 16     0.021
-## 17     0.074
-## 18     0.001
-## 19     0.001
-## 20     0.003
-## 21     0.016
-## 22     0.001
-## 23     0.014
-## 24     0.010
-## 25     0.003
-## 26     0.002
-## 27     0.071
-## 28     0.002
-## 29     0.002
-## 30     0.001
-## 31     0.001
-## 32     0.007
-## 33     0.001
-## 34     0.002
-## 35     0.004
-## 36     0.001
-## 37     0.001
-## 38     0.004
-## 39     0.010
-## 40     0.007
-## 41     0.001
-## 42     0.001
-## 43     0.001
-## 44     0.011
-## 45     0.020
-## 46     0.004
-## 47     0.001
-## 48     0.001
-## 49     0.001
-## 50     0.002
-## 51     0.001
-## 52     0.001
-## 53     0.005
-## 54     0.004
-## 55     0.007
-## 56     0.003
-## 57     0.001
-## 58     0.002
-## 59     0.008
-## 60     0.014
-## 61     0.005
-## 62     0.003
-## 63     0.001
-## 64     0.009
-## 65     0.001
-## 66     0.009
-## 67     0.003
-## 68     0.002
-## 69     0.007
-## 70     0.001
-```
+<img src="country_profiling.png" alt="profiling country for predictive modeling">
 
 <br>
 
-* Note 1: _First column automatically adjust its name based on `input` variable_
+* Note 1: _The first column automatically adjusts its name based on `input` variable_
 * Note 2: _`has_flu` variable has values `yes` and `no`, `categ_analysis` assigns internally the number **1** to the less representative class, `yes` in this case, in order to calculate the mean, sum and percentage._
 
 These are the metrics returned by `categ_analysis`:
@@ -280,8 +129,8 @@ These are the metrics returned by `categ_analysis`:
 * `country`: name of each category in `input` variable.
 * `mean_target`: `sum_target/q_rows`, average number of `has_flu="yes"` for that category. This is the likelihood.
 * `sum_target`: quantity of `has_flu="yes"` values are in each category.
-* `perc_target`: the same as `sum_target` but in percentage,  `sum_target of each category / total sum_target`.This column sums `1.00`.
-* `q_rows`: quantity of rows that, regardless `has_flu` variable, fell in that category. It's the distribution of `input`. This column sums the total rows analyzed.
+* `perc_target`: the same as `sum_target` but in percentage,  `sum_target of each category / total sum_target`. This column sums `1.00`.
+* `q_rows`: quantity of rows that, regardless of the `has_flu` variable, fell in that category. It's the distribution of `input`. This column sums the total rows analyzed.
 * `perc_rows`: related to `q_rows` it represents the share or percentage of each category. This column sums `1.00`
 
 <br>
@@ -294,7 +143,7 @@ Reading example based on 1st row, `France`:
 * Likelihood of having flu in France is 14.2% (`mean_target=0.142`)
 * Total rows from France=288 -out of 910-. This is the `q_rows` variable; `perc_rows` is the same number but in percentage.
 
-Regardless the filter by country, we've got:
+Regardless of the filter by country, we've got:
 
 * Column `sum_target` sums the total people with flu present in data.
 * Column `perc_target` sums `1.00` -or 100%
@@ -306,7 +155,7 @@ Regardless the filter by country, we've got:
 ---
 
 
-### Analysis for Predictive Modeling
+### Analysis for Predictive Modeling 🔮
 
 When developing predictive models, we may be interested in those values which increases the likelihood of certain event. In our case:
 
@@ -332,9 +181,9 @@ arrange(country_profiling, -mean_target) %>%  head(.)
 
 <br>
 
-Great! We've got `Malasyia` as the country with the highest likelihood to have flu! 100% of people there having flu (`mean_has_flu=1.000`).
+Great! We've got `Malasyia` as the country with the highest likelihood to have flu! 100% of people there have flu (`mean_has_flu=1.000`).
 
-But our common sense advices us that _perhaps_ something is wrong...
+But our common sense advises us that _perhaps_ something is wrong...
 
 How many rows does Malasya have? Answer: 1. -column: `q_rows=1`
 How many positive cases does Malasya have? Answer: 1 -column: `sum_target=1`
@@ -349,7 +198,7 @@ Next there are some ideas to treat this:
 
 #### Case 1: Reducing by re-categorizing less representative values
 
-Keep all cases with at least certain % of representation in data. Let's say to rename those countries which have less than 1% of presence in data to `others`.
+Keep all cases with at least certain percentage of representation in data. Let's say to rename those countries which have less than 1% of presence in data to `others`.
 
 
 ```r
@@ -391,13 +240,13 @@ country_profiling_new
 ## 18         Poland       0.000          0       0.000     13     0.014
 ```
 
-We've reduced the quantity of countries drastically -**74% less**- only by shrinking less representative at 1%. Obtaining 18 out of 70 countries.
+We've reduced the quantity of countries drastically -**74% less**- only by shrinking the less representative at 1%. Obtaining 18 out of 70 countries.
 
 Likelihood of target variable has been stabilised a little more in `other` category. Now when the predictive model _sees_ `Malasya`  it will **not assign 100% of likelihood, but 4.1%** (`mean_has_flu=0.041`).
 
-**Advice about last method:**
+**Advice about this last method:**
 
-Watch out about applying this technique blindly. Sometimes in **high unbalanced** target prediction -e.g. **anomaly detection**- the abnormal behavior is present in less than 1% of cases.
+Watch out about applying this technique blindly. Sometimes in a **highly unbalanced** target prediction -e.g. **anomaly detection**- the abnormal behavior is present in less than 1% of cases.
 
 
 ```r
@@ -439,9 +288,9 @@ _How many abnormal values are there?_
 
 Only 15, and they represent 1.65% of total values.
 
-Checking the table returned by `categ_analysis`, we've got that this _abnormal behavior_ occurs **only**  in categories with a really low participation: `Brazil` which is present in only 1.4% of cases, and `Chile` with 0.2%.
+Checking the table returned by `categ_analysis`, we can see that this _abnormal behavior_ occurs **only**  in categories with a really low participation: `Brazil` which is present in only 1.4% of cases, and `Chile` with 0.2%.
 
-Create a category `other` based on the distribution is not a good idea here.
+Creating a category `other` based on the distribution is not a good idea here.
 
 **Conclusion:**
 
@@ -462,21 +311,99 @@ The combination of all of them will lead to find groups considering likelihood a
 
 **Hands on R:**
 
-We define `n_groups` parameter, it's the number of desiered groups. The number is relative to the data and the number of total categories. But a general number would be between 3 and 10.
+We define the `n_groups` parameter, it's the number of desired groups. The number is relative to the data and the number of total categories. But a general number would be between 3 and 10.
 
-Function `auto_grouping` comes in `funModeling` >=1.6. Please note that `target` parameter only supports by now binary variable.
+Function `auto_grouping` comes in `funModeling` >=1.6. Please note that the `target` parameter only supports for now binary variables.
 
-_Note: `seed` parameter is optional, assigning a number will retrieve always the same results._
+_Note: the `seed` parameter is optional, but assigning a number will retrieve always the same results._
 
 
 ```r
 ## Reducing the cardinality
 country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8, seed = 999)
+country_groups$df_equivalence
+```
+
+```
+##                      country country_rec
+## 1                  Argentina     group_1
+## 2                  Australia     group_1
+## 3                    Germany     group_1
+## 4                Netherlands     group_1
+## 5                    Romania     group_1
+## 6                      Spain     group_1
+## 7                     Sweden     group_1
+## 8                      China     group_2
+## 9                     Turkey     group_2
+## 10                    France     group_3
+## 11            United Kingdom     group_4
+## 12                   Uruguay     group_4
+## 13                  Malaysia     group_5
+## 14                    Mexico     group_5
+## 15       Asia/Pacific Region     group_6
+## 16                   Austria     group_6
+## 17                Bangladesh     group_6
+## 18    Bosnia and Herzegovina     group_6
+## 19                  Cambodia     group_6
+## 20                     Chile     group_6
+## 21                Costa Rica     group_6
+## 22                   Croatia     group_6
+## 23                    Cyprus     group_6
+## 24            Czech Republic     group_6
+## 25        Dominican Republic     group_6
+## 26                     Egypt     group_6
+## 27                   Finland     group_6
+## 28                     Ghana     group_6
+## 29                    Greece     group_6
+## 30                  Honduras     group_6
+## 31 Iran, Islamic Republic of     group_6
+## 32                   Ireland     group_6
+## 33               Isle of Man     group_6
+## 34        Korea, Republic of     group_6
+## 35                    Latvia     group_6
+## 36                 Lithuania     group_6
+## 37                Luxembourg     group_6
+## 38                     Malta     group_6
+## 39      Moldova, Republic of     group_6
+## 40                Montenegro     group_6
+## 41                   Morocco     group_6
+## 42               New Zealand     group_6
+## 43                  Pakistan     group_6
+## 44     Palestinian Territory     group_6
+## 45                      Peru     group_6
+## 46        Russian Federation     group_6
+## 47              Saudi Arabia     group_6
+## 48                   Senegal     group_6
+## 49                  Slovenia     group_6
+## 50                    Taiwan     group_6
+## 51                  Thailand     group_6
+## 52                   Vietnam     group_6
+## 53                    Canada     group_7
+## 54                    Israel     group_7
+## 55                  Portugal     group_7
+## 56               Switzerland     group_7
+## 57                   Belgium     group_8
+## 58                    Brazil     group_8
+## 59                  Bulgaria     group_8
+## 60                   Denmark     group_8
+## 61                 Hong Kong     group_8
+## 62                 Indonesia     group_8
+## 63                     Italy     group_8
+## 64                     Japan     group_8
+## 65                    Norway     group_8
+## 66               Philippines     group_8
+## 67                    Poland     group_8
+## 68                 Singapore     group_8
+## 69              South Africa     group_8
+## 70                   Ukraine     group_8
 ```
 
 `auto_grouping` returns a list containing 3 objects:
 
-`recateg_results`: Is a data frame with is useful to profile each group (`country_rec`). The predictive model will _see_ these groups:
+* 1. `df_equivalence`: data frame which contains a table to map old to new values.
+* 2. `fit_cluster`: k-means model used to reduce the cardinality (values are scaled).
+* 3. `recateg_results`: data frame containing the profiling of each group (egarding target variable., first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many categories of the input variable (as seen in `df_equivalence`).
+TLet's explore how the new groups behave, this is what te predictive model will _see_ 
 
 
 ```r
@@ -500,14 +427,14 @@ Last table is ordered by mean_target, so we can quickly see groups maximizing an
 _We'll leave `group_5` to the end._
 
 * `group_3` is the most common, it is present in 31.6% of cases and mean_target (likelihood) is 14.2%.
-* Excluding `group_5` by now, `group_4` has the highest likelihood, while `group_8` has the lowest. Both have good representativeness: 11.9 and 14.7 of all input rows.
+* Excluding `group_5` for now, `group_4` has the highest likelihood, while `group_8` has the lowest. Both have good representativeness: 11.9 and 14.7 of all input rows.
 * `group_6` and `group_8` are pretty similar, they can be one group since likelihood is 0 in both cases.
 
-**How about `group_5`?**
+**What about `group_5`?**
 
-We see that is the group with the most likelihood, 75% `has_flu`. This is a cluster of outlier, here are the categories with low-representativeness and high likelihood. `Malasia` and `Mexico` are there.
+We see that is the group with the most likelihood, 75% `has_flu`. This is a cluster of outliers, here are the categories with low-representativeness and high likelihood. `Malasia` and `Mexico` are there.
 
-If we are more cautelous about false positive, we can consider that this group has not enough information and assign it to `group_8`, so it will have no influence in increasing the likelihood of predicting flu,(`mean_target=0`). Or, we can assign to an average group like `group_3`.
+If we are more cautelous about false positives, we can consider that this group doesn't have enough information and assign it to `group_8`, so it will have no influence in increasing the likelihood of predicting flu (`mean_target=0`). Or, we can assign to an average group like `group_3`.
 
 
 
@@ -539,7 +466,7 @@ categ_analysis(data=data_country, input="country_rec", target = "has_flu")
 ## 6     group_8       0.000          0       0.000    209     0.230
 ```
 
-Now each group seems to have a good sample size, and values `mean_target` shows a decreasing pattern where each don't appear to be so high and is well distributed in the `0.176` to `0`  range. [1]
+Now each group seems to have a good sample size, and values `mean_target` shows a decreasing pattern where each doesn't appear to be so high and is well distributed in the `0.176` to `0` range. [1]
 
 <br>
 
@@ -564,7 +491,7 @@ _A new category appears? >>> Send to the least meaningful group. After a while, 
 
 We're going trough this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs.
 
-First model has not treated data, and second one has been treated by the function in `funModeling` package.
+The first model doesn't have treated data, and the second one has been treated by the function in `funModeling` package.
 
 We're measuring the precision based on ROC area, ranged from 0.5 to 1, the higher the number the better the model is. We are going to use cross-validation to be more _sure_ about the value. The importance of cross-validate results is treated in <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html" target="blank">Knowing the error</a> chapter.
 
@@ -579,45 +506,57 @@ fitControl <- trainControl(method = "cv",
 
 
 fit_gbm_1 <- train(has_flu ~ country,
-                 data = data_country,
-                 method = "gbm",
-                 trControl = fitControl,
-                 verbose = FALSE,
-                 metric = "ROC")
+                   data = data_country,
+                   method = "gbm",
+                   trControl = fitControl,
+                   verbose = FALSE,
+                   metric = "ROC")
 ```
 
 
 ```r
-sprintf("Area under ROC curve is: %s", round(max(fit_gbm_1$results$ROC),2))
+roc=round(mean(fit_gbm_1$results$ROC),2)
+sprintf("Area under ROC curve is: %s", roc)
 ```
 
 ```
-## [1] "Area under ROC curve is: 0.66"
+## [1] "Area under ROC curve is: 0.65"
 ```
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
 
 <br>
-
+  
 
 
 
 ```r
-sprintf("Area under ROC curve is: %s", round(max(fit_gbm_2$results$ROC),2));
+new_roc=round(mean(fit_gbm_2$results$ROC),2)
+sprintf("New ROC value is: %s", new_roc);
 ```
 
 ```
-## [1] "Area under ROC curve is: 0.73"
+## [1] "New ROC value is: 0.72"
 ```
 
-Now the ROC is ~ **0.71**, which is an improvement of ~ **6%** than previous model.
+Then we can calculate the percentage of improvement over first roc value:
+  
 
+```r
+sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
+```
+
+```
+## [1] "Improvement: ~ 10.77%"
+```
+
+Not bad, isn't it?
 
 **A short comment about last test:**
 
 We've used one of the most robust models, **gradient boosting machine**, and we've increased the performance. If we try other model, for example <a href="https://en.wikipedia.org/wiki/Logistic_regression" target="blank">logistic regression</a>, which is more sensible to dirty data, we'll get a higher difference between reducing and not reducing cardinality. This can be checked deleting `verbose=FALSE` parameter and changing `method=glm` (`glm` implies logistic regression).
 
-In _further reading_ there is a benchmark of different treatments for categorical variables and how each one increase or decrease the accuracy.
+In _further reading_ there is a benchmark of different treatments for categorical variables and how each one increases or decreases the accuracy.
 
 <br>
 
@@ -625,9 +564,9 @@ In _further reading_ there is a benchmark of different treatments for categorica
 
 Let's review how some models deal with this:
 
-**Decision Trees**: Tend to select variables with high cardinality at the top, thus giving more importance above others, based on the information gain. In practise, it is an evidence of overfitting. This model would be good to see the difference between reduce or not high cardinality variable.
+**Decision Trees**: Tend to select variables with high cardinality at the top, thus giving more importance above others, based on the information gain. In practise, it is an evidence of overfitting. This model would be good to see the difference between reducing or not a high cardinality variable.
 
-**Random Forest** -at least in R implementation- handles only categorical variables with at most 52 different categories. It's high probable that this limitation is to avoid overfitting. This point in conjunction to the nature of the algorithm -create lots of trees- reduce the effect of a single decision tree when choosing a high cardinality variable.
+**Random Forest** -at least in R implementation- handles only categorical variables with at most 52 different categories. It's highly probable that this limitation is to avoid overfitting. This point in conjunction to the nature of the algorithm -create lots of trees- reduces the effect of a single decision tree when choosing a high cardinality variable.
 
 **Gradient Boosting Machine** and **Logistic Regression** converts internally categorical variables into flag or dummy variables. In the example we saw about countries, it implies the -internal- creation of 70 flag variables. Checking the model we created before:
 
@@ -655,9 +594,9 @@ This opens a new chapter which is going to be covered in this book :) : **Featur
 
 ### Numerical or multi-nominal target variable
 
-The book covered only the target as a binary variable, it is planned for a future to cover numerical and multi-value target.
+The book covered only the target as a binary variable, it is planned in a future to cover numerical and multi-value target.
 
-However if you read up to here you may explore your own having the same idea in mind. In numerical variable, for example forecasting `page visits` on a web site, there will be certain categories of an input variable which will be more related with a high value on visits, while there are others than are more correlated with low values.
+However if you read up to here you may explore on your own having the same idea in mind. In numerical variables, for example forecasting `page visits` on a web site, there will be certain categories of an input variable which will be more related with a high value on visits, while there are others than are more correlated with low values.
 
 The same goes for multi-nominal output variable, there will be some categories more related to certain values. For example predicting the epidemic degree: `high`, `mid` or `low` based on the city. There will be some cities more correlated with a high epidemic level than others.
 
@@ -679,17 +618,17 @@ In a categorical variable: How many cases of category "`X`" do we need to trust 
 
 In general terms: the more difficult the event to predict, the more cases we need...
 
-Further in this book we'll cover this topic from other point of views making the link back to this page.
+Further in this book we'll cover this topic from other points of view linking back to this page.
 
 <br>
 
 ### Final toughts
 
-* We saw two cases to reduce cardinality, the first one doesn't care about target variable, which can be dangerous in predictive model, while the second does, creating a new variable based the affinity of each input category.
+* We saw two cases to reduce cardinality, the first one doesn't care about the target variable, which can be dangerous in a predictive model, while the second does, creating a new variable based the affinity of each input category.
 
 * Key concept: **representativeness** of each category regarding itself, and regarding to the event to predict.
 
-* What was mention at the beginning respect to **destroy the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
+* What was mentioned at the beginning respect to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
 
 * _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate to all cases. Hopefully it will be a good kick-off to the reader to start doing her-his own optimizations.
 
@@ -698,9 +637,9 @@ Further in this book we'll cover this topic from other point of views making the
 
 **Further reading:**
 
-* [1] It can be study with <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
+* [1] It can be studied with the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
 
 
-* It contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
+* Following link contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
 
 
