@@ -8,7 +8,7 @@ This chapter will cover three types of plots which aim to understand what are th
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "selecting_best_variables")
+#opts_knit$set(base.dir = "selecting_best_variables")
 ```
 
 * **Overview**:
@@ -20,3 +20,84 @@ opts_knit$set(base.dir = "selecting_best_variables")
 
 
 <br>
+
+
+## The Esence 
+
+### Variables work in groups
+
+When selecting the _best_ variables, the main aim is to get those variables which carry the most information regarding a target, outcome or dependant variable. 
+
+A predictive model will find its weights or parameters based on its 1 to 'N' input variables.
+
+Variables usually don't work isolatelty when explaining an event. Quoting Aristoteles: 
+
+> “The whole is greater than the sum of its parts.” 
+
+This is also true when selecting the _best_ features: 
+
+_Building a predictive model with two variables may reach a higher accuracy than the models built with only one variable._
+
+For example: Building a model based on variable `var_1` could lead to an overall accuracy of 60%. On the other hand build a model based on `var_2` could reach an accuracy of 72%. But when we combine these two `var_1` and `var_2` variables, we could reach an accuracy above 80%. TODO: propose example.
+
+<br>
+
+### Ranking best variables? There is not only one truth
+
+It's quite common to find in literature and algorithms of selecting best variables an univariate analysis of them, that is a ranking of variables given certain metric.
+
+TODO: write example of heart_disease data variable ranking based on random forest, the two metrics, and gradient boosting machine.
+
+
+Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms (such as random forest, gradient boosting machine, etc).
+
+Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results.
+
+In practice as a quick solution: We can pick up top N variables from one of the ranking list, and then build a model with only those.
+
+<br> 
+
+### Correlation between variables
+
+
+
+### Keep it simple
+
+Occam's razor says: 
+
+> Among competing hypotheses, the one with the fewest assumptions should be selected.
+
+Re-interpreting this sentence in machine learning, those "hypotheses" can be seen as variables, so we've got: 
+
+**Among different predictive models, the one with fewest variables should be selected.**
+
+Of course, there is also the trade-off of adding-substracting variables and the accuracy of the model. 
+
+A predictive model with a _high_ number of variables will tend to do **overfitting**. while on the other hand, a model with a _low_ number of variables will lead to do **underfitting**.
+
+The concept of _high_ and _low_ is **highly subjective** to the data that is under analysis. In practice, we may have some accuracy metric, for example ROC value. In practice we would see something like:
+
+<img src="variable_selection_table.png" alt="Quantity of variables vs ROC value trade-off"> 
+
+Where we have different subset of variables and an accuracy metric (ROC). Each dot represents the ROC value given certain number of variables used to build the model.
+
+We can check that the highest ROC is reached when the model is built with 30 variables. If we based the selection only in an automated process we may be choosing a subset which tend to overfit data. This report was produced by library `caret` in R [2], but is analogous to any software.
+
+Take a closer look at the difference between the subset of 20 and the 30, there is only an improvement of **1.8%** -from 0.9324 to 0.95- choosing **10 more variables.** In other words: _Choosing 50% more variables will impact in less than 2% of improvement._
+
+Even more, this 2% may be an error margin given the variance in prediction that every predictive model has [3].
+
+**Conclusion:**
+
+In this case, and being consequent with Occams Razor principle, the best solution is to build the model with the subset of 20 variables.
+
+Explaining to others -and understanding- a model with 20 variables is easier than similar one with 30.
+
+
+<br> 
+
+**References:**
+
+* [1] <a href="https://en.wikipedia.org/wiki/Occam's_razor#Probability_theory_and_statistics">Occam's razor in statistics</a>
+* [2] <a href="https://topepo.github.io/caret/recursive-feature-elimination.html">Recursive feature elimination in caret</a>
+* [3] It is covered in the <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html">Knowing the error</a> chapter

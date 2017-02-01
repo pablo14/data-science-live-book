@@ -3,12 +3,11 @@ Introduction
 
 ### What is this about?
 
-In practice, 90% of the time is spent in data preparation this book</a> does't have -yet- empirical information about how model performance increases by preparing the data.
+In practice, 90% of the time is spent in data preparation.
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "data_preparation")
-#opts_chunk$set(cache=TRUE, cache.path = 'DocumentName_cache/', fig.path='figure/')
+#opts_knit$set(base.dir = "data_preparation")
 ```
 
 
@@ -35,10 +34,10 @@ Jump to <a href="http://livebook.datascienceheroes.com/data_preparation/outliers
 
 Common mistake when starting a new predictive model project, for example:
 
-Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `Feature A`:
+Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `feature_A`:
 
 
-```{r echo=FALSE}
+```{r ,echo=FALSE}
 d1=data.frame(user_id=rep(1:10), 
               feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
               full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
@@ -56,34 +55,47 @@ We build the predictive model, we got a perfect accuracy, and an inspection thro
 
 ### Play fair with data, let it to develop their behavior
 
-If a **numerical variable** increases as time moves, we may need to define an **observation time window** to analyze or when creating the predictive model, thus not biasing results. 
+Like in nature, things have a minimun and maximun time to start showing certain behavior. This time oscilates from 0 to infinite. In practice it's recommended to study what is the best period to analyze, in other words, we may exclude all the behavior before and after this observation period. To stablish cuts to data it's not so straight forward since it may be kind of subjective.
 
-* Setting the **minimun** time: How much is it need to start seeing the behavior? 
+Imagine we've got a **numerical variable** which increases as time moves. We may need to define an **observation time window** to filter the data and feed the predictive model. 
+
+* Setting the **minimun** time: How much time is it need to start seeing the behavior? 
 * Setting the **maximun** time: How much time is it needed to see the end of the behavior? 
 
-Eassiest solutions are: setting minimun since begin, and the maximun as the whole history.
+Eassiest solution is: setting minimun since begin, and the maximun as the whole history.
+
 
 <font color="#5d6d7e">
 
-**Example:** 
+**Case study:** 
+
+Two people, `Ouro` and `Borus`, are users of an web application which has certain functionalty called `feature_A`, and we need to build a predictive model which forecast based on `feature_A` usage  -measured in 'clicks", if the person is going to adcquire `full_subscription`.
+
+The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
 ```{r echo=FALSE, fig.height=2, fig.width=3}
 library(ggplot2)
-d4=data.frame(user=c('Laura','Laura','Laura','Laura','Laura','Tim','Tim','Tim','Tim','Tim', 'Laura','Laura'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
-pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7)
+d4=data.frame(user=c('Ouro','Ouro','Ouro','Ouro','Ouro','Borus','Borus','Borus','Borus','Borus', 'Ouro','Ouro'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
+pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) + theme(panel.grid.minor = element_blank())
 plot(pd4)
 ```
 
 
-User `Laura` starts knowing `feature_A` from day 3, and after 5 days she has more use on this feature than `Tim` who started using it from day 0.  
+User `Borus` starts using `feature_A` from day 3, and after 5 days she has more use -15 vs 12 clicks- on this feature than `Ouro` who started using it from day 0. 
 
-If `Laura` adcquiere `full subscription` and `Tim` doesn't, _what would the model learn?_ 
+If `Borus` adcquiere `full subscription` and `Ouro` doesn't, _what would the model will learn?_ 
 
-If modeling with full history -`days_since_signup = all`-, the higher the `days_since_signup` the higher the likelihood, since `Laura` has the highest number.
+If modeling with full history -`days_since_signup = all`-, the higher the `days_since_signup` the higher the likelihood, since `Borus` has the highest number.
 
-However, if we keep only with the user history corresponding to their first 5 days, the conclussion is the opposite. 
+However, if we keep only with the user history corresponding to their first 5 days since signup, the conclussion is the opposite. 
 
+_Why to keep first 5 days of history?_
 
+The behavior in this kick-off period may be more relevant -in terms of prediction accuracy- than analyzing the whole history. It depends on each case as we said before. 
+
+**Workaround:**
+
+=We could build two variables: clicks on first 5 days since signup`
 
 </font>
 
