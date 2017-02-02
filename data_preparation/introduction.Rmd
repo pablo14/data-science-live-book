@@ -69,7 +69,7 @@ Eassiest solution is: setting minimun since begin, and the maximun as the whole 
 
 **Case study:** 
 
-Two people, `Ouro` and `Borus`, are users of an web application which has certain functionalty called `feature_A`, and we need to build a predictive model which forecast based on `feature_A` usage  -measured in 'clicks", if the person is going to adcquire `full_subscription`.
+Two people, `Ouro` and `Borus`, are users of a web application which has certain functionalty called `feature_A`, and we need to build a predictive model which forecast based on `feature_A` usage  -measured in 'clicks", if the person is going to adcquire `full_subscription`.
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
@@ -85,7 +85,7 @@ User `Borus` starts using `feature_A` from day 3, and after 5 days she has more 
 
 If `Borus` adcquiere `full subscription` and `Ouro` doesn't, _what would the model will learn?_ 
 
-If modeling with full history -`days_since_signup = all`-, the higher the `days_since_signup` the higher the likelihood, since `Borus` has the highest number.
+When modeling with full history -`days_since_signup = all`-, the higher the `days_since_signup` the higher the likelihood, since `Borus` has the highest number.
 
 However, if we keep only with the user history corresponding to their first 5 days since signup, the conclussion is the opposite. 
 
@@ -93,9 +93,19 @@ _Why to keep first 5 days of history?_
 
 The behavior in this kick-off period may be more relevant -in terms of prediction accuracy- than analyzing the whole history. It depends on each case as we said before. 
 
-**Workaround:**
+<br> 
 
-=We could build two variables: clicks on first 5 days since signup`
+### Creating new variables 
+
+It's a really important matter, to create new variables that reflect different stories from data. 
+
+Other ideas to handle time variables:
+
+* 
+* Create two variables: quantity of clicks on first 5 days since signup, and quantity of clicks on the period from 6 to 30 days.
+* Last point is considering the begining, but we can capture the history up to now: quantity of clicks during last month, during last 3 months, etc.
+* Average variables per time: `monthly_clicks_average`.
+
 
 </font>
 
