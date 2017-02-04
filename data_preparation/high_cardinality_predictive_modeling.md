@@ -583,7 +583,7 @@ fit_gbm_1$finalModel
 ## There were 69 predictors of which 8 had non-zero influence.
 ```
 
-That is: 69 input variables are representing the countries but in flag columns. 14 variables were not relevant to make the prediction.
+That is: 69 input variables are representing the countries but in flag columns. 1, and as it was reported some of themre not relevant to make the prediction.
 
 This opens a new chapter which is going to be covered in this book 😉: **Feature engineering** or **selecting best variables**. It is a high recommended practise to first select those variables which carries the most information, and then create the predictive model.
 
