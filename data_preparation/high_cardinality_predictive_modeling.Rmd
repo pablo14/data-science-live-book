@@ -376,7 +376,8 @@ Let's review how some models deal with this:
 fit_gbm_1$finalModel
 ```
 
-That is: 69 input variables are representing the countries but in flag columns. 14 variables were not relevant to make the prediction.
+That is: 69 input variables are representing the countries but in flag columns, and as it was reported some of them were not relevant to make the prediction.
+
 
 This opens a new chapter which is going to be covered in this book 😉: **Feature engineering** or **selecting best variables**. It is a high recommended practise to first select those variables which carries the most information, and then create the predictive model.
 
