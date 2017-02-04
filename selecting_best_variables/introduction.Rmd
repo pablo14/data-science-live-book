@@ -22,7 +22,44 @@ library(knitr)
 <br>
 
 
-## The Esence 
+### The "best" selection?
+
+The chapter says "best", but we'd better mention a conceptual point: 
+
+In general terms: _There is no unique best variable selection._ 
+
+To start from this perspective is important, since in the exploration of many algorihms that _rank_ the variables according to their predictive power we can found different -and similar- results. That is
+
+* Procedure 1 has choosen as the best variable `var_1`, following by `var_5` and `var_14`.
+* Procedure 2 did this ranking: `var_1`, `var_5` and `var_3`.
+
+Let's imagine based on procedure 1, accuracy is 80%, while the accuracy based on procedure 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same.
+
+However going to the extremes, there will be a set of variables that will rank high across many procedures, and the same goes for those with low predictive power. 
+
+<br>
+
+### Ranking variables? There is not only one truth
+
+It's quite common to find in literature and algorithms of selecting best variables an univariate analysis report of them, that is a ranking of variables given certain metric.
+
+TODO: write example of heart_disease data variable ranking based on random forest, the two metrics, and gradient boosting machine.
+
+Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms (such as random forest, gradient boosting machine, etc).
+
+Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results.
+
+In practice as a quick solution: We can pick up top N variables from one of the ranking list, and then build a model with only those.
+
+<br> 
+
+### Improving variables
+
+Variables can increase their predictive power by treating them. This book covers by now the <a href="" target="blank">improvement of categorical variables</a>.
+
+
+
+<br>
 
 ### Variables work in groups
 
@@ -42,32 +79,20 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 <br>
 
-### Ranking best variables? There is not only one truth
 
-It's quite common to find in literature and algorithms of selecting best variables an univariate analysis of them, that is a ranking of variables given certain metric.
-
-TODO: write example of heart_disease data variable ranking based on random forest, the two metrics, and gradient boosting machine.
-
-
-Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms (such as random forest, gradient boosting machine, etc).
-
-Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results.
-
-In practice as a quick solution: We can pick up top N variables from one of the ranking list, and then build a model with only those.
-
-<br> 
 
 ### Correlation between variables
 
 
+<br>
 
 ### Keep it simple
 
-Occam's razor says: 
+The principle of **Occam's razor**: 
 
 > Among competing hypotheses, the one with the fewest assumptions should be selected.
 
-Re-interpreting this sentence in machine learning, those "hypotheses" can be seen as variables, so we've got: 
+Re-interpreting this sentence for machine learning, those "hypotheses" can be seen as variables, so we've got: 
 
 **Among different predictive models, the one with fewest variables should be selected.**
 
