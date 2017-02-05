@@ -15,7 +15,7 @@ library(knitr)
     + **Analysis purpose**: To identify if the input variable is a good/bad predictor through visual analysis. 
     + **General purpose**: To explain the decision of including -or not- a variable to a model to a *non-analyst* person. 
 
-**Constraint:** Target variable must contain only 2 values. If it has `NA` values, they will be removed.
+
 
 
 
@@ -30,12 +30,12 @@ In general terms: _There is no unique best variable selection._
 
 To start from this perspective is important, since in the exploration of many algorihms that _rank_ the variables according to their predictive power we can found different -and similar- results. That is
 
-* Procedure 1 has choosen as the best variable `var_1`, following by `var_5` and `var_14`.
-* Procedure 2 did this ranking: `var_1`, `var_5` and `var_3`.
+* Algorithm 1 has choosen as the best variable `var_1`, following by `var_5` and `var_14`.
+* Algorithm 2 did this ranking: `var_1`, `var_5` and `var_3`.
 
-Let's imagine based on procedure 1, accuracy is 80%, while the accuracy based on procedure 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same.
+Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same.
 
-However going to the extremes, there will be a set of variables that will rank high across many procedures, and the same goes for those with low predictive power. 
+However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with low predictive power. 
 
 <br>
 
@@ -45,7 +45,7 @@ It's quite common to find in literature and algorithms of selecting best variabl
 
 TODO: write example of heart_disease data variable ranking based on random forest, the two metrics, and gradient boosting machine.
 
-Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms (such as random forest, gradient boosting machine, etc).
+Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms, such as the ones provided by random forest, gradient boosting machine, among others.
 
 Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results.
 
@@ -55,9 +55,29 @@ In practice as a quick solution: We can pick up top N variables from one of the 
 
 ### Improving variables
 
-Variables can increase their predictive power by treating them. This book covers by now the <a href="" target="blank">improvement of categorical variables</a>.
+Variables can increase their predictive power by treating them. 
+
+This book will covers -by now-:
+
+* <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">improvement of categorical variables</a>.
+* Reducing the noise in numerical variables through binning in <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html"  target="blank">cross_plot</a> function.
 
 
+### Cleaning by domain knowledge
+
+This point is excluded from algorithmic procedures, it is related to the area in which the data was generated.
+
+Imagine data coming from a survey. This survey has 1 year of history and during the first 3 months there was not a good control when inserting data, so users can type whatever they want. Variables during this period will probably be spourious. 
+
+Easy to recognize when during an specific period data is empty or null. Also when there are extreme values. 
+
+We should ask question: 
+
+_Is it reliable this data?_ Keep in mind the predictive model will learn _as a kid_, it will not judge the data just learn from it. If data is spourious in an specific period, then remove this input cases.
+
+To move on this point, we should get in touch a little with every input variable.
+
+More info in : <a href="">data preparation</a> TODO: ADD LINK DATA PREP INTRO
 
 <br>
 
@@ -82,6 +102,21 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 
 ### Correlation between variables
+
+The ideal escenario is to build a predictive model with only non-correlated variables between them. In practice it's complicated to keep such a escenario for all variables. 
+
+For sure there will be variables a set of variables that are not correlated between them, but also there will be others that share a little of correlation.
+
+Quite important how to measure correlation. Results can be highly different based on linear or non-linear procedures. More info in the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/correlation.html">correlation chapter</a>.
+
+_What is the problem with adding correlated variables?_
+
+The problem is we're adding complexity to the model: more time consuming, more difficult to understand-explain, etc.
+
+
+
+
+The general rule would be: Try to add top N variables that are correlated with the output, but not correlated between them. This lead us to the next section. 
 
 
 <br>

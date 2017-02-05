@@ -3,7 +3,7 @@ Correlation table against target variable
 
 ### What is this about?
 
-It retrieves the well known `R statistic` -which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+It retrieves the well known `R statistic` (or Pearson coefficient), which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
 
 
 
