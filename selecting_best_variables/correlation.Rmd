@@ -45,4 +45,14 @@ Last plot, and more info about correlation can be found at: [Correlation and dep
 
 <br>
 
+### Measuring non-linear relationships
+
+This relationships can be measure better with <a href="https://en.wikipedia.org/wiki/Information_theory">Information Theory</a> conepts, which by the way, should be a 'must' to learn.
+
+
+MIC statistic from minerva package measure 
+
+
+
+
 <br>

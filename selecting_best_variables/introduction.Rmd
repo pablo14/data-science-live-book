@@ -1,4 +1,4 @@
-Introduction
+Selecting Variables Introduction
 ===
 
 ### What is this about?
@@ -14,10 +14,6 @@ library(knitr)
 * **Overview**:
     + **Analysis purpose**: To identify if the input variable is a good/bad predictor through visual analysis. 
     + **General purpose**: To explain the decision of including -or not- a variable to a model to a *non-analyst* person. 
-
-
-
-
 
 <br>
 
@@ -111,9 +107,7 @@ Quite important how to measure correlation. Results can be highly different base
 
 _What is the problem with adding correlated variables?_
 
-The problem is we're adding complexity to the model: more time consuming, more difficult to understand-explain, etc.
-
-
+The problem is we're adding complexity to the model: more time consuming, more difficult to understand-explain, less accurate, etc. This is an effect we reviewed in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#dont-predictive-models-handle-high-cardinality-part-2">reducing cardinality in categorical variables</a>. 
 
 
 The general rule would be: Try to add top N variables that are correlated with the output, but not correlated between them. This lead us to the next section. 
@@ -152,6 +146,11 @@ Even more, this 2% may be an error margin given the variance in prediction that 
 In this case, and being consequent with Occams Razor principle, the best solution is to build the model with the subset of 20 variables.
 
 Explaining to others -and understanding- a model with 20 variables is easier than similar one with 30.
+
+<br> 
+
+### Summary
+
 
 
 <br> 
