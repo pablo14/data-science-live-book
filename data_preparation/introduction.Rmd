@@ -1,4 +1,4 @@
-Data Preparation Introduction
+Introduction
 ===
 
 ### What is this about?
