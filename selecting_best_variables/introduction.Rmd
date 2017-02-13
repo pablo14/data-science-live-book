@@ -29,21 +29,76 @@ To start from this perspective is important, since in the exploration of many al
 * Algorithm 1 has choosen as the best variable `var_1`, following by `var_5` and `var_14`.
 * Algorithm 2 did this ranking: `var_1`, `var_5` and `var_3`.
 
-Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same.
+Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same. It reduces us time in pursuit of the perfect variable selection.
 
 However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with low predictive power. 
 
+
 <br>
 
-### Ranking variables? There is not only one truth
+### Going deeper into variable ranking
 
 It's quite common to find in literature and algorithms of selecting best variables an univariate analysis report of them, that is a ranking of variables given certain metric.
 
-TODO: write example of heart_disease data variable ranking based on random forest, the two metrics, and gradient boosting machine.
+We're going to create two models: random forest and gradient boosting machine using `caret` R package to cross-validate the data. Next we'll compare the best variable ranking that every model return.
 
-Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms, such as the ones provided by random forest, gradient boosting machine, among others.
+```{r}
+library(caret)
+library(funModeling)
+library(dplyr)
 
-Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results.
+## Excluding all NA rows from data, in this case NA are not the main issue to solve, we'll skip the 6 cases which have NA.
+heart_disease=na.omit(heart_disease)
+
+## setting cross-validation 4-fold
+fitControl = trainControl(method = "cv",
+                           number = 4,
+                           classProbs = TRUE,
+                           summaryFunction = twoClassSummary)
+
+## creating the random forest model finding the best tunning parameter set
+set.seed(999)
+fit_rf = train(x=select(heart_disease, -has_heart_disease, -heart_disease_severity),
+             y = heart_disease$has_heart_disease,
+             method = "rf",
+             trControl = fitControl,
+             verbose = FALSE,
+             metric = "ROC")
+
+plot(varImp(fit_1, scale=F))
+varImp(fit_1, scale=F)
+
+## creating the random forest model finding the best tunning parameter set
+fit_gbm = train(x=select(heart_disease, -has_heart_disease, -heart_disease_severity),
+             y = heart_disease$has_heart_disease,
+             method = "gbm",
+             trControl = fitControl,
+             verbose = FALSE,
+             metric = "ROC")
+```
+
+Now we can proceed with the comparison. Columns: `importance_rf` and `importance_gbm` represent the importance measured by each algorithm. Based on each metric, there is the `rank_rf` and `rank_gbm` which represent the importance order, finally `rank_diff` represents how differnt each rank according comparing two algorithms.
+
+
+```{r}
+## next code is not important, it's creates the table described before...
+var_imp_rf=data.frame(varImp(fit_rf, scale=T)["importance"]) %>% dplyr::mutate(variable=rownames(.)) %>% dplyr::rename(importance_rf=Overall) %>% dplyr::arrange(-importance_rf) %>% dplyr::mutate(rank_rf=seq(1:nrow(.))) 
+
+var_imp_gbm=as.data.frame(varImp(fit_gbm, scale=T)["importance"])  %>% dplyr::mutate(variable=rownames(.)) %>% dplyr::rename(importance_gbm=Overall) %>% dplyr::arrange(-importance_gbm) %>% dplyr::mutate(rank_gbm=seq(1:nrow(.)))                                                                                                                                         
+final_res=merge(var_imp_rf, var_imp_gbm, by="variable")
+
+final_res$rank_diff=final_res$rank_rf-final_res$rank_gbm
+
+# Printing the results!
+final_res
+```
+
+We can see that there are variables which are not important at all to both models (`fasting_blood_sugar`). There are others that mantain a position at the top of importance like `chest_pain` and `thal`.
+
+
+Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about variable importance per algorithm can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
+
+Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before.
 
 In practice as a quick solution: We can pick up top N variables from one of the ranking list, and then build a model with only those.
 
@@ -105,6 +160,8 @@ For sure there will be variables a set of variables that are not correlated betw
 
 Quite important how to measure correlation. Results can be highly different based on linear or non-linear procedures. More info in the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/correlation.html">correlation chapter</a>.
 
+<br>
+
 _What is the problem with adding correlated variables?_
 
 The problem is we're adding complexity to the model: more time consuming, more difficult to understand-explain, less accurate, etc. This is an effect we reviewed in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#dont-predictive-models-handle-high-cardinality-part-2">reducing cardinality in categorical variables</a>. 
@@ -133,7 +190,7 @@ The concept of _high_ and _low_ is **highly subjective** to the data that is und
 
 <img src="variable_selection_table.png" alt="Quantity of variables vs ROC value trade-off"> 
 
-Where we have different subset of variables and an accuracy metric (ROC). Each dot represents the ROC value given certain number of variables used to build the model.
+Last picture shows different subset of variables and an accuracy metric (ROC). Each dot represents the ROC value given certain number of variables used to build the model.
 
 We can check that the highest ROC is reached when the model is built with 30 variables. If we based the selection only in an automated process we may be choosing a subset which tend to overfit data. This report was produced by library `caret` in R [2], but is analogous to any software.
 
