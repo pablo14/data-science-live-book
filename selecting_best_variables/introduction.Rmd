@@ -65,9 +65,6 @@ fit_rf = train(x=select(heart_disease, -has_heart_disease, -heart_disease_severi
              verbose = FALSE,
              metric = "ROC")
 
-plot(varImp(fit_1, scale=F))
-varImp(fit_1, scale=F)
-
 ## creating the random forest model finding the best tunning parameter set
 fit_gbm = train(x=select(heart_disease, -has_heart_disease, -heart_disease_severity),
              y = heart_disease$has_heart_disease,
@@ -95,12 +92,27 @@ final_res
 
 We can see that there are variables which are not important at all to both models (`fasting_blood_sugar`). There are others that mantain a position at the top of importance like `chest_pain` and `thal`.
 
-
 Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about variable importance per algorithm can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
 
-Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before.
+Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before. But every ranking list is not the _"final truth"_, it gives us orientation about where the information is.
 
-In practice as a quick solution: We can pick up top N variables from one of the ranking list, and then build a model with only those.
+<br>
+
+#### Advice in practice
+
+* To pick up top _N_ variables from one (or more) ranking list and then build a model with only this selection.
+* When possible, validate the list with someone who knows about the field study, the business and/or the area from the data comes from. Either to validate the top _N_ and the bottom _M_ variables. From those _bad_ variables we may be missing something in the data munging that could be destroying its predictive power whereas the expert domain says the relevance of such variable.
+
+<br>
+
+#### The nature of the selection
+
+There are two ways of producing the variable selection:
+
+* **Predictive model dependent**: Like the ones we saw before. The model will rank variables according to one instrinsic measure of accuracy. In tree based models metrics such as information gain, gini index, node impurity. Ref [4], [5].
+* **Not Predictive model dependent**: This are quite interesting since they are no as popular as the other ones but they are prooved to perform really well in areas realated to genomic data. This area has the particularity that the amount of variables is really huge in comparisson with others. They need to find those _relevant_ genes (input variable) that are correlated with certain disease, like cancer (target variable).
+
+<a href="https://academic.oup.com/bioinformatics/article-pdf/29/18/2365/659654/btt383.pdf" target="blank">Paper</a>
 
 <br> 
 
@@ -124,7 +136,7 @@ Easy to recognize when during an specific period data is empty or null. Also whe
 
 We should ask question: 
 
-_Is it reliable this data?_ Keep in mind the predictive model will learn _as a kid_, it will not judge the data just learn from it. If data is spourious in an specific period, then remove this input cases.
+_Is it reliable this data?_ Keep in mind the predictive model will learn _as a kid_, it will not judge the data just learn from it. If data is spourious in an specific period, then remove these input cases.
 
 To move on this point, we should get in touch a little with every input variable.
 
@@ -214,6 +226,10 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 **References:**
 
-* [1] <a href="https://en.wikipedia.org/wiki/Occam's_razor#Probability_theory_and_statistics">Occam's razor in statistics</a>
+* [1] <a href="https://en.wikipedia.org/wiki/Occam's_razor#Probability_theory_and_statistics">Occam's razor in statistics</a>.
 * [2] <a href="https://topepo.github.io/caret/recursive-feature-elimination.html">Recursive feature elimination in caret</a>
-* [3] It is covered in the <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html">Knowing the error</a> chapter
+* [3] It is covered in the <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html">Knowing the error</a> chapter.
+* [4] Understanding <a href="http://stackoverflow.com/questions/1859554/what-is-entropy-and-information-gain" target="blank">Entropy and Information Gain</a>.
+* [5] Understanding the <a href="http://stats.stackexchange.com/questions/197827/how-to-interpret-mean-decrease-in-accuracy-and-mean-decrease-gini-in-random-fore" target="blank">accuracy and gini index</a> used in random forest variable ranking.
+
+
