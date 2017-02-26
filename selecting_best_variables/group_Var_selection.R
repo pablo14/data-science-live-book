@@ -1,4 +1,15 @@
-fit_2a = train(x=select(heart_disease, max_heart_rate),
+library(caret)
+library(funModeling)
+library(dplyr)
+
+## setting cross-validation 4-fold
+fitControl = trainControl(method = "cv",
+                          number = 4,
+                          classProbs = TRUE,
+                          summaryFunction = twoClassSummary)
+
+  
+fit_2a = train(x=select(heart_disease, -heart_disease_severity,-has_heart_disease),
               y = heart_disease$has_heart_disease,
               method = "gbm",
               trControl = fitControl,
@@ -19,9 +30,10 @@ fit_2c = train(x=select(heart_disease, max_heart_rate, chest_pain),
                verbose = FALSE,
                metric = "ROC")
 
-max(fit_2a$results$ROC)
+sprintf("ROC value ", max(fit_2a$results$ROC))
 max(fit_2b$results$ROC)
 max(fit_2c$results$ROC)
+
 
 # observed counts for each bin
 y = c(4, 2, 3, 0, 2, 4, 0, 0, 2, 100000, 100000)

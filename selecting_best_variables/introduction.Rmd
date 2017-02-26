@@ -42,7 +42,7 @@ It's quite common to find in literature and algorithms of selecting best variabl
 
 We're going to create two models: random forest and gradient boosting machine using `caret` R package to cross-validate the data. Next we'll compare the best variable ranking that every model return.
 
-```{r}
+```{r,message=FALSE}
 library(caret)
 library(funModeling)
 library(dplyr)
@@ -92,7 +92,7 @@ final_res
 
 We can see that there are variables which are not important at all to both models (`fasting_blood_sugar`). There are others that mantain a position at the top of importance like `chest_pain` and `thal`.
 
-Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about variable importance per algorithm can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
+Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about this point can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
 
 Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before. But every ranking list is not the _"final truth"_, it gives us orientation about where the information is.
 
@@ -100,16 +100,16 @@ Altough the ranking will vary from algorithm to algorithm, in general terms ther
 
 #### Advice in practice
 
-* To pick up top _N_ variables from one (or more) ranking list and then build a model with only this selection.
-* When possible, validate the list with someone who knows about the field study, the business and/or the area from the data comes from. Either to validate the top _N_ and the bottom _M_ variables. From those _bad_ variables we may be missing something in the data munging that could be destroying its predictive power whereas the expert domain says the relevance of such variable.
+* To **pick up top _N_ variables** from one (or more) ranking list and then build a model with only this selection.
+* When possible, **validate** the list with someone who knows about the field study, the business and/or the area from the data comes from. Either to validate the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables we may be missing something in the data munging that could be destroying its predictive power whereas the domain expert advices about the relevance of such variable.
 
 <br>
 
 #### The nature of the selection
 
-There are two ways of producing the variable selection:
+There are two main approaches when getting the variable selection:
 
-* **Predictive model dependent**: Like the ones we saw before. The model will rank variables according to one instrinsic measure of accuracy. In tree based models metrics such as information gain, gini index, node impurity. Ref [4], [5].
+* **Predictive model dependent**: Like the ones we saw before, this is the most common. The model will rank variables according to one instrinsic measure of accuracy. In tree based models metrics such as information gain, gini index, node impurity. Ref [4], [5].
 * **Not Predictive model dependent**: This are quite interesting since they are no as popular as the other ones but they are prooved to perform really well in areas realated to genomic data. This area has the particularity that the amount of variables is really huge in comparisson with others. They need to find those _relevant_ genes (input variable) that are correlated with certain disease, like cancer (target variable).
 
 <a href="https://academic.oup.com/bioinformatics/article-pdf/29/18/2365/659654/btt383.pdf" target="blank">Paper</a>
@@ -162,15 +162,69 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 <br>
 
+#### Example in R
+
+Following code ilustrate what Aristoteles said _some_ years ago. 
+
+It creates 3 models based on different subset of variable:
+
+* model 1 is based on `max_heart_rate` input variable
+* model 2 is based on `chest_pain` input variable
+* model 3 is based on `max_heart_rate` **and** `chest_pain` input variables
+
+Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs taking each variable isoletly.
+
+```{r}
+## setting cross-validation 4-fold
+fitControl = trainControl(method = "cv",
+                          number = 4,
+                          classProbs = TRUE,
+                          summaryFunction = twoClassSummary)
+
+create_model<-function(input_variables) {
+  ## create gradient boosting machine model based on input variables
+  fit_model = train(x=select(heart_disease, one_of(input_variables)),
+              y = heart_disease$has_heart_disease,
+              method = "gbm",
+              trControl = fitControl,
+              verbose = FALSE,
+              metric = "ROC")
+  
+  # returning the ROC as the performance metric
+  max_roc_value=max(fit_model$results$ROC)
+  return(max_roc_value)
+}
+
+roc_1=create_model("max_heart_rate")
+roc_2=create_model("chest_pain")
+roc_3=create_model(c("max_heart_rate", "chest_pain"))
+
+avg_improvement=round(100*(((roc_3-roc_1)/roc_1)+((roc_3-roc_2)/roc_2))/2,2)
+
+sprintf("Average improvement: %s%%", avg_improvement)
+```
+
+<br>
+
+#### Conclusions
+
+* Almost 10% better, not bad. This percentage is the result of the variables work in groups.
+* This effect appears if the variables contain information, such is the case of `max_heart_rate` and `max_heart_rate`. 
+* Putting noisy variables next to good variables will affect overall performance.
+* Also the **work in groups** effect is higher if input variables are not correlated between them. This is sort of difficult of optimize in practice. More on this on next section...
 
 
-### Correlation between variables
+<br>
+
+### Correlation between input variables
 
 The ideal escenario is to build a predictive model with only non-correlated variables between them. In practice it's complicated to keep such a escenario for all variables. 
 
 For sure there will be variables a set of variables that are not correlated between them, but also there will be others that share a little of correlation.
 
-Quite important how to measure correlation. Results can be highly different based on linear or non-linear procedures. More info in the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/correlation.html">correlation chapter</a>.
+**In practice** a suitable solution would be to exclude those variables with a **really high level** of correlation.
+
+Regarding how to measure correlation. Results can be highly different based on linear or non-linear procedures. More info at the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/correlation.html">correlation chapter</a>.
 
 <br>
 
