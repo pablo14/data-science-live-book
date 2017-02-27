@@ -250,7 +250,7 @@ The general rule would be: Try to add top N variables that are correlated with t
 
 ### Keep it simple
 
-<src img="fractals_nature.png" alt="Nature operates in the shortest way possible. -Aristotle." width="250px">
+<img src="fractals_nature.png" alt="Nature operates in the shortest way possible. -Aristotle." width="250px">
 
 > Nature operates in the shortest way possible. -Aristotle.
 
