@@ -33,7 +33,6 @@ Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on
 
 However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with low predictive power. 
 
-
 <br>
 
 ### Going deeper into variable ranking
@@ -146,11 +145,13 @@ More info in : <a href="">data preparation</a> TODO: ADD LINK DATA PREP INTRO
 
 ### Variables work in groups
 
+<img src="variable_groups.png" width="300px" alt="Variable work in groups">
+
 When selecting the _best_ variables, the main aim is to get those variables which carry the most information regarding a target, outcome or dependant variable. 
 
 A predictive model will find its weights or parameters based on its 1 to 'N' input variables.
 
-Variables usually don't work isolatelty when explaining an event. Quoting Aristoteles: 
+Variables usually don't work isolatelty when explaining an event. Quoting Aristotle: 
 
 > “The whole is greater than the sum of its parts.” 
 
@@ -158,13 +159,15 @@ This is also true when selecting the _best_ features:
 
 _Building a predictive model with two variables may reach a higher accuracy than the models built with only one variable._
 
-For example: Building a model based on variable `var_1` could lead to an overall accuracy of 60%. On the other hand build a model based on `var_2` could reach an accuracy of 72%. But when we combine these two `var_1` and `var_2` variables, we could reach an accuracy above 80%. TODO: propose example.
+For example: Building a model based on variable `var_1` could lead to an overall accuracy of 60%. On the other hand build a model based on `var_2` could reach an accuracy of 72%. But when we combine these two `var_1` and `var_2` variables, we could reach an accuracy above 80%.
 
 <br>
 
-#### Example in R
+#### Example in R: Variables working in groups
 
-Following code ilustrate what Aristoteles said _some_ years ago. 
+<img src="aristotle.png" width="300px" alt="Aristotle: philosopher and data scientist">
+
+Following code ilustrate what Aristotle said _some_ years ago. 
 
 It creates 3 models based on different subset of variable:
 
@@ -175,6 +178,10 @@ It creates 3 models based on different subset of variable:
 Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs taking each variable isoletly.
 
 ```{r}
+library(caret)
+library(funModeling)
+library(dplyr)
+
 ## setting cross-validation 4-fold
 fitControl = trainControl(method = "cv",
                           number = 4,
@@ -200,18 +207,21 @@ roc_2=create_model("chest_pain")
 roc_3=create_model(c("max_heart_rate", "chest_pain"))
 
 avg_improvement=round(100*(((roc_3-roc_1)/roc_1)+((roc_3-roc_2)/roc_2))/2,2)
+avg_improvement_text=sprintf("Average improvement: %s%%", avg_improvement)
 
-sprintf("Average improvement: %s%%", avg_improvement)
+results=sprintf("ROC model based on 'max_heart_rate': %s.; based on 'chest_pain': %s; and based on both: %s", round(roc_1,2), round(roc_2,2), round(roc_3, 2))
+# printing the results!
+cat(c(results, avg_improvement_text), sep="\n\n")
 ```
 
 <br>
 
-#### Conclusions
+#### Conclusions 💥 
 
-* Almost 10% better, not bad. This percentage is the result of the variables work in groups.
+* **Around 9% better**, not bad. This percentage is the result of the variables working in groups.
 * This effect appears if the variables contain information, such is the case of `max_heart_rate` and `max_heart_rate`. 
-* Putting noisy variables next to good variables will affect overall performance.
-* Also the **work in groups** effect is higher if input variables are not correlated between them. This is sort of difficult of optimize in practice. More on this on next section...
+* Putting **noisy variables** next to good variables **will affect** overall performance.
+* Also the **work in groups** effect is higher if input variables **are not correlated between** them. This is sort of difficult of optimize in practice. More on this on next section...
 
 
 <br>
@@ -240,9 +250,11 @@ The general rule would be: Try to add top N variables that are correlated with t
 
 ### Keep it simple
 
-The principle of **Occam's razor**: 
+<src img="fractals_nature.png" alt="Nature operates in the shortest way possible. -Aristotle." width="250px">
 
-> Among competing hypotheses, the one with the fewest assumptions should be selected.
+> Nature operates in the shortest way possible. -Aristotle.
+
+The principle of **Occam's razor**: Among competing hypotheses, the one with the fewest assumptions should be selected.
 
 Re-interpreting this sentence for machine learning, those "hypotheses" can be seen as variables, so we've got: 
 
