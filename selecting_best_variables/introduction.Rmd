@@ -31,7 +31,9 @@ To start from this perspective is important, since in the exploration of many al
 
 Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same. It reduces us time in pursuit of the perfect variable selection.
 
-However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with low predictive power. 
+However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with low predictive power. After several runs most reliable variables will emerge quickly, so: 
+
+**Conclusion**: if results are not good the focus should be on improving and/or checking the **data preparation** step. _Next section will exemplify it._ 
 
 <br>
 
@@ -41,7 +43,7 @@ It's quite common to find in literature and algorithms of selecting best variabl
 
 We're going to create two models: random forest and gradient boosting machine using `caret` R package to cross-validate the data. Next we'll compare the best variable ranking that every model return.
 
-```{r,message=FALSE}
+```{r, eval=FALSE}
 library(caret)
 library(funModeling)
 library(dplyr)
@@ -76,11 +78,11 @@ fit_gbm = train(x=select(heart_disease, -has_heart_disease, -heart_disease_sever
 Now we can proceed with the comparison. Columns: `importance_rf` and `importance_gbm` represent the importance measured by each algorithm. Based on each metric, there is the `rank_rf` and `rank_gbm` which represent the importance order, finally `rank_diff` represents how differnt each rank according comparing two algorithms.
 
 
-```{r}
+```{r, eval=FALSE}
 ## next code is not important, it's creates the table described before...
 var_imp_rf=data.frame(varImp(fit_rf, scale=T)["importance"]) %>% dplyr::mutate(variable=rownames(.)) %>% dplyr::rename(importance_rf=Overall) %>% dplyr::arrange(-importance_rf) %>% dplyr::mutate(rank_rf=seq(1:nrow(.))) 
 
-var_imp_gbm=as.data.frame(varImp(fit_gbm, scale=T)["importance"])  %>% dplyr::mutate(variable=rownames(.)) %>% dplyr::rename(importance_gbm=Overall) %>% dplyr::arrange(-importance_gbm) %>% dplyr::mutate(rank_gbm=seq(1:nrow(.)))                                                                                                                                         
+var_imp_gbm=as.data.frame(varImp(fit_gbm, scale=T)["importance"])  %>% dplyr::mutate(variable=rownames(.)) %>% dplyr::rename(importance_gbm=Overall) %>% dplyr::arrange(-importance_gbm) %>% dplyr::mutate(rank_gbm=seq(1:nrow(.)))                                                                                                                             
 final_res=merge(var_imp_rf, var_imp_gbm, by="variable")
 
 final_res$rank_diff=final_res$rank_rf-final_res$rank_gbm
@@ -88,30 +90,36 @@ final_res$rank_diff=final_res$rank_rf-final_res$rank_gbm
 # Printing the results!
 final_res
 ```
+<img src="ranking_best_vars_comparison.png" alt="Comparisson across two methods for variable ranking">
 
 We can see that there are variables which are not important at all to both models (`fasting_blood_sugar`). There are others that mantain a position at the top of importance like `chest_pain` and `thal`.
 
-Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about this point can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
+Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about the inner importance metrics  can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
 
-Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before. But every ranking list is not the _"final truth"_, it gives us orientation about where the information is.
+Even more, in tree based model like GBM and Random Forest there is a random component to pick up variables, and the importance is based on prior -and automatic- variable selection when building the trees. The importance of each variable depends on the others, not only on its isolated contribution: **Variables work in groups**. We'll back on this later on this chapter.
 
-<br>
+Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before. 
 
-#### Advice in practice
-
-* To **pick up top _N_ variables** from one (or more) ranking list and then build a model with only this selection.
-* When possible, **validate** the list with someone who knows about the field study, the business and/or the area from the data comes from. Either to validate the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables we may be missing something in the data munging that could be destroying its predictive power whereas the domain expert advices about the relevance of such variable.
+**Conclusion:** Every ranking list is not the _"final truth"_, it gives us orientation about where the information is. 
 
 <br>
 
-#### The nature of the selection
+
+### The nature of the selection
 
 There are two main approaches when getting the variable selection:
 
-* **Predictive model dependent**: Like the ones we saw before, this is the most common. The model will rank variables according to one instrinsic measure of accuracy. In tree based models metrics such as information gain, gini index, node impurity. Ref [4], [5].
-* **Not Predictive model dependent**: This are quite interesting since they are no as popular as the other ones but they are prooved to perform really well in areas realated to genomic data. This area has the particularity that the amount of variables is really huge in comparisson with others. They need to find those _relevant_ genes (input variable) that are correlated with certain disease, like cancer (target variable).
+**Predictive model dependent**: 
 
-<a href="https://academic.oup.com/bioinformatics/article-pdf/29/18/2365/659654/btt383.pdf" target="blank">Paper</a>
+Like the ones we saw before, this is the most common. The model will rank variables according to one instrinsic measure of accuracy. In tree based models metrics such as information gain, gini index, node impurity. Ref [4], [5].
+
+**Not predictive model dependent**: 
+
+This is quite interesting since they are no as popular as the other ones, but they are prooved to perform really well in areas realated to genomic data. They need to find those _relevant_ genes (input variable) that are correlated with certain disease, like cancer (target variable).
+
+This area differs from others most common in the amount of variables to analyze (in the order of thousands), really huge in comparisson with others. 
+ 
+One algorithm to perform this is <a href="http://home.penglab.com/proj/mRMR/" target="blank">mRMR</a>, acronym for Minimum Redundancy Maximum Relevance Feature Selection. It has its own implementation in R in <a href="https://cran.r-project.org/web/packages/mRMRe/vignettes/mRMRe.pdf" target="blank">mRMRe</a> package.
 
 <br> 
 
@@ -119,17 +127,21 @@ There are two main approaches when getting the variable selection:
 
 Variables can increase their predictive power by treating them. 
 
-This book will covers -by now-:
+This book covers by now:
 
 * <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">improvement of categorical variables</a>.
 * Reducing the noise in numerical variables through binning in <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html"  target="blank">cross_plot</a> function.
+* <a href="http://livebook.datascienceheroes.com/data_preparation/outliers_treatment.html" target="blank">Preparing outliers</a> for predictive modeling.
 
+_And more to come..._
+
+<br>
 
 ### Cleaning by domain knowledge
 
 This point is excluded from algorithmic procedures, it is related to the area in which the data was generated.
 
-Imagine data coming from a survey. This survey has 1 year of history and during the first 3 months there was not a good control when inserting data, so users can type whatever they want. Variables during this period will probably be spourious. 
+Imagine data coming from a survey. This survey has 1 year of history and during the first 3 months there wasn't a good control when inserting data, so users can type whatever they want. Variables during this period will probably be spourious. 
 
 Easy to recognize when during an specific period data is empty or null. Also when there are extreme values. 
 
@@ -138,8 +150,6 @@ We should ask question:
 _Is it reliable this data?_ Keep in mind the predictive model will learn _as a kid_, it will not judge the data just learn from it. If data is spourious in an specific period, then remove these input cases.
 
 To move on this point, we should get in touch a little with every input variable.
-
-More info in : <a href="">data preparation</a> TODO: ADD LINK DATA PREP INTRO
 
 <br>
 
@@ -177,7 +187,7 @@ It creates 3 models based on different subset of variable:
 
 Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs taking each variable isoletly.
 
-```{r}
+```{r, eval=TRUE, message=F}
 library(caret)
 library(funModeling)
 library(dplyr)
@@ -210,6 +220,7 @@ avg_improvement=round(100*(((roc_3-roc_1)/roc_1)+((roc_3-roc_2)/roc_2))/2,2)
 avg_improvement_text=sprintf("Average improvement: %s%%", avg_improvement)
 
 results=sprintf("ROC model based on 'max_heart_rate': %s.; based on 'chest_pain': %s; and based on both: %s", round(roc_1,2), round(roc_2,2), round(roc_3, 2))
+
 # printing the results!
 cat(c(results, avg_improvement_text), sep="\n\n")
 ```
@@ -283,6 +294,27 @@ In this case, and being consequent with Occams Razor principle, the best solutio
 Explaining to others -and understanding- a model with 20 variables is easier than similar one with 30.
 
 <br> 
+
+### Selecting variables in practice
+
+#### The short answer
+
+pick up top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves rankings, but if so, use the same model to get the ranking and to build the final model, try don't mix them. 
+
+When getting the ranking list, try to use predictive models which contains re-sampling, bootstrapping, bagging
+ and perform a cross-validation with repetition. 
+For those models which like k-Nearest Neighbords which don't have a built-in select best features, we'd use the one returned by other algorithm.
+
+#### The long answer
+
+**The "not so" quick answer:** Try other methods to find groups of variables like the one mentioned before: mRMR.
+
+
+When possible, **validate** the list with someone who knows about the field study, the business and/or the area from the data comes from. Either to validate the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables we may be missing something in the data munging that could be destroying its predictive power whereas the domain expert advices about the relevance of such variable.
+
+Exclude the lowest ranked variables and focus on the data preparation of the most important. But remember to validate the process and data prepartion of the bad ones before.
+
+<br>
 
 ### Summary
 
