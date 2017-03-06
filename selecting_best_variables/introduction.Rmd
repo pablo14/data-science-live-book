@@ -297,24 +297,28 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 ### Selecting variables in practice
 
-#### The short answer
+<br>
 
-pick up top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves rankings, but if so, use the same model to get the ranking and to build the final model, try don't mix them. 
+#### The short answer 🏃
 
-When getting the ranking list, try to use predictive models which contains re-sampling, bootstrapping, bagging and perform a cross-validation with repetition. Last terms are based on ensemble methods (like random forest ensembles trees), and b
+Pick up top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves rankings, but if so, use the same model to get the ranking and to build the final model, try not to mix them.
 
-Ranking based on decision tree doesn't use any 
+For those models like k-nearest neighbors which don't have a built-in select best features procedure, it's valid to use the selection of other algorithm. It will lead to better results. 
 
-For those models which like k-Nearest Neighbords which don't have a built-in select best features, we'd use the one returned by other algorithm.
+<br>
 
-#### The long answer
+#### The long answer 🚶
 
-**The "not so" quick answer:** Try other methods to find groups of variables like the one mentioned before: mRMR.
+* When possible, **validate** the list with someone who knows about the field study, the business and/or the area from the data comes from. Either for the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables we may be missing something in the data munging that could be destroying their predictive power.
+* Understand each variable, their domain field meaning (business, medical, other). 
+* Do an **exploratory analysis** to see the distributions of most important variables regarding target variable, _does the selection makes sense?_ If the target is binary then function <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">cross_plot</a> can be used. 
+* Does the average of any variable change _significativaly_ over time? Check abrupt changes in distributions.
+Suspect about high cardinalty top ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
+* When doing the selection -as well as a predictive model-, use methods which uses any re-sampling technique (like bootstraping), and use cross-validation. More information in Ref. [3].
+* Try other methods to find **groups of variables** like the one mentioned before: mRMR.
+* If the selection doesn't meet the needs, try creating new variables, you can check **data preparation** chapter. (TODO: ADD)
 
 
-When possible, **validate** the list with someone who knows about the field study, the business and/or the area from the data comes from. Either to validate the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables we may be missing something in the data munging that could be destroying its predictive power whereas the domain expert advices about the relevance of such variable.
-
-Exclude the lowest ranked variables and focus on the data preparation of the most important. But remember to validate the process and data prepartion of the bad ones before.
 
 <br>
 
