@@ -1,7 +1,10 @@
-Correlation and Information
+Correlation and Information Theory
 =====
 
-### What is this about?
+### Overview
+
+
+### Linear correlation (classical)
 
 It retrieves the well known `R statistic` (or Pearson coefficient), which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
 
@@ -45,13 +48,16 @@ Last plot, and more info about correlation can be found at: [Correlation and dep
 
 <br>
 
-### Measuring non-linear relationships
+### Correlation based on Information Theory
 
 This relationships can be measure better with <a href="https://en.wikipedia.org/wiki/Information_theory">Information Theory</a> conepts. One of the many algortihms to measure correlation based on this is: **MINE**, acronym for: Maximal Information-based nonparametric exploration.
 
 The implementation in R can be found in <a href="https://cran.r-project.org/web/packages/minerva/index.html">minerva</a> package.
 
-MIC statistic from minerva package measure 
+
+<br>
+
+#### An example in R: Finding reliable variables
 
 ```{r}
 library(funModeling)
@@ -82,15 +88,21 @@ sprintf("MIC: %s", res_mine$MIC[1,2])
 
 #### Analysis 
 
-The MIC=1 indicates there is a perfect correlation between the two variables. We knew before hand that it was this way. This is a good variable to add to the predictive model. 
+The `MIC=1` indicates there is a perfect correlation between the two variables. If we were doing **feature engineering** this variable should be included.
 
+Further than a simple correlation, what the MIC says is: "Hey these two variables show a functional relationship". 
 
+In machine learning terms (and oversimplifying): "variable `y` is dependant of variable `x` and a function -that we don't know which one- can be found model the relationship."
+
+This is tricky, because that relationship was effectively created based on a function, an exponential one.
+
+But let's continue with other examples...
 
 <br>
 
 #### Adding noise
 
-Noise is an undesire signal adding to the original one. In machine learning noise helps the model to get confuse. Concretly: two input cases -for example customers- have different outcomes.
+Noise is an undesire signal adding to the original one. In machine learning noise helps the model to get confuse. Concretly: two identical input cases -for example customers- have different outcomes -one buy and the other doesn't-.
 
 Now we are going to add some noise creating the `y_noise_1` variable.
 
@@ -99,7 +111,7 @@ df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
 ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line()
 ```
 
-Calculating againg the correlation and MIC, printing in both cases the complete matrix.
+Calculating againg the correlation and MIC, printing in both cases the complete matrix, which shows the correlation/MIC metric of each input variable against all the others including themself.
 
 ```{r}
 res_R2=cor(df_exp)^2
@@ -113,8 +125,8 @@ Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and
 
 R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%). 
 
+**Conclusion:** MIC reflects a noisy relationship much better than R2. Due to the nature of noise, it is very common to find it on a regular basis.
 
-**Conclusion:** MIC metric (based on Information Theory) reflects better than R2 the noise in variables. A situtation that occurs in almost any data set.
 
 <br>
 
@@ -123,17 +135,16 @@ R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%).
 
 ```{r, eval=FALSE}
 
-a=cor(dat)[1,2]
-b=a*a
-res$MIC[1,2]-b
-sprintf("Non-linear correlation (MIC): %s", res$MIC[1,2])
+round(res_mine_2$MICR2,3)
+round(res_mine_2$MIC-res_R2,3)
+
 ```
 
 <br>
 
 #### Measuring periodicity
 
-
+From ref [1]: _MAS is useful, for example, for detecting periodic relationships with unknown frequencies that vary over time_
 
 
 
@@ -150,9 +161,14 @@ Further than correlation, MIC measures if there are a _functional relationship_.
 
 A high value in MAS metric indicates there is a periodic relationship between two variables. Useful when analyzing time series.
 
+#### Just MINE covers this?
+
+We are going to cover only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.
+
+
 
 #### References
 
-<a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
+[1] Original paper MINE: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 
 
