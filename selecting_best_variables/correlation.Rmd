@@ -116,7 +116,11 @@ Calculating againg the correlation and MIC, printing in both cases the complete 
 ```{r}
 res_R2=cor(df_exp)^2
 res_mine_2=mine(df_exp)
+
+print('****** R2 ******')
 res_R2
+
+print('****** MIC ******')
 res_mine_2$MIC
 
 ```
@@ -130,22 +134,62 @@ R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%).
 
 <br>
 
-#### Measuring non-linearity
+#### Measuring non-linearity (MICR2)
 
+`mine` function returns several metrics, we checked only **MIC**, but due to the nature of the algorithm (you can check the original paper at ref. [1]), it computes more interesting indicators. Check them all by inspecting `res_mine_2` object.
+
+One of them is `MICR2`, used as a measured of **non-linearity**. It is calculated by doing the: MIC - R2. Since R2 measures the linearity, a high `MICR2` would indicate a non-linear relationship.
+
+We can check it by calculating the micr2 manually, following two matrix returns the same result:
 
 ```{r, eval=FALSE}
-
-round(res_mine_2$MICR2,3)
-round(res_mine_2$MIC-res_R2,3)
-
+# MIC r2: non-linearity metric
+round(res_mine_2$MICR2, 3)
+# calculating MIC r2 manually
+round(res_mine_2$MIC-res_R2, 3)
 ```
+
+Non-linear relationships are harder to modelize, even more using a linear algorithm like decision trees or linear regression. 
+
+Imagine we need to explain the relationship to other person, we'll need more details to explain it. It's easier to say: _"A increases as B increases and the ratio is always 3x"_ (if A=1 then B=3, linear); in comparisson to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000._
+
+
+
 
 <br>
 
-#### Measuring periodicity
+#### Measuring periodicity (MAS)
+
 
 From ref [1]: _MAS is useful, for example, for detecting periodic relationships with unknown frequencies that vary over time_
 
+```{r}
+births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+
+d_births=data.frame(time=(1:length(birthstimeseries)),births=birthstimeseries)
+res_mine_3=mine(d_births)
+
+res_mine_3$MIC
+res_mine_3$MAS
+
+####################
+souvenir <- scan("http://robjhyndman.com/tsdldata/data/fancy.dat")
+d_souvenir=data.frame(time=(1:length(souvenir)),souvenir=souvenir)
+res_mine_4=mine(d_souvenir)
+
+res_mine_4$MIC
+res_mine_4$MAS
+
+####################
+sinx=data.frame(x=1:200,y=sin(1:200))
+res_mine_5=mine(sinx)
+plot(x=sinx$x, y=sinx$y, type="l")
+
+res_mine_5$MIC
+res_mine_5$MAS
+
+
+```
 
 
 
@@ -157,18 +201,16 @@ Further than correlation, MIC measures if there are a _functional relationship_.
 
 <br>
 
-#### Other metrics 
-
-A high value in MAS metric indicates there is a periodic relationship between two variables. Useful when analyzing time series.
 
 #### Just MINE covers this?
 
 We are going to cover only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.
 
 
+<br>
 
-#### References
+### References
 
-[1] Original paper MINE: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
+[1] Original MINE paper: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 
 
