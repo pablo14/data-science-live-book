@@ -36,3 +36,40 @@ hist(x2, xlim=c(0,1), freq=FALSE)
 # discretize into 10 categories and estimate entropy
 y2 = entropy::discretize(x2, numBins=10, r=c(0,1))
 y2
+
+
+#######################
+
+
+births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+
+d_births=data.frame(time=(1:length(births)),births=births)
+plot(births, type = 'l')
+
+res_mine_3=mine(d_births)
+
+res_mine_3$MIC
+res_mine_3$MAS
+
+
+d_births$births_log=log(d_births$births)
+plot(diff(d_births$births_log), type = 'l')
+
+####################
+souvenir <- scan("http://robjhyndman.com/tsdldata/data/fancy.dat")
+d_souvenir=data.frame(time=(1:length(souvenir)),souvenir=souvenir)
+res_mine_4=mine(d_souvenir)
+
+res_mine_4$MIC[,1]
+res_mine_4$MAS[,1]
+
+####################
+sinx=data.frame(x=1:200,y=sin(1:200))
+res_mine_5=mine(sinx, alpha = 1)
+plot(x=sinx$x, y=sinx$y, type="l")
+
+res_mine_5$MIC
+res_mine_5$MAS
+
+
+

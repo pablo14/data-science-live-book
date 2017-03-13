@@ -1,4 +1,4 @@
-Correlation and Information Theory
+Correlation and relationship
 =====
 
 ### Overview
@@ -59,17 +59,18 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 
 #### An example in R: Finding reliable variables
 
-```{r}
+```{r, message=FALSE}
 library(funModeling)
 library(minerva)
 library(ggplot2)
+library(dplyr)
 options(scipen=999)
 
 # Important: If you recieve this message `Error: Missing values present in input variable 'x'. Consider using use = 'pairwise.complete.obs'.` is because data has missing values.
 
 x=seq(0, 20, length.out=500)
 df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
-ggplot(df_exp, aes(x=x, y=y)) + geom_line()
+ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()
 
 # position [1,2] contains the correlation of both variables, excluding the correlation measure of each variable against itself.
 
@@ -86,7 +87,7 @@ sprintf("MIC: %s", res_mine$MIC[1,2])
 
 <br>
 
-#### Analysis 
+### Analysis 
 
 The `MIC=1` indicates there is a perfect correlation between the two variables. If we were doing **feature engineering** this variable should be included.
 
@@ -100,7 +101,7 @@ But let's continue with other examples...
 
 <br>
 
-#### Adding noise
+### Adding noise
 
 Noise is an undesire signal adding to the original one. In machine learning noise helps the model to get confuse. Concretly: two identical input cases -for example customers- have different outcomes -one buy and the other doesn't-.
 
@@ -108,19 +109,20 @@ Now we are going to add some noise creating the `y_noise_1` variable.
 
 ```{r}
 df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
-ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line()
+ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color='steelblue') + theme_minimal()
 ```
 
 Calculating againg the correlation and MIC, printing in both cases the complete matrix, which shows the correlation/MIC metric of each input variable against all the others including themself.
 
 ```{r}
 res_R2=cor(df_exp)^2
+
 res_mine_2=mine(df_exp)
 
-print('****** R2 ******')
+## R2 
 res_R2
 
-print('****** MIC ******')
+## MIC 
 res_mine_2$MIC
 
 ```
@@ -134,7 +136,7 @@ R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%).
 
 <br>
 
-#### Measuring non-linearity (MICR2)
+### Measuring non-linearity (MICR2)
 
 `mine` function returns several metrics, we checked only **MIC**, but due to the nature of the algorithm (you can check the original paper at ref. [1]), it computes more interesting indicators. Check them all by inspecting `res_mine_2` object.
 
@@ -153,59 +155,83 @@ Non-linear relationships are harder to modelize, even more using a linear algori
 
 Imagine we need to explain the relationship to other person, we'll need more details to explain it. It's easier to say: _"A increases as B increases and the ratio is always 3x"_ (if A=1 then B=3, linear); in comparisson to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000._
 
+```{r, message=FALSE}
+x=df_exp$x
+df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
 
+res_mine_3=mine(df_example)
 
+results_linear=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,3],round(res_mine_3$MICR2[1,3],2))
+
+results_exp=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,2],round(res_mine_3$MICR2[1,2],4))
+
+library(gridExtra)
+p_exp=ggplot(df_example, aes(x=x, y=y_exp)) + geom_line(color='steelblue') + annotate("text", x = 11, y =0.4, label = results_exp) + theme_minimal()
+p_linear=ggplot(df_example, aes(x=x, y=y_linear)) + geom_line(color='steelblue') + annotate("text", x = 8, y = 55, label = results_linear) + theme_minimal()
+grid.arrange(p_exp,p_linear,ncol=2)
+```
 
 <br>
 
-#### Measuring periodicity (MAS)
+Both plots shows a perfect correlation (or relationship), holding a MIC=1.
+Regarding non-linearity, MICR2 behaves as expected, in `y_exp`=0.6101, and in `y_linear`=0. 
 
+This point is important since the **MIC behaves equals to R2 does in linear relationships**, plus it adapts quite well to **non-linear** relationships as we saw before, retrieving an specific score metric (`MICR2`) to profile the relationship. 
 
-From ref [1]: _MAS is useful, for example, for detecting periodic relationships with unknown frequencies that vary over time_
+<br>
+
+### Measuring non-monotonicity in time series (MAS)
+
+MINE can also help us to profile time series regarding its non-monotonicity with **MAS** (maximun asimetry score).
+
+A monotonic serie is such it never changes its tendency, it always goes up or down. More on this on ref [3].
+
+Following example simualtes two time series, one not-monotonic `y_1` and the other monotonic `y_2`.
 
 ```{r}
-births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+# creating sample data (simulating time series)
+time_x=sort(runif(n=1000, min=0, max=1))
+y_1=4*(time_x-0.5)^2
+y_2=4*(time_x-0.5)^3
 
-d_births=data.frame(time=(1:length(birthstimeseries)),births=birthstimeseries)
-res_mine_3=mine(d_births)
+# Calculating MAS for both series
+mas_y1=round(mine(time_x,y_1)$MAS,2)
+mas_y2=mine(time_x,y_2)$MAS
 
-res_mine_3$MIC
-res_mine_3$MAS
+df_mono=data.frame(time_x=time_x, y_1=y_1, y_2=y_2)
 
-####################
-souvenir <- scan("http://robjhyndman.com/tsdldata/data/fancy.dat")
-d_souvenir=data.frame(time=(1:length(souvenir)),souvenir=souvenir)
-res_mine_4=mine(d_souvenir)
+p_y_1=ggplot(df_mono, aes(x=time_x, y=y_1)) + geom_line(color='steelblue') + theme_minimal()  + annotate("text", x = 0.45, y =0.75, label = sprintf("MAS=%s (goes down \n and up => not-monotonic)", mas_y1))
 
-res_mine_4$MIC
-res_mine_4$MAS
+p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + theme_minimal() + annotate("text", x = 0.43, y =0.35, label = sprintf("MAS=%s (goes up => monotonic)", mas_y2))
 
-####################
-sinx=data.frame(x=1:200,y=sin(1:200))
-res_mine_5=mine(sinx)
-plot(x=sinx$x, y=sinx$y, type="l")
-
-res_mine_5$MIC
-res_mine_5$MAS
-
+grid.arrange(p_y_1,p_y_2,ncol=2)
 
 ```
 
 
+Summary:  
+
+* MAS ~ 0 indicates monotonic function
+* MAS ~ 1 indicates not-monotonic function
 
 <br>
 
-#### A really important issue
+### Correlation on categorical (and binary) variables
+
+
+
+### A really important issue
 
 Further than correlation, MIC measures if there are a _functional relationship_. In this case the variable `y` is generated directly from a negative exponential function. In other words, a high MIC indicates that a function can generate the variable thus is likely to find a predictive model. 
 
 <br>
 
 
-#### Just MINE covers this?
+### Just MINE covers this?
 
 We are going to cover only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.
 
+help(mine) and run examples.
 
 <br>
 
@@ -213,4 +239,6 @@ We are going to cover only MINE suite, but there are other algortihms related to
 
 [1] Original MINE paper: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 
+[2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
 
+[3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
