@@ -15,9 +15,15 @@ library(knitr)
 ```
 
 
-```{r lib, results="hide"}
-## Loading funModeling !
-suppressMessages(library(funModeling))
+```{r lib, message=F, results="hide"}
+## Loading needed libraries
+library(funModeling)
+library(minerva)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+options(scipen=999)
+
 data(heart_disease)
 ```
 
@@ -60,13 +66,6 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 #### An example in R: Finding reliable variables
 
 ```{r, message=FALSE}
-library(funModeling)
-library(minerva)
-library(ggplot2)
-library(dplyr)
-options(scipen=999)
-
-# Important: If you recieve this message `Error: Missing values present in input variable 'x'. Consider using use = 'pairwise.complete.obs'.` is because data has missing values.
 
 x=seq(0, 20, length.out=500)
 df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
@@ -82,12 +81,15 @@ sprintf("R2: %s", round(res_cor_R2,2))
 res_mine=mine(df_exp)
 sprintf("MIC: %s", res_mine$MIC[1,2])
 
+# Important: If you recieve this message `Error: Missing values present in input variable 'x'. Consider using use = 'pairwise.complete.obs'.` is because data has missing values.
+
+
 ```
 **MIC** value goes from 0 to 1. Being 0 no correlation and 1 highest correlation. The intepretation is the same as the R squared.
 
 <br>
 
-### Analysis 
+#### Analysis 
 
 The `MIC=1` indicates there is a perfect correlation between the two variables. If we were doing **feature engineering** this variable should be included.
 
@@ -133,8 +135,9 @@ R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%).
 
 **Conclusion:** MIC reflects a noisy relationship much better than R2 and it's helpful to find correlated associations. 
 
-**In practice:** To generate data based on a function is only for teaching purposes. But the concept of noisy in variables is quite common in almost every data set. Machine learning models deal with this noise, by infering the _real_ shape of data.
-It's quite useful to use the MIC measure to get a sense about the information present in a relationship.
+**In practice:** To generate data based on a function is only for teaching purposes. But the concept of noisy in variables is quite common in _almost_ **every data set**, no matter its source. Machine learning models deal with this noise, by approaching to the _real_ shape of data.
+
+It's quite useful to use the MIC measure to get a sense about the information present in a relationship between two variables.
 
 <br>
 
@@ -164,6 +167,7 @@ df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
 ## getting mine metrics
 res_mine_3=mine(df_example)
 
+## generating labels to print the results
 results_linear=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,3],round(res_mine_3$MICR2[1,3],2))
 
 results_exp=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,2],round(res_mine_3$MICR2[1,2],4))
@@ -205,8 +209,10 @@ y_2=4*(time_x-0.5)^3
 mas_y1=round(mine(time_x,y_1)$MAS,2)
 mas_y2=mine(time_x,y_2)$MAS
 
+## Putting all together
 df_mono=data.frame(time_x=time_x, y_1=y_1, y_2=y_2)
 
+## Plotting
 p_y_1=ggplot(df_mono, aes(x=time_x, y=y_1)) + geom_line(color='steelblue') + theme_minimal()  + annotate("text", x = 0.45, y =0.75, label = sprintf("MAS=%s (goes down \n and up => not-monotonic)", mas_y1))
 
 p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + theme_minimal() + annotate("text", x = 0.43, y =0.35, label = sprintf("MAS=%s (goes up => monotonic)", mas_y2))
@@ -215,33 +221,78 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 
 ```
 
+<br>
 
-Summary:  
+#### A more real example
+
+Consider the following case which contains three time series: `y1`, `y2` and `y3`. They can be profilied in terms of its non-monotonicty, or overall growth trend.
+
+```{r}
+## reading data
+df_time_series=read.delim(file="df_time.txt")
+
+## converting to long format so they can be plotted
+df_time_series_long=melt(df_time_series, id="time")
+
+## Plotting
+plot_time_series=ggplot(data=df_time_series_long,
+       aes(x=time, y=value, colour=variable)) +
+       geom_line() + theme_minimal()  + scale_color_brewer(palette="Set2")
+
+plot_time_series
+```
+
+```{r}
+# Calculating and printing MAS values for time series data
+mine_ts=mine(df_time_series)
+mine_ts$MAS 
+```
+
+<br>
+
+We need to look at `time` column, so we've got the MAS value of each series regarding the time.
+`y2` is the most not-monotonic series, and it can be confirmed by looking at it. It seems to be always up.
+
+**MAS summary:**
 
 * MAS ~ 0 indicates monotonic function
-* MAS ~ 1 indicates non-monotonic function
+* MAS ~ 1 indicates non-monotonic function (_always_ up or down)
+
 
 <br>
 
 ### Correlation between time series
 
+MIC metric can also measure the **correlation in time series**, it is not a general purpose tool but can be helpful to quickly compare different series.
+
+This section is based on the same data we used in MAS example.
+
 ```{r}
-
-df_time_series=read.delim(file="df_time.txt")
-
-mine(df_time_series)$MIC
-mine(df_time_series)$MAS
-
-library("reshape2")
-
-df_time_series_long=melt(df_time_series, id="time")
-
-ggplot(data=df_time_series_long,
-       aes(x=time, y=value, colour=variable)) +
-       geom_line() + theme_minimal()
-
-
+## printing again the 3-time series
+plot_time_series
+# Printing MIC values
+mine_ts$MIC
 ```
+<br>
+
+Now we need to look at `y1` column. According to MIC measure, we can confirm the same that it's shown in last plot: 
+
+`y1` is more similar to `y3` (MIC=0.709) than what is `y2` (MIC=0.61). 
+
+#### Going further: Dynamic Time Wrapping
+
+MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping target="blank">dynamic time wrapping</a> technique.
+
+Let's use an image to catch up the concept visually:
+
+<img src="dynamic_time_wrapping.png" alt="time series clustering with dynamic time wrapping" width="350px">
+
+_Image source: Ref [4]._
+
+A nice implementation in R: <a href="http://dtw.r-forge.r-project.org/">dtw package</a> 
+
+Finding correlations between time series is other way of performing **time series clustering**.
+
 <br>
 
 ### Correlation on categorical (and binary) variables
@@ -265,8 +316,7 @@ help(mine) and run examples.
 
 ### References
 
-[1] Original MINE paper: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
-
-[2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
-
-[3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
+* [1] Original MINE paper: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
+* [2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
+* [3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
+* [4] Dynamic time wrapping <a hreg="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
