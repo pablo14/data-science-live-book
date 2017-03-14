@@ -115,12 +115,12 @@ ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color='steelblue') + theme_min
 Calculating againg the correlation and MIC, printing in both cases the complete matrix, which shows the correlation/MIC metric of each input variable against all the others including themself.
 
 ```{r}
+## calculating R squared
 res_R2=cor(df_exp)^2
-
-res_mine_2=mine(df_exp)
-
-## R2 
 res_R2
+
+## calculating mine
+res_mine_2=mine(df_exp)
 
 ## MIC 
 res_mine_2$MIC
@@ -131,8 +131,10 @@ Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and
 
 R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%). 
 
-**Conclusion:** MIC reflects a noisy relationship much better than R2. Due to the nature of noise, it is very common to find it on a regular basis.
+**Conclusion:** MIC reflects a noisy relationship much better than R2 and it's helpful to find correlated associations. 
 
+**In practice:** To generate data based on a function is only for teaching purposes. But the concept of noisy in variables is quite common in almost every data set. Machine learning models deal with this noise, by infering the _real_ shape of data.
+It's quite useful to use the MIC measure to get a sense about the information present in a relationship.
 
 <br>
 
@@ -142,7 +144,7 @@ R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%).
 
 One of them is `MICR2`, used as a measured of **non-linearity**. It is calculated by doing the: MIC - R2. Since R2 measures the linearity, a high `MICR2` would indicate a non-linear relationship.
 
-We can check it by calculating the micr2 manually, following two matrix returns the same result:
+We can check it by calculating the MICR2 manually, following two matrix returns the same result:
 
 ```{r, eval=FALSE}
 # MIC r2: non-linearity metric
@@ -153,20 +155,25 @@ round(res_mine_2$MIC-res_R2, 3)
 
 Non-linear relationships are harder to modelize, even more using a linear algorithm like decision trees or linear regression. 
 
-Imagine we need to explain the relationship to other person, we'll need more details to explain it. It's easier to say: _"A increases as B increases and the ratio is always 3x"_ (if A=1 then B=3, linear); in comparisson to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000._
+Imagine we need to explain the relationship to other person, we'll need more details to explain it. It's easier to say: _"A increases as B increases and the ratio is always 3x"_ (if A=1 then B=3, linear); in comparisson to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000."_
 
 ```{r, message=FALSE}
-x=df_exp$x
+## creating data exampe
 df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
 
+## getting mine metrics
 res_mine_3=mine(df_example)
 
 results_linear=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,3],round(res_mine_3$MICR2[1,3],2))
 
 results_exp=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,2],round(res_mine_3$MICR2[1,2],4))
 
+## Plotting results ##
 library(gridExtra)
+## Creating plot exponential variable
 p_exp=ggplot(df_example, aes(x=x, y=y_exp)) + geom_line(color='steelblue') + annotate("text", x = 11, y =0.4, label = results_exp) + theme_minimal()
+
+## Creating plot linear variable
 p_linear=ggplot(df_example, aes(x=x, y=y_linear)) + geom_line(color='steelblue') + annotate("text", x = 8, y = 55, label = results_linear) + theme_minimal()
 grid.arrange(p_exp,p_linear,ncol=2)
 ```
@@ -212,13 +219,34 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 Summary:  
 
 * MAS ~ 0 indicates monotonic function
-* MAS ~ 1 indicates not-monotonic function
+* MAS ~ 1 indicates non-monotonic function
 
+<br>
+
+### Correlation between time series
+
+```{r}
+
+df_time_series=read.delim(file="df_time.txt")
+
+mine(df_time_series)$MIC
+mine(df_time_series)$MAS
+
+library("reshape2")
+
+df_time_series_long=melt(df_time_series, id="time")
+
+ggplot(data=df_time_series_long,
+       aes(x=time, y=value, colour=variable)) +
+       geom_line() + theme_minimal()
+
+
+```
 <br>
 
 ### Correlation on categorical (and binary) variables
 
-
+<br>
 
 ### A really important issue
 
