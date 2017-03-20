@@ -1,4 +1,4 @@
-Correlation and relationship
+Correlation and Information
 =====
 
 ### Overview
@@ -6,7 +6,7 @@ Correlation and relationship
 
 ### Linear correlation (classical)
 
-It retrieves the well known `R statistic` (or Pearson coefficient), which measures **linear** correlation  for all numeric variables _(skipping the string ones)_.
+It retrieves the well known `R statistic` (or Pearson coefficient), which measures **linear** correlation for all numeric variables _(skipping the string ones)_.
 
 
 ```{r ,results="hide", echo=FALSE}
@@ -22,12 +22,12 @@ library(minerva)
 library(ggplot2)
 library(dplyr)
 library(reshape2)
-options(scipen=999)
-
-data(heart_disease)
+library(gridExtra)
+options(scipen=999) # disable cientific notation
 ```
 
 ```{r}
+data(heart_disease)
 correlation_table(data=heart_disease, str_target="has_heart_disease")
 ```
 
@@ -38,19 +38,37 @@ Squaring this number returns the `R squared` statistic (aka `R2`), which goes fr
 
 **R statistic is highly influenced by outliers and non-linear relationships.**
 
-Outliers can be treated with `prep_outliers` function, present in this package.
+Outliers can be treated with `prep_outliers` function, present in this package. TODO: exand it
+
+<br>
+
+#### Correlation on Anscombe Quartet
 
 Take a look at the **Anscombe's quartet**. These 4 relationships are quite different, but all of them have the same R2: 0.816.
 
+```{r, message=FALSE}
+## Reading anscombe quartet data
+anscombe_data=read.delim(file="anscombe_quartet.txt",header = T)
 
-```{r, out.width = 400, fig.retina = NULL, echo=F}
-library(knitr)
-include_graphics("anscombe_quartet.png")
+## calculating the correlation (R squared, or R2) for every pair, every value is the same: 0.86.
+cor_1=cor(anscombe_data$x1, anscombe_data$y1)
+cor_2=cor(anscombe_data$x2, anscombe_data$y2)
+cor_3=cor(anscombe_data$x3, anscombe_data$y3)
+cor_4=cor(anscombe_data$x4, anscombe_data$y4)
+
+## defining the function
+plot_anscombe <- function(x, y, value, type)
+{
+  #x="x1"; y="y1"
+  p=ggplot(anscombe_data, aes_string(x,y))  + geom_smooth(method='lm', fill=NA) + geom_point(aes(colour=factor(1), fill = factor(1)), shape=21, size = 2) + ylim(2, 13)+ xlim(4, 16) + theme_minimal() + theme(legend.position="none") +  annotate("text", x = 12, y =4.5, label = sprintf("%s: %s", type, round(value,2)))  
+  return(p)
+}
+
+## plotting in a 2x2 grid
+grid.arrange(plot_anscombe("x1", "y1", cor_1, "R2"), plot_anscombe("x2", "y2", cor_2, "R2"), plot_anscombe("x3", "y3", cor_3, "R2"), plot_anscombe("x4", "y4", cor_4, "R2"), ncol=2, nrow=2)
+
 ```
 
-
-
-Last plot, and more info about correlation can be found at: [Correlation and dependence](https://en.wikipedia.org/wiki/Correlation_and_dependence)
 
 <br>
 
@@ -58,12 +76,11 @@ Last plot, and more info about correlation can be found at: [Correlation and dep
 
 This relationships can be measure better with <a href="https://en.wikipedia.org/wiki/Information_theory">Information Theory</a> conepts. One of the many algortihms to measure correlation based on this is: **MINE**, acronym for: Maximal Information-based nonparametric exploration.
 
-The implementation in R can be found in <a href="https://cran.r-project.org/web/packages/minerva/index.html">minerva</a> package.
-
+The implementation in R can be found in <a href="https://cran.r-project.org/web/packages/minerva/index.html">minerva</a> package. It's also available in other languages like Python.
 
 <br>
 
-#### An example in R: Finding reliable variables
+#### An example in R: A perfect relationship
 
 ```{r, message=FALSE}
 
@@ -89,7 +106,7 @@ sprintf("MIC: %s", res_mine$MIC[1,2])
 
 <br>
 
-#### Analysis 
+#### Results analysis 
 
 The `MIC=1` indicates there is a perfect correlation between the two variables. If we were doing **feature engineering** this variable should be included.
 
@@ -121,10 +138,10 @@ Calculating againg the correlation and MIC, printing in both cases the complete 
 res_R2=cor(df_exp)^2
 res_R2
 
-## calculating mine
+## Calculating mine
 res_mine_2=mine(df_exp)
 
-## MIC 
+## Printing MIC 
 res_mine_2$MIC
 
 ```
@@ -135,7 +152,8 @@ R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%).
 
 **Conclusion:** MIC reflects a noisy relationship much better than R2 and it's helpful to find correlated associations. 
 
-**In practice:** To generate data based on a function is only for teaching purposes. But the concept of noisy in variables is quite common in _almost_ **every data set**, no matter its source. Machine learning models deal with this noise, by approaching to the _real_ shape of data.
+**About last example:** Generate data based on a function is only for teaching purposes. But the concept of noise in variables is quite common in _almost_ **every data set**, no matter its source. You don't have to do anything to add noise to variables, it's already there.
+Machine learning models deal with this noise, by approaching to the _real_ shape of data.
 
 It's quite useful to use the MIC measure to get a sense about the information present in a relationship between two variables.
 
@@ -158,7 +176,7 @@ round(res_mine_2$MIC-res_R2, 3)
 
 Non-linear relationships are harder to modelize, even more using a linear algorithm like decision trees or linear regression. 
 
-Imagine we need to explain the relationship to other person, we'll need more details to explain it. It's easier to say: _"A increases as B increases and the ratio is always 3x"_ (if A=1 then B=3, linear); in comparisson to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000."_
+Imagine we need to explain the relationship to other person, we'll need "more words" to do it. . It's easier to say: _"A increases as B increases and the ratio is always 3x"_ (if A=1 then B=3, linear); in comparisson to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000."_
 
 ```{r, message=FALSE}
 ## creating data exampe
@@ -168,12 +186,11 @@ df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
 res_mine_3=mine(df_example)
 
 ## generating labels to print the results
-results_linear=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,3],round(res_mine_3$MICR2[1,3],2))
+results_linear=sprintf("MIC: %s \n MIC-R2 (non-linearity): %s", res_mine_3$MIC[1,3],round(res_mine_3$MICR2[1,3],2))
 
-results_exp=sprintf("MIC: %s \n MICR2 (non-linearity): %s", res_mine_3$MIC[1,2],round(res_mine_3$MICR2[1,2],4))
+results_exp=sprintf("MIC: %s \n MIC-R2 (non-linearity): %s", res_mine_3$MIC[1,2],round(res_mine_3$MICR2[1,2],4))
 
-## Plotting results ##
-library(gridExtra)
+## Plotting results 
 ## Creating plot exponential variable
 p_exp=ggplot(df_example, aes(x=x, y=y_exp)) + geom_line(color='steelblue') + annotate("text", x = 11, y =0.4, label = results_exp) + theme_minimal()
 
@@ -187,11 +204,40 @@ grid.arrange(p_exp,p_linear,ncol=2)
 Both plots shows a perfect correlation (or relationship), holding a MIC=1.
 Regarding non-linearity, MICR2 behaves as expected, in `y_exp`=0.6101, and in `y_linear`=0. 
 
-This point is important since the **MIC behaves equals to R2 does in linear relationships**, plus it adapts quite well to **non-linear** relationships as we saw before, retrieving an specific score metric (`MICR2`) to profile the relationship. 
+This point is important since the **MIC behaves like R2 does in linear relationships**, plus it adapts quite well to **non-linear** relationships as we saw before, retrieving an specific score metric (`MICR2`) to profile the relationship. 
 
 <br>
 
-### Measuring non-monotonicity in time series (MAS)
+### Measuring infromation on Anscombe Quartet
+
+Remember the example we review at the begining? Every pair of Anscombe Quartet returns an **R2 of 0.86**. But based on its plots it was clearly that not every pair exhibits neither a good correlation nor a similar distribution of `x` and `y`.
+
+But what happen if we measure the relationship with a metric based on Information Theory? Yes, MIC again.
+
+```{r}
+## calculating the MIC for every pair
+mic_1=mine(anscombe_data$x1, anscombe_data$y1)$MIC
+mic_2=mine(anscombe_data$x2, anscombe_data$y2)$MIC
+mic_3=mine(anscombe_data$x3, anscombe_data$y3)$MIC
+mic_4=mine(anscombe_data$x4, anscombe_data$y4)$MIC
+
+## plotting MIC in a 2x2 grid
+grid.arrange(plot_anscombe("x1", "y1", mic_1, "MIC"), plot_anscombe("x2", "y2", mic_2,"MIC"), plot_anscombe("x3", "y3", mic_3,"MIC"), plot_anscombe("x4", "y4", mic_4,"MIC"), ncol=2, nrow=2)
+
+## calculating the MIC for every pair
+mic_r2_1=mine(anscombe_data$x1, anscombe_data$y1, alpha = 1)$`MIC-R2`
+mic_r2_2=mine(anscombe_data$x2, anscombe_data$y2, alpha = 1)$`MIC-R2`
+mic_r2_3=mine(anscombe_data$x3, anscombe_data$y3, alpha = 1)$`MIC-R2`
+mic_r2_4=mine(anscombe_data$x4, anscombe_data$y4, alpha = 1)$`MIC-R2`
+
+df_mic_r2=data.frame(pair=c(1,2,3,4), mic_r2=c(mic_r2_1,mic_r2_2,mic_r2_3,mic_r2_4)) %>% arrange(-mic_r2)
+df_mic_r2
+
+```
+
+<br>
+
+### Measuring non-monotonicity: MAS measure
 
 MINE can also help us to profile time series regarding its non-monotonicity with **MAS** (maximun asimetry score).
 
@@ -223,7 +269,7 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 
 <br>
 
-#### A more real example
+#### A more real example: Time Series
 
 Consider the following case which contains three time series: `y1`, `y2` and `y3`. They can be profilied in terms of its non-monotonicty, or overall growth trend.
 
@@ -272,6 +318,7 @@ This section is based on the same data we used in MAS example.
 plot_time_series
 # Printing MIC values
 mine_ts$MIC
+
 ```
 <br>
 
@@ -279,9 +326,11 @@ Now we need to look at `y1` column. According to MIC measure, we can confirm the
 
 `y1` is more similar to `y3` (MIC=0.709) than what is `y2` (MIC=0.61). 
 
+<br>
+
 #### Going further: Dynamic Time Wrapping
 
-MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping target="blank">dynamic time wrapping</a> technique.
+MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping target="blank">dynamic time wrapping</a> technique (**DTW**).
 
 Let's use an image to catch up the concept visually:
 
@@ -289,13 +338,100 @@ Let's use an image to catch up the concept visually:
 
 _Image source: Ref [4]._
 
-A nice implementation in R: <a href="http://dtw.r-forge.r-project.org/">dtw package</a> 
+Last image shows two different approache to compare time series, the **euclidean** is more similar to MIC measure. While DTW can track similarities ocurring in different times.
+
+A nice implementation in **R**: <a href="http://dtw.r-forge.r-project.org/">dtw package</a>.
 
 Finding correlations between time series is other way of performing **time series clustering**.
 
 <br>
 
 ### Correlation on categorical (and binary) variables
+
+MINE -and many other algorithms- only works with numerical data. We need to do a **data preparation** trick, converting every categorical variable into flag (or dummy variable).
+
+If the original categorical variable has 30 possible values, it will result in 30 new columns holding the value `0` or `1`, when `1` represents the presence of that category in the row.
+
+
+If we use package `caret` from R, this conversion only takes 2 lines of code:
+
+```{r, message=FALSE}
+library(caret)
+
+## selecting just a few variables
+heart_disease_2=select(heart_disease, max_heart_rate, oldpeak, thal, chest_pain,exer_angina, has_heart_disease)
+#heart_disease_2=heart_disease
+
+## it converts all categorical variables (factor and character for R) into numerical variables
+## skipping the original so the data is ready to use
+dmy = dummyVars(" ~ .", data = heart_disease_2)
+heart_disease_3 = data.frame(predict(dmy, newdata = heart_disease))
+
+## please dont omit NA without an impact analysis first
+heart_disease_4=na.omit(heart_disease_3)
+
+## compute the mic!
+mine_res_hd=mine(heart_disease_4)
+
+```
+
+Printing a sample...
+
+```{r}
+mine_res_hd$MIC[1:5,1:5]
+```
+
+<br>
+
+#### Printing some fancy plots! 
+
+We'll use `corrplot` package in R which can plot a `cor` object (classical correlation matrix), or any other matrix. We will plot **MIC** matrix in this case, but any other can be used as well, for example **MAS**.
+
+First plot contains 
+
+```{r}
+library(corrplot) ## library wto plot that matrix
+library(RColorBrewer) # to use the color pallete brewer.pal
+
+
+par(pin=c(7,7))              ##  (width, height) in inches    
+par(omi=c(0,0,0.2,0))        ## (bottom, left, top, right)  in inches  
+
+## Correlation plot with circles
+corrplot(mine_res_hd$MIC, method="circle",col=brewer.pal(n=10, name="PuOr"),
+         type="upper", # only display upper diagonal
+         order="hclust", # order the matrix based on its correlation
+         tl.col="red", tl.cex = 0.9, tl.srt=45, #label color, size and rotation
+         diag=FALSE, # dont print diagonal (var against itself)
+         is.corr = F # accept a any matrix, mic in this case (not a correlation element),
+        
+)
+
+## Correlation plot with color and correlation MIC
+corrplot(mine_res_hd$MIC, method="color",
+         type="upper", order="hclust", number.cex=0.6,
+         addCoef.col = "black", # Add coefficient of correlation
+         tl.col="red", tl.srt=90, tl.cex = 0.9,
+         diag=FALSE, is.corr = F 
+)
+
+```
+
+```
+
+### Calculating correlation against one variable
+
+```{r}
+
+#####
+mine_res_hd=mine(heart_disease_4, master = ncol(heart_disease_4))
+
+a=data.frame(a=mine_res_hd$MIC)
+
+arrange(data.frame(a=mine_res_hd$MIC), -has_heart_disease.yes
+)
+
+```
 
 <br>
 
