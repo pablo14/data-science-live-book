@@ -48,7 +48,9 @@ Take a look at the **Anscombe's quartet**. These 4 relationships are quite diffe
 
 ```{r, message=FALSE}
 ## Reading anscombe quartet data
-anscombe_data=read.delim(file="anscombe_quartet.txt",header = T)
+anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/selecting_best_variables/anscombe_quartet.txt", header = T)
+
+anscombe_data=read.delim(file="anscombe_quartet.txt", header = T)
 
 ## calculating the correlation (R squared, or R2) for every pair, every value is the same: 0.86.
 cor_1=cor(anscombe_data$x1, anscombe_data$y1)
@@ -60,7 +62,7 @@ cor_4=cor(anscombe_data$x4, anscombe_data$y4)
 plot_anscombe <- function(x, y, value, type)
 {
   #x="x1"; y="y1"
-  p=ggplot(anscombe_data, aes_string(x,y))  + geom_smooth(method='lm', fill=NA) + geom_point(aes(colour=factor(1), fill = factor(1)), shape=21, size = 2) + ylim(2, 13)+ xlim(4, 16) + theme_minimal() + theme(legend.position="none") +  annotate("text", x = 12, y =4.5, label = sprintf("%s: %s", type, round(value,2)))  
+  p=ggplot(anscombe_data, aes_string(x,y))  + geom_smooth(method='lm', fill=NA) + geom_point(aes(colour=factor(1), fill = factor(1)), shape=21, size = 2) + ylim(2, 13)+ xlim(4, 19) + theme_minimal() + theme(legend.position="none") +  annotate("text", x = 12, y =4.5, label = sprintf("%s: %s", type, round(value,2)))  
   return(p)
 }
 
@@ -69,6 +71,11 @@ grid.arrange(plot_anscombe("x1", "y1", cor_1, "R2"), plot_anscombe("x2", "y2", c
 
 ```
 
+4-different plots, having the same `mean` for every `x` and `y` (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by `summary(anscombe_data)`. 
+
+This is why is so important to plot relationships when analyzing correlations.
+
+We'll back on this data further, it can be improved! First we'll introduce some concepts of information theory.
 
 <br>
 
@@ -102,6 +109,7 @@ sprintf("MIC: %s", res_mine$MIC[1,2])
 
 
 ```
+
 **MIC** value goes from 0 to 1. Being 0 no correlation and 1 highest correlation. The intepretation is the same as the R squared.
 
 <br>
@@ -159,7 +167,7 @@ It's quite useful to use the MIC measure to get a sense about the information pr
 
 <br>
 
-### Measuring non-linearity (MICR2)
+### Measuring non-linearity (MIC-R2)
 
 `mine` function returns several metrics, we checked only **MIC**, but due to the nature of the algorithm (you can check the original paper at ref. [1]), it computes more interesting indicators. Check them all by inspecting `res_mine_2` object.
 
@@ -216,24 +224,39 @@ But what happen if we measure the relationship with a metric based on Informatio
 
 ```{r}
 ## calculating the MIC for every pair
-mic_1=mine(anscombe_data$x1, anscombe_data$y1)$MIC
-mic_2=mine(anscombe_data$x2, anscombe_data$y2)$MIC
-mic_3=mine(anscombe_data$x3, anscombe_data$y3)$MIC
-mic_4=mine(anscombe_data$x4, anscombe_data$y4)$MIC
+mic_1=mine(anscombe_data$x1, anscombe_data$y1, alpha=0.8)$MIC
+mic_2=mine(anscombe_data$x2, anscombe_data$y2, alpha=0.8)$MIC
+mic_3=mine(anscombe_data$x3, anscombe_data$y3, alpha=0.8)$MIC
+mic_4=mine(anscombe_data$x4, anscombe_data$y4, alpha=0.8)$MIC
 
 ## plotting MIC in a 2x2 grid
 grid.arrange(plot_anscombe("x1", "y1", mic_1, "MIC"), plot_anscombe("x2", "y2", mic_2,"MIC"), plot_anscombe("x3", "y3", mic_3,"MIC"), plot_anscombe("x4", "y4", mic_4,"MIC"), ncol=2, nrow=2)
 
-## calculating the MIC for every pair
-mic_r2_1=mine(anscombe_data$x1, anscombe_data$y1, alpha = 1)$`MIC-R2`
-mic_r2_2=mine(anscombe_data$x2, anscombe_data$y2, alpha = 1)$`MIC-R2`
-mic_r2_3=mine(anscombe_data$x3, anscombe_data$y3, alpha = 1)$`MIC-R2`
-mic_r2_4=mine(anscombe_data$x4, anscombe_data$y4, alpha = 1)$`MIC-R2`
 
-df_mic_r2=data.frame(pair=c(1,2,3,4), mic_r2=c(mic_r2_1,mic_r2_2,mic_r2_3,mic_r2_4)) %>% arrange(-mic_r2)
-df_mic_r2
 
 ```
+
+As you may notice we increased the `alpha` value to 0.8, this is a good practice -according to the documentation- when we analyzed small samples. Default value is 0.6 and its maximun 1.
+
+In this case, MIC value spotted the most spourious relationship in the pair `x4 - y4`. Probably due to the small amount of cases per plot (11 rows) the MIC was the same for all the others pairs. Having more cases will show different MIC values.
+
+But when combining the MIC with **MIC-R2** (non-linearity measurement) new insights appears:
+
+```{r}
+## Calculating the MIC for every pair, note the "MIC-R2" object has the hyphen when the input are two vectors, unlike when it takes a data frame which is "MICR2".
+mic_r2_1=mine(anscombe_data$x1, anscombe_data$y1, alpha = 0.8)$`MIC-R2`
+mic_r2_2=mine(anscombe_data$x2, anscombe_data$y2, alpha = 0.8)$`MIC-R2`
+mic_r2_3=mine(anscombe_data$x3, anscombe_data$y3, alpha = 0.8)$`MIC-R2`
+mic_r2_4=mine(anscombe_data$x4, anscombe_data$y4, alpha = 0.8)$`MIC-R2`
+
+## Ordering according mic_r2
+df_mic_r2=data.frame(pair=c(1,2,3,4), mic_r2=c(mic_r2_1,mic_r2_2,mic_r2_3,mic_r2_4)) %>% arrange(-mic_r2)
+df_mic_r2
+```
+
+
+Ordering decreasingly by its **non-linearity** the results are consisent with the plots: 2 > 3 > 1 > 4.
+Something strange for pair 4, a negative number. This is because MIC is lower than the R2. A relationship that worth to be plotted.
 
 <br>
 
@@ -313,7 +336,7 @@ MIC metric can also measure the **correlation in time series**, it is not a gene
 
 This section is based on the same data we used in MAS example.
 
-```{r}
+```{r, fig.width=3.5, fig.height=2}
 ## printing again the 3-time series
 plot_time_series
 # Printing MIC values
@@ -346,12 +369,11 @@ Finding correlations between time series is other way of performing **time serie
 
 <br>
 
-### Correlation on categorical (and binary) variables
+### Correlation on categorical variables
 
 MINE -and many other algorithms- only works with numerical data. We need to do a **data preparation** trick, converting every categorical variable into flag (or dummy variable).
 
 If the original categorical variable has 30 possible values, it will result in 30 new columns holding the value `0` or `1`, when `1` represents the presence of that category in the row.
-
 
 If we use package `caret` from R, this conversion only takes 2 lines of code:
 
@@ -360,16 +382,18 @@ library(caret)
 
 ## selecting just a few variables
 heart_disease_2=select(heart_disease, max_heart_rate, oldpeak, thal, chest_pain,exer_angina, has_heart_disease)
-#heart_disease_2=heart_disease
+
+## this conversion from categorical to a numeric is merely to have a cleaner plot
+heart_disease_2$has_heart_disease=ifelse(heart_disease_2$has_heart_disease=="yes", 1, 0)
 
 ## it converts all categorical variables (factor and character for R) into numerical variables
 ## skipping the original so the data is ready to use
 dmy = dummyVars(" ~ .", data = heart_disease_2)
-heart_disease_3 = data.frame(predict(dmy, newdata = heart_disease))
+heart_disease_3 = data.frame(predict(dmy, newdata = heart_disease_2))
 
-## please dont omit NA without an impact analysis first
+## please don't omit NA without an impact analysis first, in this case it is not important
 heart_disease_4=na.omit(heart_disease_3)
-
+  
 ## compute the mic!
 mine_res_hd=mine(heart_disease_4)
 
@@ -381,35 +405,36 @@ Printing a sample...
 mine_res_hd$MIC[1:5,1:5]
 ```
 
+Where column `thal.3` takes a value of 1 when `thal=3`.
+
 <br>
 
 #### Printing some fancy plots! 
 
-We'll use `corrplot` package in R which can plot a `cor` object (classical correlation matrix), or any other matrix. We will plot **MIC** matrix in this case, but any other can be used as well, for example **MAS**.
+We'll use `corrplot` package in R which can plot a `cor` object (classical correlation matrix), or any other matrix. We will plot **MIC** matrix in this case, but any other can be used as well, for example **MAS** or other metric that returns an squared matrix of correlations.
 
-First plot contains 
+The two plots are based in the same data but display the correlation in different ways. 
 
 ```{r}
 library(corrplot) ## library wto plot that matrix
 library(RColorBrewer) # to use the color pallete brewer.pal
 
+# hack to visualize the maximun value of the scale excluding the diagonal (var against itself)
+diag(mine_res_hd$MIC)=0
 
-par(pin=c(7,7))              ##  (width, height) in inches    
-par(omi=c(0,0,0.2,0))        ## (bottom, left, top, right)  in inches  
-
-## Correlation plot with circles
+## Correlation plot with circles. 
 corrplot(mine_res_hd$MIC, method="circle",col=brewer.pal(n=10, name="PuOr"),
-         type="upper", # only display upper diagonal
-         order="hclust", # order the matrix based on its correlation
-         tl.col="red", tl.cex = 0.9, tl.srt=45, #label color, size and rotation
+         type="lower", # only display upper diagonal
+         tl.col="red", tl.cex = 0.9, tl.srt=90, #label color, size and rotation
          diag=FALSE, # dont print diagonal (var against itself)
          is.corr = F # accept a any matrix, mic in this case (not a correlation element),
         
 )
 
+
 ## Correlation plot with color and correlation MIC
 corrplot(mine_res_hd$MIC, method="color",
-         type="upper", order="hclust", number.cex=0.6,
+         type="lower", number.cex=0.6,
          addCoef.col = "black", # Add coefficient of correlation
          tl.col="red", tl.srt=90, tl.cex = 0.9,
          diag=FALSE, is.corr = F 
@@ -417,38 +442,130 @@ corrplot(mine_res_hd$MIC, method="color",
 
 ```
 
+Just change the first parameter -`mine_res_hd$MIC`- to the matrix you want and reuse with your data. 
+
+<br>
+
+#### A comment about these kind of plots
+
+They are useful only when the amount of variables is not big. Or if you perform a variable selection first, keeping in mind that every variable should be numerical. 
+
+If there is some categorical variable in the selection you can convert it into numerical first and inspect the relationship between the variables, thus sneak peak how certain values in categorical variables are more related to certain outcome, like in this case.
+
+<br>
+
+#### How about some insights from the plots?
+
+Since the variable to predict is `has_heart_disease`, it appears something interesing, to have a heart disease is more correlated to `thal=3` than to value `thal=6`.
+
+Same analysis for variable `chest_pain`, a value of 4 is more dangerous than a value of 1.
+
+And we can check it with other plot:
+
+```{r, fig.height=2, fig.width=3}
+cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
 ```
 
-### Calculating correlation against one variable
+The likelihood of having a heart disease is 72.9% if the patient has `chest_pain=4`. More than 2x more likely if she/(he) has `chest_pain=1` (72.9 vs 30.4%).
+
+<br>
+
+**Some toughts...**
+
+The data is the same, but the approach to browse it is different. The same goes when we are creating a predictive model, the input data in the _N-dimensional_ space can be approached through different models like support vector machine, a random forest, etc. 
+
+Like a photographer shooting from different angules, or different cameras. The object is always the same, but the perspective gives different information.
+
+Combining raw tables plus different plots gives us a more real and complementary object perspective.
+
+<br>
+
+### Feature engineering based on information theory
+
+There is a complete chapter treating this topic [TODO: ADD LINK]. So in this section we cover a quick overview. 
+
+Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
+
 
 ```{r}
+## Getting the index of the variable to predict: has_heart_disease
+target="has_heart_disease"
+index_target=grep(target, colnames(heart_disease_4))
 
-#####
-mine_res_hd=mine(heart_disease_4, master = ncol(heart_disease_4))
+## master takes the index column number to calculate all the correlations
+mic_predictive=mine(heart_disease_4, master = index_target)$MIC
 
-a=data.frame(a=mine_res_hd$MIC)
+## creating the data frame containing the results, ordering descently by its correlation and excluding the correlation of target vs itself
+df_predictive=data.frame(variable=rownames(mic_predictive), mic=mic_predictive[,1], stringsAsFactors = F) %>% arrange(-mic) %>% filter(variable!=target)
 
-arrange(data.frame(a=mine_res_hd$MIC), -has_heart_disease.yes
-)
+# creating a colorful plot showing importance variable  based on MIC measure
+ggplot(df_predictive, aes(x=reorder(variable, mic),y=mic, fill=variable)) + geom_bar(stat='identity') + coord_flip() +	theme_bw() + xlab("") + ylab("Variable Importance (based on MIC)") + guides(fill=FALSE)
+			
+
 
 ```
 
 <br>
 
-### A really important issue
 
-Further than correlation, MIC measures if there are a _functional relationship_. In this case the variable `y` is generated directly from a negative exponential function. In other words, a high MIC indicates that a function can generate the variable thus is likely to find a predictive model. 
+### But just MINE covers this?
+
+No. We used only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. 
+In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.
+
+In **Python** mutual information can be calculated through scikit-learn, <a href="stackoverflow.com/questions/20491028/optimal-way-to-compute-pairwise-mutual-information-using-numpy" target="blank">here an example</a>.
+
+The concept transcends the tool.
+
+<br>
+
+#### Another correlation example (mutual information)
+
+This time we'll use `infotheo` package, we need to first do a **data preparation** step, applying a `discretize` function (or binning) function present in package. It converts every numerical variable into categorical based on equal frequency criteria. 
+
+Next code will create the correlation matrix as we seen before, but based on the mutual information index. 
+
+```{r, eval=FALSE}
+library(infotheo)
+## discretizing every variable
+heart_disease_4_disc=discretize(heart_disease_4) 
+
+## calculating "correlation" based on mutual information
+heart_info=mutinformation(heart_disease_4_disc, method= "emp")
+
+# hack to visualize the maximun value of the scale excluding the diagonal (var against itself)
+diag(heart_info)=0
+
+## Correlation plot with color and correlation Mutual Information from Infotheo package. This line only retrieves the plot of the right. 
+corrplot(heart_info, method="color",type="lower", number.cex=0.6,addCoef.col = "black", tl.col="red", tl.srt=90, tl.cex = 0.9, diag=FALSE, is.corr = F)
+```
+
+<img src="mic_mutual_info.png" width="700" alt="Comparing MIC and mutual information index">
+
+Correlation score based on mutual information ranks relationships pretty similar to MIC, doesn’t it?
 
 <br>
 
+### Final comments
 
-### Just MINE covers this?
+Further than correlation, MIC or other information metric measure if there is a _functional relationship_. 
+A high MIC value indicates that the relationship between the two variables can be explain through a function, or a predictive model.
 
-We are going to cover only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.
+These methods didn't tell us what is that function nor predictive model. 
 
-help(mine) and run examples.
+
+
+So, if there is no information in the variable then no-one predictive model will be useful.
+
+Some of them may be more accurate than others, yes, but if the relationship is absolutely noisy no matter how advance the algorithm is, it will end up in bad results. We can quote the famous phrase:
+
+> Garbage in - Garbage out
+
+
 
 <br>
+
+Recommended lecture: http://www.scholarpedia.org/article/Mutual_information
 
 ### References
 
