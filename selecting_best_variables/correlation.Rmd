@@ -546,30 +546,42 @@ Correlation score based on mutual information ranks relationships pretty similar
 
 <br>
 
-### Final comments
+### Information Measures: A general perspective
 
 Further than correlation, MIC or other information metric measure if there is a _functional relationship_. 
-A high MIC value indicates that the relationship between the two variables can be explain through a function, or a predictive model.
 
-These methods didn't tell us what is that function nor predictive model. 
+A high MIC value indicates that the relationship between the two variables can be explain through a function. Is
+our job to find that function or predictive model.
 
+This anaylsis is extended to n-variables, this book introduces other algorithm in the selecting best variables chapter. 
 
-
-So, if there is no information in the variable then no-one predictive model will be useful.
-
-Some of them may be more accurate than others, yes, but if the relationship is absolutely noisy no matter how advance the algorithm is, it will end up in bad results. We can quote the famous phrase:
-
-> Garbage in - Garbage out
-
-
+Some predictive models perform better than other, but if the relationship is absolutely noisy no matter how advance the algorithm is, it will end up in bad results. 
 
 <br>
 
-Recommended lecture: http://www.scholarpedia.org/article/Mutual_information
+More to come regarding **Information Theory**. By now you check these recommended lectures: 
 
-### References
+* http://alex.smola.org/teaching/cmu2013-10-701x/slides/R8-information_theory.pdf
+* http://www.scholarpedia.org/article/Mutual_information
 
-* [1] Original MINE paper: <a href="http://science.sciencemag.org/content/334/6062/1518.full?ijkey=cRCIlh2G7AjiA&keytype=ref&siteid=sci" target="blank">Detecting Novel Associations in Large Data Sets</a>.
+<br>
+
+### Conclussions
+
+We've started comparing classical R squared to a more robust correlation metrics based on information theory:
+**mutual information** and **maximal information coefficient**. 
+
+These methods are applicable in **feature engineering** as a method which does not rely on a predictive model to rank most important variables. Also applicable to cluster time series.
+
+Regarding **data preparation** stage it is useful to profile variables according to the information present in the relationships, and other properties such their symetry. 
+
+Next recommended chapter: Selecting best variables.
+
+<br>
+
+#### References
+
+* [1] Original MINE paper: <a href="http://www.uvm.edu/~cdanfort/csc-reading-group/reshef-correlation-science-2011.pdf" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 * [2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
 * [3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
 * [4] Dynamic time wrapping <a hreg="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
