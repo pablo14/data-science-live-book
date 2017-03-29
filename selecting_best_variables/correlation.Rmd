@@ -1,12 +1,19 @@
 Correlation and Information
 =====
 
-### Overview
+### What is this about?
 
+This chapter contains both methodological and practical aspects on measuring correlation in variables. We will see that correlation word can be translated into "**functional relationship**".
 
-### Linear correlation (classical)
+In methodological you will find an the Anscombe Quartet, a set of four plots with disimilar spatial distribution, but sharing the same linear regression or correlation measure. We'll go one step ahead re-calculating their relationship though a more robust metric (MIC).
 
-It retrieves the well known `R statistic` (or Pearson coefficient), which measures **linear** correlation for all numeric variables _(skipping the string ones)_.
+We will mention several times **Information Theory**, altough by now it's not going to be covered at mathematical level. But it's planed to.
+
+Understanding these concepts in low dimension (two variables) and small data (a bunch of rows) allow us to better understand high dimensional data, nonetheless some real cases work data are _small_ data.
+
+From the pactical point of view, you'll be able to replicate the analysis with your own data, profiling and exposing their relationships in fancy plots.
+
+<br>
 
 
 ```{r ,results="hide", echo=FALSE}
@@ -17,34 +24,39 @@ library(knitr)
 
 ```{r lib, message=F, results="hide"}
 ## Loading needed libraries
-library(funModeling)
-library(minerva)
+library(funModeling) ## contains heart_disease data
+library(minerva) ## contains MIC statistic
 library(ggplot2)
 library(dplyr)
-library(reshape2)
-library(gridExtra)
+library(reshape2) 
+library(gridExtra) ## allow us to plot two plots in a row
 options(scipen=999) # disable cientific notation
 ```
 
+### Linear correlation
+
+Perhaps the most classical  correlation measure for numeric variables is the `R statistic` (or Pearson coefficient) which goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
+
+Squaring this number returns the `R squared` statistic (aka `R2`), which goes from `0` _no correlation_ to `1` _high correlation_. 
+
+Function `correlation_table` retrieves R  metric for all numeric variables skipping the categorical ones.
+
 ```{r}
-data(heart_disease)
 correlation_table(data=heart_disease, str_target="has_heart_disease")
 ```
 
-`R statistic` goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
-Squaring this number returns the `R squared` statistic (aka `R2`), which goes from `0` _no correlation_ to `1` _high correlation_. 
+Last function is a wrapper for function `cor`
 
-#### R2 bias problem
 
-**R statistic is highly influenced by outliers and non-linear relationships.**
-
-Outliers can be treated with `prep_outliers` function, present in this package. TODO: exand it
+R statistic is highly influenced by **outliers** and **non-linear** relationships.**
 
 <br>
 
 #### Correlation on Anscombe Quartet
 
-Take a look at the **Anscombe's quartet**. These 4 relationships are quite different, but all of them have the same R2: 0.816.
+Take a look at the **Anscombe's quartet**. These 4 relationships are quite different, but all of them have the same R2: `0.816`.
+
+Following exampe calculates the R2 and plot every pair.
 
 ```{r, message=FALSE}
 ## Reading anscombe quartet data
@@ -61,17 +73,15 @@ cor_4=cor(anscombe_data$x4, anscombe_data$y4)
 ## defining the function
 plot_anscombe <- function(x, y, value, type)
 {
-  #x="x1"; y="y1"
   p=ggplot(anscombe_data, aes_string(x,y))  + geom_smooth(method='lm', fill=NA) + geom_point(aes(colour=factor(1), fill = factor(1)), shape=21, size = 2) + ylim(2, 13)+ xlim(4, 19) + theme_minimal() + theme(legend.position="none") +  annotate("text", x = 12, y =4.5, label = sprintf("%s: %s", type, round(value,2)))  
   return(p)
 }
 
 ## plotting in a 2x2 grid
 grid.arrange(plot_anscombe("x1", "y1", cor_1, "R2"), plot_anscombe("x2", "y2", cor_2, "R2"), plot_anscombe("x3", "y3", cor_3, "R2"), plot_anscombe("x4", "y4", cor_4, "R2"), ncol=2, nrow=2)
-
 ```
 
-4-different plots, having the same `mean` for every `x` and `y` (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by `summary(anscombe_data)`. 
+4-different plots, having the same `mean` for every `x` and `y` (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by typing `summary(anscombe_data)`. 
 
 This is why is so important to plot relationships when analyzing correlations.
 
@@ -89,8 +99,9 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 
 #### An example in R: A perfect relationship
 
-```{r, message=FALSE}
+Let's plot a non-linear relationship, directly based from a function (negative exponential), and print the MIC value.
 
+```{r, message=FALSE}
 x=seq(0, 20, length.out=500)
 df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
 ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()
@@ -104,10 +115,6 @@ sprintf("R2: %s", round(res_cor_R2,2))
 # now computing the MIC metric
 res_mine=mine(df_exp)
 sprintf("MIC: %s", res_mine$MIC[1,2])
-
-# Important: If you recieve this message `Error: Missing values present in input variable 'x'. Consider using use = 'pairwise.complete.obs'.` is because data has missing values.
-
-
 ```
 
 **MIC** value goes from 0 to 1. Being 0 no correlation and 1 highest correlation. The intepretation is the same as the R squared.
@@ -231,8 +238,6 @@ mic_4=mine(anscombe_data$x4, anscombe_data$y4, alpha=0.8)$MIC
 
 ## plotting MIC in a 2x2 grid
 grid.arrange(plot_anscombe("x1", "y1", mic_1, "MIC"), plot_anscombe("x2", "y2", mic_2,"MIC"), plot_anscombe("x3", "y3", mic_3,"MIC"), plot_anscombe("x4", "y4", mic_4,"MIC"), ncol=2, nrow=2)
-
-
 
 ```
 
@@ -391,12 +396,12 @@ heart_disease_2$has_heart_disease=ifelse(heart_disease_2$has_heart_disease=="yes
 dmy = dummyVars(" ~ .", data = heart_disease_2)
 heart_disease_3 = data.frame(predict(dmy, newdata = heart_disease_2))
 
-## please don't omit NA without an impact analysis first, in this case it is not important
+# Important: If you recieve this message `Error: Missing values present in input variable 'x'. Consider using use = 'pairwise.complete.obs'.` is because data has missing values.
+## Please don't omit NA without an impact analysis first, in this case it is not important. 
 heart_disease_4=na.omit(heart_disease_3)
   
 ## compute the mic!
 mine_res_hd=mine(heart_disease_4)
-
 ```
 
 Printing a sample...
@@ -501,9 +506,16 @@ df_predictive=data.frame(variable=rownames(mic_predictive), mic=mic_predictive[,
 # creating a colorful plot showing importance variable  based on MIC measure
 ggplot(df_predictive, aes(x=reorder(variable, mic),y=mic, fill=variable)) + geom_bar(stat='identity') + coord_flip() +	theme_bw() + xlab("") + ylab("Variable Importance (based on MIC)") + guides(fill=FALSE)
 			
-
-
 ```
+
+<br>
+
+#### Practice advice for using `mine` 
+
+If it last too much time to finish, consider taking a data sample.
+Also it can be run in parallel, just setting `n.cores` parameter.
+
+
 
 <br>
 
@@ -561,6 +573,7 @@ Some predictive models perform better than other, but if the relationship is abs
 
 More to come regarding **Information Theory**. By now you check these recommended lectures: 
 
+* 7-min introductory video https://www.youtube.com/watch?v=2s3aJfRr9gE 
 * http://alex.smola.org/teaching/cmu2013-10-701x/slides/R8-information_theory.pdf
 * http://www.scholarpedia.org/article/Mutual_information
 
