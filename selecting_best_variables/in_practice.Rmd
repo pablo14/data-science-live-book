@@ -1,0 +1,49 @@
+Correlation and Information
+=====
+
+### What is this about?
+
+
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+#opts_knit$set(base.dir = "selecting_best_variables")
+```
+Let's starting loading all needed libraries.
+
+```{r lib, message=F, results="hide"}
+## Loading needed libraries
+library(funModeling) ## contains heart_disease data
+library(minerva) ## contains mine function
+library(ggplot2)
+library(dplyr)
+library(reshape2) 
+library(gridExtra) ## allow us to plot two plots in a row
+options(scipen=999) # disable cientific notation
+```
+<br>
+
+### Method 1: MIC measure
+
+```{r}
+
+
+res=mine(d_snap_2, n.cores=parallel::detectCores()-1)
+
+res_mic_long=reshape2::melt(res$MIC) %>% arrange(-value)
+
+```
+
+<br>
+
+### Method 2: Minimum Redundancy Maximum Relevance 
+
+<br>
+
+### Method 3: Recursive feature elimination
+
+<br>
+
+
+
+

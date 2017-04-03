@@ -3,26 +3,26 @@ General Aspects in Selecting Best Variables
 
 ### What is this about?
 
-This chapter covers the main aspects with examples in R behind:
+This chapter covers key aspects with examples in R behind:
 
-* Best variables ranking from common machine learning algorithms
+* Best variables ranking from conventional machine learning algorithms
 * The nature in getting the variable selection (based and not on predictive models)
-* Advices to explore the best subset in practice
+* Advice to explore the best subset in practice
 * Feature engineering and clustering models
 * The effect of variables working in groups (intuition and information theory)
 
 
-_Selecting best variables is also known as: feature engineering, selecting best predictors, selecting most important predictors, feature selection, and others._
+_Selecting best variables is also known as feature engineering, selecting best predictors, selecting most important predictors, feature selection, among others._
 
 <br>
 
 ### The intuition
 
-Selecting best variables is like do a summary of an story, we want to focus on those few details that best describe what we're talking about. The balance is not talk _too much_ about unnecesary details (overfitting), and not talk _too little_ about the esence of the story (underfitting).
+Selecting best variables is like do a summary of a story, we want to focus on those few details that best describe what we're talking about. The balance is not to talk _too much_ about unnecessary details (overfitting), and not talk _too little_ about the essence of the story (underfitting).
 
-Other example can be the decision of buying a new laptop: _what are the features that we care the most? Price, color and shippment method? color and battery life? or just price?_
+Another example can be the decision of buying a new laptop: _what are the features that we care the most? Price, color and shipping method? Color and battery life? Or just price?_
 
-From the **Information Theory** point of view -key point in machine learning-, the data that we are working on has **entropy** (caos). When we select variables we are are reducing the entropy of our system by adding information. 
+From the **Information Theory** point of view - a key point in machine learning-, the data that we are working on has **entropy** (chaos). When we select variables, we are are reducing the entropy of our system by adding information. 
 <br>
 
 ### The "best" selection?
@@ -31,31 +31,33 @@ The chapter says "best", but we'd better mention a conceptual point:
 
 In general terms: _There is no unique best variable selection._ 
 
-To start from this perspective is important, since in the exploration of many algorihms that _rank_ the variables according to their predictive power we can found different -and similar- results. That is
+To start from this perspective is important, since in the exploration of many algorithms that _rank_ the variables according to their predictive power we can found different -and similar- results. That is
 
 * Algorithm 1 has choosen as the best variable `var_1`, following by `var_5` and `var_14`.
 * Algorithm 2 did this ranking: `var_1`, `var_5` and `var_3`.
 
-Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be considered as the same. It reduces us time in pursuit of the perfect variable selection.
+Let's imagine based on algorithm 1, accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be seen as the same. 
 
-However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with low predictive power. After several runs most reliable variables will emerge quickly, so: 
+This perspective can help us to reduce time in pursuing the perfect variable selection.
 
-**Conclusion**: if results are not good the focus should be on improving and/or checking the **data preparation** step. _Next section will exemplify it._ 
+However going to the extremes, there will be a set of variables that will rank high across many algorithms, and the same goes for those with little predictive power. After several runs most reliable variables will emerge quickly, so: 
+
+**Conclusion**: if results are not good the focus should be on improving and checking the **data preparation** step. _Next section will exemplify it._ 
 
 <br>
 
 ### Going deeper into variable ranking
 
-It's quite common to find in literature and algorithms of selecting best variables an univariate analysis report of them, that is a ranking of variables given certain metric.
+It's quite common to find in literature and algorithms of selecting best variables an univariate analysis report on them, that is a ranking of variables given particular metric.
 
-We're going to create two models: random forest and gradient boosting machine using `caret` R package to cross-validate the data. Next we'll compare the best variable ranking that every model return.
+We're going to create two models: random forest and gradient boosting machine using `caret` R package to cross-validate the data. Next, we'll compare the best variable ranking that every model return.
 
 ```{r, eval=FALSE}
 library(caret)
 library(funModeling)
 library(dplyr)
 
-## Excluding all NA rows from data, in this case NA are not the main issue to solve, we'll skip the 6 cases which have NA.
+## Excluding all NA rows from data, in this case, NA are not the main issue to solve, we'll skip the 6 cases which have NA.
 heart_disease=na.omit(heart_disease)
 
 ## setting cross-validation 4-fold
@@ -82,7 +84,7 @@ fit_gbm = train(x=select(heart_disease, -has_heart_disease, -heart_disease_sever
              metric = "ROC")
 ```
 
-Now we can proceed with the comparison. Columns: `importance_rf` and `importance_gbm` represent the importance measured by each algorithm. Based on each metric, there is the `rank_rf` and `rank_gbm` which represent the importance order, finally `rank_diff` represents how differnt each rank according comparing two algorithms.
+Now we can proceed with the comparison. Columns: `importance_rf` and `importance_gbm` represent the importance measured by each algorithm. Based on each metric, there are `rank_rf` and `rank_gbm` which represent the importance order, finally `rank_diff` (`rank_rf` - `rank_gbm`) represents how different each algorithm rank.
 
 
 ```{r, eval=FALSE}
@@ -99,13 +101,14 @@ final_res
 ```
 <img src="ranking_best_vars_comparison.png" alt="Comparisson across two methods for variable ranking">
 
-We can see that there are variables which are not important at all to both models (`fasting_blood_sugar`). There are others that mantain a position at the top of importance like `chest_pain` and `thal`.
 
-Different predictive models implementations have their own criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about the inner importance metrics  can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
+We can see that there are variables which are not important at all to both models (`fasting_blood_sugar`). There are others that maintain a position at the top of importance like `chest_pain` and `thal`.
 
-Even more, in tree based model like GBM and Random Forest there is a random component to pick up variables, and the importance is based on prior -and automatic- variable selection when building the trees. The importance of each variable depends on the others, not only on its isolated contribution: **Variables work in groups**. We'll back on this later on this chapter.
+Different predictive models implementations have their criteria to report what are the best features, according to that particular model. This ends up in different ranking across different algorithms. _More info about the inner importance metrics  can be found at <a href=https://topepo.github.io/caret/variable-importance.html" target="blank">caret documentation</a>._
 
-Altough the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before. 
+Even more, in tree based model like GBM and Random Forest there is a random component to picking up variables, and the importance is based on prior -and automatic- variable selection when building the trees. The importance of each variable depends on the others, not only on its isolated contribution: **Variables work in groups**. We'll back on this later on this chapter.
+
+Although the ranking will vary from algorithm to algorithm, in general terms there is a correlation between all of these results as we mentioned before. 
 
 **Conclusion:** Every ranking list is not the _"final truth"_, it gives us orientation about where the information is. 
 
@@ -118,13 +121,13 @@ There are two main approaches when getting the variable selection:
 
 **Predictive model dependent**: 
 
-Like the ones we saw before, this is the most common. The model will rank variables according to one instrinsic measure of accuracy. In tree based models metrics such as information gain, gini index, node impurity. Ref [4], [5].
+Like the ones we saw before, this is the most common. The model will rank variables according to one intrinsic measure of accuracy. In tree-based models metrics such as information gain, Gini index, node impurity. Ref [4], [5].
 
 **Not predictive model dependent**: 
 
-This is quite interesting since they are no as popular as the other ones, but they are prooved to perform really well in areas realated to genomic data. They need to find those _relevant_ genes (input variable) that are correlated with certain disease, like cancer (target variable).
+This is interesting since they are no as popular as the other ones, but they are proved to perform really well in areas related to genomic data. They need to find those _relevant_ genes (input variable) that are correlated with some disease, like cancer (target variable).
 
-This area differs from others most common in the amount of variables to analyze (in the order of thousands), really huge in comparisson with others. 
+This area differs from others most standard in the number of variables to analyze (in the order of thousands), really huge in comparison to others. 
  
 One algorithm to perform this is <a href="http://home.penglab.com/proj/mRMR/" target="blank">mRMR</a>, acronym for Minimum Redundancy Maximum Relevance Feature Selection. It has its own implementation in R in <a href="https://cran.r-project.org/web/packages/mRMRe/vignettes/mRMRe.pdf" target="blank">mRMRe</a> package.
 
@@ -146,15 +149,15 @@ _And more to come..._
 
 ### Cleaning by domain knowledge
 
-This point is excluded from algorithmic procedures, it is related to the area in which the data was generated.
+This point is not related to algorithmic procedures, but to the area from which the data comes.
 
-Imagine data coming from a survey. This survey has 1 year of history and during the first 3 months there wasn't a good control when inserting data, so users can type whatever they want. Variables during this period will probably be spourious. 
+Imagine data coming from a survey. This survey has one year of history, and during the first three months there wasn't a good control when inserting data, so users can type whatever they want. Variables during this period will probably be spurious. 
 
-Easy to recognize when during an specific period data is empty or null. Also when there are extreme values. 
+It's easy to recognize when during a given period data, it'is empty or null. Also when there are extreme values. 
 
-We should ask question: 
+We should ask a question: 
 
-_Is it reliable this data?_ Keep in mind the predictive model will learn _as a kid_, it will not judge the data just learn from it. If data is spourious in an specific period, then remove these input cases.
+_Is it reliable this data?_ Keep in mind the predictive model will learn _as a kid_, it will not judge the data just learn from it. If data is spurious in a given period, then remove these input cases.
 
 To move on this point, we should get in touch a little with every input variable.
 
@@ -164,11 +167,11 @@ To move on this point, we should get in touch a little with every input variable
 
 <img src="variable_groups.png" width="300px" alt="Variable work in groups">
 
-When selecting the _best_ variables, the main aim is to get those variables which carry the most information regarding a target, outcome or dependant variable. 
+When selecting the _best_ variables, the main aim is to get those variables which carry the most information regarding a target, outcome or dependent variable. 
 
 A predictive model will find its weights or parameters based on its 1 to 'N' input variables.
 
-Variables usually don't work isolatelty when explaining an event. Quoting Aristotle: 
+Variables usually don't work isolated when explaining an event. Quoting Aristotle: 
 
 > “The whole is greater than the sum of its parts.” 
 
@@ -176,7 +179,7 @@ This is also true when selecting the _best_ features:
 
 _Building a predictive model with two variables may reach a higher accuracy than the models built with only one variable._
 
-For example: Building a model based on variable `var_1` could lead to an overall accuracy of 60%. On the other hand build a model based on `var_2` could reach an accuracy of 72%. But when we combine these two `var_1` and `var_2` variables, we could reach an accuracy above 80%.
+For example: Building a model based on variable `var_1` could lead to an overall accuracy of 60%. On the other hand, build a model based on `var_2` could reach an accuracy of 72%. But when we combine these two `var_1` and `var_2` variables, we could achieve an accuracy above 80%.
 
 <br>
 
@@ -184,7 +187,7 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 <img src="aristotle.png" width="300px" alt="Aristotle: philosopher and data scientist">
 
-Following code ilustrate what Aristotle said _some_ years ago. 
+Following code illustrates what Aristotle said _some_ years ago. 
 
 It creates 3 models based on different subset of variable:
 
@@ -192,7 +195,7 @@ It creates 3 models based on different subset of variable:
 * model 2 is based on `chest_pain` input variable
 * model 3 is based on `max_heart_rate` **and** `chest_pain` input variables
 
-Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs taking each variable isoletly.
+Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs. taking each variable isolated.
 
 ```{r, eval=TRUE, message=F}
 library(caret)
@@ -247,36 +250,36 @@ If we build a predictive model based on `var_1` only, what it will _see_?, the v
 
 _Same analysis goes for `var_2`_
 
-When the same input is related to different outcomes is defined as **noise**. The intuition is the same as one person tell us: _"Hey it's going to rain tomorrow!"_, and other one says: _"For sure tomorrow is not going to rain"_.  
-We'd think... _"OMG! do I need the umbrella or not?"_😐🌂
+When the same input is related to different outcomes is defined as **noise**. The intuition is the same as one person tell us: _"Hey it's going to rain tomorrow!"_, and another one says: _"For sure tomorrow is not going to rain"_.  
+We'd think... _"OMG! do I need the umbrella or not?"_
 
-Going back to the example, taking the two variables at the same time, the correspondece between the input and the output in unique: "If `var_1='a'` and `var_2='x'` then likelihood of being `target='red'` is 100%". You can try other combinations. 
+Going back to the example, taking the two variables at the same time, the correspondence between the input and the output in unique: "If `var_1='a'` and `var_2='x'` then the likelihood of being `target='red'` is 100%". You can try other combinations. 
 
 **Summing-up:** 
 
 That was an example of **variables working in groups**, considering `var_1` and `var_2` at the same time increases the predictive power.  
 
-Nonetheless it's a deeper topic to cover, considering last analysis, how about talking an `Id` column (every value is unique) to predict something? The correspondece between input-output will also be unique...but is it an useful model? 🤔. There'll be more to come about information theory on this book.
+Nonetheless, it's a deeper topic to cover, considering last analysis, how about talking an `Id` column (every value is unique) to predict something? The correspondence between input-output will also be unique... but is it a useful model? There'll be more to come about information theory in this book.
 
 <br>
 
-#### Conclusions 💥 
+#### Conclusions  
 
-* The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not bad. This percimprovementthe result of the variables working in groups.
+* The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not bad. This percentage of improvement is the result of the variables working in groups.
 *This effect appears if the variables contain information, such is the case of `max_heart_rate` and `chest_pain` (or `var_1` and `var_2`). 
 * Putting **noisy variables** next to good variables **will affect** overall performance.
-* Also the **work in groups** effect is higher if input variables **are not corrso elated between** them. This is sort of difficult of optimize in practice. More on this on next section...
+* Also the **work in groups** effect is higher if input variables **are not correlated between** them. This is difficult of optimizing in practice. More on this on next section...
 
 
 <br>
 
 ### Correlation between input variables
 
-The ideal escenario is to build a predictive model with only non-correlated variables between them. In practice it's complicated to keep such a escenario for all variables. 
+The ideal scenario is to build a predictive model with only non-correlated variables between them. In practice, it's complicated to keep such a scenario for all variables. 
 
 For sure there will be variables a set of variables that are not correlated between them, but also there will be others that share a little of correlation.
 
-**In practice** a suitable solution would be to exclude those variables with a **really high level** of correlation.
+**In practice** a suitable solution would be to exclude those variables with a **remarkably high-level** of correlation.
 
 Regarding how to measure correlation. Results can be highly different based on linear or non-linear procedures. More info at the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/correlation.html">correlation chapter</a>.
 
@@ -284,10 +287,10 @@ Regarding how to measure correlation. Results can be highly different based on l
 
 _What is the problem with adding correlated variables?_
 
-The problem is we're adding complexity to the model: more time consuming, more difficult to understand-explain, less accurate, etc. This is an effect we reviewed in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#dont-predictive-models-handle-high-cardinality-part-2">reducing cardinality in categorical variables</a>. 
+The problem is we're adding complexity to the model: more time consuming, harder to understand as well as to explain, less accurate, etc. This is an effect we reviewed in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#dont-predictive-models-handle-high-cardinality-part-2">reducing cardinality in categorical variables</a>. 
 
 
-The general rule would be: Try to add top N variables that are correlated with the output, but not correlated between them. This lead us to the next section. 
+The general rule would be: Try to add top N variables that are correlated with the output but not correlated between them. This lead us to the next section. 
 
 
 <br>
@@ -306,25 +309,25 @@ Re-interpreting this sentence for machine learning, those "hypotheses" can be se
 
 Of course, there is also the trade-off of adding-substracting variables and the accuracy of the model. 
 
-A predictive model with a _high_ number of variables will tend to do **overfitting**. while on the other hand, a model with a _low_ number of variables will lead to do **underfitting**.
+A predictive model with a _high_ number of variables will tend to do **overfitting**. While on the other hand, a model with a _low_ number of variables will lead to doing **underfitting**.
 
-The concept of _high_ and _low_ is **highly subjective** to the data that is under analysis. In practice, we may have some accuracy metric, for example ROC value. In practice we would see something like:
+The concept of _high_ and _low_ is **highly subjective** to the data that is under analysis. In practice, we may have some accuracy metric, for example, ROC value. In practice we would see something like:
 
 <img src="variable_selection_table.png" alt="Quantity of variables vs ROC value trade-off"> 
 
-Last picture shows different subset of variables and an accuracy metric (ROC). Each dot represents the ROC value given certain number of variables used to build the model.
+The last picture shows a different subset of variables and an accuracy metric (ROC). Each dot represents the ROC value given a certain number of variables used to build the model.
 
-We can check that the highest ROC is reached when the model is built with 30 variables. If we based the selection only in an automated process we may be choosing a subset which tend to overfit data. This report was produced by library `caret` in R [2], but is analogous to any software.
+We can check that the highest ROC appears when the model is built with 30 variables. If we based the selection only in an automated process, we might be choosing a subset which tends to overfit data. This report was produced by library `caret` in R [2], but is analogous to any software.
 
-Take a closer look at the difference between the subset of 20 and the 30, there is only an improvement of **1.8%** -from 0.9324 to 0.95- choosing **10 more variables.** In other words: _Choosing 50% more variables will impact in less than 2% of improvement._
+Take a closer look at the difference between the subset of 20 and the 30; there is only an improvement of **1.8%** -from 0.9324 to 0.95- choosing **10 more variables.** In other words: _Choosing 50% more variables will impact in less than 2% of improvement._
 
-Even more, this 2% may be an error margin given the variance in prediction that every predictive model has [3].
+Even more, this 2% may be an error margin given the variance in the prediction that every predictive model has [3].
 
 **Conclusion:**
 
-In this case, and being consequent with Occams Razor principle, the best solution is to build the model with the subset of 20 variables.
+In this case, and being consequent with Occam's Razor principle, the best solution is to build the model with the subset of 20 variables.
 
-Explaining to others -and understanding- a model with 20 variables is easier than similar one with 30.
+Explaining to others -and understanding- a model with 20 variables is easier than the similar one with 30.
 
 <br> 
 
@@ -332,44 +335,48 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 <img src="cluster.png" width="300px" alt="feature engineering in clustering"> 
 
-Technically the concept of best variables are attached to a target variable. In clustering there is not such variable, we let the data speak and the natural segments arise according to some distance metric.
+Technically the concept of best variables is attached to a target variable. In clustering there is not such variable, we let the data speak, and the natural segments arise according to some distance metric.
 
-However, **not every variable contributes in the same way to the dissimilarity in the cluster model**. Keeping it brief, if we have a 3 clusters as output, and we measure the average of each variable, we expect to have these averages _quite_ dissimilar between them, right? 
+However, **not every variable contributes in the same way to the dissimilarity in the cluster model**. Keeping it brief, if we have 3 clusters as output, and we measure the average of each variable, we expect to have these averages _quite_ dissimilar between them, right? 
 
-Having built 2 cluster models, in the first one the averages of `age` variable is: 24, 33 and 26 years; while on the second one we have: 23, 31 and 46. In the second model variable `age` is having more variability, thus more important to the model. 
+Having built 2 cluster models, in the first one the averages of `age` variable is 24, 33 and 26 years; while on the second one we have: 23, 31 and 46. In the second model variable `age` is having more variability, thus more relevant to the model. 
 
 This was just an example considering two models, but is the same considering just one. Those variables with **more distance** across averages will tend to **define better** the cluster than others. 
 
-Unlike predictive modeling, in clustering _less important_ variables shouldn't be removed, those variables aren't important in that particular model, but they could do if we build other one with other parameters. The cluster models quality is highly subjective.
+Unlike predictive modeling, in clustering _less important_ variables shouldn't be removed, those variables aren't important in that particular model, but they could do if we build another one with other parameters. The cluster models quality is highly subjective.
 
-Finally, we could run a random forest model with the cluster as a target variable and in this way to quickly collect the most important varibles.
-
-<br>
-
-### Selecting variVbles in pracPice
+Finally, we could run a random forest model with the cluster as a target variable and in this way to quickly collect the most important variables.
 
 <br>
 
-#### The short answer 🏃
+#### The short answer 
 
 Pick up top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves rankings, but if so, use the same model to get the ranking and to build the final model, try not to mix them.
 
-For those models like k-nearest neighbors which don't have a built-in select best features procedure, it's valid to use the selection of other algorithm. It will lead to better results. 
+For those models like k-nearest neighbors which don't have a built-in select best features procedure, it's valid to use the selection of another algorithm. It will lead to better results. 
 
 <br>
 
-#### The long answer 🚶
+#### The long answer 
 
-* When possible, **validate** the list with someone who knows about the field study, the business and/or the area from the data comes from. Either for the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables we may be missing something in the data munging that could be destroying their predictive power.
+* When possible, **validate** the list with someone who knows about the field study, the business and the area from the data comes from. Either for the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables, we may be missing something in the data munging that could be destroying their predictive power.
 * Understand each variable, their domain field meaning (business, medical, other). 
-* Do an **exploratory analysis** to see the distributions of most important variables regarding target variable, _does the selection makes sense?_ If the target is binary then function <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">cross_plot</a> can be used. 
+* Do **exploratory analysis** to see the distributions of most important variables regarding target variable, _does the selection makes sense?_ If the target is binary then function <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">cross_plot</a> can be used. 
 * Does the average of any variable change _significativaly_ over time? Check abrupt changes in distributions.
-Suspect about high cardinalty top ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
-* When doing the selection -as well as a predictive model-, use methods which uses any re-sampling technique (like bootstraping), and use cross-validation. More information in Ref. [3].
+Suspect about high cardinality top-ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
+* When doing the selection -as well as a predictive model-, try to use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in Ref. [3].
 * Try other methods to find **groups of variables** like the one mentioned before: mRMR.
 * If the selection doesn't meet the needs, try creating new variables, you can check **data preparation** chapter. (TODO: ADD)
 
+<br>
 
+#### Generate your own knowledge
+
+It's difficult to generalize when the nature of the data is so different, from **genetics** in which there are thousands of variables and a few rows, to web-navigation where all the time is coming new data.
+
+The same goes to analysis objective, is it to use in a competition or precision is highly necessary? Perhaps the solution may include more variables that are correlated; in comparison to an ad-hoc study in which the easy explanation is the primary purpose.
+
+There is no one recipe to answer all the issues; you'll find powerful insights made by you and your data. Just a matter of practice.
 
 <br> 
 
