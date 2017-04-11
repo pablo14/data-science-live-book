@@ -1,0 +1,245 @@
+Dealing with NULL, Empty or NA values
+===
+
+### When the empty value represents information
+
+For example, imagine a travel agency which joins two tables, one of persons and another of countries. The result shows the number of travels per person: 
+
+```{r, echo=FALSE}
+df_travel=data.frame(person=c("Fotero", "Herno", "Mamarul"), South_Africa=c(1, NA, 34), Brazil=c(5,1,40), Costa_Rica=c(5,NA,NA), stringsAsFactors = F)
+df_travel
+```
+
+E.g. person `Mamarul` traveled `34` times to `South_Africa` country.
+
+_What does `NA` (or NULL) value represents there?_
+
+In this case `NA` should be replaced by `0`. Indicating zero travels in that person-country intersection. After the conversion, the table is ready to be used:
+
+**Example in R:**
+
+```{r}
+# Reeplacing all 0 to NA values
+df_travel[is.na(df_travel)]=0
+df_travel
+```
+
+Last example transforms **all** `NA` values into `0`. However in other scenarios, some columns of the date may be apply to this transformation, and others don't.
+
+Let's go to a more complex example.
+
+<br>
+
+### When the empty value, is an empty value
+
+Another times the empty value is correct. We need to treat them in order to use the table. Many predictive models doesn't handle input tables with missing value.
+
+Perhaps they start measuring certain variable _after_ a period of time, so we have data after this point and NA before. 
+
+Other times there are random cases, like a machine which fails in collecting the data, an user who forgot to complete some field in a form, among others.
+
+One important question arises: _What to do?!_😱
+
+Following recommenations are just that, recommendations. You can try different approaches discovering the best strategy to the data your are analyzing.
+
+<br>
+
+### Excluding the entire row
+
+If at least one column has an NA value, then exclude the row.
+
+A fast and easy method, right? It's recommended when the amount of rows are really _low_. But how low is low? That's up to you. 10 cases in 1000 of rows _may not_ have a huge impact. Unless those 10 cases are related with an anomaly event to predict, in this case it represents information. We pointed out this issue in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#case-1-reducing-by-re-categorizing-less-representative-values" target="blank">case 1: reducing by re-categorizing less representative values.</a>
+
+<br>
+
+**Example in R:**
+
+Let's inpsect `heart_disease` data, with `df_status` function, which one of its main objectives is to help us in this kind of decisions. 
+
+```{r, message=FALSE}
+library(dplyr)
+library(funModeling)
+df_status(heart_disease, print_results = F) %>% select(variable, q_na, p_na) %>% arrange(-q_na)
+```
+
+`q_na` indicates quantity of `NA` values, and `p_na` is the percentage. Full info about `df_status` can be found in <a href="http://livebook.datascienceheroes.com/data_preparation/profiling.html" target="blank">Profiling chapter</a>
+
+Two variables have 4 and 2 rows with `NA` values, let's exclude these rows:
+
+```{r}
+# na.omit returns the same data frame having excluded all rows containing at least 1 NA value
+heart_disease_clean=na.omit(heart_disease)
+nrow(heart_disease) # number of rows before exclusion
+nrow(heart_disease_clean) # number of rows after exclusion
+```
+
+After the exclusion, 6 rows out of 303 were eliminated. This approach seems suitable for this data set.
+
+But, there are other scenarios in which there are almost no cases that do not contain empty values. The exclusion will delete the entiere data!
+
+<br>
+
+### Excluding the column
+
+Similar to last case, but excluding the column. If we applying the same reasoning, if the deletion is about a _few_ columns, and the remaining provide a good final result, it may be ok. 
+
+**Example in R:**
+
+This exclusions are easily handle with `df_status` function. Next code will keep all variable names which percentage of `NA` values are higher than `0`.
+
+```{r}
+## Getting variables names with NA values
+vars_to_exclude=df_status(heart_disease, print_results = F) %>% filter(p_na > 0) %>% .$variable
+
+## Checking variables to exclude
+vars_to_exclude
+
+## Excluding variables from original data
+heart_disease_clean_2=select(heart_disease, -one_of(vars_to_exclude))
+```
+
+
+
+
+<br>
+
+
+### Treating empty in categorical variables
+
+We cover different perspectives to convert as well as treat empty values in nominal variables.
+
+The data of next example is `web_navigation_data` which contains typical information regarding how users come to certain web page. It contais `source_page` (the page from the visitor comes from), `landing_page` (first page to visit in our site) and `country`.
+
+```{r}
+# Reading example data, pay attention to na.strings parameter.
+web_navigation_data=read.delim(file="web_navigation_data.txt", sep="\t", header = T, stringsAsFactors=F, na.strings="")
+```
+
+**Profiling the data:**
+
+```{r}
+stat_nav_data=df_status(web_navigation_data)
+```
+
+The three variables have empty (`NA`) values. Almost half of values in source_page are missing, while the other two variables have 5 and 3% of `NA`.
+
+#### Case A: Convert the empty value into string
+
+In categorical or nominal variables, the quickest treatment is to convert the empty value into the string `"unknown"`. So the machine learning model will handle the "empty" values as another category. Think about it in terms of  rules: `If variable_X="unknown" then outcome="yes"`.
+
+Next we propose two methods intended to cover common escenarios.
+
+**Example in R:**
+
+```{r}
+## Method 1: Converting just one variable and create a new variable:
+web_navigation_data_1=web_navigation_data # making a copy
+
+# creating a new variable
+web_navigation_data_1$source_page_2=ifelse(is.na(web_navigation_data$source_page), "unknown_source", web_navigation_data$source_page)
+
+## Method 2: It's a common situation only apply a function to certain variables and return the original data frame
+# First we define the conversion function
+convert_categ<-function(x) 
+{
+  # If 'NA' then put 'unknown', othwewise return the same value
+  ifelse(is.na(x), "unknown", x)                                                                 
+}                                 
+
+# We obtain the variables to process, imagine we want to convert all variables with less than 6% of NA values:
+vars_to_process=filter(stat_nav_data, p_na<6) 
+
+# create the new data frame, with the transformed variables
+#  Adding a minus in front of one_of(vars_to_process$variable) will apply the function to all columns except to the define ones
+web_navigation_data_2=web_navigation_data %>% mutate_each(funs(convert_categ), one_of(vars_to_process$variable))
+  
+```
+Checking the results:
+
+```{r}
+df_status(web_navigation_data_2)
+```
+
+<br>
+
+#### Case B: Assign the most frequent category
+
+The intuition behind it is _add more of the same so it does not affect_. But sometimes it does. It will not have the same impact if the most frequeny value appears 90% of the times, that if it does 10%. It depends on the distribution.
+
+This technique is more suitable in a predictive model that is running on production, and a new value in a categorical variables. If the predictive model is robus, like **random forest** does, it will throw the message: `New factor levels not present in the training data.`, where `factor level` equals to "new category value". 
+
+This book covered this point in <href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
+ target="blank">High Cardinality Variable in Predictive Modeling</a>.
+
+As you can see the situation is not the same if we are building a predictive model to go live or doing an ad-hoc report.
+
+
+<br>
+
+#### Case C: Exclude some columns and transform others
+
+The easy case is if the column contains, let's say, 50% of NA cases, making it highly likely to not be reliable. 
+
+In the case we saw before, `source_page` have more than half of the values empty. We could exclude this variable and transform -as we did- the remaining two.
+
+The example is prepared to be generic:
+
+```{r}
+# Setting the threshold
+threshold_to_exclude=50 # 50 reprents 50%
+vars_to_exclude=filter(stat_nav_data, p_na>=threshold_to_exclude) 
+vars_to_keep=filter(stat_nav_data, p_na<threshold_to_exclude) 
+
+# Finally...
+vars_to_exclude$variable
+vars_to_keep$variable
+
+# Next line will exclude variables above the threshold, and it will transform the remaining ones
+web_navigation_data_3=select(web_navigation_data, -one_of(vars_to_exclude$variable)) %>% mutate_each(funs(convert_categ), one_of(vars_to_keep$variable))
+
+# Checking, there is no NA values and the variable above NA threshold disppaeared
+df_status(web_navigation_data_3)
+
+```
+
+<br>  
+
+#### Summing-up 
+
+But how about if it contains 40% of NA values? It's depend on what the objective is, and the data. 
+
+The important point here is "to save" the variable so we can use it. It's common to find many variables with missing values. May be those _incomplete variables_ carries good predictive information when they have a value, so we need to treat them and then build the predictive model. 
+
+But, we need to minimize the bias we are introducing, because the missing value is a value that "is not there".
+
+* When doing a report the suggest is to reeplace with the string "empty".
+* When doing a predictive model that ir running live is to assign the most repetitive category. 
+
+<br>
+
+### Treating missing values in numerical variables
+
+We've already approached this point in the begining by converting all `NA` values into `0`.
+
+It was nonetheless a case in which  effectively an empty represents a `0`. Other times the empty is just an empty.
+
+One solution is to reeplace the empty by the mean, median or other criteria. But we have to be aware the variable will change.
+
+If the see that the variable seems to be coorelated when it's not empty (same as categorical), another method is to create bins, also known as buckets or segments, converting it into categorical.
+
+
+descrbi
+
+```{r}
+library(Lock5Data)
+
+data("HollywoodMovies2011")
+df_status(HollywoodMovies2011)
+
+describe(HollywoodMovies2011$TheatersOpenWeek)
+a=equal_freq(HollywoodMovies2011$TheatersOpenWeek, 5)
+describe(a)
+```
+
+<br>
+
