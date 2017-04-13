@@ -1,6 +1,12 @@
 Dealing with NULL, Empty or NA values
 ===
 
+### What is this about?
+
+It was a case in which effectively an empty represents a `0`, nevertheless, other times the empty is just an empty.
+
+<br>
+
 ### When the empty value represents information
 
 For example, imagine a travel agency which joins two tables, one of persons and another of countries. The result shows the number of travels per person: 
@@ -34,7 +40,7 @@ Let's go to a more complex example.
 
 Another times the empty value is correct. We need to treat them in order to use the table. Many predictive models doesn't handle input tables with missing value.
 
-Perhaps they start measuring certain variable _after_ a period of time, so we have data after this point and NA before. 
+Perhaps they start measuring certain variable _after_ a period of time, so we have data after this point and `NA` before. 
 
 Other times there are random cases, like a machine which fails in collecting the data, an user who forgot to complete some field in a form, among others.
 
@@ -217,29 +223,88 @@ But, we need to minimize the bias we are introducing, because the missing value 
 
 <br>
 
+### Is there any pattern in missing values?
+
+First load the example movie data. And do a quick a  quick profile.
+
+```{r}
+# Lock5Data contains many data frames to practice
+library(Lock5Data)
+
+# loading data
+data("HollywoodMovies2011")
+
+# profiling
+df_status(HollywoodMovies2011)
+```
+
+Let's take a look at the values present in `p_na` column, there is a pattern in the missing values, 4 variables have `1.47`% of NA values, and another 4 have around `11.7`%. In this case are not able to check the data source, but it is a good idea to check if those cases have common issue.
+
+<br> 
+
 ### Treating missing values in numerical variables
 
-We've already approached this point in the begining by converting all `NA` values into `0`.
+We've already approached this point in the begining of the chapter by converting all `NA` values into `0`.
 
-It was nonetheless a case in which  effectively an empty represents a `0`. Other times the empty is just an empty.
-
-One solution is to reeplace the empty by the mean, median or other criteria. But we have to be aware the variable will change.
+One solution is to reeplace the empty by the mean, median or other criteria. But we have to be aware about the change in the distribution.
 
 If the see that the variable seems to be coorelated when it's not empty (same as categorical), another method is to create bins, also known as buckets or segments, converting it into categorical.
 
 
-descrbi
+#### Method 1: Converting into categorical
+
+The function `equal_freq` splits the variable into the desiere bins:
+
+```{r, fig.height=3, fig.width=6, echo=F}
+HollywoodMovies2011$TheatersOpenWeek_2=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
+
+freq(HollywoodMovies2011, "TheatersOpenWeek_2")
+```
+
+As we can see, `TheatersOpenWeek_2` contains 5 buckets of 24 cases each where each one represents 20% of total cases. But the NA values are still there.
+
+Finally we have to convert the `NA` into the string `empty`.
+
+```{r, fig.height=4, fig.width=6,results=FALSE}
+HollywoodMovies2011$TheatersOpenWeek_2=as.character(HollywoodMovies2011$TheatersOpenWeek_2)
+HollywoodMovies2011$TheatersOpenWeek_2=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_2), "empty",  HollywoodMovies2011$TheatersOpenWeek_2)
+
+freq(HollywoodMovies2011, "TheatersOpenWeek_2")
+```
+
+And that's it, the variable is ready to be used. 
+
+**Custom cuts**:
+If we want to use custom bucket sizes, not the ones provided by equal frequency, we can do the following:
 
 ```{r}
-library(Lock5Data)
+options(scipen=999) # disabling scientific notation in current R session
 
-data("HollywoodMovies2011")
-df_status(HollywoodMovies2011)
+# Creating custom buckets, with limits in 1000, 2300 and a max of 4100. Values above 4100 will be assign as NA.
 
-describe(HollywoodMovies2011$TheatersOpenWeek)
-a=equal_freq(HollywoodMovies2011$TheatersOpenWeek, 5)
-describe(a)
+HollywoodMovies2011$TheatersOpenWeek_3=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 1000, 2300, 4100), include.lowest = T, dig.lab = 10)
+
+freq(HollywoodMovies2011, "TheatersOpenWeek_3", plot = F)
+```
+
+
+It should be noted that **equal frecuency binning**, it tend to be more roubst than the equal distance which splits the variable taking the min and max and separating regardless how many cases fall in each bin. 
+
+The equal frequency puts the outliers values in the first or last bin as appropriate. Normal values can range from 3 to 20 buckets. Higher number of buckets tend to be more noisy. More info about check the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> chapter function.
+
+<br>
+
+#### Method 2: Filling the NA with some value
+
+Same as categorical, we can reeplace by a number such as the mean, the meadian. 
+
+```{r}
 ```
 
 <br>
 
+### Conclusions
+
+The Imputation methods when the missing values, irea ral missing value, a**rda"a cntrolled-bias"**, to we have not to exclude the variables from the analysis nor the predictive model.
+
+<br><br>
