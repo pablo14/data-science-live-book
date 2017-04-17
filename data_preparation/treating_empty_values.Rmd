@@ -1,9 +1,14 @@
-Dealing with NULL, Empty or NA values
+Handling Missing Data
 ===
 
 ### What is this about?
 
 It was a case in which effectively an empty represents a `0`, nevertheless, other times the empty is just an empty.
+
+Empty values are also known as `NULL` in data bases, `NA` in R or just the empty string in Spreadsheet. It also can be represented by some number like: "`-1`", "`-999`". 
+
+And we will cover the analysis of empty values, as well as how to treat with them by transforming and inputing the variables.
+
 
 <br>
 
@@ -298,13 +303,110 @@ The equal frequency puts the outliers values in the first or last bin as appropr
 
 Same as categorical, we can reeplace by a number such as the mean, the meadian. 
 
-```{r}
+In this case we'll reeplace by the mean of the variable, and plotting the before and after side by
+
+```{r, fig.height=3, fig.width=6, warning=FALSE}
+# Filling all NA values with the mean of the variable
+HollywoodMovies2011$TheatersOpenWeek_mean=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek), mean(HollywoodMovies2011$TheatersOpenWeek, na.rm = T), HollywoodMovies2011$TheatersOpenWeek)
+
+# Plotting original variable
+p1=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek)) + geom_histogram(colour="black", fill="white") + ylim(0, 30)
+ 
+# Plotting transformed variable
+p2=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek_mean)) + geom_histogram(colour="black", fill="white") + ylim(0, 30)
+
+# Putting the plots side by side 
+library(gridExtra)
+grid.arrange(p1, p2, ncol=2)
+  
 ```
+
+We can see a peak around the `2828` product of the transformation. This introduces a bias around this point. If we are predicting some event, it would be safer to not have some special event around this value. 
+
+For example, if we are predicting an binary event, and the least representative event is correlated with having a mean of `3000` in `TheatersOpenWeek`, then the odds of having a higher **False Positive rate** may be higher.  Again the link to the <href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
+ target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
+
+An extra comment regarding last visualization, it was important to set the y-axis maximum to 30 in order to make the plots comparable.
+
+As you can see, there is an inter-relationship between all concepts.
+
+<br>
+  
+#### Picking up the right value to fill 
+
+Last example reeplaced the NA with the mean, but how about other value? It depends on the distribution of the variable.
+
+The variable we used, `TheatersOpenWeek` _seems normally distributed_, that's why we used the `mean`. But if the variable is more skewed, probably another metric is more suitable. For example the `median`, which is less sensitive to outliers. 
 
 <br>
 
+### Advanced imputation methods
+
+Now we are going to do a quick review about more complex imputation methods, in which we create a predictive model, with all it implies.
+
+<br>
+
+#### Method 1: Using MICE approach
+
+MICE stands for "Multivariate Imputation by Chained Equations", also known as: Fully Conditional Specification.
+
+It is a whole framework to analyze and deal with missing values. It considers the iteraction among **all variables** at the same time, (multivariate) not just one, and bases its functionality on an **iterative** process which uses different predictive models to fill each variable. 
+
+Internally it fill variable `A`, based on `B` and `C`. Then it fill `B` based on `A` and `C` (`A` previously predicted). And the iteration continues...
+
+It creates `M` replications of the original data with no missing values. _But why create `M` replications?_ 
+
+In each replication the decision of what value insert in the _empty slot_ is based on a distribution. 
+
+Many `mice` demostrations focus on validating the imputation and using the predictive models that supports the package, which are only a few. This is great if we don't want to use other predictive model (random forest, gradient boosting machine, etc), nor a cross-validation technique (`caret` for example). 
+
+`mice` puts the final result by calling a `pool()` function which averages the parameters (or betas) of the `M` predictive models providing facilities to measure the variance due to missing values. 
+
+Yes, one model per each generated data frame. Sounds like <a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating" target="blank">bagging</a>, isn't it? But we don't have this possibility with the mentioned models. 
+
+`mice` has many functions to help us the process, and validate the filling results.bBt to keep it very simple, we'll cover just a little part of it,. Following example will focus on extracting a **data frame with no-missing values ready to be used** with other program or predictive model. 
+**Example in R:**
+
+It will impute data for `nhanes` data frame coming in `mice` library. Let's check it:
+
+```{r}
+library(mice)
+df_status(nhanes)
+```
+
+Three variables have missing values. 
+Let's fill it:
+F``{r}
+# Default imputation, it creates 5 complete data sets
+imp_data=mice(nhanes, m = 5)
+
+# Get a final data set containing the 5 imputed data frames, total rows=nrow(nhanes)*5
+data_all=complete(imp_data, "long")
+
+# data_all contains the same columns as nhanes plus 2 more: '.id' and '.imp'
+# .id=row number, from 1 to 25
+# .imp=imputation data frame id, 1 to 5 ('m' parameter)
+
+m``
+
+Original data, `nhanes`, has 25 rows, `data_all` contains 125 rows, which is the result of creating 5 (`m=5`) complete data frames of 25 rows each. 
+
+The drawbacks are it is slow process, and it may requiere some tunning to work. For example: `mice_hollywood=mice(HollywoodMovies2011, m=5)` will fail after some time processing it, and it is an small data frame.
+
+<a href="https://datascienceplus.com/handling-missing-data-with-mice-package-a-simple-approach/" target="blank"></a>
+ 
+Original `mice` paper: <a href="https://www.jstatsoft.org/article/view/v045i03" target="blank">Multivariate Imputation by Chained Equations in R.</a>
+
+<br>
+
+#### Method 2: Using missingTree
+
+<br>
+
+
+
 ### Conclusions
 
-The Imputation methods when the missing values, irea ral missing value, a**rda"a cntrolled-bias"**, to we have not to exclude the variables from the analysis nor the predictive model.
+The Imputation methods when the missing values, irea ral missing value, a **controlled-bias**, to we have not to exclude the variables from the analysis nor the predictive model.
 
 <br><br>
