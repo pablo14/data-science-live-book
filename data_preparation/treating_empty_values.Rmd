@@ -364,7 +364,8 @@ Many `mice` demostrations focus on validating the imputation and using the predi
 
 Yes, one model per each generated data frame. Sounds like <a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating" target="blank">bagging</a>, isn't it? But we don't have this possibility with the mentioned models. 
 
-`mice` has many functions to help us the process, and validate the filling results.bBt to keep it very simple, we'll cover just a little part of it,. Following example will focus on extracting a **data frame with no-missing values ready to be used** with other program or predictive model. 
+`mice` has many functions to help us the process and validate the filling results. But to keep it very simple, we'll cover just a little part of it. Following example will focus on extracting a **data frame with no-missing values ready to be used** with other program or predictive model. 
+
 **Example in R:**
 
 It will impute data for `nhanes` data frame coming in `mice` library. Let's check it:
@@ -374,9 +375,9 @@ library(mice)
 df_status(nhanes)
 ```
 
-Three variables have missing values. 
-Let's fill it:
-F``{r}
+Three variables have missing values. Let's fill it:
+
+```{r}
 # Default imputation, it creates 5 complete data sets
 imp_data=mice(nhanes, m = 5)
 
@@ -387,7 +388,7 @@ data_all=complete(imp_data, "long")
 # .id=row number, from 1 to 25
 # .imp=imputation data frame id, 1 to 5 ('m' parameter)
 
-m``
+```
 
 Original data, `nhanes`, has 25 rows, `data_all` contains 125 rows, which is the result of creating 5 (`m=5`) complete data frames of 25 rows each. 
 
@@ -401,6 +402,53 @@ Original `mice` paper: <a href="https://www.jstatsoft.org/article/view/v045i03" 
 
 #### Method 2: Using missingTree
 
+```{r}
+library(missForest)
+
+# copying the data
+df_holly=HollywoodMovies2011
+
+# missForest failed if it has any character variable, so we convert the only character into factor:
+df_holly$TheatersOpenWeek_2=as.factor(df_holly$TheatersOpenWeek_2)
+
+# excluding the Id column
+df_holly=select(df_holly, -Movie)
+
+# now the magic!
+imputation_res=missForest(xmis = df_holly)
+
+imputation_res$OOBerror
+
+# Final imputed data frame
+imputation_res$ximp
+
+df_after=imputation_res$ximp
+
+
+```
+
+Now it's time to compare the distribution of some of the imputed variables. Hopefully, they will look similar at a visual analysis. 
+
+
+
+```{r}
+# Compare distributions before-after imputation
+
+df_after$is_imputed=T
+
+df_holly$is_imputed=F
+
+df_all=rbind(df_holly, df_after)
+
+
+ggplot(df_all, aes(TheatersOpenWeek, colour = is_imputed)) + geom_density()
+```
+
+I
+They look pretty similar!
+
+f we want to analyze from the analytical point of view, and don't play to be an art critic looking at a painting, we may run an statistical test comparing, for example, the means or the variance.
+ 
 <br>
 
 
