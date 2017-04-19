@@ -179,7 +179,7 @@ The intuition behind it is _add more of the same so it does not affect_. But som
 
 This technique is more suitable in a predictive model that is running on production, and a new value in a categorical variables. If the predictive model is robus, like **random forest** does, it will throw the message: `New factor levels not present in the training data.`, where `factor level` equals to "new category value". 
 
-This book covered this point in <href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
+This book covered this point in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
  target="blank">High Cardinality Variable in Predictive Modeling</a>.
 
 As you can see the situation is not the same if we are building a predictive model to go live or doing an ad-hoc report.
@@ -260,7 +260,7 @@ If the see that the variable seems to be coorelated when it's not empty (same as
 
 The function `equal_freq` splits the variable into the desiere bins:
 
-```{r, fig.height=3, fig.width=6, echo=F}
+```{r, fig.height=3, fig.width=6, echo=F, out.width = "400px"}
 HollywoodMovies2011$TheatersOpenWeek_2=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
 
 freq(HollywoodMovies2011, "TheatersOpenWeek_2")
@@ -270,7 +270,7 @@ As we can see, `TheatersOpenWeek_2` contains 5 buckets of 24 cases each where ea
 
 Finally we have to convert the `NA` into the string `empty`.
 
-```{r, fig.height=4, fig.width=6,results=FALSE}
+```{r, fig.height=3, fig.width=6, echo=F, out.width = "400px", results=FALSE}
 HollywoodMovies2011$TheatersOpenWeek_2=as.character(HollywoodMovies2011$TheatersOpenWeek_2)
 HollywoodMovies2011$TheatersOpenWeek_2=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_2), "empty",  HollywoodMovies2011$TheatersOpenWeek_2)
 
@@ -305,7 +305,7 @@ Same as categorical, we can reeplace by a number such as the mean, the meadian.
 
 In this case we'll reeplace by the mean of the variable, and plotting the before and after side by
 
-```{r, fig.height=3, fig.width=6, warning=FALSE}
+```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE}
 # Filling all NA values with the mean of the variable
 HollywoodMovies2011$TheatersOpenWeek_mean=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek), mean(HollywoodMovies2011$TheatersOpenWeek, na.rm = T), HollywoodMovies2011$TheatersOpenWeek)
 
@@ -323,7 +323,7 @@ grid.arrange(p1, p2, ncol=2)
 
 We can see a peak around the `2828` product of the transformation. This introduces a bias around this point. If we are predicting some event, it would be safer to not have some special event around this value. 
 
-For example, if we are predicting an binary event, and the least representative event is correlated with having a mean of `3000` in `TheatersOpenWeek`, then the odds of having a higher **False Positive rate** may be higher.  Again the link to the <href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
+For example, if we are predicting an binary event, and the least representative event is correlated with having a mean of `3000` in `TheatersOpenWeek`, then the odds of having a higher **False Positive rate** may be higher.  Again the link to the <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
  target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
 
 An extra comment regarding last visualization, it was important to set the y-axis maximum to 30 in order to make the plots comparable.
@@ -348,11 +348,11 @@ Now we are going to do a quick review about more complex imputation methods, in 
 
 #### Method 1: Using MICE approach
 
-MICE stands for "Multivariate Imputation by Chained Equations", also known as: Fully Conditional Specification.
+MICE stands for "Multivariate Imputation by Chained Equations", also known as: Fully Conditional Specification. This book covers a minimal aspect of it since its popularity.
 
 It is a whole framework to analyze and deal with missing values. It considers the iteraction among **all variables** at the same time, (multivariate) not just one, and bases its functionality on an **iterative** process which uses different predictive models to fill each variable. 
 
-Internally it fill variable `A`, based on `B` and `C`. Then it fill `B` based on `A` and `C` (`A` previously predicted). And the iteration continues...
+Internally it fill variable `A`, based on `B` and `C`. Then it fill `B` based on `A` and `C` (`A` previously predicted). And the iteration continues... The name "chained equations" comes from the fact that we can specfied the algorithm per variable to impute the cases.
 
 It creates `M` replications of the original data with no missing values. _But why create `M` replications?_ 
 
@@ -370,7 +370,8 @@ Yes, one model per each generated data frame. Sounds like <a href="https://en.wi
 
 It will impute data for `nhanes` data frame coming in `mice` library. Let's check it:
 
-```{r}
+```{r, message=FALSE}
+# install.packages("mice")
 library(mice)
 df_status(nhanes)
 ```
@@ -379,7 +380,7 @@ Three variables have missing values. Let's fill it:
 
 ```{r}
 # Default imputation, it creates 5 complete data sets
-imp_data=mice(nhanes, m = 5)
+imp_data=mice(nhanes, m = 5, printFlag = FALSE)
 
 # Get a final data set containing the 5 imputed data frames, total rows=nrow(nhanes)*5
 data_all=complete(imp_data, "long")
@@ -387,10 +388,19 @@ data_all=complete(imp_data, "long")
 # data_all contains the same columns as nhanes plus 2 more: '.id' and '.imp'
 # .id=row number, from 1 to 25
 # .imp=imputation data frame id, 1 to 5 ('m' parameter)
-
 ```
 
 Original data, `nhanes`, has 25 rows, `data_all` contains 125 rows, which is the result of creating 5 (`m=5`) complete data frames of 25 rows each. 
+
+Time to check the results:
+
+```{r, fig.height=3, fig.width=6}
+densityplot(imp_data)
+```
+
+Each red line shows  the distribution of each imputed data frame, and the blue one contains the original distribution. The idea behing it is, if they look similar, then the imputation followed the original disitrbution. 
+
+For example, `chl` contains one imputed data frame -thus only one red line- containing two peaks around two values much higher than the original one.  
 
 The drawbacks are it is slow process, and it may requiere some tunning to work. For example: `mice_hollywood=mice(HollywoodMovies2011, m=5)` will fail after some time processing it, and it is an small data frame.
 
@@ -400,13 +410,19 @@ Original `mice` paper: <a href="https://www.jstatsoft.org/article/view/v045i03" 
 
 <br>
 
-#### Method 2: Using missingTree
+#### Method 2: Using random forest (missForest)
 
-```{r}
+`missForest` package 
+
+```{r, message=FALSE}
 library(missForest)
 
 # copying the data
 df_holly=HollywoodMovies2011
+
+# We will introduce more 15% more of NA values in TheatersOpenWeek_3 to produce a better example. Function 'prodNA' in missForest will help us.
+set.seed(31415) # to get always the same number of NA values...
+df_holly$TheatersOpenWeek_3=prodNA(select(df_holly, TheatersOpenWeek_3), 0.15)[,1]
 
 # missForest failed if it has any character variable, so we convert the only character into factor:
 df_holly$TheatersOpenWeek_2=as.factor(df_holly$TheatersOpenWeek_2)
@@ -414,47 +430,76 @@ df_holly$TheatersOpenWeek_2=as.factor(df_holly$TheatersOpenWeek_2)
 # excluding the Id column
 df_holly=select(df_holly, -Movie)
 
-# now the magic!
+# Now the magic! Imputing the data frame. xmis parameter=the data with missing values
 imputation_res=missForest(xmis = df_holly)
 
-imputation_res$OOBerror
-
 # Final imputed data frame
-imputation_res$ximp
-
-df_after=imputation_res$ximp
-
-
+df_imputed=imputation_res$ximp
 ```
 
 Now it's time to compare the distribution of some of the imputed variables. Hopefully, they will look similar at a visual analysis. 
 
 
+```{r, warning=FALSE, message=FALSE}
+# Creating another imputation based on na.rougfix from random forest pacakge
+df_rough=na.roughfix(df_holly)
 
-```{r}
 # Compare distributions before-after imputation
+df_holly$imputation="original"
+df_rough$imputation="na.roughfix"
+df_imputed$imputation="missForest"
 
-df_after$is_imputed=T
+# Putting the two data frames in only one, but split by is_imputed variable
+df_all=rbind(df_holly, df_imputed, df_rough)
 
-df_holly$is_imputed=F
+# converting to factor for using in a plot
+df_all$imputation=factor(df_all$imputation, levels=unique(df_all$imputation))
 
-df_all=rbind(df_holly, df_after)
-
-
-ggplot(df_all, aes(TheatersOpenWeek, colour = is_imputed)) + geom_density()
+# Plotting
+ggplot(df_all, aes(TheatersOpenWeek, colour=imputation)) + geom_density() + theme_minimal() + scale_colour_brewer(palette="Set2")
 ```
 
-I
-They look pretty similar!
 
-f we want to analyze from the analytical point of view, and don't play to be an art critic looking at a painting, we may run an statistical test comparing, for example, the means or the variance.
+* The green curve shows the distribution after the imputation based on `missForest` package.
+* The orange shows the imputation method we talked at the beginning, it reeplaces all `NA` by the median, it is done by `na.roughfix` coming in `randomForest` package.
+* The blue one shows the distribution without any imputation (of course, `NA` values are not displayed). 
+
+**Analysis:**
+
+Reeplace by the median tends to concentrate -as we expected- all the values around 3000. While the imputation given by `missForest` package does a **more natural distribution** since it doesn't concentrate around a single value. That's why the peak around 3000 is lower than the original one.
+
+The orange and blue look pretty similar!
+
+If we want to analyze from the analytical point of view, and don't play to be an art critic looking at a painting, we may run an statistical test comparing, for example, the means or the variance.
  
 <br>
 
+```{r}
+# an ugly hack to plot NA as a category...
+levels(df_all$TheatersOpenWeek_3)=c(levels(df_all$TheatersOpenWeek_3), "NA")
+df_all$TheatersOpenWeek_3[is.na(df_all$TheatersOpenWeek_3)]="NA"
 
+# now the plot!
+ggplot(df_all, aes(x = TheatersOpenWeek_3, fill = TheatersOpenWeek_3)) +
+    geom_bar(na.rm=T) + facet_wrap(~imputation)  + geom_text(stat='count',aes(label=..count..),vjust=-1) + ylim(0, 125) + scale_fill_brewer(palette="Set2") + theme_minimal() + theme(axis.text.x=element_text(angle = 45, hjust = 0.7))
+
+
+```
+
+<br>
+
+
+**Analysis:**
+
+Original variable contains 31 `NA` values which were reeplaced, by using the mode (most frequent value) in `na.roughfix`, and with an smoother and more reasonable cirteria using `missForest`.
+
+`missForest` added 2 rows in category `"[0, 1000]"`, 1 in `"(1000,2300]"` and 32 in the `(2300,4100]`. While `na.roughfix` added 35 only to `(2300,4100]`.
+
+
+<br>
 
 ### Conclusions
 
-The Imputation methods when the missing values, irea ral missing value, a **controlled-bias**, to we have not to exclude the variables from the analysis nor the predictive model.
+The Imputation methods when the missing values, missing value, a **controlled-bias**, to we have not to exclude the variables from the analysis nor the predictive model.
 
-<br><br>
+<br>
