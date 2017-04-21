@@ -4,9 +4,8 @@
 <br>
 
 
-
 <p align="center">
-<img src="readme/logo6c.png" width="200px" alt="Data Science Heroes" align="center">
+<img src="readme/data_science_live_book_cover.png" width="700px" alt="Data Science Live Book" align="center">
 </p>
 
 <br>
@@ -15,10 +14,6 @@
 
 
 <br>
-
-<p align="center">
-<img src="readme/cover_logo.png" width="150px" alt="Data Science Heroes" align="center">
-</p>
 
 <br>
 

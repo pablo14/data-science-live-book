@@ -15,17 +15,19 @@ create_files <- function(name, folder)
 }
 
 setwd("~/repos/data-science-live-book")
-create_files('correlation', 'selecting_best_variables')
+create_files('correlation', 'exploratory_data_analysis')
+create_files('profiling', 'exploratory_data_analysis')
+create_files('high_cardinality_predictive_modeling', 'data_preparation')
+create_files('readme', 'readme')
+
 
 create_files('high_cardinality_descriptive_stats', 'data_preparation')
-create_files('high_cardinality_predictive_modeling', 'data_preparation')
 
 create_files('gain_lift', 'model_performance')
 create_files('introduction', 'model_performance')
 create_files('out_of_time_validation', 'model_performance')
 create_files('knowing_the_error', 'model_performance')
-create_files('readme', 'readme')
-create_files('profiling', 'data_preparation')
+
 
 create_files('introduction', 'data_preparation')
 

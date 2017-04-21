@@ -1,10 +1,11 @@
 # Summary
 
+* [Exploratory Data Analysis]()
+    * [Profiling](exploratory_data_analysis/profiling.md)
+    * [Correlation](exploratory_data_analysis/correlation.md)
 * [Data Preparation]()
-    * [Profiling](data_preparation/profiling.md)
     * [High Cardinality in Descriptive Stats](data_preparation/high_cardinality_descriptive_stats.md)
     * [High Cardinality in Predictive Modeling](data_preparation/high_cardinality_predictive_modeling.md)
-    * [Correlation](data_preparation/correlation.md)
     * [Outliers Treatment](data_preparation/outliers_treatment.md)
 * [Selecting Best Variables](selecting_best_variables/introduction.md)
     * [Cross Plot (dataViz)](selecting_best_variables/cross_plot.md)

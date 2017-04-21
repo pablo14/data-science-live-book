@@ -1,5 +1,5 @@
-High Cardinality Variable in Predictive Modeling
-===
+
+<img src="http://i.imgur.com/GijXkrp.png" width="700px"> 
 
 
 
@@ -521,7 +521,7 @@ sprintf("Area under ROC curve is: %s", roc)
 ```
 
 ```
-## [1] "Area under ROC curve is: 0.66"
+## [1] "Area under ROC curve is: 0.65"
 ```
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
@@ -537,7 +537,7 @@ sprintf("New ROC value is: %s", new_roc);
 ```
 
 ```
-## [1] "New ROC value is: 0.7"
+## [1] "New ROC value is: 0.72"
 ```
 
 Then we alculate the percentage of improvement over first roc value:
@@ -548,7 +548,7 @@ sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
 ```
 
 ```
-## [1] "Improvement: ~ 6.06%"
+## [1] "Improvement: ~ 10.77%"
 ```
 
 Not too bad, right?
@@ -579,8 +579,8 @@ fit_gbm_1$finalModel
 
 ```
 ## A gradient boosted model with bernoulli loss function.
-## 150 iterations were performed.
-## There were 69 predictors of which 13 had non-zero influence.
+## 100 iterations were performed.
+## There were 69 predictors of which 8 had non-zero influence.
 ```
 
 That is: 69 input variables are representing the countries, but the flag columns were reported as not being relevant to make the prediction. 

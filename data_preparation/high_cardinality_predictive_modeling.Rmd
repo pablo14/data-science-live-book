@@ -3,8 +3,8 @@
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-#opts_knit$set(base.dir = "data_preparation") 
-```
+opts_knit$set(base.dir = "data_preparation") 
+``` 
 
 ### What is this about?
 

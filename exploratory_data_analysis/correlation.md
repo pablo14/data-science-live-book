@@ -16,13 +16,11 @@ From the practical point of view, you'll be able to replicate the analysis with 
 <br>
 
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-#opts_knit$set(base.dir = "selecting_best_variables")
-```
+
 Let's starting loading all needed libraries.
 
-```{r lib, message=F, results="hide"}
+
+```r
 ## Loading needed libraries
 library(funModeling) ## contains heart_disease data
 library(minerva) ## contains MIC statistic
@@ -40,8 +38,22 @@ Perhaps the most standard correlation measure for numeric variables is the `R st
 
 Consider the following example, which calculates R measure based on a target variable (for example to do feature engineering). Function `correlation_table` retrieves R  metric for all numeric variables skipping the categorical/nominal ones.
 
-```{r}
+
+```r
 correlation_table(data=heart_disease, str_target="has_heart_disease")
+```
+
+```
+##                 Variable has_heart_disease
+## 1      has_heart_disease              1.00
+## 2 heart_disease_severity              0.83
+## 3      num_vessels_flour              0.46
+## 4                oldpeak              0.42
+## 5                  slope              0.34
+## 6                    age              0.23
+## 7 resting_blood_pressure              0.15
+## 8      serum_cholestoral              0.08
+## 9         max_heart_rate             -0.42
 ```
 Variable `heart_disease_severity` is the most important -numerical- variable, the higher its value the higher the chances of having a heart disease (positive correlation). Just the opposite to `max_heart_rate`, which has a negative correlation.
 
@@ -63,10 +75,23 @@ These four relationships are different, but all of them have the same R2: `0.816
 
 Following example calculates the R2 and plot every pair.
 
-```{r, message=FALSE}
+
+```r
 ## Reading anscombe quartet data
 anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/selecting_best_variables/anscombe_quartet.txt", header = T)
+```
 
+```
+## Warning in file(file, "rt"): URL 'https://raw.githubusercontent.com/
+## pablo14/data-science-live-book/master/selecting_best_variables/
+## anscombe_quartet.txt': status was '404 Not Found'
+```
+
+```
+## Error in file(file, "rt"): cannot open connection
+```
+
+```r
 anscombe_data=read.delim(file="anscombe_quartet.txt", header = T)
 
 ## calculating the correlation (R squared, or R2) for every pair, every value is the same: 0.86.
@@ -88,6 +113,8 @@ plot_anscombe <- function(x, y, value, type)
 grid.arrange(plot_anscombe("x1", "y1", cor_1, "R2"), plot_anscombe("x2", "y2", cor_2, "R2"), plot_anscombe("x3", "y3", cor_3, "R2"), plot_anscombe("x4", "y4", cor_4, "R2"), ncol=2, nrow=2)
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+
 4-different plots, having the same `mean` for every `x` and `y` variable (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by typing `summary(anscombe_data)`. 
 
 This is why is so important to plot relationships when analyzing correlations.
@@ -108,20 +135,35 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 
 Let's plot a non-linear relationship, directly based on a function (negative exponential), and print the MIC value.
 
-```{r, message=FALSE,  fig.width=4, fig.height=3}
+
+```r
 x=seq(0, 20, length.out=500)
 df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
 ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()
+```
 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+
+```r
 # position [1,2] contains the correlation of both variables, excluding the correlation measure of each variable against itself.
 
 # Calculating linear correlation
 res_cor_R2=cor(df_exp)[1,2]^2
 sprintf("R2: %s", round(res_cor_R2,2))
+```
 
+```
+## [1] "R2: 0.39"
+```
+
+```r
 # now computing the MIC metric
 res_mine=mine(df_exp)
 sprintf("MIC: %s", res_mine$MIC[1,2])
+```
+
+```
+## [1] "MIC: 1"
 ```
 
 **MIC** value goes from 0 to 1. Being 0 implies no correlation and 1 highest correlation. The interpretation is the same as the R-squared.
@@ -148,24 +190,43 @@ Noise is an undesired signal adding to the original one. In machine learning noi
 
 Now we are going to add some noise creating the `y_noise_1` variable.
 
-```{r ,fig.width=4, fig.height=3}
+
+```r
 df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
 ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color='steelblue') + theme_minimal()
 ```
 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+
 Calculating the correlation and MIC again, printing in both cases the entire matrix, which shows the correlation/MIC metric of each input variable against all the others including themselves.
 
-```{r}
+
+```r
 ## calculating R squared
 res_R2=cor(df_exp)^2
 res_R2
+```
 
+```
+##                   x         y y_noise_1
+## x         1.0000000 0.3899148 0.3885371
+## y         0.3899148 1.0000000 0.9907272
+## y_noise_1 0.3885371 0.9907272 1.0000000
+```
+
+```r
 ## Calculating mine
 res_mine_2=mine(df_exp)
 
 ## Printing MIC 
 res_mine_2$MIC
+```
 
+```
+##                   x         y y_noise_1
+## x         1.0000000 1.0000000 0.7264588
+## y         1.0000000 1.0000000 0.7239132
+## y_noise_1 0.7264588 0.7239132 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -189,7 +250,8 @@ One of them is `MICR2`, used as a measure of **non-linearity**. It is calculated
 
 We can check it by calculating the MICR2 manually, following two matrix returns the same result:
 
-```{r, eval=FALSE}
+
+```r
 # MIC r2: non-linearity metric
 round(res_mine_2$MICR2, 3)
 # calculating MIC r2 manually
@@ -202,7 +264,8 @@ Imagine we need to explain the relationship to another person, we'll need "more 
 
 In comparison to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000."_
 
-```{r, message=FALSE, fig.width=8, fig.height=3}
+
+```r
 ## creating data example
 df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
 
@@ -223,6 +286,8 @@ p_linear=ggplot(df_example, aes(x=x, y=y_linear)) + geom_line(color='steelblue')
 grid.arrange(p_exp,p_linear,ncol=2)
 ```
 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+
 <br>
 
 Both plots show a perfect correlation (or relationship), holding an MIC=1.
@@ -238,7 +303,8 @@ Remember the example we review at the beginning? Every pair of Anscombe Quartet 
 
 But what happen if we measure the relationship with a metric based on Information Theory? Yes, MIC again.
 
-```{r}
+
+```r
 ## calculating the MIC for every pair
 mic_1=mine(anscombe_data$x1, anscombe_data$y1, alpha=0.8)$MIC
 mic_2=mine(anscombe_data$x2, anscombe_data$y2, alpha=0.8)$MIC
@@ -247,8 +313,9 @@ mic_4=mine(anscombe_data$x4, anscombe_data$y4, alpha=0.8)$MIC
 
 ## plotting MIC in a 2x2 grid
 grid.arrange(plot_anscombe("x1", "y1", mic_1, "MIC"), plot_anscombe("x2", "y2", mic_2,"MIC"), plot_anscombe("x3", "y3", mic_3,"MIC"), plot_anscombe("x4", "y4", mic_4,"MIC"), ncol=2, nrow=2)
-
 ```
+
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
 As you may notice we increased the `alpha` value to 0.8, this is a good practice -according to the documentation- when we analyzed small samples. The default value is 0.6 and its maximum 1.
 
@@ -256,7 +323,8 @@ In this case, MIC value spotted the most spurious relationship in the pair `x4 -
 
 But when combining the MIC with **MIC-R2** (non-linearity measurement) new insights appears:
 
-```{r}
+
+```r
 ## Calculating the MIC for every pair, note the "MIC-R2" object has the hyphen when the input are two vectors, unlike when it takes a data frame which is "MICR2".
 mic_r2_1=mine(anscombe_data$x1, anscombe_data$y1, alpha = 0.8)$`MIC-R2`
 mic_r2_2=mine(anscombe_data$x2, anscombe_data$y2, alpha = 0.8)$`MIC-R2`
@@ -266,6 +334,14 @@ mic_r2_4=mine(anscombe_data$x4, anscombe_data$y4, alpha = 0.8)$`MIC-R2`
 ## Ordering according mic_r2
 df_mic_r2=data.frame(pair=c(1,2,3,4), mic_r2=c(mic_r2_1,mic_r2_2,mic_r2_3,mic_r2_4)) %>% arrange(-mic_r2)
 df_mic_r2
+```
+
+```
+##   pair     mic_r2
+## 1    2  0.3277882
+## 2    3  0.3277062
+## 3    1  0.3274878
+## 4    4 -0.2272103
 ```
 
 
@@ -282,7 +358,8 @@ A monotonic series is such it never changes its tendency, it always goes up or d
 
 Following example simulates two-time series, one not-monotonic `y_1` and the other monotonic `y_2`.
 
-```{r, fig.height=3, fig.width=8}
+
+```r
 # creating sample data (simulating time series)
 time_x=sort(runif(n=1000, min=0, max=1))
 y_1=4*(time_x-0.5)^2
@@ -301,8 +378,9 @@ p_y_1=ggplot(df_mono, aes(x=time_x, y=y_1)) + geom_line(color='steelblue') + the
 p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + theme_minimal() + annotate("text", x = 0.43, y =0.35, label = sprintf("MAS=%s (goes up => monotonic)", mas_y2))
 
 grid.arrange(p_y_1,p_y_2,ncol=2)
-
 ```
+
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
 
 <br>
 
@@ -310,25 +388,65 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 
 Consider the following case which contains three-time series: `y1`, `y2` and `y3`. They can be profiled concerning its non-monotonicity or overall growth trend.
 
-```{r}
+
+```r
 ## reading data
 df_time_series=read.delim(file="df_time.txt")
+```
 
+```
+## Warning in file(file, "rt"): cannot open file 'df_time.txt': No such file
+## or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 ## converting to long format so they can be plotted
 df_time_series_long=melt(df_time_series, id="time")
+```
 
+```
+## Error in melt(df_time_series, id = "time"): object 'df_time_series' not found
+```
+
+```r
 ## Plotting
 plot_time_series=ggplot(data=df_time_series_long,
        aes(x=time, y=value, colour=variable)) +
        geom_line() + theme_minimal()  + scale_color_brewer(palette="Set2")
+```
 
+```
+## Error in ggplot(data = df_time_series_long, aes(x = time, y = value, colour = variable)): object 'df_time_series_long' not found
+```
+
+```r
 plot_time_series
 ```
 
-```{r}
+```
+## Error in eval(expr, envir, enclos): object 'plot_time_series' not found
+```
+
+
+```r
 # Calculating and printing MAS values for time series data
 mine_ts=mine(df_time_series)
+```
+
+```
+## Error in is.data.frame(x): object 'df_time_series' not found
+```
+
+```r
 mine_ts$MAS 
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'mine_ts' not found
 ```
 
 <br>
@@ -350,12 +468,23 @@ MIC metric can also measure the **correlation in time series**, it is not a gene
 
 This section is based on the same data we used in MAS example.
 
-```{r, fig.width=3.5, fig.height=2}
+
+```r
 ## printing again the 3-time series
 plot_time_series
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'plot_time_series' not found
+```
+
+```r
 # Printing MIC values
 mine_ts$MIC
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'mine_ts' not found
 ```
 <br>
 
@@ -391,7 +520,8 @@ If the original categorical variable has 30 possible values, it will result in 3
 
 If we use package `caret` from R, this conversion only takes two lines of code:
 
-```{r, message=FALSE}
+
+```r
 library(caret)
 
 ## selecting just a few variables
@@ -415,8 +545,18 @@ mine_res_hd=mine(heart_disease_4)
 
 Printing a sample...
 
-```{r}
+
+```r
 mine_res_hd$MIC[1:5,1:5]
+```
+
+```
+##                max_heart_rate   oldpeak     thal.3     thal.6     thal.7
+## max_heart_rate      0.9999920 0.2440874 0.24448436 0.11965365 0.18392352
+## oldpeak             0.2440874 0.9999283 0.17511070 0.11086221 0.15706631
+## thal.3              0.2444844 0.1751107 0.99233512 0.07257079 0.70987597
+## thal.6              0.1196536 0.1108622 0.07257079 0.32665312 0.04419397
+## thal.7              0.1839235 0.1570663 0.70987597 0.04419397 0.96395831
 ```
 
 Where column `thal.3` takes a value of 1 when `thal=3`.
@@ -429,7 +569,8 @@ We'll use `corrplot` package in R which can plot a `cor` object (classical corre
 
 The two plots are based on the same data but display the correlation in different ways. 
 
-```{r}
+
+```r
 library(corrplot) ## library wto plot that matrix
 library(RColorBrewer) # to use the color pallete brewer.pal
 
@@ -444,8 +585,11 @@ corrplot(mine_res_hd$MIC, method="circle",col=brewer.pal(n=10, name="PuOr"),
          is.corr = F # accept a any matrix, mic in this case (not a correlation element),
         
 )
+```
 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
 
+```r
 ## Correlation plot with color and correlation MIC
 corrplot(mine_res_hd$MIC, method="color",
          type="lower", number.cex=0.6,
@@ -453,8 +597,9 @@ corrplot(mine_res_hd$MIC, method="color",
          tl.col="red", tl.srt=90, tl.cex = 0.9,
          diag=FALSE, is.corr = F 
 )
-
 ```
+
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-2.png)
 
 Just change the first parameter -`mine_res_hd$MIC`- to the matrix you want and reuse with your data. 
 
@@ -476,9 +621,12 @@ Same analysis for variable `chest_pain`, a value of 4 is more dangerous than a v
 
 And we can check it with other plot:
 
-```{r, fig.height=2, fig.width=3}
+
+```r
 cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
 ```
+
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
 
 The likelihood of having a heart disease is 72.9% if the patient has `chest_pain=4`. More than 2x more likely if she/(he) has `chest_pain=1` (72.9 vs 30.4%).
 
@@ -501,7 +649,8 @@ There is a complete chapter treating this topic [TODO: ADD LINK]. So in this sec
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
 
-```{r}
+
+```r
 ## Getting the index of the variable to predict: has_heart_disease
 target="has_heart_disease"
 index_target=grep(target, colnames(heart_disease_4))
@@ -514,8 +663,9 @@ df_predictive=data.frame(variable=rownames(mic_predictive), mic=mic_predictive[,
 
 # creating a colorful plot showing importance variable  based on MIC measure
 ggplot(df_predictive, aes(x=reorder(variable, mic),y=mic, fill=variable)) + geom_bar(stat='identity') + coord_flip() + theme_bw() + xlab("") + ylab("Variable Importance (based on MIC)") + guides(fill=FALSE)
-   
 ```
+
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
 
 Although it is recommended to run correlations among all variables in order to exclude correlated input features.
 
@@ -547,7 +697,8 @@ This time we'll use `infotheo` package, we need first to do a **data preparation
 
 Next code will create the correlation matrix as we seen before, but based on the mutual information index. 
 
-```{r, eval=FALSE}
+
+```r
 library(infotheo)
 ## discretizing every variable
 heart_disease_4_disc=discretize(heart_disease_4) 
@@ -610,3 +761,4 @@ Next recommended chapter: Selecting best variables.
 * [2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
 * [3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
 * [4] Dynamic time wrapping <a hreg="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
+
