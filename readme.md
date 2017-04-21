@@ -17,16 +17,17 @@
 
 <br>
 
-### Last update: 2017-01-29
+### Last update: 2017-04-21
 
 ## _What does it cover?_
 
 This live book (`#dsLiveBook`) covers common aspects in predictive modeling:
 
-+  A. **Data Preparation** / **Data Profiling**
-+  B. **Selecting best variables (dataviz)**
-+  C. **Scoring Data**
-+  D. **Assessing model performance**
++  A. **Data Profiling**
++  B. **Data Preparation** 
++  C. **Selecting best variables**
++  D. **Scoring Data**
++  E. **Assessing model performance**
 
 #### Upcoming updates
 
