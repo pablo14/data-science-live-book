@@ -1,3 +1,5 @@
+High Cardinality Variable in Predictive Modeling
+===
 
 <img src="http://i.imgur.com/GijXkrp.png" width="700px"> 
 
