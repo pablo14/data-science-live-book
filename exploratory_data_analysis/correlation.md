@@ -209,9 +209,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3885371
-## y         0.3899148 1.0000000 0.9907272
-## y_noise_1 0.3885371 0.9907272 1.0000000
+## x         1.0000000 0.3899148 0.3887512
+## y         0.3899148 1.0000000 0.9901031
+## y_noise_1 0.3887512 0.9901031 1.0000000
 ```
 
 ```r
@@ -224,9 +224,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7264588
-## y         1.0000000 1.0000000 0.7239132
-## y_noise_1 0.7264588 0.7239132 1.0000000
+## x         1.0000000 1.0000000 0.7495222
+## y         1.0000000 1.0000000 0.7322629
+## y_noise_1 0.7495222 0.7322629 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -392,61 +392,33 @@ Consider the following case which contains three-time series: `y1`, `y2` and `y3
 ```r
 ## reading data
 df_time_series=read.delim(file="df_time.txt")
-```
 
-```
-## Warning in file(file, "rt"): cannot open file 'df_time.txt': No such file
-## or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
 ## converting to long format so they can be plotted
 df_time_series_long=melt(df_time_series, id="time")
-```
 
-```
-## Error in melt(df_time_series, id = "time"): object 'df_time_series' not found
-```
-
-```r
 ## Plotting
 plot_time_series=ggplot(data=df_time_series_long,
        aes(x=time, y=value, colour=variable)) +
        geom_line() + theme_minimal()  + scale_color_brewer(palette="Set2")
-```
 
-```
-## Error in ggplot(data = df_time_series_long, aes(x = time, y = value, colour = variable)): object 'df_time_series_long' not found
-```
-
-```r
 plot_time_series
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'plot_time_series' not found
-```
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
 
 
 ```r
 # Calculating and printing MAS values for time series data
 mine_ts=mine(df_time_series)
-```
-
-```
-## Error in is.data.frame(x): object 'df_time_series' not found
-```
-
-```r
 mine_ts$MAS 
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'mine_ts' not found
+##           time         y1         y2         y3
+## time 0.0000000 0.12031227 0.10538854 0.19115290
+## y1   0.1203123 0.00000000 0.06777813 0.08109624
+## y2   0.1053885 0.06777813 0.00000000 0.05700273
+## y3   0.1911529 0.08109624 0.05700273 0.00000000
 ```
 
 <br>
@@ -474,9 +446,7 @@ This section is based on the same data we used in MAS example.
 plot_time_series
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'plot_time_series' not found
-```
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 ```r
 # Printing MIC values
@@ -484,7 +454,11 @@ mine_ts$MIC
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'mine_ts' not found
+##           time        y1        y2        y3
+## time 1.0000000 0.3770052 0.6896763 0.3408671
+## y1   0.3770052 1.0000000 0.6174925 0.7094427
+## y2   0.6896763 0.6174925 1.0000000 0.5176504
+## y3   0.3408671 0.7094427 0.5176504 1.0000000
 ```
 <br>
 
