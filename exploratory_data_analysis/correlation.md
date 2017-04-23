@@ -102,7 +102,7 @@ plot_anscombe <- function(x, y, value, type)
 grid.arrange(plot_anscombe("x1", "y1", cor_1, "R2"), plot_anscombe("x2", "y2", cor_2, "R2"), plot_anscombe("x3", "y3", cor_3, "R2"), plot_anscombe("x4", "y4", cor_4, "R2"), ncol=2, nrow=2)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![plot of chunk anscombe_data](figure/anscombe_data-1.png)
 
 4-different plots, having the same `mean` for every `x` and `y` variable (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by typing `summary(anscombe_data)`. 
 
@@ -131,7 +131,7 @@ df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
 ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+![plot of chunk mic_non_linear_relationship](figure/mic_non_linear_relationship-1.png)
 
 ```r
 # position [1,2] contains the correlation of both variables, excluding the correlation measure of each variable against itself.
@@ -185,7 +185,7 @@ df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
 ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color='steelblue') + theme_minimal()
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk noisy_relationship](figure/noisy_relationship-1.png)
 
 Calculating the correlation and MIC again, printing in both cases the entire matrix, which shows the correlation/MIC metric of each input variable against all the others including themselves.
 
@@ -198,9 +198,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3834563
-## y         0.3899148 1.0000000 0.9904358
-## y_noise_1 0.3834563 0.9904358 1.0000000
+## x         1.0000000 0.3899148 0.3868305
+## y         0.3899148 1.0000000 0.9898033
+## y_noise_1 0.3868305 0.9898033 1.0000000
 ```
 
 ```r
@@ -213,9 +213,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7345241
-## y         1.0000000 1.0000000 0.7251967
-## y_noise_1 0.7345241 0.7251967 1.0000000
+## x         1.0000000 1.0000000 0.7205602
+## y         1.0000000 1.0000000 0.7278946
+## y_noise_1 0.7205602 0.7278946 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -275,7 +275,7 @@ p_linear=ggplot(df_example, aes(x=x, y=y_linear)) + geom_line(color='steelblue')
 grid.arrange(p_exp,p_linear,ncol=2)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+![plot of chunk measuring_non_linearity](figure/measuring_non_linearity-1.png)
 
 <br>
 
@@ -369,7 +369,7 @@ p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + the
 grid.arrange(p_y_1,p_y_2,ncol=2)
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 <br>
 
@@ -435,7 +435,7 @@ This section is based on the same data we used in MAS example.
 plot_time_series
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+![plot of chunk time_series](figure/time_series-1.png)
 
 ```r
 # Printing MIC values

@@ -19,8 +19,8 @@ From the practical point of view, you'll be able to replicate the analysis with 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
 
-opts_knit$set(base.dir = "exploratory_data_analysis")
-opts_knit$set(dpi = 130)
+opts_knit$set(base.dir = "exploratory_data_analysis", dpi = 130)
+#opts_knit$set(dpi = 130)
 ```
 
 Let's starting loading all needed libraries.
@@ -66,7 +66,7 @@ These four relationships are different, but all of them have the same R2: `0.816
 
 Following example calculates the R2 and plot every pair.
 
-```{r, message=FALSE}
+```{r anscombe_data, message=FALSE}
 ## Reading anscombe quartet data
 anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/anscombe_quartet.txt", header = T)
 
@@ -111,7 +111,7 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 
 Let's plot a non-linear relationship, directly based on a function (negative exponential), and print the MIC value.
 
-```{r, message=FALSE,  fig.width=4, fig.height=3}
+```{r mic_non_linear_relationship, message=FALSE,  fig.width=4, fig.height=3}
 x=seq(0, 20, length.out=500)
 df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
 ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()
@@ -151,7 +151,7 @@ Noise is an undesired signal adding to the original one. In machine learning noi
 
 Now we are going to add some noise creating the `y_noise_1` variable.
 
-```{r ,fig.width=4, fig.height=3}
+```{r noisy_relationship,fig.width=4, fig.height=3}
 df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
 ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color='steelblue') + theme_minimal()
 ```
@@ -205,7 +205,7 @@ Imagine we need to explain the relationship to another person, we'll need "more 
 
 In comparison to: _"A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000."_
 
-```{r, message=FALSE, fig.width=8, fig.height=3}
+```{r measuring_non_linearity, message=FALSE, fig.width=8, fig.height=3}
 ## creating data example
 df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
 
@@ -353,7 +353,7 @@ MIC metric can also measure the **correlation in time series**, it is not a gene
 
 This section is based on the same data we used in MAS example.
 
-```{r, fig.width=3.5, fig.height=2}
+```{r time_series, fig.width=4, fig.height=2.5}
 ## printing again the 3-time series
 plot_time_series
 # Printing MIC values
@@ -504,7 +504,7 @@ There is a complete chapter treating this topic [TODO: ADD LINK]. So in this sec
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
 
-```{r importance_variable_ranking}
+```{r importance_variable_ranking, fig.width=6, fig.height=4.5}
 ## Getting the index of the variable to predict: has_heart_disease
 target="has_heart_disease"
 index_target=grep(target, colnames(heart_disease_4))
