@@ -23,11 +23,11 @@
 
 This live book (`#dsLiveBook`) covers common aspects in predictive modeling:
 
-+  A. **Data Profiling**
++  A. **Exploratory Data Analysis**
 +  B. **Data Preparation** 
-+  C. **Selecting best variables**
++  C. **Selecting Best Variables**
 +  D. **Scoring Data**
-+  E. **Assessing model performance**
++  E. **Assessing Model Performance**
 
 #### Upcoming updates
 
@@ -49,7 +49,7 @@ Most of the concepts are independent from the language, the focus is on general 
 <br>
 
 _Why a live book ?_
-Hopefully this book barely has an end, it will be updated periodically. Next planned chapter is a case study in predictive modeling. And you can contribute! below the github link.
+Hopefully this book barely has an end, it will be updated periodically. And you can contribute! below the github link.
 
 <br>
 

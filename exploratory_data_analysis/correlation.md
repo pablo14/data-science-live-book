@@ -1,4 +1,4 @@
-Correlation and Information
+Correlation and Relationship
 =====
 
 ### What is this about?
@@ -14,6 +14,7 @@ Understanding these concepts in low dimension (two variables) and small data (a 
 From the practical point of view, you'll be able to replicate the analysis with your own data, profiling and exposing their relationships in fancy plots.
 
 <br>
+
 
 
 
@@ -78,20 +79,8 @@ Following example calculates the R2 and plot every pair.
 
 ```r
 ## Reading anscombe quartet data
-anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/selecting_best_variables/anscombe_quartet.txt", header = T)
-```
+anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/anscombe_quartet.txt", header = T)
 
-```
-## Warning in file(file, "rt"): URL 'https://raw.githubusercontent.com/
-## pablo14/data-science-live-book/master/selecting_best_variables/
-## anscombe_quartet.txt': status was '404 Not Found'
-```
-
-```
-## Error in file(file, "rt"): cannot open connection
-```
-
-```r
 anscombe_data=read.delim(file="anscombe_quartet.txt", header = T)
 
 ## calculating the correlation (R squared, or R2) for every pair, every value is the same: 0.86.
@@ -209,9 +198,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3887512
-## y         0.3899148 1.0000000 0.9901031
-## y_noise_1 0.3887512 0.9901031 1.0000000
+## x         1.0000000 0.3899148 0.3834563
+## y         0.3899148 1.0000000 0.9904358
+## y_noise_1 0.3834563 0.9904358 1.0000000
 ```
 
 ```r
@@ -224,9 +213,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7495222
-## y         1.0000000 1.0000000 0.7322629
-## y_noise_1 0.7495222 0.7322629 1.0000000
+## x         1.0000000 1.0000000 0.7345241
+## y         1.0000000 1.0000000 0.7251967
+## y_noise_1 0.7345241 0.7251967 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -315,7 +304,7 @@ mic_4=mine(anscombe_data$x4, anscombe_data$y4, alpha=0.8)$MIC
 grid.arrange(plot_anscombe("x1", "y1", mic_1, "MIC"), plot_anscombe("x2", "y2", mic_2,"MIC"), plot_anscombe("x3", "y3", mic_3,"MIC"), plot_anscombe("x4", "y4", mic_4,"MIC"), ncol=2, nrow=2)
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+![plot of chunk anscombe_set_information](figure/anscombe_set_information-1.png)
 
 As you may notice we increased the `alpha` value to 0.8, this is a good practice -according to the documentation- when we analyzed small samples. The default value is 0.6 and its maximum 1.
 
@@ -380,7 +369,7 @@ p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + the
 grid.arrange(p_y_1,p_y_2,ncol=2)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
 <br>
 
@@ -391,7 +380,7 @@ Consider the following case which contains three-time series: `y1`, `y2` and `y3
 
 ```r
 ## reading data
-df_time_series=read.delim(file="df_time.txt")
+df_time_series=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/df_time.txt")
 
 ## converting to long format so they can be plotted
 df_time_series_long=melt(df_time_series, id="time")
@@ -404,7 +393,7 @@ plot_time_series=ggplot(data=df_time_series_long,
 plot_time_series
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
+![plot of chunk correlation_time_series](figure/correlation_time_series-1.png)
 
 
 ```r
@@ -446,7 +435,7 @@ This section is based on the same data we used in MAS example.
 plot_time_series
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
 
 ```r
 # Printing MIC values
@@ -561,7 +550,7 @@ corrplot(mine_res_hd$MIC, method="circle",col=brewer.pal(n=10, name="PuOr"),
 )
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
+![plot of chunk correlation_information_theory](figure/correlation_information_theory-1.png)
 
 ```r
 ## Correlation plot with color and correlation MIC
@@ -573,7 +562,7 @@ corrplot(mine_res_hd$MIC, method="color",
 )
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-2.png)
+![plot of chunk correlation_information_theory](figure/correlation_information_theory-2.png)
 
 Just change the first parameter -`mine_res_hd$MIC`- to the matrix you want and reuse with your data. 
 
@@ -600,7 +589,7 @@ And we can check it with other plot:
 cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
+![plot of chunk profiling_target_variable](figure/profiling_target_variable-1.png)
 
 The likelihood of having a heart disease is 72.9% if the patient has `chest_pain=4`. More than 2x more likely if she/(he) has `chest_pain=1` (72.9 vs 30.4%).
 
@@ -639,7 +628,7 @@ df_predictive=data.frame(variable=rownames(mic_predictive), mic=mic_predictive[,
 ggplot(df_predictive, aes(x=reorder(variable, mic),y=mic, fill=variable)) + geom_bar(stat='identity') + coord_flip() + theme_bw() + xlab("") + ylab("Variable Importance (based on MIC)") + guides(fill=FALSE)
 ```
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+![plot of chunk importance_variable_ranking](figure/importance_variable_ranking-1.png)
 
 Although it is recommended to run correlations among all variables in order to exclude correlated input features.
 

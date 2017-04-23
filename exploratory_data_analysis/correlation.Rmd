@@ -1,4 +1,4 @@
-Correlation and Information
+Correlation and Relationship
 =====
 
 ### What is this about?
@@ -18,8 +18,11 @@ From the practical point of view, you'll be able to replicate the analysis with 
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
+
 opts_knit$set(base.dir = "exploratory_data_analysis")
+opts_knit$set(dpi = 130)
 ```
+
 Let's starting loading all needed libraries.
 
 ```{r lib, message=F, results="hide"}
@@ -65,7 +68,7 @@ Following example calculates the R2 and plot every pair.
 
 ```{r, message=FALSE}
 ## Reading anscombe quartet data
-anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/selecting_best_variables/anscombe_quartet.txt", header = T)
+anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/anscombe_quartet.txt", header = T)
 
 anscombe_data=read.delim(file="anscombe_quartet.txt", header = T)
 
@@ -238,7 +241,7 @@ Remember the example we review at the beginning? Every pair of Anscombe Quartet 
 
 But what happen if we measure the relationship with a metric based on Information Theory? Yes, MIC again.
 
-```{r}
+```{r anscombe_set_information}
 ## calculating the MIC for every pair
 mic_1=mine(anscombe_data$x1, anscombe_data$y1, alpha=0.8)$MIC
 mic_2=mine(anscombe_data$x2, anscombe_data$y2, alpha=0.8)$MIC
@@ -256,7 +259,7 @@ In this case, MIC value spotted the most spurious relationship in the pair `x4 -
 
 But when combining the MIC with **MIC-R2** (non-linearity measurement) new insights appears:
 
-```{r}
+```{r anscombe_set}
 ## Calculating the MIC for every pair, note the "MIC-R2" object has the hyphen when the input are two vectors, unlike when it takes a data frame which is "MICR2".
 mic_r2_1=mine(anscombe_data$x1, anscombe_data$y1, alpha = 0.8)$`MIC-R2`
 mic_r2_2=mine(anscombe_data$x2, anscombe_data$y2, alpha = 0.8)$`MIC-R2`
@@ -310,9 +313,9 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 
 Consider the following case which contains three-time series: `y1`, `y2` and `y3`. They can be profiled concerning its non-monotonicity or overall growth trend.
 
-```{r}
+```{r correlation_time_series, fig.height=3, fig.width=5}
 ## reading data
-df_time_series=read.delim(file="df_time.txt")
+df_time_series=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/df_time.txt")
 
 ## converting to long format so they can be plotted
 df_time_series_long=melt(df_time_series, id="time")
@@ -391,7 +394,7 @@ If the original categorical variable has 30 possible values, it will result in 3
 
 If we use package `caret` from R, this conversion only takes two lines of code:
 
-```{r, message=FALSE}
+```{r dummy_vars, message=FALSE}
 library(caret)
 
 ## selecting just a few variables
@@ -429,7 +432,7 @@ We'll use `corrplot` package in R which can plot a `cor` object (classical corre
 
 The two plots are based on the same data but display the correlation in different ways. 
 
-```{r}
+```{r correlation_information_theory}
 library(corrplot) ## library wto plot that matrix
 library(RColorBrewer) # to use the color pallete brewer.pal
 
@@ -476,7 +479,7 @@ Same analysis for variable `chest_pain`, a value of 4 is more dangerous than a v
 
 And we can check it with other plot:
 
-```{r, fig.height=2, fig.width=3}
+```{r profiling_target_variable, fig.height=2, fig.width=3}
 cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
 ```
 
@@ -501,7 +504,7 @@ There is a complete chapter treating this topic [TODO: ADD LINK]. So in this sec
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
 
-```{r}
+```{r importance_variable_ranking}
 ## Getting the index of the variable to predict: has_heart_disease
 target="has_heart_disease"
 index_target=grep(target, colnames(heart_disease_4))
@@ -547,7 +550,7 @@ This time we'll use `infotheo` package, we need first to do a **data preparation
 
 Next code will create the correlation matrix as we seen before, but based on the mutual information index. 
 
-```{r, eval=FALSE}
+```{r correlation_matrix_information_theory, eval=FALSE}
 library(infotheo)
 ## discretizing every variable
 heart_disease_4_disc=discretize(heart_disease_4) 
