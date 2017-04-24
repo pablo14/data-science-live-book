@@ -102,7 +102,7 @@ plot_anscombe <- function(x, y, value, type)
 grid.arrange(plot_anscombe("x1", "y1", cor_1, "R2"), plot_anscombe("x2", "y2", cor_2, "R2"), plot_anscombe("x3", "y3", cor_3, "R2"), plot_anscombe("x4", "y4", cor_4, "R2"), ncol=2, nrow=2)
 ```
 
-![plot of chunk anscombe_data](figure/anscombe_data-1.png)
+<img src="figure/anscombe_data-1.png" title="plot of chunk anscombe_data" alt="plot of chunk anscombe_data" width="400px" />
 
 4-different plots, having the same `mean` for every `x` and `y` variable (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by typing `summary(anscombe_data)`. 
 
@@ -131,7 +131,7 @@ df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
 ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()
 ```
 
-![plot of chunk mic_non_linear_relationship](figure/mic_non_linear_relationship-1.png)
+<img src="figure/mic_non_linear_relationship-1.png" title="plot of chunk mic_non_linear_relationship" alt="plot of chunk mic_non_linear_relationship" width="400px" />
 
 ```r
 # position [1,2] contains the correlation of both variables, excluding the correlation measure of each variable against itself.
@@ -185,7 +185,7 @@ df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
 ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color='steelblue') + theme_minimal()
 ```
 
-![plot of chunk noisy_relationship](figure/noisy_relationship-1.png)
+<img src="figure/noisy_relationship-1.png" title="plot of chunk noisy_relationship" alt="plot of chunk noisy_relationship" width="400px" />
 
 Calculating the correlation and MIC again, printing in both cases the entire matrix, which shows the correlation/MIC metric of each input variable against all the others including themselves.
 
@@ -198,9 +198,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3842796
-## y         0.3899148 1.0000000 0.9909799
-## y_noise_1 0.3842796 0.9909799 1.0000000
+## x         1.0000000 0.3899148 0.3800957
+## y         0.3899148 1.0000000 0.9911271
+## y_noise_1 0.3800957 0.9911271 1.0000000
 ```
 
 ```r
@@ -213,9 +213,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7334356
-## y         1.0000000 1.0000000 0.7411908
-## y_noise_1 0.7334356 0.7411908 1.0000000
+## x         1.0000000 1.0000000 0.7238065
+## y         1.0000000 1.0000000 0.7238065
+## y_noise_1 0.7238065 0.7238065 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -275,7 +275,7 @@ p_linear=ggplot(df_example, aes(x=x, y=y_linear)) + geom_line(color='steelblue')
 grid.arrange(p_exp,p_linear,ncol=2)
 ```
 
-![plot of chunk measuring_non_linearity](figure/measuring_non_linearity-1.png)
+<img src="figure/measuring_non_linearity-1.png" title="plot of chunk measuring_non_linearity" alt="plot of chunk measuring_non_linearity" width="600px" />
 
 <br>
 
@@ -304,7 +304,7 @@ mic_4=mine(anscombe_data$x4, anscombe_data$y4, alpha=0.8)$MIC
 grid.arrange(plot_anscombe("x1", "y1", mic_1, "MIC"), plot_anscombe("x2", "y2", mic_2,"MIC"), plot_anscombe("x3", "y3", mic_3,"MIC"), plot_anscombe("x4", "y4", mic_4,"MIC"), ncol=2, nrow=2)
 ```
 
-![plot of chunk anscombe_set_information](figure/anscombe_set_information-1.png)
+<img src="figure/anscombe_set_information-1.png" title="plot of chunk anscombe_set_information" alt="plot of chunk anscombe_set_information" width="400px" />
 
 As you may notice we increased the `alpha` value to 0.8, this is a good practice -according to the documentation- when we analyzed small samples. The default value is 0.6 and its maximum 1.
 
@@ -369,7 +369,7 @@ p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + the
 grid.arrange(p_y_1,p_y_2,ncol=2)
 ```
 
-![plot of chunk monotonic_non-monotonic_function](figure/monotonic_non-monotonic_function-1.png)
+<img src="figure/monotonic_non-monotonic_function-1.png" title="plot of chunk monotonic_non-monotonic_function" alt="plot of chunk monotonic_non-monotonic_function" width="600px" />
 
 <br>
 
@@ -393,7 +393,7 @@ plot_time_series=ggplot(data=df_time_series_long,
 plot_time_series
 ```
 
-![plot of chunk correlation_time_series](figure/correlation_time_series-1.png)
+<img src="figure/correlation_time_series-1.png" title="plot of chunk correlation_time_series" alt="plot of chunk correlation_time_series" width="400px" />
 
 
 ```r
@@ -435,7 +435,7 @@ This section is based on the same data we used in MAS example.
 plot_time_series
 ```
 
-![plot of chunk time_series](figure/time_series-1.png)
+<img src="figure/time_series-1.png" title="plot of chunk time_series" alt="plot of chunk time_series" width="400px" />
 
 ```r
 # Printing MIC values
@@ -550,19 +550,19 @@ corrplot(mine_res_hd$MIC, method="circle",col=brewer.pal(n=10, name="PuOr"),
 )
 ```
 
-![plot of chunk correlation_information_theory](figure/correlation_information_theory-1.png)
+<img src="figure/correlation_information_theory-1.png" title="plot of chunk correlation_information_theory" alt="plot of chunk correlation_information_theory" width="400px" />
 
 ```r
 ## Correlation plot with color and correlation MIC
 corrplot(mine_res_hd$MIC, method="color",
-         type="lower", number.cex=0.6,
+         type="lower", number.cex=0.8,
          addCoef.col = "black", # Add coefficient of correlation
          tl.col="red", tl.srt=90, tl.cex = 0.9,
          diag=FALSE, is.corr = F 
 )
 ```
 
-![plot of chunk correlation_information_theory](figure/correlation_information_theory-2.png)
+<img src="figure/correlation_information_theory-2.png" title="plot of chunk correlation_information_theory" alt="plot of chunk correlation_information_theory" width="400px" />
 
 Just change the first parameter -`mine_res_hd$MIC`- to the matrix you want and reuse with your data. 
 
@@ -628,7 +628,7 @@ df_predictive=data.frame(variable=rownames(mic_predictive), mic=mic_predictive[,
 ggplot(df_predictive, aes(x=reorder(variable, mic),y=mic, fill=variable)) + geom_bar(stat='identity') + coord_flip() + theme_bw() + xlab("") + ylab("Variable Importance (based on MIC)") + guides(fill=FALSE)
 ```
 
-![plot of chunk importance_variable_ranking](figure/importance_variable_ranking-1.png)
+<img src="figure/importance_variable_ranking-1.png" title="plot of chunk importance_variable_ranking" alt="plot of chunk importance_variable_ranking" width="400px" />
 
 Although it is recommended to run correlations among all variables in order to exclude correlated input features.
 
