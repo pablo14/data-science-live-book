@@ -198,9 +198,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3868305
-## y         0.3899148 1.0000000 0.9898033
-## y_noise_1 0.3868305 0.9898033 1.0000000
+## x         1.0000000 0.3899148 0.3842796
+## y         0.3899148 1.0000000 0.9909799
+## y_noise_1 0.3842796 0.9909799 1.0000000
 ```
 
 ```r
@@ -213,9 +213,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7205602
-## y         1.0000000 1.0000000 0.7278946
-## y_noise_1 0.7205602 0.7278946 1.0000000
+## x         1.0000000 1.0000000 0.7334356
+## y         1.0000000 1.0000000 0.7411908
+## y_noise_1 0.7334356 0.7411908 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -369,7 +369,7 @@ p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color='steelblue') + the
 grid.arrange(p_y_1,p_y_2,ncol=2)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk monotonic_non-monotonic_function](figure/monotonic_non-monotonic_function-1.png)
 
 <br>
 
@@ -589,7 +589,7 @@ And we can check it with other plot:
 cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
 ```
 
-![plot of chunk profiling_target_variable](figure/profiling_target_variable-1.png)
+<img src="figure/profiling_target_variable-1.png" title="plot of chunk profiling_target_variable" alt="plot of chunk profiling_target_variable" width="300px" height="200px" />
 
 The likelihood of having a heart disease is 72.9% if the patient has `chest_pain=4`. More than 2x more likely if she/(he) has `chest_pain=1` (72.9 vs 30.4%).
 

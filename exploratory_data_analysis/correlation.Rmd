@@ -18,9 +18,8 @@ From the practical point of view, you'll be able to replicate the analysis with 
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-
-opts_knit$set(base.dir = "exploratory_data_analysis", dpi = 130)
-#opts_knit$set(dpi = 130)
+knitr::opts_chunk$set(dpi = 200)
+knitr::opts_knit$set(base.dir = "exploratory_data_analysis", dpi = 200)
 ```
 
 Let's starting loading all needed libraries.
@@ -285,7 +284,7 @@ A monotonic series is such it never changes its tendency, it always goes up or d
 
 Following example simulates two-time series, one not-monotonic `y_1` and the other monotonic `y_2`.
 
-```{r, fig.height=3, fig.width=8}
+```{r monotonic_non-monotonic_function, fig.height=3, fig.width=8}
 # creating sample data (simulating time series)
 time_x=sort(runif(n=1000, min=0, max=1))
 y_1=4*(time_x-0.5)^2
@@ -479,7 +478,7 @@ Same analysis for variable `chest_pain`, a value of 4 is more dangerous than a v
 
 And we can check it with other plot:
 
-```{r profiling_target_variable, fig.height=2, fig.width=3}
+```{r profiling_target_variable, fig.height=2, fig.width=3, out.width = "300px", out.height= "200px"}
 cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
 ```
 
