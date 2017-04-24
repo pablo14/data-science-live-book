@@ -10,7 +10,8 @@ This chapter will cover cardinality reduction based on Pareto rule, using the `f
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "data_preparation")
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "data_preparation")
 ```
  
  
@@ -28,7 +29,7 @@ library(funModeling)
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r fig.height=7, fig.width=5}
+```{r data_preparation_nominal_variable, fig.height=7, fig.width=3.3}
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -36,7 +37,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-```{r fig.height=2, fig.width=4}
+```{r data_preparation_nominal_variable_2,fig.height=1.5, fig.width=5}
 # exploring data
 freq(data_country, "has_flu")
 ```
@@ -47,7 +48,7 @@ The last table shows there are **70 different countries**, and ~9% of people who
 
 But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Pareto principle.
 
-```{r fig.height=3}
+```{r data_preparation_profiling_nominal_variable}
 # 'freq' function, from 'funModeling' package, retrieves the cumulative_percentage that will help to do the cut. 
 country_freq=freq(data_country, 'country', plot = F)
 
@@ -59,7 +60,7 @@ country_freq[1:10,]
 
 So 10 countries represent more the 70% of cases. We can assign the category `other` to the remaining cases and plot:
 
-```{r}
+```{r data_preparation_profiling_nominal_variable_2, fig.height=2.3, fig.width=4.2}
 data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'country'], data_country$country, 'other')
 freq(data_country, 'country_2')
 ```

@@ -68,7 +68,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+<img src="figure/high_cardinality_variable-1.png" title="plot of chunk high_cardinality_variable" alt="plot of chunk high_cardinality_variable" width="400px" />
 
 ```
 ##           country frequency percentage cumulative_perc
@@ -90,7 +90,7 @@ head(freq(data_country, "country"), 10)
 freq(data_country, "has_flu")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+<img src="figure/data_preparation_high_cardinality_variable-1.png" title="plot of chunk data_preparation_high_cardinality_variable" alt="plot of chunk data_preparation_high_cardinality_variable" width="400px" />
 
 ```
 ##   has_flu frequency percentage cumulative_perc

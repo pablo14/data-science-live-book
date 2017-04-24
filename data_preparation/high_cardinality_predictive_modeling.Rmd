@@ -5,7 +5,8 @@ High Cardinality Variable in Predictive Modeling
 
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "data_preparation") 
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "data_preparation")
 ``` 
 
 ### What is this about?
@@ -45,7 +46,7 @@ Profiling `data_country`, which comes inside `funModeling` package (please updat
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r fig.height=6, fig.width=4}
+```{r high_cardinality_variable, fig.height=8, fig.width=4}
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -53,7 +54,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-```{r fig.height=2, fig.width=2}
+```{r data_preparation_high_cardinality_variable, fig.height=3}
 # exploring data
 freq(data_country, "has_flu")
 ```

@@ -51,7 +51,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+<img src="figure/data_preparation_nominal_variable-1.png" title="plot of chunk data_preparation_nominal_variable" alt="plot of chunk data_preparation_nominal_variable" width="400px" />
 
 ```
 ##           country frequency percentage cumulative_perc
@@ -73,7 +73,7 @@ head(freq(data_country, "country"), 10)
 freq(data_country, "has_flu")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+<img src="figure/data_preparation_nominal_variable_2-1.png" title="plot of chunk data_preparation_nominal_variable_2" alt="plot of chunk data_preparation_nominal_variable_2" width="400px" />
 
 ```
 ##   has_flu frequency percentage cumulative_perc
@@ -120,7 +120,7 @@ data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'count
 freq(data_country, 'country_2')
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
+<img src="figure/data_preparation_profiling_nominal_variable_2-1.png" title="plot of chunk data_preparation_profiling_nominal_variable_2" alt="plot of chunk data_preparation_profiling_nominal_variable_2" width="400px" />
 
 ```
 ##         country_2 frequency percentage cumulative_perc
