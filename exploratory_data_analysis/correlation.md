@@ -198,9 +198,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3800957
-## y         0.3899148 1.0000000 0.9911271
-## y_noise_1 0.3800957 0.9911271 1.0000000
+## x         1.0000000 0.3899148 0.3819065
+## y         0.3899148 1.0000000 0.9906753
+## y_noise_1 0.3819065 0.9906753 1.0000000
 ```
 
 ```r
@@ -213,9 +213,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7238065
-## y         1.0000000 1.0000000 0.7238065
-## y_noise_1 0.7238065 0.7238065 1.0000000
+## x         1.0000000 1.0000000 0.7286681
+## y         1.0000000 1.0000000 0.7379424
+## y_noise_1 0.7286681 0.7379424 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -607,7 +607,7 @@ Combining raw tables plus different plots gives us a more real and complementary
 
 ### Feature engineering based on information theory
 
-There is a complete chapter treating this topic [TODO: ADD LINK]. So in this section, we cover a quick overview. 
+There is a complete chapter treating <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank">**Feature Engineering**</a>. So in this section, we cover a quick overview. 
 
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
@@ -714,7 +714,7 @@ Noise is related to error, and it can be studied with measures based on informat
 
 These methods are applicable in **feature engineering** as a method which does not rely on a predictive model to rank most important variables. Also applicable to cluster time series.
 
-Next recommended chapter: Selecting best variables.
+Next recommended chapter: <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank">Selecting best variables.</a>
 
 <br>
 
@@ -723,5 +723,5 @@ Next recommended chapter: Selecting best variables.
 * [1] Original MINE paper: <a href="http://www.uvm.edu/~cdanfort/csc-reading-group/reshef-correlation-science-2011.pdf" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 * [2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
 * [3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
-* [4] Dynamic time wrapping <a hreg="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
+* [4] Dynamic time wrapping <a href="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
 

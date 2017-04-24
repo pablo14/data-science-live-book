@@ -498,7 +498,7 @@ Combining raw tables plus different plots gives us a more real and complementary
 
 ### Feature engineering based on information theory
 
-There is a complete chapter treating this topic [TODO: ADD LINK]. So in this section, we cover a quick overview. 
+There is a complete chapter treating <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank">**Feature Engineering**</a>. So in this section, we cover a quick overview. 
 
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
@@ -602,7 +602,7 @@ Noise is related to error, and it can be studied with measures based on informat
 
 These methods are applicable in **feature engineering** as a method which does not rely on a predictive model to rank most important variables. Also applicable to cluster time series.
 
-Next recommended chapter: Selecting best variables.
+Next recommended chapter: <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank">Selecting best variables.</a>
 
 <br>
 
@@ -611,5 +611,5 @@ Next recommended chapter: Selecting best variables.
 * [1] Original MINE paper: <a href="http://www.uvm.edu/~cdanfort/csc-reading-group/reshef-correlation-science-2011.pdf" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 * [2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>
 * [3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a>
-* [4] Dynamic time wrapping <a hreg="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
+* [4] Dynamic time wrapping <a href="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a>
 
