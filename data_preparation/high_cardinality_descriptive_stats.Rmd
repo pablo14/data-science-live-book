@@ -29,7 +29,7 @@ library(funModeling)
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r data_preparation_nominal_variable, fig.height=7, fig.width=3.3}
+```{r data_preparation_nominal_variable,  fig.height=8, fig.width=4}
 # plotting first 10 rows
 head(data_country, 10)
 

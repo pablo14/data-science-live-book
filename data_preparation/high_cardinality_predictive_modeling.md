@@ -276,14 +276,7 @@ head(ab_analysis)
 ```
 
 ```r
-#
-freq(d_abnormal, "abnormal", plot = F)
-```
-
-```
-##   abnormal frequency percentage cumulative_perc
-## 1       no       895      98.35           98.35
-## 2      yes        15       1.65          100.00
+# inspecting distributrion, just a few belongs to ' 'no' categoryreq(d_abnormal, "abnormal", plot = F)
 ```
 
 _How many abnormal values are there?_
@@ -523,7 +516,7 @@ sprintf("Area under ROC curve is: %s", roc)
 ```
 
 ```
-## [1] "Area under ROC curve is: 0.65"
+## [1] "Area under ROC curve is: 0.66"
 ```
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
@@ -539,7 +532,7 @@ sprintf("New ROC value is: %s", new_roc);
 ```
 
 ```
-## [1] "New ROC value is: 0.72"
+## [1] "New ROC value is: 0.7"
 ```
 
 Then we alculate the percentage of improvement over first roc value:
@@ -550,7 +543,7 @@ sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
 ```
 
 ```
-## [1] "Improvement: ~ 10.77%"
+## [1] "Improvement: ~ 6.06%"
 ```
 
 Not too bad, right?
@@ -581,8 +574,8 @@ fit_gbm_1$finalModel
 
 ```
 ## A gradient boosted model with bernoulli loss function.
-## 100 iterations were performed.
-## There were 69 predictors of which 8 had non-zero influence.
+## 150 iterations were performed.
+## There were 69 predictors of which 13 had non-zero influence.
 ```
 
 That is: 69 input variables are representing the countries, but the flag columns were reported as not being relevant to make the prediction. 

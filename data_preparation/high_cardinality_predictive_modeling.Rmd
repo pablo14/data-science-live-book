@@ -46,7 +46,7 @@ Profiling `data_country`, which comes inside `funModeling` package (please updat
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r high_cardinality_variable, fig.height=8, fig.width=4}
+```{r high_cardinality_variable,  fig.height=8, fig.width=4}
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -189,8 +189,7 @@ ab_analysis=categ_analysis(d_abnormal, input = "country", target = "abnormal")
 ## displaying only first 6 elements
 head(ab_analysis)
 
-#
-freq(d_abnormal, "abnormal", plot = F)
+# inspecting distributrion, just a few belongs to ' 'no' categoryreq(d_abnormal, "abnormal", plot = F)
 ```
 
 _How many abnormal values are there?_
