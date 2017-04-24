@@ -7,7 +7,7 @@ This chapter contains both methodological and practical aspects of measuring cor
 
 In methodological you will find the Anscombe Quartet, a set of four plots with dissimilar spatial distribution, but sharing the same correlation measure. We'll go one step ahead re-calculating their relationship though a more robust metric (MIC).
 
-We will mention several times **Information Theory**, although by now it's not going to be covered at the mathematical level, it's planned to. Many algorithms are based on it, even deep learning.
+We will mention **Information Theory** several times, although by now it's not going to be covered at the mathematical level, it's planned to. Many algorithms are based on it, even deep learning.
 
 Understanding these concepts in low dimension (two variables) and small data (a bunch of rows) allow us to better understand high dimensional data. Nonetheless, some real cases are only _small_ data.
 
@@ -198,9 +198,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3819065
-## y         0.3899148 1.0000000 0.9906753
-## y_noise_1 0.3819065 0.9906753 1.0000000
+## x         1.0000000 0.3899148 0.3884242
+## y         0.3899148 1.0000000 0.9901535
+## y_noise_1 0.3884242 0.9901535 1.0000000
 ```
 
 ```r
@@ -213,9 +213,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7286681
-## y         1.0000000 1.0000000 0.7379424
-## y_noise_1 0.7286681 0.7379424 1.0000000
+## x         1.0000000 1.0000000 0.7253958
+## y         1.0000000 1.0000000 0.7243566
+## y_noise_1 0.7253958 0.7243566 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -459,7 +459,7 @@ Now we need to look at `y1` column. According to MIC measure, we can confirm the
 
 #### Going further: Dynamic Time Wrapping
 
-MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping target="blank">dynamic time wrapping</a> technique (**DTW**).
+MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping" target="blank">dynamic time wrapping</a> technique (**DTW**).
 
 Let's use an image to catch up the concept visually:
 

@@ -7,7 +7,7 @@ This chapter contains both methodological and practical aspects of measuring cor
 
 In methodological you will find the Anscombe Quartet, a set of four plots with dissimilar spatial distribution, but sharing the same correlation measure. We'll go one step ahead re-calculating their relationship though a more robust metric (MIC).
 
-We will mention several times **Information Theory**, although by now it's not going to be covered at the mathematical level, it's planned to. Many algorithms are based on it, even deep learning.
+We will mention **Information Theory** several times, although by now it's not going to be covered at the mathematical level, it's planned to. Many algorithms are based on it, even deep learning.
 
 Understanding these concepts in low dimension (two variables) and small data (a bunch of rows) allow us to better understand high dimensional data. Nonetheless, some real cases are only _small_ data.
 
@@ -369,7 +369,7 @@ Now we need to look at `y1` column. According to MIC measure, we can confirm the
 
 #### Going further: Dynamic Time Wrapping
 
-MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping target="blank">dynamic time wrapping</a> technique (**DTW**).
+MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping" target="blank">dynamic time wrapping</a> technique (**DTW**).
 
 Let's use an image to catch up the concept visually:
 

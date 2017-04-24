@@ -96,7 +96,7 @@ vars_to_remove
 
 ```r
 ## Keeping all columns except vars_to_remove
-heart_disease_3=select(heart_disease, -one_of(vars_to_remove))
+heart_disease_2=select(heart_disease, -one_of(vars_to_remove))
 ```
 
 **Ordering data by percentage of zeros**
