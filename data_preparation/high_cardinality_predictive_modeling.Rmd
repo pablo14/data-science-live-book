@@ -13,7 +13,7 @@ knitr::opts_knit$set(base.dir = "data_preparation")
 
 As we've seen in the other chapter (<a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">Reducing categories in descriptive stats</a>) we keep the categories with the major representativeness, but how about having another variable to predict with it? That is, to predict `has_flu` based on `country`.
 
-Using the last method may destroy the information of the variable, thus it **loses predictive power**. In this chapter we'll go further in the method described above, using an automatic grouping function -`auto_grouping`- surfing through the structure of the variable, giving some ideas about how to optimize a categorical variable, but more importantly: encouraging the reader to perform her-his own optimizations.
+Using the last method may destroy the information of the variable, thus it **loses predictive power**. In this chapter we'll go further in the method described above, using an automatic grouping function -`auto_grouping`- surfing through the variable's structure, giving some ideas about how to optimize a categorical variable, but more importantly: encouraging the reader to perform her-his own optimizations.
 
 Other literature named this re-grouping as cardinality reduction or **encoding**.
 
@@ -105,7 +105,7 @@ Reading example based on 1st row, `France`:
 * Likelihood of having flu in France is 14.2% (`mean_target=0.142`)
 * Total rows from France=288 -out of 910-. This is the `q_rows` variable; `perc_rows` is the same number but in percentage.
 
-Regardless of the filter by country, we've got:
+Without considering the filter by country, we've got:
 
 * Column `sum_target` sums the total people with flu present in data.
 * Column `perc_target` sums `1.00` -or 100%
@@ -235,7 +235,7 @@ country_groups$df_equivalence
 
 * `df_equivalence`: data frame which contains a table to map old to new values.
 * `fit_cluster`: k-means model used to reduce the cardinality (values are scaled).
-* `recateg_results`: data frame containing the profiling of each group regarding target variable, first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many categories of the input variable (as seen in `df_equivalence`).
+* `recateg_results`: data frame containing the profiling of each group regarding target variable, first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many cainput's categoriesariable (as seen in `df_equivalence`).
 
 Let's explore how the new groups behave, this is what the predictive model will _see_:
 
