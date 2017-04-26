@@ -17,21 +17,28 @@ setwd("~/repos/data-science-live-book")
 ###########################################################################
 ###########################################################################
 
-create_files('cross_plot', 'selecting_best_variables')
+
 
 if(F)
 {
-  create_files('introduction', 'data_preparation')
-  create_files('high_cardinality_predictive_modeling', 'data_preparation')
-  create_files('high_cardinality_descriptive_stats', 'data_preparation')
+  create_files('readme', 'readme')
   
   create_files('correlation', 'exploratory_data_analysis')
   create_files('profiling', 'exploratory_data_analysis')
+
+  create_files('introduction', 'data_preparation')
+  create_files('high_cardinality_predictive_modeling', 'data_preparation')
+  create_files('high_cardinality_descriptive_stats', 'data_preparation')
+
   
-  create_files('readme', 'readme')
+  create_files('cross_plot', 'selecting_best_variables')
+  create_files('plotar_boxplot', 'selecting_best_variables')
+  create_files('plotar_histdens', 'selecting_best_variables')
   
-  create_files('gain_lift', 'model_performance')
+  create_files('scoring', 'scoring')
+  
   create_files('introduction', 'model_performance')
+  create_files('gain_lift', 'model_performance')
   create_files('out_of_time_validation', 'model_performance')
   create_files('knowing_the_error', 'model_performance')
 }

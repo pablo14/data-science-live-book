@@ -1,3 +1,5 @@
+
+
 Introduction
 ===
 
@@ -9,16 +11,13 @@ There is also a chapter about how to validate models when time is involved, whic
 
 <br>
 
-#### Regarding predictive models with multi-label outcome...
+#### Regarding predictive models with the multi-label outcome...
 
-There is a chapter about gain and lift quality measures, which gives light to one important aspect when evaluation these models: to be sure the model correctly orders the cases according to their propensity to belong to certain label.
+There is a chapter about gain and lift quality measures, which gives light to one important aspect when evaluation these models: to be sure the model correctly orders the cases according to their propensity to belong to the specific label.
 
 Related to this point, it's recommended to read the <a href="http://livebook.datascienceheroes.com/scoring/scoring.html">Scoring Data</a> chapter, as a complement to the validation techniques.
 
 
-
-
-<br>
 <br>
 <br>
 

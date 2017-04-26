@@ -168,15 +168,6 @@ freq(data=heart_disease, str_input = c('thal','chest_pain'))
 As well as in the remaining `funModeling` functions, if `str_input` is missing it will run for all factor or character variables present in given data frame:
 
 
-```r
-freq(data=heart_disease)
-```
-<br>
-
-Also, as the other plot functions in the package, if there is the need of exporting plots, add the `path_out` parameter (it will create the folder if it's not created yet)
 
 
-```r
-freq(data=heart_disease, path_out='my_folder')
-```
 

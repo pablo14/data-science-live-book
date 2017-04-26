@@ -43,28 +43,28 @@ gain_lift(data=heart_disease,str_score='score',str_target='has_heart_disease')
 
 First, each case is ordered according to the likelihood of being the less representative class, aka, score value.
 
-Then `Gain` column accumlates the postive class, for each 10% of rows - `Population` column.
+Then `Gain` column accumulates the positive class, for each 10% of rows - `Population` column.
 
-So for first row, it can be read as:
+So for the first row, it can be read as:
 
 _"The first 10 percent of the population, ordered by score, collects 20.86% of total positive cases"_
 
-For example, if we are sending emails based on this model, and we have budget to reach only **20%** of our users, how many responses we should expect to get?  **Answer: 35.97%**
+For example, if we are sending emails based on this model, and we have a budget to reach only **20%** of our users, how many responses we should expect to get?  **Answer: 35.97%**
 
 <br>
 
 ### What about not using a model?
 
-If we **don't use a model**, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the **dashed line**, which starts in 0% and ends in 100%. Hopefully with the predictive model we'll beat the randomness.
+If we **don't use a model**, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the **dashed line**, which starts at 0% and ends at 100%. Hopefully, with the predictive model we'll beat the randomness.
 
 
-The **Lift** column represents the ratio, between the `Gain` and the _gain by chance_. Taking as an example the Population=20%, the model is **1.8 times better** than randomness :muscle:💪.
+The **Lift** column represents the ratio, between the `Gain` and the _gain by chance_. Taking as an example the Population=20%, the model is **1.8 times better** than randomness 💪.
 
 <br>
 
 ### Using the cut point :scissors:
 
-What value of the score reaches 30% of population? 
+What value of the score reaches 30% of the population? 
 Answer: `0.56`
 
 The cut point allows us to segment the data.
@@ -79,17 +79,17 @@ In a good model, the gain will reach the 100% "at the beginning" of the populati
 
 When comparing models, a quick metric is to see if the gain at the beginning of the population (10-30%) is higher.  
 
-As a result, the model with a higher gain at the begining will have captured more information from data.
+As a result, the model with a higher gain at the beginning will have captured more information from data.
 
-Let's ilustrate it...
+Let's illustrate it...
 
 <a href="http://datascienceheroes.com/img/blog/model_comparison.png" target="blank"> <img src='model_comparison.png' width='600px'> </a>
 
 
 
 
-**Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of population, while model 2 reaches a similar proportion approaching the 20% of population. _Model 1 is better._
+**Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of the population, while model 2 reaches a similar proportion approaching the 20% of the population. _Model 1 is better._
 
-**Lift analysis**: Same as before, but also it is susupicious hat not every lift number follow a decreasing pattern. May be the model is not ordering the first percentiles of population.
+**Lift analysis**: Same as before, but also it is suspicious that not every lift number follow a decreasing pattern. Maybe the model is not ordering the first percentiles of the population.
  Same ordering concepts as seen in <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html">`cross_plot`</a>
 

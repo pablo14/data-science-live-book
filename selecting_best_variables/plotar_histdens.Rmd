@@ -1,3 +1,10 @@
+
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "selecting_best_variables")
+```
+
 Profiling Target with Density Histograms
 ===
 
@@ -6,21 +13,15 @@ Profiling Target with Density Histograms
 Density histograms are quite standard in any book/resource when plotting distributions. To use them in selecting variables gives a quick view on how well certain variable separates the class.
 
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "selecting_best_variables")
-```
-
-```{r, results='hide',  fig.height=2, fig.width=4}
+```{r, results='hide', message=FALSE,  fig.height=2, fig.width=4}
 ## Loading funModeling !
-suppressMessages(library(funModeling))
+library(funModeling)
 data(heart_disease)
 ```
 
 
-```{r variable_importance1, results='hide',  fig.height=2, fig.width=4}
+```{r variable_importance1, results='hide',  fig.height=3, fig.width=5, out.width="500px"}
 plotar(data=heart_disease, str_input="age", str_target="has_heart_disease", plot_type = "histdens")
-
 ```
 
 _Dashed-line represents variable mean._
@@ -32,18 +33,20 @@ This *general shape* is calculated based on a technique called **Kernel Smoother
 <br>
 
 
+#### Relationship with statistical test
 
-_Something similar is what a **statistical test** sees: they measured **how different** the curves are reflecting it in some statistics (like the p-value), in order to give to the analyst,  reliable information to determine if the curves have -for example- the same mean._
+Something similar is what a **statistical test** sees: they measured **how different** the curves are reflecting it in some statistics like the p-value using in the frequentist approach. It gives to the analyst reliable information to determine if the curves have -for example- the same mean._
 
 <br>
-<br>
 
-### Good vs. Bad variable
+### Good vs. bad variable
 
-```{r variable_importance2,  fig.height=2, fig.width=4}
+```{r variable_importance2,  fig.height=2, fig.width=5}
 plotar(data=heart_disease, str=c('resting_blood_pressure', 'max_heart_rate'),  str_target="has_heart_disease", plot_type = "histdens")
 ```
+
 <br>
+
 And the model will see the same... if the curves are quite overlapped, like it is in `resting_blood_pressure`, then it's **not a good predictor** as if they were **more spaced** -like `max_heart_rate`.
 
 <br>

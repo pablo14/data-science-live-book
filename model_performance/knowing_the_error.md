@@ -3,11 +3,12 @@
 
 <img src="magnifier.png" width="200px" alt="Error in predictive models">
 
+
 <br>
 
 ### What's this about?
 
-Once we've built a predictive model, how sure we are about it's quality? Did it capture general patterns _-information-_ (excluding the _-noise-_)?
+Once we've built a predictive model, how sure we are about its quality? Did it capture general patterns _-information-_ (excluding the _-noise-_)?
 
 
 
@@ -16,19 +17,19 @@ Once we've built a predictive model, how sure we are about it's quality? Did it 
 
 #### What sort of data?
 
-It has other approach rather than the one covered on <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html' target="blank">Out-of-Time Validation</a>. This approach could be used even when there is not possible to filter cases by date, for example having a data's snapshot at certain point of time, when no new information will be generated.
+It has other approach rather than the one covered on <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html' target="blank">Out-of-Time Validation</a>. This approach could be used even when there is not possible to filter cases by date, for example having a data's snapshot at a certain point of time, when no new information will be generated.
 
-For example some health data research from a reduced amount of people, a survey, or some data available on internet for practicing purposes. It's either expensive, not practical, unethical or even impossible to add new cases. The `heart_disease` data coming in `funModeling` package is such an example.
+For example some health data research from a reduced amount of people, a survey, or some data available on the internet for practicing purposes. It's either expensive, not practical, unethical or even impossible to add new cases. The `heart_disease` data coming in `funModeling` package is such an example.
 
 <br>
 
 ### Reducing unexpected behavior
 
-When a model is trained it just sees a part of a reality. It's a sample from a population that cannot be totally seen.
+When a model is trained, it just sees a part of reality. It's a sample from a population that cannot be entirely seen.
 
-There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics are **attached to variance**, which implies **getting different values**. If you remove some cases and then fit a new model, you'll see an _slightly_ different value.
+There are lots of ways to validate a model (Accuracy / ROC curves / Lift / Gain / etc). Any of these metrics are **attached to variance**, which implies **getting different values**. If you remove some cases and then fit a new model, you'll see a _slightly_ different value.
 
-Imagine we fit a model and achieve an accuracy of `81`, now remove 10% of the cases, fit a new model, the accuracy now is: `78.4`. **What is the real accuracy?** The one obtained with 100% of data or the other based on 90%? For example if the model will run live on a production environment, it will see **other cases** and the accuracy point will move to a new one.
+Imagine we build a model and achieve an accuracy of `81`, now remove 10% of the cases, and then fit a new one, the accuracy now is: `78.4`. **What is the real accuracy?** The one obtained with 100% of data or the other based on 90%? For example, if the model will run live in a production environment, it will see **other cases** and the accuracy point will move to a new one.
 
 _So what is the real value? The one to report?_ **Re-sampling** and **cross-validation** techniques will average -based on different sampling and testing criteria- in order to retrieve an approximation to the most trusted value.
 
@@ -36,11 +37,11 @@ _So what is the real value? The one to report?_ **Re-sampling** and **cross-vali
 
 **But why remove cases?**
 
-There is no sense in removing cases like that, but it gets an idea about how sensible the accuracy metric is, remember you're working with a sample from an *_unknown population_*.
+There is no sense in removing cases like that, but it gets an idea of how sensible the accuracy metric is, remember you're working with a sample from an *_unknown population_*.
 
 > If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurate in all cases, we wouldn't need all of this.
 
-> As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data through repetition , re-sampling, cross-validation, and so on...
+> As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data through repetition, re-sampling, cross-validation, and so on...
 
 
 <br>
@@ -56,8 +57,8 @@ _Image credit: Sebastian Raschka_ Ref. [1]
 #### CV short summary
 
 * Splits the data into random groups, let's say `10`, equally sized. These groups are commonly called `folds`, represented by the `'k'` letter.
-* Take `9` folds, build a model, and then apply the model to the remaining fold (the one which was left-out). This will return the accuracy metric you want: accuracy, ROC, Kappa, etc. We're using accuracy in this example.
-* Repeat this `k` times (`10` in our example). So we'll get `10` different accuracies. Final result will be the average of all of them.
+* Take `9` folds, build a model, and then apply the model to the remaining fold (the one which was left out). This will return the accuracy metric you want: accuracy, ROC, Kappa, etc. We're using accuracy in this example.
+* Repeat this `k` times (`10` in our example). So we'll get `10` different accuracies. The final result will be the average of all of them.
 
 This average will be the one to evaluate if a model is good or not, and also to include it in a report.
 
@@ -89,15 +90,15 @@ Rather a single number -the average-, we can see a distribution:
 
 The sum of **Bias**, **Variance** and the **_unexplained error_** -inner noise- in data, or the one that the model will never be able to reduce.
 
-These 3 elements represent the error reported.
+These three elements represent the error reported.
 
-#### What is the nature of Bias and Variance ?
+#### What is the nature of Bias and Variance?
 
 When the model doesn't work well, there may be several causes:
 
-* **Model too complicated**: Let's say we have lots of input variables, which is related to **high variance**. The model will overfit on training data, having a low accuracy on unseen data due to its particularization.
+* **Model too complicated**: Let's say we have lots of input variables, which is related to **high variance**. The model will overfit on training data, having a poor accuracy on unseen data due to its particularization.
 * **Model too simple**: On the other hand, the model may not be capturing all the information from the data due to its simplicity. This is related to **high bias**.
-* **Not enough input data**: Data forms shapes in a n-dimensional space (where `n` is all the input+target variables). If there are not enough points, this shape is not developed well enough.
+* **Not enough input data**: Data forms shapes in an n-dimensional space (where `n` is all the input+target variables). If there are not enough points, this shape is not developed well enough.
 
 More info here in [4].
 
@@ -114,9 +115,9 @@ _Image credit: Scott Fortmann-Roe_ [3]
 Bias and variance are related in the sense that if one goes down the other goes up, so it's a **tradeoff** between them. A practical example of this is on 
 Akaike Information Criterion (AIC) model quality measure. 
 
-**AIC** is used as an heuristic to pick the best **time series model** in the `auto.arima` function inside `forecast` package in `R` [6]. It chooses the model with the lowest AIC.
+**AIC** is used as a heuristic to pick the best **time series model** in the `auto.arima` function inside `forecast` package in `R` [6]. It chooses the model with the lowest AIC.
 
-The lower the better: The accuracy in prediction will lower the value, while the number of parameters will increase it.
+The lower, the better: The accuracy in prediction will lower the value, while the number of parameters will increase it.
 
 <br>
 
@@ -124,11 +125,11 @@ The lower the better: The accuracy in prediction will lower the value, while the
 
 * **Bootstrapping** is mostly used when estimating a parameter.
 * **Cross-Validation** is the choice when choosing among different predictive models.
-* Coming soon a post in Data Science Heroes Blog explaining their differences
+* Probably there will be a post soon in Data Science Heroes Blog explaining their differences
 
-Note: For a deeper coverage about bias and variance please go to [3] and [4] at the bottom of the page.
+Note: For a deeper coverage about bias and variance, please go to [3] and [4] at the bottom of the page.
 
-### Any advices on practice?
+### Any advice on practice?
 
 It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`. Other: `5 fold CV, repeated 3 times`.
 
@@ -136,12 +137,12 @@ And using the average of the desired metric. It's also recommended to use the `R
 
 Since these validation techniques are **time consuming**, consider choosing a model which will run fast, allowing model tunning, testing different configurations, trying different variables in a "short" amount of time. <a href="https://en.wikipedia.org/wiki/Random_forest" target="blank">Random Forest</a> are an excellent option which gives **fast** and **accurate** results. Ref. [2].
 
-Another good option is: **gradient boosting machines**, it has more paramaters to tune than random forest, but at least in R it's implementation works really fast.
+Another good option is **gradient boosting machines**, it has more parameters to tune than random forest, but at least in R it's implementation works fast.
 
 #### Going back to bias and variance
 
-* Random forest focuses on decreasing bias, while...
-* Gradient boosting machine focuses on decreasing variance. [5]
+* Random Forest focuses on decreasing bias, while...
+* Gradient boosting machine focuses on minimizing variance. [5]
 
 <br>
 
@@ -152,15 +153,15 @@ Tweaking input data by transforming and cleaning it, will impact on model qualit
 The <a href="http://livebook.datascienceheroes.com/data_preparation/introduction.html">Data Preparation</a> chapter of this book is under heavy development. Coming soon.
 
 
-### Final toughts
+### Final thoughts
 
-* Validating the models through re-sampling / cross-validation helps us to estimate the "real" error present in the data. If the model will run in the future, that will be the expected error to have.
+* Validating the models through re-sampling / cross-validation helps us to estimate the "real" error present in the data. If the model runs in the future, that will be the expected error to have.
 * Another advantage is **model tuning**, avoiding the overfitting in selecting best parameters for certain model, <a href="https://topepo.github.io/caret/model-training-and-tuning.html" target="blank"> Example in `caret`</a>. The equivalent in **Python** is included in <a href="http://scikit-learn.org/stable/modules/cross_validation.html"  target="blank">Scikit Learn</a>.
 * The best test is the one made by you, suited to your data and needs. Try different models and analyze the tradeoff between time consumption and any accuracy metric.
 
-> These re-sampling techniques could be among the powerful tools behind the sites like stackoverflow.com or collaborative open-source software. To have many opinions in order to produce a less-biased solution.
+> These re-sampling techniques could be among the powerful tools behind the sites like stackoverflow.com or collaborative open-source software. To have many opinions to produce a less-biased solution.
 
-But each opinion has to be reliable, imagine asking for medical diagnostic to different doctors.
+But each opinion has to be reliable, imagine asking for a medical diagnostic to different doctors.
 
 
 <br>

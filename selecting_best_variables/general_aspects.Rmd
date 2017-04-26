@@ -252,7 +252,7 @@ _Same analysis goes for `var_2`_
 
 When the same input is related to different outcomes it's defined as **noise**. The intuition is the same as one person telling us: _"Hey it's going to rain tomorrow!"_, and another one saying: _"For sure tomorrow it's not going to rain"_.  
 We'd think... _"OMG! do I need the umbrella or not?"_
-
+ 😱
 Going back to the example, taking the two variables at the same time, the correspondence between the input and the output in unique: "If `var_1='a'` and `var_2='x'` then the likelihood of being `target='red'` is 100%". You can try other combinations. 
 
 **Summing-up:** 
@@ -265,7 +265,7 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 
 #### Conclusions  
 
-* The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not too bad. This percentage of improvement is the result of the variables working in groups.
+* The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not too bad. 😉 This percentage of improvement is the result of the variables working in groups.
 * This effect appears if the variables contain information, such is the case of `max_heart_rate` and `chest_pain` (or `var_1` and `var_2`). 
 * Putting **noisy variables** next to good variables **wwill usuallyaffect** overall performance.
 * Also the **work in groups** effect is higher if input variables **are not correlated between** them. This is difficult otooptimiziein practice. More on this on nthe ext section...
