@@ -278,5 +278,6 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 
 * A predictive model maps the input with the output.
 
-* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. This live book addresses model performance by <a href="http://livebook.datascienceheroes.com/model_performance/roc.html"> ROC curves</a> and <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html"> lift &amp; gain charts</a>
+* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. 
 
+This book addresses general aspects on model performance in <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html">Knowing the error</a>.
