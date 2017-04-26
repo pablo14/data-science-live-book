@@ -184,12 +184,99 @@ There is the comparission of 4 models, given a cutpoint of 0.5:
 We'll be analyzing 3 scenarios based on 3 cut-points.
 
 
+```r
+# install.packages("rpivotTable") 
+# rpivotTable: it creates a pivot table dinamically, it also supports plots, more info at: https://github.com/smartinsightsfromdata/rpivotTable
+
+library(rpivotTable)
+
+## reading the data
+data=read.delim(file="example.txt", sep="\t", header = T, stringsAsFactors=F)
+```
+
+#### **Scenario 1** Cut point @ `0.5`
+
+Classical confusion matrix, indicating how many cases fall in the intersection of real vs predicted value:
+
+
+```r
+data$predicted_target=ifelse(data$score>=0.5, "yes", "no")
+
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
+```
+
+
+<img src="count_1.png" width='400px'> 
+
+
+Another view, now each column sums **100%**. Good to answer the following questions: 
 
 
 
+```r
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
+```
+
+<img src="percentage_1.png" width='400px'> 
+
+* _What is the percentage of real `yes` values captured by the model? Answer: 80%_ Also known as **Precision** (PPV)
+* _What is the percentage of `yes` thrown by the model? 40%._ 
+
+So, from the last two sentences: 
+
+**The model throws 4 out of 10 predictions as `yes`, and from this segment -the `yes`- it hits 80%.**
+
+<br>
+
+Another view: The model correctly hits 3 cases for each 10 `yes` predictions _(0.4/0.8=3.2, or 3, rounding down)_.
+
+Note: The last way of analysis can be found when building an association rules (market basket analysis), and a decision tree model.
+
+<br>
+
+#### **Scenario 2** Cut point @ `0.4`
+
+Time to change the cut point to `0.4`, so the amount of `yes` will be higher:
 
 
+```r
+data$predicted_target=ifelse(data$score>=0.4, "yes", "no")
+
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
+```
+
+<img src="percentage_2.png" width='400px'> 
+
+Now the model captures `100%` of `yes` (TP), so the total amount of `yes` produced by the model increased to `46.7%`, but at no cost since the *TN and FP remained the same* :thumbsup:. 
+
+<br>
+
+#### **Scenario 3** Cut point @ `0.8`
+
+Want to decrease the FP rate? Set the cut point to a higher value, for example: `0.8`, which will cause the `yes` produced by the model decreases:
 
 
+```r
+data$predicted_target=ifelse(data$score>=0.8, "yes", "no")
 
+rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
+```
+
+<img src="percentage_3.png" width='400px'> 
+
+<br>
+
+Now the FP rate decreased to `10%` (from `20%`), and the model still captures the `80%` of TP which is the same rate as the one obtained with a cut point of `0.5` :thumbsup:.
+
+**Decreasing the cut point to `0.8` improved the model at no cost.**
+
+<br>
+
+#### Conclusions
+
+* This chapter has focused on the essence of predicting a binary variable: To produce a score or likelihood number which **orders** the target variable.
+
+* A predictive model maps the input with the output.
+
+* There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. This live book addresses model performance by <a href="http://livebook.datascienceheroes.com/model_performance/roc.html"> ROC curves</a> and <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html"> lift &amp; gain charts</a>
 

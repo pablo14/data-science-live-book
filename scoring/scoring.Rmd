@@ -186,7 +186,7 @@ There is the comparission of 4 models, given a cutpoint of 0.5:
 
 We'll be analyzing 3 scenarios based on 3 cut-points.
 
-```{r, eval=F}
+```{r, eval=FALSE}
 
 # install.packages("rpivotTable") 
 # rpivotTable: it creates a pivot table dinamically, it also supports plots, more info at: https://github.com/smartinsightsfromdata/rpivotTable
@@ -202,7 +202,7 @@ data=read.delim(file="example.txt", sep="\t", header = T, stringsAsFactors=F)
 
 Classical confusion matrix, indicating how many cases fall in the intersection of real vs predicted value:
 
-```{r, eval=F}
+```{r, eval=FALSE}
 data$predicted_target=ifelse(data$score>=0.5, "yes", "no")
 
 rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count", rendererName = "Table", width="100%", height="400px")
@@ -216,7 +216,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 Another view, now each column sums **100%**. Good to answer the following questions: 
 
 
-```{r, eval=F}
+```{r, eval=FALSE}
 rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
 
 ```
@@ -242,7 +242,7 @@ Note: The last way of analysis can be found when building an association rules (
 
 Time to change the cut point to `0.4`, so the amount of `yes` will be higher:
 
-```{r, eval=F}
+```{r, eval=FALSE}
 data$predicted_target=ifelse(data$score>=0.4, "yes", "no")
 
 rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
@@ -259,7 +259,7 @@ Now the model captures `100%` of `yes` (TP), so the total amount of `yes` produc
 
 Want to decrease the FP rate? Set the cut point to a higher value, for example: `0.8`, which will cause the `yes` produced by the model decreases:
 
-```{r, eval=F}
+```{r, eval=FALSE}
 data$predicted_target=ifelse(data$score>=0.8, "yes", "no")
 
 rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
