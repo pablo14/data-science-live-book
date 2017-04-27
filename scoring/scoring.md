@@ -191,7 +191,7 @@ We'll be analyzing 3 scenarios based on 3 cut-points.
 library(rpivotTable)
 
 ## reading the data
-data=read.delim(file="example.txt", sep="\t", header = T, stringsAsFactors=F)
+data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/scoring/example.txt", sep="\t", header = T, stringsAsFactors=F)
 ```
 
 #### **Scenario 1** Cut point @ `0.5`

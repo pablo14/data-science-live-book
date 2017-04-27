@@ -54,7 +54,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-```{r data_preparation_high_cardinality_variable, fig.height=3}
+```{r data_preparation_high_cardinality_variable, fig.height=2, fig.width=5.3}
 # exploring data
 freq(data_country, "has_flu")
 ```

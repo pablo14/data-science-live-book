@@ -69,8 +69,6 @@ Following example calculates the R2 and plot every pair.
 ## Reading anscombe quartet data
 anscombe_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/anscombe_quartet.txt", header = T)
 
-anscombe_data=read.delim(file="anscombe_quartet.txt", header = T)
-
 ## calculating the correlation (R squared, or R2) for every pair, every value is the same: 0.86.
 cor_1=cor(anscombe_data$x1, anscombe_data$y1)
 cor_2=cor(anscombe_data$x2, anscombe_data$y2)

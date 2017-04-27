@@ -120,6 +120,7 @@ vars_to_analyze=c("age", "oldpeak", "max_heart_rate")
 cross_plot(data=heart_disease, str_target="has_heart_disease", str_input=vars_to_analyze)
 ```
 
+
 <br>
 
 ### Exporting plots
