@@ -1,3 +1,10 @@
+<html>
+<head>
+<meta name="google-site-verification" content="z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM" />
+<title> My title </title>
+</head> 
+</html>
+
 <center> <h1> Data Science Live Book </h1>  </center>
 
 
