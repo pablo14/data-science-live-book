@@ -1,12 +1,12 @@
 {
-    "plugins": ["ga", "advanced-emoji","custom-favicon","verifications"],
+    "plugins": ["ga", "advanced-emoji","custom-favicon","verifications","meta"],
     "pluginsConfig": {
         "ga": {
             "token": "UA-82047152-1"
         },
-        "favicon": "favicon.ico",
-        "verifications": {
-            "google-site-verification": "z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM"
+        "meta-single": {
+            "name": "google-site-verification",
+            "content": "z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM"
         }
     },
     "title": "Data Science Live Book"
