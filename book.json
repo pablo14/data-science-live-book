@@ -1,5 +1,5 @@
 {
-    "plugins": ["ga", "advanced-emoji","verifications"],
+    "plugins": ["ga", "advanced-emoji"],
     "pluginsConfig": {
         "ga": {
             "token": "UA-82047152-1"
