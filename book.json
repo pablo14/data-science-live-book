@@ -1,9 +1,10 @@
 {
-    "plugins": ["ga", "advanced-emoji"],
+    "plugins": ["ga", "advanced-emoji","custom-favicon"],
     "pluginsConfig": {
         "ga": {
             "token": "UA-82047152-1"
-        }
+        },
+        "favicon": "favicon.ico"
     },
     "title": "Data Science Live Book"
     
