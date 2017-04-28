@@ -1,10 +1,13 @@
 {
-    "plugins": ["ga", "advanced-emoji","custom-favicon"],
+    "plugins": ["ga", "advanced-emoji","custom-favicon","verifications"],
     "pluginsConfig": {
         "ga": {
             "token": "UA-82047152-1"
         },
-        "favicon": "favicon.ico"
+        "favicon": "favicon.ico",
+        "verifications": {
+            "googleSearchConsoleContent": "z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM",
+        }
     },
     "title": "Data Science Live Book"
     
