@@ -3,9 +3,6 @@
     "pluginsConfig": {
         "ga": {
             "token": "UA-82047152-1"
-        },
-        "verifications": {
-            "google-site-verification": "z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM"
         }
     }
 }
