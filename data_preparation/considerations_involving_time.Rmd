@@ -1,0 +1,166 @@
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "data_preparation")
+``` 
+
+Considerations involving time
+===
+
+### What is this about?
+
+In practice, 90% of the time is spent in data preparation.
+
+
+### Don't use information from the future
+
+<img src="back_to_the_future.png" width='250px'> 
+
+Common mistake when starting a new predictive model project, for example:
+
+Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `feature_A`:
+
+
+```{r ,echo=FALSE}
+d1=data.frame(user_id=rep(1:10), 
+              feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
+              full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
+knitr::kable(d1, digits = 2)
+```
+
+
+We build the predictive model, we got a perfect accuracy, and an inspection throws the following: _"100% of users that have full subscription, uses Feature A"_. Some predictive algorithms report variable importance, thus `feature_A` will be at the top.
+
+**The problem is:** `feature_A` is only availble **after the user goes for full subcription**. Therefore it cannot be used.
+
+**The key message is**: Don't trust in perfect variables, nor perfect models. 
+
+<br>
+
+### Play fair with data, let it to develop their behavior
+
+Like in nature, things have a minimun and maximun time to start showing certain behavior. This time oscilates from 0 to infinite. In practice it's recommended to study what is the best period to analyze, in other words, we may exclude all the behavior before and after this observation period. To stablish cuts to data it's not so straight forward since it may be kind of subjective.
+
+Imagine we've got a **numerical variable** which increases as time moves. We may need to define an **observation time window** to filter the data and feed the predictive model. 
+
+* Setting the **minimun** time: How much time is it need to start seeing the behavior? 
+* Setting the **maximun** time: How much time is it needed to see the end of the behavior? 
+
+Eassiest solution is: setting minimun since begin, and the maximun as the whole history.
+
+
+**Case study:** 
+
+Two people, `Ouro` and `Borus`, are users of a web application which has certain functionalty called `feature_A`, and we need to build a predictive model which forecast based on `feature_A` usage  -measured in 'clicks", if the person is going to adcquire `full_subscription`.
+
+The current data says: Borus has `full_subscription`, while Ouro doesn't. 
+
+```{r echo=FALSE, fig.height=3, fig.width=4}
+library(ggplot2)
+d4=data.frame(user=c('Ouro','Ouro','Ouro','Ouro','Ouro','Borus','Borus','Borus','Borus','Borus', 'Ouro','Ouro'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
+pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) +  theme_minimal() + theme(panel.grid.minor = element_blank()) 
+plot(pd4)
+```
+
+
+User `Borus` starts using `feature_A` from day 3, and after 5 days she has more use -15 vs 12 clicks- on this feature than `Ouro` who started using it from day 0. 
+
+If `Borus` adcquiere `full subscription` and `Ouro` doesn't, _what would the model will learn?_ 
+
+When modeling with full history -`days_since_signup = all`-, the higher the `days_since_signup` the higher the likelihood, since `Borus` has the highest number.
+
+However, if we keep only with the user history corresponding to their first 5 days since signup, the conclussion is the opposite. 
+
+_Why to keep first 5 days of history?_
+
+The behavior in this kick-off period may be more relevant -in terms of prediction accuracy- than analyzing the whole history. It depends on each case as we said before. 
+
+
+<br> 
+
+### Fighting the inifinite
+
+<img src="inifiniy.png" alt="Cutting the inifinity" width="300px">
+
+The number of examples in this topic is vast. Let's keep the esence of this chapter in **how data changes across time**. Sometimes it's straitforward, as a variable reaching its minimum (or max) after a fixed time length. This case is easily achievable.
+
+On the other hand, it requiers the human being to fight the infinity.
+
+Consider the following example. _How much hours are needed to reach the 0 value?_
+
+How about 100 hours?
+
+```{r data_preparation_time_variable_1, echo=FALSE, fig.height=3.5, fig.width=4.5}
+# generating 3 series example
+y1=round(1/log(1:100), 2)
+y2=round(1/log(1:1000), 2)
+y3=round(1/log(1:10000), 2)
+
+plot(y1, xlab = "time (hs)", col="coral")
+```
+
+Hmmm let's check the minimum value.
+
+```{r data_preparation_time_variable_2, echo=FALSE}
+sprintf("Min value after 100 hours: %s", min(y1))
+```
+
+It's close to zero, but _what if we wait 1000 hours?_
+
+```{r data_preparation_time_variable_3, echo=FALSE, fig.height=3.5, fig.width=4.5}
+plot(y2, xlab = "time (hs)", col="coral")
+sprintf("Min value after 1,000 hours: %s", min(y2))
+```
+
+Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times more? (10,000 hours)
+
+```{r data_preparation_time_variable_4, echo=FALSE, fig.height=3.5, fig.width=4.5}
+plot(y3, xlab = "time (hs)", col="coral")
+sprintf("Min value after 10,000 hours: %s", min(y3))
+```
+
+_Still no zero! How much time do I need?!_😱
+
+As you may notice, it will probably reach the zero value in the inifinty... We are in the presence of an <a href="https://en.wikipedia.org/wiki/Asymptote" target="blank">Asymptote</a>.
+
+_What to we have do?_
+
+This answer comes from the work of the data scientist and the domain expert person. 
+
+
+In this case a zero can be considered the same as the value of 95% of the whole population. Or statistically speaking, the <a href="https://en.wikipedia.org/wiki/Percentile" target="blank">**percentile**</a>.
+<add outliers and link to other chapters
+
+br>
+
+#### Examples in other areas
+
+It's really common to find these kind of variables in many data sets or projects.
+
+In medicine, the <a href="https://en.wikipedia.org/wiki/Survival_analysis" target="blank">survival analysis projects</a>, the doctors usually define a threshold of, for example, 3 years to consider that one patient _survive_ the treatment.
+
+In marketing projects, if an user decreases its activity under a certain threshold, let's say:
+* 10-clicks in company's web page during last month
+* Not opening an email after 1-week
+* If she (or he) don't buy after 30-days
+
+Can be defined as a churned or lost opportunity customer.
+
+In support areas, an issue can be marked as solved after the person don't complain by 1-week.
+
+All of these numbers 
+
+
+<br>
+
+### Final toughts
+
+Many topics are inter-conected, such is the case of _letting the data to develop their behavior_, with the model perfomance <a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>. The key concept: **how to handle time in predictive modeling**.
+
+_How would it be possible to handle this time issues with automatic systems?_ 
+
+Human knowledge is crucial in this kind of situations in order to create (and validate) a realiable input data set.
+
+<br>
+
+

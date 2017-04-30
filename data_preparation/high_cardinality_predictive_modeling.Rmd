@@ -1,13 +1,13 @@
-<img src="http://i.imgur.com/GijXkrp.png" width="800px"> 
-
-High Cardinality Variable in Predictive Modeling
-===
-
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
 knitr::opts_chunk$set(out.width="400px", dpi=120)
 knitr::opts_knit$set(base.dir = "data_preparation")
 ``` 
+
+<img src="http://i.imgur.com/GijXkrp.png" width="800px"> 
+
+High Cardinality Variable in Predictive Modeling
+===
 
 ### What is this about?
 
