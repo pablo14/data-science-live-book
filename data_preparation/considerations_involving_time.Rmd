@@ -14,7 +14,7 @@ In practice, 90% of the time is spent in data preparation.
 
 ### Don't use information from the future
 
-<img src="back_to_the_future.png" width='250px'> 
+<img src="back_to_the_future.png" width='250px' alt="Data Preparation - Don't use variables from the future"> 
 
 Common mistake when starting a new predictive model project, for example:
 
@@ -25,7 +25,8 @@ Imagine we need to build a predictive model to know what users are likely to adq
 d1=data.frame(user_id=rep(1:10), 
               feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
               full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
-knitr::kable(d1, digits = 2)
+
+d1
 ```
 
 
@@ -55,10 +56,10 @@ Two people, `Ouro` and `Borus`, are users of a web application which has certain
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
-```{r echo=FALSE, fig.height=3, fig.width=4}
+```{r data_preparation_time_variable,echo=FALSE, fig.height=3, fig.width=4}
 library(ggplot2)
 d4=data.frame(user=c('Ouro','Ouro','Ouro','Ouro','Ouro','Borus','Borus','Borus','Borus','Borus', 'Ouro','Ouro'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
-pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) +  theme_minimal() + theme(panel.grid.minor = element_blank()) 
+pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) +  theme_minimal() + theme(panel.grid.minor = element_blank())  + geom_point()
 plot(pd4)
 ```
 
@@ -80,7 +81,7 @@ The behavior in this kick-off period may be more relevant -in terms of predictio
 
 ### Fighting the inifinite
 
-<img src="inifiniy.png" alt="Cutting the inifinity" width="300px">
+<img src="infinity.png" alt="Cutting the inifinity" width="150px">
 
 The number of examples in this topic is vast. Let's keep the esence of this chapter in **how data changes across time**. Sometimes it's straitforward, as a variable reaching its minimum (or max) after a fixed time length. This case is easily achievable.
 
@@ -119,47 +120,53 @@ plot(y3, xlab = "time (hs)", col="coral")
 sprintf("Min value after 10,000 hours: %s", min(y3))
 ```
 
-_Still no zero! How much time do I need?!_😱
+_Still no zero! How much time do I need?!_ 😱
 
 As you may notice, it will probably reach the zero value in the inifinty... We are in the presence of an <a href="https://en.wikipedia.org/wiki/Asymptote" target="blank">Asymptote</a>.
 
-_What to we have do?_
+_What do we have to do?_
 
-This answer comes from the work of the data scientist and the domain expert person. 
+<br>
 
+#### Befriend the infinite
 
-In this case a zero can be considered the same as the value of 95% of the whole population. Or statistically speaking, the <a href="https://en.wikipedia.org/wiki/Percentile" target="blank">**percentile**</a>.
-<add outliers and link to other chapters
+This answer may come from by working together the data scientist and domain experts. 
 
-br>
+In this case a zero can be considered the same as the value which have the 95% of population. In statistics terms it the `0.95` <a href="https://en.wikipedia.org/wiki/Percentile" target="blank">**percentile**</a>. _By the way, this is a key topic in exploratory data analysis._
+
+One way to **deal with outliers** is applying this cutting percentile criteria, as we saw in <a href="http://livebook.datascienceheroes.com/data_preparation/outliers_treatment.html" target="blank">treating outliers chapter</a>.
+
+<br>
 
 #### Examples in other areas
 
 It's really common to find these kind of variables in many data sets or projects.
 
-In medicine, the <a href="https://en.wikipedia.org/wiki/Survival_analysis" target="blank">survival analysis projects</a>, the doctors usually define a threshold of, for example, 3 years to consider that one patient _survive_ the treatment.
+**In medicine**, the <a href="https://en.wikipedia.org/wiki/Survival_analysis" target="blank">survival analysis projects</a>, the doctors usually define a threshold of, for example, 3 years to consider that one patient _survive_ the treatment.
 
-In marketing projects, if an user decreases its activity under a certain threshold, let's say:
+**In marketing projects**, if an user decreases its activity under a certain threshold, let's say:
 * 10-clicks in company's web page during last month
 * Not opening an email after 1-week
 * If she (or he) don't buy after 30-days
 
 Can be defined as a churned or lost opportunity customer.
 
-In support areas, an issue can be marked as solved after the person don't complain by 1-week.
+**In customer support**, an issue can be marked as solved after the person don't complain during 1-week.
 
-All of these numbers 
+But this also happens in _"real life"_, like the case when we write a data science book suitable for all ages, how much time is it requiered to end it? An infinite amount? Probably not 😄.
 
 
 <br>
 
-### Final toughts
+### Final thoughts
 
-Many topics are inter-conected, such is the case of _letting the data to develop their behavior_, with the model perfomance <a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>. The key concept: **how to handle time in predictive modeling**.
+Defining a time frame to create a training and validation set **is not a free-lunch** when the data is dynamic, as long as deciding how to handle variables that change over time. That's why the **Exploratory Data Analysis** is important in order to get in touch with the data we're analyzing. 
 
-_How would it be possible to handle this time issues with automatic systems?_ 
+Many topics are inter-conected, such is the case of _letting the data to develop their behavior_, with the model perfomance <a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>. 
 
-Human knowledge is crucial in this kind of situations in order to create (and validate) a realiable input data set.
+The key concept here: **how to handle time in predictive modeling**. It's a good time to ask: _How would it be possible to handle this time issues with automatic systems?_ 
+
+Human knowledge is crucial in these contexts to define thresholds based on the experience, intuition and some calculations.
 
 <br>
 
