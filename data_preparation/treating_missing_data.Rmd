@@ -1,9 +1,9 @@
-Handling, Analysis and Imputation of Missing Data
+Analysis, Handling and Imputation of Missing Data
 ===
 
 ### What is this about?
 
-The analysis of missing values is the estimation of emptiness itself. An obstacle to overcome to reach our goal, like it is to create a predictive model, a cluster analysis, a report, and so on.
+The analysis of missing values is the estimation of emptiness itself. An obstacle to overcome to reach our goal, like creating a predictive model, a cluster analysis, a report, and so on.
 
 In this chapter, we cover from the concept of an empty value to the treatment of it. We will do a lot of analysis over the different approaches and the interpretation of the different results. 
 
@@ -14,12 +14,12 @@ Hopefully, after studying the whole chapter, the reader will understand key conc
 **What are we going to review in this chapter?**
 
 * What is the concept of an empty value?
-* When to excluding rows or columns.
+* When to exclude rows or columns.
 * Analysis and profiling of missing values.
 * Transforming and imputing numeric and categorical variables.
 * Imputing values: from easy to more complex approaches.
 
-All of this from a practical approach in R. The code intend to be the generic enough to apply to your projects 🙂.
+All of this from a practical approach in R. The code intends to be generic enough to apply to your projects 🙂.
 
 <br>
 
@@ -34,21 +34,21 @@ df_travel=data.frame(person=c("Fotero", "Herno", "Mamarul"), South_Africa=c(1, N
 df_travel
 ```
 
-E.g., person `Mamarul` traveled `34` times to `South_Africa` country.
+E.g., person `Mamarul` traveled `34` times to `South_Africa`.
 
-_What does `NA` (or NULL) value represents there?_
+_What does `NA` (or NULL) value represent there?_
 
 In this case `NA` should be replaced by `0`. Indicating zero travels in that person-country intersection. After the conversion, the table is ready to be used:
 
 **Example in R:**
 
 ```{r}
-# Reeplacing all 0 to NA values
+# Replacing all NA values with 0
 df_travel[is.na(df_travel)]=0
 df_travel
 ```
 
-Last example transforms **all** `NA` values into `0`. However in other scenarios, some columns of the date may be applied to this transformation, and others don't.
+The last example transforms **all** `NA` values into `0`. However in other scenarios, this transformation may not apply to all columns.
 
 Let's go to a more complex example.
 
@@ -56,21 +56,21 @@ Let's go to a more complex example.
 
 ### When the empty value, is an empty value
 
-Another time the empty value is correct. We need to treat them to use the table. Many predictive models don't handle input tables with the missing value.
+Another time the empty value is correct. We need to treat them to use the table. Many predictive models don't handle input tables with missing values.
 
-Perhaps they start measuring certain variable _after_ a period of time, so we have data from this point and `NA` before. 
+Perhaps they start measuring certain variable _after_ a period of time, so we have data from this point on and `NA` before. 
 
-Other times there are random cases, like a machine which fails in collecting the data, a user who forgot to complete some field in a form, among others.
+Another times there are random cases, like a machine which fails in collecting the data, or a user who forgot to complete some field in a form, among others.
 
 One important question arises: _What to do?!_😱
 
-Following recommendations are just that, recommendations. You can try different approaches discovering the best strategy to the data you are analyzing.
+The following recommendations are just that, recommendations. You can try different approaches discovering the best strategy to the data you are analyzing. There is no "one-size-fits-all".
 
 <br>
 
 ### Excluding the entire row
 
-If at least one column has an NA value, then exclude the row.
+If at least one column has an `NA` value, then exclude the row.
 
 A fast and easy method, right? It's recommended when the number of rows is _low_. But how low is low? That's up to you. 10 cases in 1000 of rows _may not_ have a huge impact. Unless those 10 cases are related to an anomaly event to predict, in this instance, it represents information. We pointed out this issue in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#case-1-reducing-by-re-categorizing-less-representative-values" target="blank">case 1: reducing by re-categorizing less representative values.</a>
 
@@ -78,7 +78,7 @@ A fast and easy method, right? It's recommended when the number of rows is _low_
 
 **Example in R:**
 
-Let's inspect `heart_disease` data, with `df_status` function, which one of its primary objectives is to help us in this kind of decisions. 
+Let's inspect the `heart_disease` data set, with the `df_status` function, which one of its primary objectives is to help us in these kind of decisions. 
 
 ```{r, message=FALSE}
 library(dplyr)
@@ -86,9 +86,9 @@ library(funModeling)
 df_status(heart_disease, print_results = F) %>% select(variable, q_na, p_na) %>% arrange(-q_na)
 ```
 
-`q_na` indicates quantity of `NA` values, and `p_na` is the percentage. Full info about `df_status` can be found in <a href="http://livebook.datascienceheroes.com/data_preparation/profiling.html" target="blank">Profiling chapter</a>
+`q_na` indicates the quantity of `NA` values, and `p_na` is the percentage. Full info about `df_status` can be found in <a href="http://livebook.datascienceheroes.com/data_preparation/profiling.html" target="blank">Profiling chapter</a>
 
-Two variables have 4 and 2 rows with `NA` values, let's exclude these rows:
+Two of the variables have 4 and 2 rows with `NA` values, let's exclude these rows:
 
 ```{r}
 # na.omit returns the same data frame having excluded all rows containing at least 1 NA value
@@ -99,43 +99,40 @@ nrow(heart_disease_clean) # number of rows after exclusion
 
 After the exclusion, 6 rows out of 303 were eliminated. This approach seems suitable for this data set.
 
-But, there are other scenarios in which there are almost no cases that do not contain empty values. The exclusion will delete the entire data!
+But, there are other scenarios in which almost all cases are empty values. The exclusion will delete the entire data!
 
 <br>
 
 ### Excluding the column
 
-Similar to the last case, but excluding the column. If we apply the same reasoning, if the deletion is about a _few_ columns, and the remaining provide a reliable final result, it may be ok. 
+Similar to the last case, but excluding the column. If we apply the same reasoning, if the deletion is about a _few_ columns, and the remaining ones provide a reliable final result, it may be ok. 
 
 **Example in R:**
 
-These exclusions are easily handled with `df_status` function. Next code will keep all variable names which percentage of `NA` values are higher than `0`.
+These exclusions are easily handled with the `df_status` function. The following code will keep all variable names for which the percentage of `NA` values are higher than `0`.
 
 ```{r}
-## Getting variables names with NA values
+## Getting variable names with NA values
 vars_to_exclude=df_status(heart_disease, print_results = F) %>% filter(p_na > 0) %>% .$variable
 
 ## Checking variables to exclude
 vars_to_exclude
 
-## Excluding variables from original data
+## Excluding variables from original data set
 heart_disease_clean_2=select(heart_disease, -one_of(vars_to_exclude))
 ```
-
-
-
 
 <br>
 
 
-### Treating empty in categorical variables
+### Treating empty values in categorical variables
 
 We cover different perspectives to convert as well as treat empty values in nominal variables.
 
-The data of next example is `web_navigation_data` which contains common information regarding how users come to particular web page. It contains `source_page` (the page from the visitor comes from), `landing_page` (first page to visit our site) and `country`.
+The data of the following example is `web_navigation_data` which contains standard information regarding how users come to particular web page. It contains: `source_page` (the page the visitor comes from), `landing_page` (first page visited) and `country`.
 
 ```{r}
-# Reading example data, pay attention to na.strings parameter.
+# Reading example data, pay attention to the na.strings parameter.
 web_navigation_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/data_preparation/web_navigation_data.txt", sep="\t", header = T, stringsAsFactors=F, na.strings="")
 ```
 
@@ -146,7 +143,7 @@ web_navigation_data=read.delim(file="https://raw.githubusercontent.com/pablo14/d
 stat_nav_data=df_status(web_navigation_data)
 ```
 
-The three variables have empty (`NA`) values. Almost half of values in source_page are missing, while the other two variables have 5 and 3% of `NA`.
+The three variables have empty (`NA`) values. Almost half of the values in `source_page` are missing, while the other two variables have 5% and 3% of `NA`s.
 
 #### Case A: Convert the empty value into string
 
@@ -163,7 +160,7 @@ web_navigation_data_1=web_navigation_data # making a copy
 # creating a new variable
 web_navigation_data_1$source_page_2=ifelse(is.na(web_navigation_data$source_page), "unknown_source", web_navigation_data$source_page)
 
-## Method 2: It's a typical situation only apply a function to specific variables and return the original data frame
+## Method 2: It's a typical situation to only apply a function to specific variables and then return the original data frame
 # First we define the conversion function
 convert_categ<-function(x) 
 {
@@ -175,7 +172,7 @@ convert_categ<-function(x)
 vars_to_process=filter(stat_nav_data, p_na<6) 
 
 # create the new data frame, with the transformed variables
-#  Adding a minus in front of one_of(vars_to_process$variable) will apply the function to all columns except to the define ones
+#  Adding a minus in front of one_of(vars_to_process$variable) will apply the function to all columns except to the defined ones
 web_navigation_data_2=web_navigation_data %>% mutate_each(funs(convert_categ), one_of(vars_to_process$variable))
   
 ```
@@ -189,9 +186,11 @@ df_status(web_navigation_data_2)
 
 #### Case B: Assign the most frequent category
 
-The intuition behind it is _add more of the same, so it does not affect_. But sometimes it does. It will not have the same impact if the most common value appears 90% of the times than if it does 10%. It depends on the distribution.
+TODO: add example
 
-This technique is more suitable in a predictive model that is running on production, and a new value in categorical variables. If the predictive model is robust, like **random forest** does, it will throw the message: `New factor levels not present in the training data.`, where `factor level` equals to "new category value". 
+The intuition behind this method is _to add more of the same, so it does not affect_. But sometimes it does. It will not have the same impact if the most common value appears 90% of the time, than if it does 10%. It depends on the distribution.
+
+This technique is more suitable in a predictive model that is running on production, and a new value in categorical variables. If the predictive model is robust, like **random forest** is, it will throw the message: `New factor levels not present in the training data.`, where `factor level` equals to "new category value". 
 
 This book covered this point in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
  target="blank">High Cardinality Variable in Predictive Modeling</a>.

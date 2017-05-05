@@ -267,17 +267,17 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 
 * The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not too bad. 😉 This percentage of improvement is the result of the variables working in groups.
 * This effect appears if the variables contain information, such is the case of `max_heart_rate` and `chest_pain` (or `var_1` and `var_2`). 
-* Putting **noisy variables** next to good variables **wwill usuallyaffect** overall performance.
-* Also the **work in groups** effect is higher if input variables **are not correlated between** them. This is difficult otooptimiziein practice. More on this on nthe ext section...
+* Putting **noisy variables** next to good variables **will usually affect** overall performance.
+* Also the **work in groups** effect is higher if the input variables **are not correlated between** them. This is difficult to optimize in practice. More on this on the next section...
 
 
 <br>
 
 ### Correlation between input variables
 
-The ideal scenario is to build a predictive model with only non-correlated variables between them. In practice, it's complicated to keep such a scenario for all variables. 
+The ideal scenario is to build a predictive model with only variables not correlated between them. In practice, it's complicated to keep such a scenario for all variables. 
 
-For sure there will be variables a set of variables that are not correlated between them, but also there will be others that share a little of correlation.
+Usually there will be a set of variables that are not correlated between them, but also there will be others that have at least some correlation.
 
 **In practice** a suitable solution would be to exclude those variables with a **remarkably high-level** of correlation.
 
@@ -287,10 +287,10 @@ Regarding how to measure correlation. Results can be highly different based on l
 
 _What is the problem with adding correlated variables?_
 
-The problem is we're adding complexity to the model: more time consuming, harder to understand as well as to explain, less accurate, etc. This is an effect we reviewed in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#dont-predictive-models-handle-high-cardinality-part-2">reducing cardinality in categorical variables</a>. 
+The problem is that we're adding complexity to the model: it's usually more time-consuming, harder to understand, less explainable, less accurate, etc. This is an effect we reviewed in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#dont-predictive-models-handle-high-cardinality-part-2">reducing cardinality in categorical variables</a>. 
 
 
-The general rule would be: Try to add top N variables that are correlated with the output but not correlated between them. This lead us to the next section. 
+The general rule would be: Try to add the top N variables that are correlated with the output but not correlated between them. This leads us to the next section. 
 
 
 <br>
@@ -311,13 +311,13 @@ Of course, there is also the trade-off of adding-substracting variables and the 
 
 A predictive model with a _high_ number of variables will tend to do **overfitting**. While on the other hand, a model with a _low_ number of variables will lead to doing **underfitting**.
 
-The concept of _high_ and _low_ is **highly subjective** to the data that is under analysis. In practice, we may have some accuracy metric, for example, ROC value. In practice we would see something like:
+The concept of _high_ and _low_ is **highly subjective** to the data that is being analyzed. In practice, we may have some accuracy metric, for example, the ROC value. i.e. we would see something like:
 
 <img src="variable_selection_table.png" alt="Quantity of variables vs ROC value trade-off"> 
 
-The last picture shows a different subset of variables and an accuracy metric (ROC). Each dot represents the ROC value given a certain number of variables used to build the model.
+The last picture shows the ROC accuracy metric given different subsets of variables (5, 10, 20, 30 and 58). Each dot represents the ROC value given a certain number of variables used to build the model.
 
-We can check that the highest ROC appears when the model is built with 30 variables. If we based the selection only in an automated process, we might be choosing a subset which tends to overfit data. This report was produced by library `caret` in R [2], but is analogous to any software.
+We can check that the highest ROC appears when the model is built with 30 variables. If we based the selection only on an automated process, we might be choosing a subset which tends to overfit the data. This report was produced by library `caret` in R (ref. [2]), but is analogous to any software.
 
 Take a closer look at the difference between the subset of 20 and the 30; there is only an improvement of **1.8%** -from 0.9324 to 0.95- choosing **10 more variables.** In other words: _Choosing 50% more variables will impact in less than 2% of improvement._
 
@@ -331,52 +331,56 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 <br> 
 
-### Feature Engineering in Clustering?
+### Variable selection in Clustering?
 
 <img src="cluster.png" width="300px" alt="feature engineering in clustering"> 
 
-Technically the concept of best variables is attached to a target variable. In clustering there is not such variable, we let the data speak, and the natural segments arise according to some distance metric.
+This concept usually appears only in predictive modeling, i.e. having some variables to predict a target one. In clustering there is no target variable, we let the data speak, and the natural segments arise according to some distance metric.
 
 However, **not every variable contributes in the same way to the dissimilarity in the cluster model**. Keeping it brief, if we have 3 clusters as output, and we measure the average of each variable, we expect to have these averages _quite_ dissimilar between them, right? 
 
-Having built 2 cluster models, in the first one the averages of `age` variable is 24, 33 and 26 years; while on the second one we have: 23, 31 and 46. In the second model variable `age` is having more variability, thus more relevant to the model. 
+Having built 2 cluster models, in the first one the averages of the `age` variable is 24, 33 and 26 years; while on the second one we have: 23, 31 and 46. In the second model the variable `age` is having more variability, thus it is more relevant to the model. 
 
-This was just an example considering two models, but is the same considering just one. Those variables with **more distance** across averages will tend to **define better** the cluster than others. 
+This was just an example considering two models, but it's the same considering just one. Those variables with **more distance** across averages will tend to **define better** the cluster than the others. 
 
-Unlike predictive modeling, in clustering _less important_ variables shouldn't be removed, those variables aren't important in that particular model, but they could do if we build another one with other parameters. The cluster models quality is highly subjective.
+Unlike predictive modeling, in clustering _less important_ variables shouldn't be removed, those variables aren't important in that particular model, but they could be if we build another one with other parameters. The cluster models' quality is highly subjective.
 
-Finally, we could run a random forest model with the cluster as a target variable and in this way to quickly collect the most important variables.
+Finally, we could run, for example, a random forest model with the cluster as a target variable and in this way quickly collect the most important variables.
 
 <br>
 
+### Selecting best variables in practice 
+
 #### The short answer 
 
-Pick up top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves rankings, but if so, use the same model to get the ranking and to build the final model, try not to mix them.
+Pick up the top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves variable rankings, but if it does, use the same model (for example gradient boosting machine) to get the ranking and to build the final model.
 
-For those models like k-nearest neighbors which don't have a built-in select best features procedure, it's valid to use the selection of another algorithm. It will lead to better results. 
+For those models like k-nearest neighbors which doesn't have a built-in select best features procedure, it's valid to use the selection of another algorithm. It will lead to better results than using all the variables. 
 
 <br>
 
 #### The long answer 
 
-* When possible, **validate** the list with someone who knows about the field study, the business and the area from the data comes from. Either for the top _N_ and the bottom _M_ variables. Regarding those _bad_ variables, we may be missing something in the data munging that could be destroying their predictive power.
-* Understand each variable, their domain field meaning (business, medical, other). 
-* Do **exploratory analysis** to see the distributions of most important variables regarding target variable, _does the selection makes sense?_ If the target is binary then function <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">cross_plot</a> can be used. 
-* Does the average of any variable change _significativaly_ over time? Check abrupt changes in distributions.
-Suspect about high cardinality top-ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
-* When doing the selection -as well as a predictive model-, try to use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in Ref. [3].
-* Try other methods to find **groups of variables** like the one mentioned before: mRMR.
-* If the selection doesn't meet the needs, try creating new variables, you can check **data preparation** chapter. (TODO: ADD)
+* When possible, **validate** the list with someone who knows about the context, the business or the data source. Either for the top _N_ or the bottom _M_ variables. Regarding those _bad_ variables, we may be missing something in the data munging that could be destroying their predictive power.
+* Understand each variable, their meaning in context (business, medical, other).
+* Do **exploratory data analysis** to see the distributions of the most important variables regarding a target variable, _does the selection make sense?_ If the target is binary then the function <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">cross_plot</a> can be used. 
+* Does the average of any variable _significatively_ change over time? Check for abrupt changes in distributions.
+Suspect about high cardinality top-ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variables in Predictive Modeling</a> chapter.
+* When doing the selection -as well as predictive modeling-, try to use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in Ref. [3].
+* Try other methods to find **groups of variables**, like the one mentioned before: mRMR.
+* If the selection doesn't meet the needs, try creating new variables, you can check the **data preparation** chapter. (TODO: ADD)
 
 <br>
 
 #### Generate your own knowledge
 
-It's difficult to generalize when the nature of the data is so different, from **genetics** in which there are thousands of variables and a few rows, to web-navigation where all the time is coming new data.
+It's difficult to generalize when the nature of the data is so different, from **genetics** in which there are thousands of variables and a few rows, to web-navigation when new data is coming all the time.
 
-The same goes to analysis objective, is it to use in a competition or precision is highly necessary? Perhaps the solution may include more variables that are correlated; in comparison to an ad-hoc study in which the easy explanation is the primary purpose.
+The same applies to the objective of the analysis. Is it to be used in a competition where precision is highly necessary? Perhaps the solution may include more variables that are correlated; in comparison to an ad-hoc study in which the primary goal is a simple explanation.
 
-There is no one recipe to answer all the issues; you'll find powerful insights made by you and your data. Just a matter of practice.
+There is no one-size-fits-all answer to face all possible challenges; you'll find powerful insights using your experience. It's just a matter of practice. 
+
+
 
 <br> 
 

@@ -1,8 +1,4 @@
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=120)
-knitr::opts_knit$set(base.dir = "data_preparation")
-``` 
+
 
 Considerations involving time
 ===
@@ -21,18 +17,25 @@ Common mistake when starting a new predictive model project, for example:
 Imagine we need to build a predictive model to know what users are likely to adquire full subscription in a web application, and this software has a ficticious feature called it `feature_A`:
 
 
-```{r ,echo=FALSE}
-d1=data.frame(user_id=rep(1:10), 
-              feature_A=c("yes","yes","yes","no","yes","no","no","no","no","no"),
-              full_subscription=c("yes","yes","yes","no","yes","no","no","no","no","no")) 
 
-d1
+```
+##    user_id feature_A full_subscription
+## 1        1       yes               yes
+## 2        2       yes               yes
+## 3        3       yes               yes
+## 4        4        no                no
+## 5        5       yes               yes
+## 6        6        no                no
+## 7        7        no                no
+## 8        8        no                no
+## 9        9        no                no
+## 10      10        no                no
 ```
 
 
 We build the predictive model, we got a perfect accuracy, and an inspection throws the following: _"100% of users that have full subscription, uses Feature A"_. Some predictive algorithms report variable importance, thus `feature_A` will be at the top.
 
-**The problem is:** `feature_A` is only availble **after the user goes for full subscription**. Therefore it cannot be used.
+**The problem is:** `feature_A` is only availble **after the user goes for full subcription**. Therefore it cannot be used.
 
 **The key message is**: Don't trust in perfect variables, nor perfect models. 
 
@@ -56,12 +59,7 @@ Two people, `Ouro` and `Borus`, are users of a web application which has certain
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
-```{r data_preparation_time_variable,echo=FALSE, fig.height=3, fig.width=4}
-library(ggplot2)
-d4=data.frame(user=c('Ouro','Ouro','Ouro','Ouro','Ouro','Borus','Borus','Borus','Borus','Borus', 'Ouro','Ouro'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
-pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) +  theme_minimal() + theme(panel.grid.minor = element_blank())  + geom_point()
-plot(pd4)
-```
+<img src="figure/data_preparation_time_variable-1.png" title="plot of chunk data_preparation_time_variable" alt="plot of chunk data_preparation_time_variable" width="400px" />
 
 
 User `Borus` starts using `feature_A` from day 3, and after 5 days she has more use -15 vs 12 clicks- on this feature than `Ouro` who started using it from day 0. 
@@ -91,33 +89,29 @@ Consider the following example. _How much hours are needed to reach the 0 value?
 
 How about 100 hours?
 
-```{r data_preparation_time_variable_1, echo=FALSE, fig.height=3.5, fig.width=4.5}
-# generating 3 series example
-y1=round(1/log(1:100), 2)
-y2=round(1/log(1:1000), 2)
-y3=round(1/log(1:10000), 2)
-
-plot(y1, xlab = "time (hs)", col="coral")
-```
+<img src="figure/data_preparation_time_variable_1-1.png" title="plot of chunk data_preparation_time_variable_1" alt="plot of chunk data_preparation_time_variable_1" width="400px" />
 
 Hmmm let's check the minimum value.
 
-```{r data_preparation_time_variable_2, echo=FALSE}
-sprintf("Min value after 100 hours: %s", min(y1))
+
+```
+## [1] "Min value after 100 hours: 0.22"
 ```
 
 It's close to zero, but _what if we wait 1000 hours?_
 
-```{r data_preparation_time_variable_3, echo=FALSE, fig.height=3.5, fig.width=4.5}
-plot(y2, xlab = "time (hs)", col="coral")
-sprintf("Min value after 1,000 hours: %s", min(y2))
+<img src="figure/data_preparation_time_variable_3-1.png" title="plot of chunk data_preparation_time_variable_3" alt="plot of chunk data_preparation_time_variable_3" width="400px" />
+
+```
+## [1] "Min value after 1,000 hours: 0.14"
 ```
 
 Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times more? (10,000 hours)
 
-```{r data_preparation_time_variable_4, echo=FALSE, fig.height=3.5, fig.width=4.5}
-plot(y3, xlab = "time (hs)", col="coral")
-sprintf("Min value after 10,000 hours: %s", min(y3))
+<img src="figure/data_preparation_time_variable_4-1.png" title="plot of chunk data_preparation_time_variable_4" alt="plot of chunk data_preparation_time_variable_4" width="400px" />
+
+```
+## [1] "Min value after 10,000 hours: 0.11"
 ```
 
 _Still no zero! How much time do I need?!_ 😱

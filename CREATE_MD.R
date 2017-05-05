@@ -18,6 +18,7 @@ setwd("~/repos/data-science-live-book")
 ###########################################################################
 
 create_files('considerations_involving_time', 'data_preparation')
+create_files('data_types', 'data_preparation')
 
 if(F)
 {
