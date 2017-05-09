@@ -9,6 +9,8 @@ Feature Engenieering
 
 ### What is this about?
 
+**What are we going to review in this chapter?**
+
 
 ### Removing outliers 
 

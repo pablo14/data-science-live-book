@@ -16,7 +16,16 @@ Handling Data Types
 
 There are two main data types, **numerical** or **categorical**. Other names for categorical are: string and nominal.
 
-A sub set of categorical is the ordinal, or as it is named in R, an ordered factor. At least in R, this type is only relevant when plotting categories in a certain order.
+A sub set of categorical is the ordinal, or as it is named in R, an **ordered** factor. At least in R, this type is only relevant when plotting categories in a certain order. An example in R:
+
+```{r}
+# Creating an ordinal, or ordered factor
+var_factor=factor(c("3_high", "2_mid", "1_low"))
+var_ordered=factor(var_factor, ordered = T)
+var_ordered
+```
+
+Don't pay much attention at this data type, normally numerical and categorical are the most needed.
 
 <br>
 
@@ -95,19 +104,21 @@ If we create a decision tree model, we may find rules like: "`If chest_pain > 2.
 
 #### Thinking as an algorithm
 
-Consider two numerical input variables, and a target binary variable. The algorithm will _see_ both input variable as an scatter plot, considering that are infintie values between each number. 
+Consider two numerical input variables, and a target binary variable. The algorithm will _see_ both input variables as dots in a rectangle, considering that are infintie values between each number. 
 
-<img src="svm.png" alt="Support Vector Machine" widt="300px">
+For example, a **Supported Vector Machine** (SVM) will create _several_ vectors in order to separate the target variable class. It will **find regions** based on these vectors. How would it be possible to find these regions based on categorical variables? It isn't possible, that's why SVM only supports numerical variables. Same case as artificial neural networks.
+
+<img src="svm.png" alt="Support Vector Machine" widt="200px">
+
 _Image credit: ZackWeinberg._
 
-For example, a **Supported Vector Machine** (SVM) will create _several_ vectors in order to separate the target variable class. It will **find regions** based on these vectors. How would it be possible to find these regions based on categorical variables? It isn't possible, that's why SVM only supports numerical variables. Same case to neural networks.
+Last image shows three lines, representing three different decision boundaries or regions.
 
-However if the model is a tree based, like decision trees, random forest or gradient boosting machine, they handle both types since the search space can be regions (sames as SVM), and categories. Like the rule "`if postal_code is AX441AG then...`".
+For a quick introduction to this SVM concept, please go to this short video <a href=" https://www.youtube.com/watch?v=1NxnPkZM9bc" target="blank">SVM Demo</a>
 
+However if the model is a tree based, like decision trees, random forest or gradient boosting machine, they handle both types since their search space can be regions (sames as SVM), and categories. Like the rule "`if postal_code is AX441AG and age > 55 then...`".
 
-Going back to the heart disease example, the variable `chest_pain` has an order. and we should take advantage of it If we convert this variable into one categorical, *we are losing information*, this is a really important point in handling data types.
-
-
+Going back to the heart disease example, the variable `chest_pain` exhibits order. We should take advantage of it, if we convert this variable into one categorical, *we are losing information*, this is important point when handling handling data types.
 
 <br>
 
@@ -136,7 +147,7 @@ Following code will show the `visits` depending on `postal_code` transformed acc
 * `transformation_1`: Assign a sequence number based on the given order.
 * `transformation_2`: Assign a number based on the amount of `visits`.
 
-```{r, warning=FALSE, fig.width=9, fig.height=3, message=FALSE}
+```{r, warning=FALSE, fig.width=9, fig.height=3, out.width="600px", message=FALSE}
 # creating data -toy- sample 
 df_pc=data.frame(visits=c(10, 59, 27, 33), postal_code=c("AA1", "BA5", "CG3", "HJ1"), transformation_1=c(1,2,3,4), transformation_2=c(1, 4, 2, 3 ))
 
@@ -163,18 +174,66 @@ This effect is the same when we handle millions of rows and the number of variab
 
 <br>
 
-### Custom buckets
+### Discretizing numerical variable 
 
-It's common to create custom binning or custom buckets in the **Feature Engineering** stage. These buckets can be created based on the ingformation provided by `cross_plot`.
+Or, converting it into one categorical by split it into bins. For a fancy definition, we can quote wikipedia: _Discretization concerns the process of transferring continuous functions, models, and equations into discrete counterparts._ 
 
-```{r custom_variable_binning, eval=FALSE}
-# Lock5Data contains many data sets to practice. One of them: HollywoodMovies2011
-library(Lock5Data)
-data("HollywoodMovies2011")
+Bins is also known as buckets or segments.
 
-HollywoodMovies2011$TheatersOpenWeek_2=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 2995, 3400, 4375), dig.lab = 9)
+The most common binning criteria are:
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_2")
-summary(HollywoodMovies2011$TheatersOpenWeek_2)
+<br>
+
+#### Equal range
+
+```{r equal_range_discretization}
+library(Lock5Data) # package containg HollywoodMovies2011 data 
+library(ggplot2) # bt arovides scut_interval used to split the variable based on equal range criterialibrary(funModeling)
+ # it provides the equal_freq functiondata(HollywoodMovies2011) # loading data example
+
+bc=cut_interval(HollywoodMovies2011$AudienceScore, n = 4, dig.lab=9)
+summary(c)
+```
+
+This is common to find in histograms, but it's highly suceptible to outliers. To create, for example, 10 bins it takes the min and the max value, and divides by 10. This method is useful to see variable distribution.
+
+
+
+<br>
+
+#### Equal frecuency:
+
+It tries to put the same number of observations per group.
+
+`funModeling` package includes the `equal_freq` function to create bins based on this criteri:
+
+```{r equal_frequency_discretization}
+library(Lock5Data) # package containg HollywoodMovies2011 data 
+
+data(HollywoodMovies2011) # loading data example
+
+
+b=equal_freq(var = HollywoodMovies2011$AudienceScore, n_bins = 4)
+summary(b)
+```
+
+#### Custom bins
+
+```{r custom_bins, eval=FALSE}
+HollywoodMovies2011$TheatersOpenWeek_3=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 2995, 3400, 4375), dig.lab = 9)
+
+freq(HollywoodMovies2011, "TheatersOpenWeek_3")
+summary(HollywoodMovies2011$TheatersOpenWeek_3)
 
 ```
+
+
+<br>
+<#### Intelligent bins
+https://cran.r-project.org/web/packages/discretization/discretization.pdf
+
+br>
+
+### Final thoughts
+
+###

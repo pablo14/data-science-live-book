@@ -17,7 +17,7 @@ setwd("~/repos/data-science-live-book")
 ###########################################################################
 ###########################################################################
 
-create_files('considerations_involving_time', 'data_preparation')
+
 create_files('data_types', 'data_preparation')
 
 if(F)
@@ -27,6 +27,7 @@ if(F)
   create_files('correlation', 'exploratory_data_analysis')
   create_files('profiling', 'exploratory_data_analysis')
 
+  create_files('considerations_involving_time', 'data_preparation')
   create_files('feature_engineering', 'data_preparation')
   create_files('high_cardinality_predictive_modeling', 'data_preparation')
   create_files('high_cardinality_descriptive_stats', 'data_preparation')
