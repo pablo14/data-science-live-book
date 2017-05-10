@@ -186,54 +186,93 @@ The most common binning criteria are:
 
 #### Equal range
 
+This is common to find in histograms and looking its distribution, but it's highly suceptible to outliers. To create, for example, 4 bins it takes the min and the max value, and divides by 4. 
+
+
 ```{r equal_range_discretization}
-library(Lock5Data) # package containg HollywoodMovies2011 data 
-library(ggplot2) # bt arovides scut_interval used to split the variable based on equal range criterialibrary(funModeling)
- # it provides the equal_freq functiondata(HollywoodMovies2011) # loading data example
+# funModeling contains equal_freq (discretization) and freq (profiling categorical var)
+library(funModeling)
 
-bc=cut_interval(HollywoodMovies2011$AudienceScore, n = 4, dig.lab=9)
-summary(c)
+# Lock5Data package containg HollywoodMovies2011 data 
+library(Lock5Data)
+# loading data example
+data(HollywoodMovies2011) 
+
+# ggplot2 it provides 'cut_interval' function used to split the variable based on equal range criteria
+library(ggplot2) 
+
+# loading data example
+data(HollywoodMovies2011) 
+
+## Creating equal range variable
+HollywoodMovies2011$AudienceScore_2=cut_interval(HollywoodMovies2011$AudienceScore, n = 4, dig.lab=9)
+
+# Plotting the variable
+p2=ggplot(HollywoodMovies2011, aes(AudienceScore_2)) + geom_bar(fill="#009E73") + theme_bw()
+p2
 ```
-
-This is common to find in histograms, but it's highly suceptible to outliers. To create, for example, 10 bins it takes the min and the max value, and divides by 10. This method is useful to see variable distribution.
 
 
 
 <br>
 
-#### Equal frecuency:
+#### Equal frecuency
 
-It tries to put the same number of observations per group.
+It tries to put the same number of observations per group. Its criteria is based on percentiles.
 
-`funModeling` package includes the `equal_freq` function to create bins based on this criteri:
+`funModeling` package includes the `equal_freq` function to create bins based on this criteria:
 
-```{r equal_frequency_discretization}
-library(Lock5Data) # package containg HollywoodMovies2011 data 
+```{r equal_frequency_discretization, fig.width=4, fig.height=3}
 
-data(HollywoodMovies2011) # loading data example
+HollywoodMovies2011$AudienceScore_3=equal_freq(var = HollywoodMovies2011$AudienceScore, n_bins = 4)
+freq(HollywoodMovies2011$AudienceScore_3)
+HollywoodMovies2011$AudienceScore_3
 
-
-b=equal_freq(var = HollywoodMovies2011$AudienceScore, n_bins = 4)
-summary(b)
+p3=ggplot(HollywoodMovies2011, aes(AudienceScore_3)) + geom_bar(fill="#CC79A7") + theme_bw()
+p3
 ```
 
 #### Custom bins
 
 ```{r custom_bins, eval=FALSE}
-HollywoodMovies2011$TheatersOpenWeek_3=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 2995, 3400, 4375), dig.lab = 9)
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_3")
-summary(HollywoodMovies2011$TheatersOpenWeek_3)
+HollywoodMovies2011$AudienceScore_4=cut(HollywoodMovies2011$AudienceScore, breaks = c(0, 15, 52, 89, 100), dig.lab = 9)
 
+p4=ggplot(HollywoodMovies2011, aes(AudienceScore_4)) + geom_bar(fill="#CC79A7") + theme_bw()
+p4
 ```
 
-
 <br>
-<#### Intelligent bins
+
+#### Intelligent bins
+
 https://cran.r-project.org/web/packages/discretization/discretization.pdf
 
-br>
+```{r}
+library(discretization)
+
+sacar los nulos y explicar q hay q hacer data prepstr(HollywoodMovies2011$AudienceScore)
+a=mdlp(sselect(HollywoodMovies2011, AudienceScore,OpeningWeekend))
+p3=ggplot(HollywoodMovies2011, aes(AudienceScore_3)) + geom_bar(fill="#D55E00") + theme_bw()
+p3
+
+
+```
+<br>
 
 ### Final thoughts
 
-###
+Just take another quick look at the discretization variable, we are going to do a phylosophical conclusion. The data is always the same, a bunch of numerical points; however, all the methods we review exhibits different perspectives of the same thing.
+
+Some perspectives are more suitable for certain situations, just the equal frequency is for predictive modeling.
+
+And this is only with one variable, but the reasining is the same in an `N-dimensional` space, or, when we have more than one variable. When we build predictive models we describe from different ways the same dataset. Like the opinion of people regarding the something.
+
+
+
+
+
+
+
+
+
