@@ -29,9 +29,12 @@ Empty values are also known as `NULL` in databases, `NA` in R or just the empty 
 
 For example, imagine a travel agency which joins two tables, one of persons and another of countries. The result shows the number of travels per person: 
 
-```{r, echo=FALSE}
-df_travel=data.frame(person=c("Fotero", "Herno", "Mamarul"), South_Africa=c(1, NA, 34), Brazil=c(5,NA,40), Costa_Rica=c(5,NA,NA), stringsAsFactors = F)
-df_travel
+
+```
+##    person South_Africa Brazil Costa_Rica
+## 1  Fotero            1      5          5
+## 2   Herno           NA     NA         NA
+## 3 Mamarul           34     40         NA
 ```
 
 E.g., person `Mamarul` traveled `34` times to `South_Africa`.
@@ -42,7 +45,8 @@ In this case `NA` should be replaced by `0`. Indicating zero travels in that per
 
 **Example: Reeplace all NA values by 0**
 
-```{r}
+
+```r
 # making a copy..
 df_travel_2=df_travel
   
@@ -51,19 +55,34 @@ df_travel_2[is.na(df_travel_2)]=0
 df_travel_2
 ```
 
+```
+##    person South_Africa Brazil Costa_Rica
+## 1  Fotero            1      5          5
+## 2   Herno            0      0          0
+## 3 Mamarul           34     40          0
+```
+
 The last example transforms **all** `NA` values into `0`. However in other scenarios, this transformation may not apply to all columns.
 
 **Example: Reeplace NA values by 0 only in certain columns**
 
 This is probably the most common scenario, to replace NA by some value -zero in this case-, only to some columns. We define a vector containing all the variables to replace, and then we call `mutate_each` function from `dplyr` package.
 
-```{r}
+
+```r
 # Replacing NA values with 0 only in selected columns.
 vars_to_reeplace=c("Brazil", "Costa_Rica")
 
 df_travel_3=df_travel %>% mutate_each(funs(replace(., is.na(.), 0)), one_of(vars_to_reeplace))
 
 df_travel_3
+```
+
+```
+##    person South_Africa Brazil Costa_Rica
+## 1  Fotero            1      5          5
+## 2   Herno           NA      0          0
+## 3 Mamarul           34     40          0
 ```
   
 
@@ -97,21 +116,54 @@ A fast and easy method, right? It's recommended when the number of rows is _low_
 
 Let's inspect the `heart_disease` data set, with the `df_status` function, which one of its primary objectives is to help us in these kind of decisions. 
 
-```{r, message=FALSE}
+
+```r
 library(dplyr)
 library(funModeling)
 df_status(heart_disease, print_results = F) %>% select(variable, q_na, p_na) %>% arrange(-q_na)
+```
+
+```
+##                  variable q_na p_na
+## 1       num_vessels_flour    4 1.32
+## 2                    thal    2 0.66
+## 3                     age    0 0.00
+## 4                  gender    0 0.00
+## 5              chest_pain    0 0.00
+## 6  resting_blood_pressure    0 0.00
+## 7       serum_cholestoral    0 0.00
+## 8     fasting_blood_sugar    0 0.00
+## 9         resting_electro    0 0.00
+## 10         max_heart_rate    0 0.00
+## 11            exer_angina    0 0.00
+## 12                oldpeak    0 0.00
+## 13                  slope    0 0.00
+## 14 heart_disease_severity    0 0.00
+## 15           exter_angina    0 0.00
+## 16      has_heart_disease    0 0.00
 ```
 
 `q_na` indicates the quantity of `NA` values, and `p_na` is the percentage. Full info about `df_status` can be found in <a href="http://livebook.datascienceheroes.com/data_preparation/profiling.html" target="blank">Profiling chapter</a>
 
 Two of the variables have 4 and 2 rows with `NA` values, let's exclude these rows:
 
-```{r}
+
+```r
 # na.omit returns the same data frame having excluded all rows containing at least 1 NA value
 heart_disease_clean=na.omit(heart_disease)
 nrow(heart_disease) # number of rows before exclusion
+```
+
+```
+## [1] 303
+```
+
+```r
 nrow(heart_disease_clean) # number of rows after exclusion
+```
+
+```
+## [1] 297
 ```
 
 After the exclusion, 6 rows out of 303 were eliminated. This approach seems suitable for this data set.
@@ -128,13 +180,20 @@ Similar to the last case, but excluding the column. If we apply the same reasoni
 
 These exclusions are easily handled with the `df_status` function. The following code will keep all variable names for which the percentage of `NA` values are higher than `0`.
 
-```{r}
+
+```r
 ## Getting variable names with NA values
 vars_to_exclude=df_status(heart_disease, print_results = F) %>% filter(p_na > 0) %>% .$variable
 
 ## Checking variables to exclude
 vars_to_exclude
+```
 
+```
+## [1] "num_vessels_flour" "thal"
+```
+
+```r
 ## Excluding variables from original data set
 heart_disease_clean_2=select(heart_disease, -one_of(vars_to_exclude))
 ```
@@ -148,7 +207,8 @@ We cover different perspectives to convert as well as treat empty values in nomi
 
 The data of the following example is `web_navigation_data` which contains standard information regarding how users come to particular web page. It contains: `source_page` (the page the visitor comes from), `landing_page` (first page visited) and `country`.
 
-```{r}
+
+```r
 # Reading example data, pay attention to the na.strings parameter.
 web_navigation_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/data_preparation/web_navigation_data.txt", sep="\t", header = T, stringsAsFactors=F, na.strings="")
 ```
@@ -156,8 +216,16 @@ web_navigation_data=read.delim(file="https://raw.githubusercontent.com/pablo14/d
 
 **Profiling the data: **
 
-```{r}
+
+```r
 stat_nav_data=df_status(web_navigation_data)
+```
+
+```
+##       variable q_zeros p_zeros q_na  p_na q_inf p_inf      type unique
+## 1  source_page       0       0   50 51.55     0     0 character      5
+## 2 landing_page       0       0    5  5.15     0     0 character      5
+## 3      country       0       0    3  3.09     0     0 character     18
 ```
 
 The three variables have empty (`NA`) values. Almost half of the values in `source_page` are missing, while the other two variables have 5% and 3% of `NA`s.
@@ -170,7 +238,8 @@ Next, we propose two methods intended to cover common scenarios.
 
 **Example in R:**
 
-```{r}
+
+```r
 ## Method 1: Converting just one variable and create a new variable:
 web_navigation_data_1=web_navigation_data # making a copy
 
@@ -191,12 +260,19 @@ vars_to_process=filter(stat_nav_data, p_na<6)
 # create the new data frame, with the transformed variables
 #  Adding a minus in front of one_of(vars_to_process$variable) will apply the function to all columns except to the defined ones
 web_navigation_data_2=web_navigation_data %>% mutate_each(funs(convert_categ), one_of(vars_to_process$variable))
-  
 ```
 Checking the results:
 
-```{r}
+
+```r
 df_status(web_navigation_data_2)
+```
+
+```
+##       variable q_zeros p_zeros q_na  p_na q_inf p_inf      type unique
+## 1  source_page       0       0   50 51.55     0     0 character      5
+## 2 landing_page       0       0    0  0.00     0     0 character      6
+## 3      country       0       0    0  0.00     0     0 character     19
 ```
 
 <br>
@@ -225,7 +301,8 @@ In the case we saw before, `source_page` have more than half of the values empty
 
 The example is prepared to be generic:
 
-```{r}
+
+```r
 # Setting the threshold
 threshold_to_exclude=50 # 50 reprents 50%
 vars_to_exclude=filter(stat_nav_data, p_na>=threshold_to_exclude) 
@@ -233,14 +310,32 @@ vars_to_keep=filter(stat_nav_data, p_na<threshold_to_exclude)
 
 # Finally...
 vars_to_exclude$variable
-vars_to_keep$variable
+```
 
+```
+## [1] "source_page"
+```
+
+```r
+vars_to_keep$variable
+```
+
+```
+## [1] "landing_page" "country"
+```
+
+```r
 # Next line will exclude variables above the threshold, and it will transform the remaining ones
 web_navigation_data_3=select(web_navigation_data, -one_of(vars_to_exclude$variable)) %>% mutate_each(funs(convert_categ), one_of(vars_to_keep$variable))
 
 # Checking, there is no NA values and the variable above NA threshold disappeared
 df_status(web_navigation_data_3)
+```
 
+```
+##       variable q_zeros p_zeros q_na p_na q_inf p_inf      type unique
+## 1 landing_page       0       0    0    0     0     0 character      6
+## 2      country       0       0    0    0     0     0 character     19
 ```
 
 <br>  
@@ -262,7 +357,8 @@ But, we need to minimize the bias we are introducing, because the missing value 
 
 First load the example movie data. And do a quick a  quick profile.
 
-```{r}
+
+```r
 # Lock5Data contains many data frames to practice
 library(Lock5Data)
 
@@ -271,6 +367,24 @@ data("HollywoodMovies2011")
 
 # profiling
 df_status(HollywoodMovies2011)
+```
+
+```
+##             variable q_zeros p_zeros q_na  p_na q_inf p_inf    type unique
+## 1              Movie       0    0.00    0  0.00     0     0  factor    136
+## 2         LeadStudio       0    0.00    0  0.00     0     0  factor     34
+## 3     RottenTomatoes       0    0.00    2  1.47     0     0 integer     75
+## 4      AudienceScore       0    0.00    1  0.74     0     0 integer     60
+## 5              Story       0    0.00    0  0.00     0     0  factor     22
+## 6              Genre       0    0.00    0  0.00     0     0  factor      9
+## 7   TheatersOpenWeek       0    0.00   16 11.76     0     0 integer    118
+## 8  BOAverageOpenWeek       0    0.00   16 11.76     0     0 integer    120
+## 9      DomesticGross       0    0.00    2  1.47     0     0 numeric    130
+## 10      ForeignGross       0    0.00   15 11.03     0     0 numeric    121
+## 11        WorldGross       0    0.00    2  1.47     0     0 numeric    134
+## 12            Budget       0    0.00    2  1.47     0     0 numeric     60
+## 13     Profitability       1    0.74    2  1.47     0     0 numeric    134
+## 14    OpeningWeekend       1    0.74    3  2.21     0     0 numeric    130
 ```
 
 Let's take a look at the values present in `p_na` column, there is a pattern in the missing values, 4 variables have `1.47`% of NA values, and another 4 have around `11.7`%. In this case are not able to check the data source, but it is a good idea to check if those cases have a common issue.
@@ -290,21 +404,31 @@ If the see that the variable seems to be correlated when it's not empty (same as
 
 The function `equal_freq` splits the variable into the desiere bins:
 
-```{r, fig.height=3, fig.width=6, echo=F, out.width = "400px"}
-HollywoodMovies2011$TheatersOpenWeek_2=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
+<img src="figure/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="400px" />
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_2")
+```
+##   TheatersOpenWeek_2 frequency percentage cumulative_perc
+## 1        [   3,2408)        24         20              20
+## 2        [2408,2904)        24         20              40
+## 3        [2904,3114)        24         20              60
+## 4        [3114,3507)        24         20              80
+## 5        [3507,4375]        24         20             100
 ```
 
 As we can see, `TheatersOpenWeek_2` contains 5 buckets of 24 cases each where each one represents 20% of total cases. But the NA values are still there.
 
 Finally, we have to convert the `NA` into the string `empty`.
 
-```{r, fig.height=3, fig.width=6, echo=F, out.width = "400px", results=FALSE}
-HollywoodMovies2011$TheatersOpenWeek_2=as.character(HollywoodMovies2011$TheatersOpenWeek_2)
-HollywoodMovies2011$TheatersOpenWeek_2=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_2), "empty",  HollywoodMovies2011$TheatersOpenWeek_2)
+<img src="figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="400px" />
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_2")
+```
+##   TheatersOpenWeek_2 frequency percentage cumulative_perc
+## 1        [   3,2408)        24      17.65           17.65
+## 2        [2408,2904)        24      17.65           35.30
+## 3        [2904,3114)        24      17.65           52.95
+## 4        [3114,3507)        24      17.65           70.60
+## 5        [3507,4375]        24      17.65           88.25
+## 6              empty        16      11.76          100.00
 ```
 
 And that's it; the variable is ready to be used. 
@@ -312,7 +436,8 @@ And that's it; the variable is ready to be used.
 **Custom cuts**:
 If we want to use custom bucket sizes, not the ones provided by equal frequency, we can do the following:
 
-```{r}
+
+```r
 options(scipen=999) # disabling scientific notation in current R session
 
 # Creating custom buckets, with limits in 1000, 2300 and a max of 4100. Values above 4100 will be assigned as NA.
@@ -320,6 +445,13 @@ options(scipen=999) # disabling scientific notation in current R session
 HollywoodMovies2011$TheatersOpenWeek_3=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 1000, 2300, 4100), include.lowest = T, dig.lab = 10)
 
 freq(HollywoodMovies2011, "TheatersOpenWeek_3", plot = F)
+```
+
+```
+##   TheatersOpenWeek_3 frequency percentage cumulative_perc
+## 1        (2300,4100]        94      80.34           80.34
+## 2        (1000,2300]        14      11.97           92.31
+## 3           [0,1000]         9       7.69          100.00
 ```
 
 
@@ -335,7 +467,8 @@ Same as categorical, we can replace by a number such as the mean, the median.
 
 In this case, we'll replace by the average, and plot the before and after side by side.
 
-```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE}
+
+```r
 # Filling all NA values with the mean of the variable
 HollywoodMovies2011$TheatersOpenWeek_mean=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek), mean(HollywoodMovies2011$TheatersOpenWeek, na.rm = T), HollywoodMovies2011$TheatersOpenWeek)
 
@@ -348,8 +481,9 @@ p2=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek_mean)) + geom_histogram(co
 # Putting the plots side by side 
 library(gridExtra)
 grid.arrange(p1, p2, ncol=2)
-  
 ```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
 
 We can see a peak around the `2828` product of the transformation. This introduces a bias around this point. If we are predicting some event, it would be safer not to have some special event around this value. 
 
@@ -400,15 +534,25 @@ Yes, one model per each generated data frame. Sounds like <a href="https://en.wi
 
 It will impute data for `nhanes` data frame coming in <a href="https://cran.r-project.org/web/packages/mice/mice.pdf" target="blank">`mice` package</a>. Let's check it:
 
-```{r, message=FALSE}
+
+```r
 # install.packages("mice")
 library(mice)
 df_status(nhanes)
 ```
 
+```
+##   variable q_zeros p_zeros q_na p_na q_inf p_inf    type unique
+## 1      age       0       0    0    0     0     0 numeric      3
+## 2      bmi       0       0    9   36     0     0 numeric     16
+## 3      hyp       0       0    8   32     0     0 numeric      2
+## 4      chl       0       0   10   40     0     0 numeric     13
+```
+
 Three variables have missing values. Let's fill it:
 
-```{r}
+
+```r
 # Default imputation, it creates 5 complete data sets
 imp_data=mice(nhanes, m = 5, printFlag = FALSE)
 
@@ -424,9 +568,12 @@ Original data, `nhanes`, has 25 rows, `data_all` contains 125 rows, which is the
 
 Time to check the results:
 
-```{r, fig.height=3, fig.width=6}
+
+```r
 densityplot(imp_data)
 ```
+
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
 
 Each red line shows the distribution of each imputed data frame, and the blue one contains the original distribution. The idea behind it is, if they look similar, then the imputation followed the original distribution. 
 
@@ -448,7 +595,8 @@ Regardless the missing value imputation, random forest model have one of the mos
 
 In next example we will complete the `HollywoodMovies2011` data we were working before. It contains `NA` values in both variables, numerical and categorical.
 
-```{r, message=FALSE}
+
+```r
 library(missForest)
 
 # copying the data
@@ -466,7 +614,15 @@ df_holly=select(df_holly, -Movie)
 
 # Now the magic! Imputing the data frame. xmis parameter=the data with missing values
 imputation_res=missForest(xmis = df_holly)
+```
 
+```
+##   missForest iteration 1 in progress...done!
+##   missForest iteration 2 in progress...done!
+##   missForest iteration 3 in progress...done!
+```
+
+```r
 # Final imputed data frame
 df_imputed=imputation_res$ximp
 ```
@@ -474,7 +630,8 @@ df_imputed=imputation_res$ximp
 Now it's time to compare the distribution of some of the imputed variables. Hopefully, they will look similar at a visual analysis. 
 
 
-```{r, warning=FALSE, message=FALSE}
+
+```r
 # Creating another imputation based on na.rougfix from random forest pacakge
 df_rough=na.roughfix(df_holly)
 
@@ -493,6 +650,8 @@ df_all$imputation=factor(df_all$imputation, levels=unique(df_all$imputation))
 ggplot(df_all, aes(TheatersOpenWeek, colour=imputation)) + geom_density() + theme_minimal() + scale_colour_brewer(palette="Set2")
 ```
 
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+
 
 * The green curve shows the distribution after the imputation based on `missForest` package.
 * The orange shows the imputation method we talked at the beginning, it replaces all `NA` by the median, it is done by `na.roughfix` coming in `randomForest` package.
@@ -508,7 +667,8 @@ If we want to analyze from the analytical point of view, and don't play to be an
  
 <br>
 
-```{r}
+
+```r
 # an ugly hack to plot NA as a category...
 levels(df_all$TheatersOpenWeek_3)=c(levels(df_all$TheatersOpenWeek_3), "NA")
 df_all$TheatersOpenWeek_3[is.na(df_all$TheatersOpenWeek_3)]="NA"
@@ -516,9 +676,9 @@ df_all$TheatersOpenWeek_3[is.na(df_all$TheatersOpenWeek_3)]="NA"
 # now the plot!
 ggplot(df_all, aes(x = TheatersOpenWeek_3, fill = TheatersOpenWeek_3)) +
     geom_bar(na.rm=T) + facet_wrap(~imputation)  + geom_text(stat='count',aes(label=..count..),vjust=-1) + ylim(0, 125) + scale_fill_brewer(palette="Set2") + theme_minimal() + theme(axis.text.x=element_text(angle = 45, hjust = 0.7))
-
-
 ```
+
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
 
 <br>
 

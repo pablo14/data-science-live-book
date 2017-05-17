@@ -19,6 +19,7 @@ setwd("~/repos/data-science-live-book")
 
 
 create_files('data_types', 'data_preparation')
+create_files('data_types', 'data_preparation')
 
 if(F)
 {
