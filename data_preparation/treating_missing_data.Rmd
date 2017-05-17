@@ -55,17 +55,18 @@ The last example transforms **all** `NA` values into `0`. However in other scena
 
 **Example: Reeplace NA values by 0 only in certain columns**
 
-This is probably the most common scenario, to replace NA by some value -zero in this case-, only to some columns. We define a vector containing all the variables to replace, and then we call `mutate_each` function from `dplyr` package.
+This is probably the most common scenario, to replace NA by some value -zero in this case-, only to some columns. We define a vector containing all the variables to replace, and then we call `mutate_at` function from `dplyr` package.
 
 ```{r}
 # Replacing NA values with 0 only in selected columns.
 vars_to_reeplace=c("Brazil", "Costa_Rica")
 
-df_travel_3=df_travel %>% mutate_each(funs(replace(., is.na(.), 0)), one_of(vars_to_reeplace))
+df_travel_3=df_travel %>% mutate_at(.cols=vars_to_reeplace, .funs = funs(ifelse(is.na(.), 0, .)))
 
 df_travel_3
 ```
   
+Keep at hand the last function; it's very common to face the situation of applying a specified function to a subset of variables, returning the transformed and the non-transformed variables in the same data set.
 
 Let's go to a more complex example.
 

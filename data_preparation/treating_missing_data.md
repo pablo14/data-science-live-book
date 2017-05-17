@@ -66,14 +66,14 @@ The last example transforms **all** `NA` values into `0`. However in other scena
 
 **Example: Reeplace NA values by 0 only in certain columns**
 
-This is probably the most common scenario, to replace NA by some value -zero in this case-, only to some columns. We define a vector containing all the variables to replace, and then we call `mutate_each` function from `dplyr` package.
+This is probably the most common scenario, to replace NA by some value -zero in this case-, only to some columns. We define a vector containing all the variables to replace, and then we call `mutate_at` function from `dplyr` package.
 
 
 ```r
 # Replacing NA values with 0 only in selected columns.
 vars_to_reeplace=c("Brazil", "Costa_Rica")
 
-df_travel_3=df_travel %>% mutate_each(funs(replace(., is.na(.), 0)), one_of(vars_to_reeplace))
+df_travel_3=df_travel %>% mutate_at(.cols=vars_to_reeplace, .funs = funs(ifelse(is.na(.), 0, .)))
 
 df_travel_3
 ```
@@ -85,6 +85,7 @@ df_travel_3
 ## 3 Mamarul           34     40          0
 ```
   
+Keep at hand the last function; it's very common to face the situation of applying a specified function to a subset of variables, returning the transformed and the non-transformed variables in the same data set.
 
 Let's go to a more complex example.
 
@@ -404,7 +405,7 @@ If the see that the variable seems to be correlated when it's not empty (same as
 
 The function `equal_freq` splits the variable into the desiere bins:
 
-<img src="figure/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="400px" />
+<img src="figure/unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" width="400px" />
 
 ```
 ##   TheatersOpenWeek_2 frequency percentage cumulative_perc
@@ -419,7 +420,7 @@ As we can see, `TheatersOpenWeek_2` contains 5 buckets of 24 cases each where ea
 
 Finally, we have to convert the `NA` into the string `empty`.
 
-<img src="figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="400px" />
+<img src="figure/unnamed-chunk-24-1.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" width="400px" />
 
 ```
 ##   TheatersOpenWeek_2 frequency percentage cumulative_perc
@@ -483,7 +484,7 @@ library(gridExtra)
 grid.arrange(p1, p2, ncol=2)
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
 
 We can see a peak around the `2828` product of the transformation. This introduces a bias around this point. If we are predicting some event, it would be safer not to have some special event around this value. 
 
@@ -573,7 +574,7 @@ Time to check the results:
 densityplot(imp_data)
 ```
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
 
 Each red line shows the distribution of each imputed data frame, and the blue one contains the original distribution. The idea behind it is, if they look similar, then the imputation followed the original distribution. 
 
@@ -650,7 +651,7 @@ df_all$imputation=factor(df_all$imputation, levels=unique(df_all$imputation))
 ggplot(df_all, aes(TheatersOpenWeek, colour=imputation)) + geom_density() + theme_minimal() + scale_colour_brewer(palette="Set2")
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 
 
 * The green curve shows the distribution after the imputation based on `missForest` package.
@@ -678,7 +679,7 @@ ggplot(df_all, aes(x = TheatersOpenWeek_3, fill = TheatersOpenWeek_3)) +
     geom_bar(na.rm=T) + facet_wrap(~imputation)  + geom_text(stat='count',aes(label=..count..),vjust=-1) + ylim(0, 125) + scale_fill_brewer(palette="Set2") + theme_minimal() + theme(axis.text.x=element_text(angle = 45, hjust = 0.7))
 ```
 
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
 
 <br>
 
