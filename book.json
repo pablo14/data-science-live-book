@@ -1,5 +1,5 @@
 {
-	"plugins": ["ga", "advanced-emoji", "custom-favicon", "verifications", "meta-single", "numbered-headings"],
+	"plugins": ["ga", "advanced-emoji", "custom-favicon", "verifications", "meta-single"],
 	"pluginsConfig": {
 		"ga": {
 			"token": "UA-82047152-1"
@@ -9,8 +9,7 @@
 			"name": "google-site-verification",
 			"content": "z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM"
 		}
+	},
+	"title": "Data Science Live Book"
 
-	}
 }
-
-
