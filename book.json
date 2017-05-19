@@ -17,10 +17,7 @@
 	"title": "Data Science Live Book",
 	"author": "Pablo Casas",
 	"language": "en",
-	"description": "An intuitive and practical approach in data analysis, data preparation and machine learning, suitable for all ages!",
-	"pdf": {
-        "pageNumbers": true
-    }
+	"description": "An intuitive and practical approach in data analysis, data preparation and machine learning, suitable for all ages!"
 }
 
 
