@@ -10,7 +10,7 @@
 			"content": "z2I6t9-Gcg96ikIdmIoADdtkPuI-6ZFz9mMtKhkTZgM"
 		},
 		"theme-default": {
-             "showLevel": false
+             "showLevel": true
         }
 	},
 	"title": "Data Science Live Book",
