@@ -1,11 +1,11 @@
-Introduction
+
+
+Feature Engenieering
 ===
 
 ### What is this about?
 
-In practice, 90% of the time is spent in data preparation.
-
-
+**What are we going to review in this chapter?**
 
 
 ### Removing outliers 
@@ -77,7 +77,7 @@ Two people, `Ouro` and `Borus`, are users of a web application which has certain
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
-<img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="600px" />
+<img src="figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="400px" />
 
 
 User `Borus` starts using `feature_A` from day 3, and after 5 days she has more use -15 vs 12 clicks- on this feature than `Ouro` who started using it from day 0. 
@@ -131,18 +131,14 @@ filter(status,  type %in% c("factor", "character")) %>% select(variable)
 ```
 
 ```
-##               variable
-## 1               gender
-## 2           chest_pain
-## 3  fasting_blood_sugar
-## 4      resting_electro
-## 5              oldpeak
-## 6                 thal
-## 7         exter_angina
-## 8    has_heart_disease
-## 9            oldpeak_2
-## 10    max_heart_rate_2
-## 11    max_heart_rate_3
+##              variable
+## 1              gender
+## 2          chest_pain
+## 3 fasting_blood_sugar
+## 4     resting_electro
+## 5                thal
+## 6        exter_angina
+## 7   has_heart_disease
 ```
 
 ```r
@@ -156,29 +152,20 @@ colnames(heart_disease_2)
 ```
 
 ```
-##  [1] "age"                        "gender.female"             
-##  [3] "gender.male"                "chest_pain.1"              
-##  [5] "chest_pain.2"               "chest_pain.3"              
-##  [7] "chest_pain.4"               "resting_blood_pressure"    
-##  [9] "serum_cholestoral"          "fasting_blood_sugar.0"     
-## [11] "fasting_blood_sugar.1"      "resting_electro.0"         
-## [13] "resting_electro.1"          "resting_electro.2"         
-## [15] "max_heart_rate"             "exer_angina"               
-## [17] "oldpeak..0.0.8."            "oldpeak..0.8.6.2."         
-## [19] "slope"                      "num_vessels_flour"         
-## [21] "thal.3"                     "thal.6"                    
-## [23] "thal.7"                     "heart_disease_severity"    
-## [25] "exter_angina.0"             "exter_angina.1"            
-## [27] "has_heart_disease.no"       "has_heart_disease.yes"     
-## [29] "oldpeak_2..0.0.0.2."        "oldpeak_2..0.2.1.5."       
-## [31] "oldpeak_2..1.5.6.2."        "max_heart_rate_2...71.117."
-## [33] "max_heart_rate_2..117.131." "max_heart_rate_2..131.141."
-## [35] "max_heart_rate_2..141.147." "max_heart_rate_2..147.154."
-## [37] "max_heart_rate_2..154.160." "max_heart_rate_2..160.164."
-## [39] "max_heart_rate_2..164.171." "max_heart_rate_2..171.178."
-## [41] "max_heart_rate_2..178.202." "max_heart_rate_3...71.131."
-## [43] "max_heart_rate_3..131.147." "max_heart_rate_3..147.160."
-## [45] "max_heart_rate_3..160.171." "max_heart_rate_3..171.202."
+##  [1] "age"                    "gender.female"         
+##  [3] "gender.male"            "chest_pain.1"          
+##  [5] "chest_pain.2"           "chest_pain.3"          
+##  [7] "chest_pain.4"           "resting_blood_pressure"
+##  [9] "serum_cholestoral"      "fasting_blood_sugar.0" 
+## [11] "fasting_blood_sugar.1"  "resting_electro.0"     
+## [13] "resting_electro.1"      "resting_electro.2"     
+## [15] "max_heart_rate"         "exer_angina"           
+## [17] "oldpeak"                "slope"                 
+## [19] "num_vessels_flour"      "thal.3"                
+## [21] "thal.6"                 "thal.7"                
+## [23] "heart_disease_severity" "exter_angina.0"        
+## [25] "exter_angina.1"         "has_heart_disease.no"  
+## [27] "has_heart_disease.yes"
 ```
 
 Original data `heart_disease` has been converted into `heart_disease_2` with no categorical variables. There are only numerical and dummy. Note every new variable has a _dot_ following by the _value_.
@@ -279,7 +266,7 @@ plot_2=ggplot(df_pc, aes(x=transformation_2, y=visits, label=postal_code)) +  ge
 grid.arrange(plot_1, plot_2, ncol=2)
 ```
 
-<img src="figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="600px" />
+<img src="figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="400px" />
 
 For sure, no body does a predictive model with only 4 rows, but the intention of this example is to show how the relationship changes from non-linear (`transformation_1`) to another linear (`transformation_2`).  Making the things easier to the predictive model, as well as explaining the relationship.
 

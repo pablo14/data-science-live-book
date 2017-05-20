@@ -6,8 +6,8 @@ knitr::opts_knit$set(base.dir = "data_preparation")
 
 <img src="http://i.imgur.com/GijXkrp.png" width="800px"> 
 
-High Cardinality Variable in Predictive Modeling
-===
+# High Cardinality Variable in Predictive Modeling
+
 
 ### What is this about?
 
@@ -29,7 +29,7 @@ Other literature named this re-grouping as cardinality reduction or **encoding**
 
 <br>
 
-### But is it necessary to re-group the variable?
+## But is it necessary to re-group the variable?
 
 It depends on the case, but the quickest answer is yes. In this chapter we will see one case in which this data preparation increases overall accuracy (measuring by the Area Under Roc Curve).
 
@@ -62,7 +62,7 @@ freq(data_country, "has_flu")
 
 <br>
 
-### The case 🔎
+## The case 🔎
 
 The predictive model will try to map certain values with certain outcomes, in our case the target variable is binary.
 
@@ -97,7 +97,7 @@ These are the metrics returned by `categ_analysis`:
 
 <br>
 
-#### What conclusions can we draw from this?
+### What conclusions can we draw from this?
 
 Reading example based on 1st row, `France`:
 
@@ -117,7 +117,7 @@ Without considering the filter by country, we've got:
 ---
 
 
-### Analysis for Predictive Modeling 🔮
+## Analysis for Predictive Modeling 🔮
 
 When developing predictive models, we may be interested in those values which increases the likelihood of a certain event. In our case:
 
@@ -147,7 +147,7 @@ Next there are some ideas to treat this:
 
 ---
 
-#### Case 1: Reducing by re-categorizing less representative values
+### Case 1: Reducing by re-categorizing less representative values
 
 Keep all cases with at least certain percentage of representation in data. Let's say to rename the countries that have less than 1% of presence in data to `others`.
 
@@ -206,7 +206,7 @@ Despite the fact this is a prepared example, there are some data preparations te
 
 <br>
 
-#### Case 2: Reducing by automatic grouping
+### Case 2: Reducing by automatic grouping
 
 This procedure uses the `kmeans` clustering technique and the table returned by `categ_analysis` in order to create groups -clusters- which contain categories which exhibit similar behavior in terms of:
 
@@ -279,7 +279,7 @@ Now each group seems to have a good sample size, and values `mean_target` shows 
 <br>
 
  
-### Handling new categories when the predictive model is on production
+## Handling new categories when the predictive model is on production
 
 Let's imagine a new country appears, `new_country_hello_world`, predictive models will fail since they were trained with fixed values. One technique is to assign a group which has `mean_target=0`.
 
@@ -295,7 +295,7 @@ _A new category appears? Send to the least meaningful group. After a while, re-a
 
 ---
 
-### Do predictive models handle high cardinality? Part 1
+## Do predictive models handle high cardinality? Part 1
 
 We're going throught this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs.
 
@@ -363,7 +363,7 @@ In _further reading_ there is a benchmark of different treatments for categorica
 
 <br>
 
-### Don't predictive models handle high cardinality? Part 2
+## Don't predictive models handle high cardinality? Part 2
 
 Let's review how some models deal with this:
 
@@ -389,7 +389,7 @@ This opens a new chapter which is going to be covered in this book 😉: **Featu
 
 ---
 
-### Numerical or multi-nominal target variable 📏
+## Numerical or multi-nominal target variable 📏
 
 The book covered only the target as a binary variable, it is planned in the future to cover numerical and multi-value target.
 
@@ -399,7 +399,7 @@ The same goes for multi-nominal output variable, there will be some categories m
 
 <br>
 
-### What we've got as an "extra-🎁"  from the grouping?
+## What we've got as an "extra-🎁"  from the grouping?
 
 Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativeness and prediction power-.
 
@@ -407,7 +407,7 @@ If `Argentine` and `Chile` are in `group_1`, then they are the same, and this is
 
 <br>
 
-### Representativeness or sample size
+## Representativeness or sample size
 
 This concept is on the analysis of any categorical variable, but it's a very common topic in data science and statistics: <a href="https://en.wikipedia.org/wiki/Sample_size_determination" target="blank">**sample size**</a>. How much data is it needed to see the pattern _well developed?_.
 
@@ -419,7 +419,7 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 <br>
 
-### Final thoughts
+## Final thoughts
 
 * We saw two cases to reduce cardinality, the first one doesn't care about the target variable, which can be dangerous in a predictive model, while the second one does. It creates a new variable based on the affinity -and representativity- of each input category to the target variable.
 
@@ -432,7 +432,7 @@ Further in this book we'll cover this topic from other points of view linking ba
 <br> 
 
 
-#### Further reading
+### Fur#her reading
 
 * Following link contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
 

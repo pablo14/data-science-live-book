@@ -1,7 +1,7 @@
-High Cardinality Variable in Descriptive Stats
-===
+# High Cardinality Variable in Descriptive Stats
+
   
-### What is this about?
+## What is this about?
   
 A **high cardinality** variable is one in which it can take _many_ different values. For example country. 
 
@@ -13,7 +13,7 @@ This chapter will cover cardinality reduction based on Pareto rule, using the `f
  
 <br> 
 
-### High Cardinality in Descriptive Statistics
+## High Cardinality in Descriptive Statistics
 
 The following example contains a survey of 910 cases, with 3 columns: `person`, `country` and `has_flu`, which indicates having such illness in the last month.
 
@@ -139,7 +139,7 @@ freq(data_country, 'country_2')
 
 <br> 
 
-### Final comments
+## Final comments
 
 Low representative categories are sometimes errors in data, such as having: `Egypt`, `Eggypt.`, and may give some evidence in bad habbits collecting data and/or possible errors when collecting from the source.
 

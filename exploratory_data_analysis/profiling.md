@@ -1,8 +1,7 @@
-Profiling Data
-====
+# Profiling Data
 
 
-### What is this about?
+## What is this about?
 
 Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
 
@@ -16,7 +15,7 @@ library(dplyr)
 data(heart_disease)
 ```
 
-### Checking NA, zeros, data type and unique values
+## Checking NA, zeros, data type and unique values
 
 
 ```r
@@ -66,7 +65,7 @@ my_data_status=df_status(heart_disease)
 * `type`: factor or numeric
 * `unique`: quantity of unique values
 
-#### Why are these metrics important?
+### Why are these metrics important?
 
 * **Zeros**: Variables with **lots of zeros** may be not useful for modeling, and in some cases it may dramatically bias the model.
 * **NA**: Several models automatically exclude rows with NA (**random forest**, for example). As a result, the final model can be biased due to several missing rows because of only one variable. For example, if the data contains only one out of 100 variables with 90% of NAs, the model will be training with only 10% of original rows.
@@ -76,7 +75,7 @@ my_data_status=df_status(heart_disease)
 
 <br>
 
-#### Filtering unwanted cases
+### Filtering unwanted cases
 
 The function `df_status` takes a data frame and returns a the status table to quickly remove unwanted cases.
 
@@ -129,7 +128,7 @@ arrange(my_data_status, -p_zeros) %>% select(variable, q_zeros, p_zeros)
 <br>
 
 
-### Profiling categorical variable
+## Profiling categorical variable
 
 _Make sure you have the latest funModeling version (>= 1.3)._
 
@@ -140,6 +139,11 @@ If you want the distribution for two variables:
 
 ```r
 freq(data=heart_disease, str_input = c('thal','chest_pain'))
+```
+
+```
+## Warning in if (is.na(str_input)) {: the condition has length > 1 and only
+## the first element will be used
 ```
 
 <img src="figure/profiling_categorical_variable-1.png" title="plot of chunk profiling_categorical_variable" alt="plot of chunk profiling_categorical_variable" width="400px" />
@@ -168,6 +172,15 @@ freq(data=heart_disease, str_input = c('thal','chest_pain'))
 As well as in the remaining `funModeling` functions, if `str_input` is missing it will run for all factor or character variables present in given data frame:
 
 
+```r
+freq(data=heart_disease)
+```
+<br>
+
+Also, as the other plot functions in the package, if there is the need of exporting plots, add the `path_out` parameter (it will create the folder if it's not created yet)
 
 
+```r
+freq(data=heart_disease, path_out='my_folder')
+```
 

@@ -1,25 +1,25 @@
-# Methodological Aspects on Model Validation
-## Out-of-Time Validation
+
+
+# Methodological Aspects on Model Validation: Out-of-Time Validation
 
 <img src="calendar.png" width="100px" alt="Error in predictive models">
 
-### What's this about?
+## What's this about?
 
-Once you've built a predictive model, how sure you are it captured general patterns and not just the data it has seen (overfitting)?.
+Once you've built a predictive model, how sure we are it captured general patterns and not just the data it has seen (overfitting)?.
 
 Will it perform well when it is on production / running live? What is the expected error?
 
 
-
 <br>
 
-#### What sort of data?
+## What sort of data?
 
 If it's generated over time and -let's say- every day you have new cases like _"page visits on a website"_, or _"new patients arriving at a medical center"_, one strong validation is the **Out-Of-Time** approach.
 
 <br>
 
-### Out-Of-Time Validation Example
+## Out-Of-Time Validation Example
 
 **How to?**
 
@@ -41,7 +41,7 @@ _<a href="http://datascienceheroes.com/img/blog/model_validation_workflow.png" t
 
 <br>
 
-#### Using Gain and Lift Analysis
+## Using Gain and Lift Analysis
 
 <img src="gain_lift.png" width="300px" alt="Gain and lift analysis">
 
@@ -49,7 +49,7 @@ This analysis explained in <a href="http://livebook.datascienceheroes.com/model_
 
 Keeping only with those cases that were `negative` on `Oct-31`, we get the `score` returned by the model on that date, and the `target` variable is the value that those cases had on `Jan-1`.
 
-### How about a numerical target variable?
+## How about a numerical target variable?
 
 Now the common sense and business need is more present. A numerical outcome can take any value, it can increase or decrease through time, so we may have to consider these two scenarios to help us thinking what we consider success.
 
@@ -59,7 +59,7 @@ Now the common sense and business need is more present. A numerical outcome can 
 
 <br>
 
-#### Case A: Convert the numerical target into categorical?
+### Case A: Convert the numerical target into categorical?
 
 For an app user, she/he can be more active through time measured in page views, so to do an out of time validation we would predict if the user visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc.
 
@@ -72,7 +72,7 @@ Examples of this case can be:
 
 <br>
 
-#### Case B: Leave it numerical (linear regression)?
+### Case B: Leave it numerical (linear regression)?
 
 Examples:
 
@@ -99,7 +99,7 @@ If the model is good, this error should be **white noise** [1]. It follows a nor
 <br>
 
 
-#### Final thoughts
+## Final thoughts
 
 * **Out-of-Time Validation** is a powerful validation tool to simulate the running of the model on production with data that may **not need to depend on sampling**.
 

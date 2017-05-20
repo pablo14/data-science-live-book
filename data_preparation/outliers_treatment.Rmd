@@ -4,10 +4,10 @@ knitr::opts_chunk$set(out.width="400px", dpi=120)
 knitr::opts_knit$set(base.dir = "data_preparation")
 ``` 
 
-Treatment of outliers
-====
+# Treatment of outliers
 
-### What is this about?
+
+## What is this about?
 
 `prep_outliers` function tries to automatize as much as it can be outliers preparation. It focus on the values that heavily influence the mean.
 It sets an `NA` or stops at a certain value all outliers for the desired variables.
@@ -50,13 +50,13 @@ This function covers two typical scenarios (parameter `type`):
 
 <br>
 
-### Case 1: `type='set_na'`
+## Case 1: `type='set_na'`
 
 In this case all outliers are converted into `NA`, thus applying most of the descriptive functions (max, min, mean) will return a **less-biased mean** value - with the proper `na.rm=TRUE` parameter.
 
 <br>
 
-### Case 2: `type='stop'`
+## Case 2: `type='stop'`
 
 The previous case will cause that all rows with `NA` values will be lost when a machine learning model is trained. To avoid this, but keep the outliers controlled, all values flagged as outlier will be converted to the threshold value.
 
@@ -68,7 +68,7 @@ The previous case will cause that all rows with `NA` values will be lost when a 
 
 <br>
 
-### Examples
+## Examples
 
 ```{r outliers_treatment1,  fig.height=3, fig.width=4}
 ########################################
@@ -86,7 +86,7 @@ summary(df)
 ```
 <br>
 
-### Case 1: `type='set_na'`
+## Case 1: `type='set_na'`
 
 ```{r outliers_treatment2,  fig.height=3, fig.width=4}
 ########################################################
@@ -116,7 +116,7 @@ summary(df_treated3)
 ```
 <br>
 
-### Case 2: `type='stop'`
+## Case 2: `type='stop'`
 
 ```{r outliers_treatment3,  fig.height=3, fig.width=4}
 ########################################################
@@ -136,7 +136,7 @@ summary(df_treated4$var1)
 
 <br>
 
-### Plots
+## Plots
 
 Note that when `type='set_na'`, the last points disappear
 ```{r outliers_treatment4,  fig.height=3, fig.width=4}

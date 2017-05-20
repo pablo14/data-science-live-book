@@ -270,9 +270,19 @@ data_stunting=read.csv(file = "https://raw.githubusercontent.com/pablo14/data-sc
 
 ## ranaming the metric
 data_stunting=rename(data_stunting, share_stunted_child=WHO....Share.of.stunted.children.under.5.)
+```
 
+```
+## Error in rename(data_stunting, share_stunted_child = WHO....Share.of.stunted.children.under.5.): unused argument (share_stunted_child = WHO....Share.of.stunted.children.under.5.)
+```
+
+```r
 ## doing the grouping mentioned before
 data_stunting_grouped = group_by(data_stunting, Entity) %>% filter(Year == max(Year)) %>% summarise(share_stunted_child=max(share_stunted_child))
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'share_stunted_child' not found
 ```
 
 The most standard binning criteria are:
@@ -297,27 +307,37 @@ library(ggplot2)
 
 ## Creating equal range variable, add `dig.lab=9` parameter to deactivate scientific notation, same goes to `cut` function.
 data_stunting_grouped$share_stunted_child_eq_range=cut_interval(data_stunting_grouped$share_stunted_child, n = 4)
+```
 
+```
+## Error in cut(x, breaks(x, "width", n, length), include.lowest = TRUE, : object 'data_stunting_grouped' not found
+```
+
+```r
 ## describe function from Hmiscpackage is extremely useful to profile data
 describe(data_stunting_grouped$share_stunted_child_eq_range)
 ```
 
 ```
-## data_stunting_grouped$share_stunted_child_eq_range 
-##       n missing  unique 
-##     154       0       4 
-## 
-## [1.3,15.8] (62, 40%), (15.8,30.3] (45, 29%) 
-## (30.3,44.8] (37, 24%), (44.8,59.3] (10, 6%)
+## Error in describe(data_stunting_grouped$share_stunted_child_eq_range): object 'data_stunting_grouped' not found
 ```
 
 ```r
 # Plotting the variable
 p2=ggplot(data_stunting_grouped, aes(share_stunted_child_eq_range)) + geom_bar(fill="#009E73") + theme_bw()
+```
+
+```
+## Error in ggplot(data_stunting_grouped, aes(share_stunted_child_eq_range)): object 'data_stunting_grouped' not found
+```
+
+```r
 p2
 ```
 
-<img src="figure/equal_range_discretization-1.png" title="plot of chunk equal_range_discretization" alt="plot of chunk equal_range_discretization" width="500px" />
+```
+## Error in eval(expr, envir, enclos): object 'p2' not found
+```
 
 The `describe` output tell us that there are 4 categories in the variable and between parenthesis/square bracket the total number of cases per category in both absolute and relative values. For example, the category `(15.8,30.3]` contains all the cases that have `share_stunted_child` from `15.8` (not inclusive) to `30.3` (inclusive). 
 It appears `45` times and represents `29%` of total cases.
@@ -333,26 +353,36 @@ It tries to put the same number of observations per group. Its criteria are base
 
 ```r
 data_stunting_grouped$share_stunted_child_eq_freq=equal_freq(var = data_stunting_grouped$share_stunted_child, n_bins = 4)
+```
 
+```
+## Error in unique(c(x[!is.na(x)], if (!missing(cuts)) cuts)): object 'data_stunting_grouped' not found
+```
+
+```r
 ## profiling varialble 
 describe(data_stunting_grouped$share_stunted_child_eq_freq)
 ```
 
 ```
-## data_stunting_grouped$share_stunted_child_eq_freq 
-##       n missing  unique 
-##     154       0       4 
-## 
-## [ 1.3, 9.5) (40, 26%), [ 9.5,20.8) (37, 24%) 
-## [20.8,32.9) (39, 25%), [32.9,59.3] (38, 25%)
+## Error in describe(data_stunting_grouped$share_stunted_child_eq_freq): object 'data_stunting_grouped' not found
 ```
 
 ```r
 p3=ggplot(data_stunting_grouped, aes(share_stunted_child_eq_freq)) + geom_bar(fill="#CC79A7") + theme_bw()
+```
+
+```
+## Error in ggplot(data_stunting_grouped, aes(share_stunted_child_eq_freq)): object 'data_stunting_grouped' not found
+```
+
+```r
 p3
 ```
 
-<img src="figure/equal_frequency_discretization-1.png" title="plot of chunk equal_frequency_discretization" alt="plot of chunk equal_frequency_discretization" width="500px" />
+```
+## Error in eval(expr, envir, enclos): object 'p3' not found
+```
 
 In this case, we selected 4 bins so that each bin will contain approximately 25% of share.
 
@@ -366,25 +396,35 @@ If we already have the points for which we want the segments, let's: 0-2, 1 and 
 ```r
 # parameter dig.lab "disable" scientific notation 
 data_stunting_grouped$share_stunted_child_custom=cut(data_stunting_grouped$share_stunted_child, breaks = c(0, 2, 9.4, 29, 100))
+```
 
+```
+## Error in cut(data_stunting_grouped$share_stunted_child, breaks = c(0, : object 'data_stunting_grouped' not found
+```
+
+```r
 describe(data_stunting_grouped$share_stunted_child_custom)
 ```
 
 ```
-## data_stunting_grouped$share_stunted_child_custom 
-##       n missing  unique 
-##     154       0       4 
-## 
-## (0,2] (5, 3%), (2,9.4] (35, 23%), (9.4,29] (65, 42%) 
-## (29,100] (49, 32%)
+## Error in describe(data_stunting_grouped$share_stunted_child_custom): object 'data_stunting_grouped' not found
 ```
 
 ```r
 p4=ggplot(data_stunting_grouped, aes(share_stunted_child_custom)) + geom_bar(fill="#0072B2") + theme_bw()
+```
+
+```
+## Error in ggplot(data_stunting_grouped, aes(share_stunted_child_custom)): object 'data_stunting_grouped' not found
+```
+
+```r
 p4
 ```
 
-<img src="figure/discretization_custom_bins-1.png" title="plot of chunk discretization_custom_bins" alt="plot of chunk discretization_custom_bins" width="500px" />
+```
+## Error in eval(expr, envir, enclos): object 'p4' not found
+```
 
 It's a good practice to assign the minimum and maximum using a function. In this case the variable is a percentage, so we know beforehand its scale from 0 to 100, but _what would it happen if we don't know the range?_
 
@@ -395,21 +435,35 @@ The function will return `NA` for those values below or obove the cut points. On
 ```r
 # obtaining the min and max 
 min_value=min(data_stunting_grouped$share_stunted_child)
-max_value=max(data_stunting_grouped$share_stunted_child)
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'data_stunting_grouped' not found
+```
+
+```r
+max_value=max(data_stunting_grouped$share_stunted_child)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'data_stunting_grouped' not found
+```
+
+```r
 # `include.lowest=T` is necesary to include the min value, othwerwise it will be assigned as NA.
 data_stunting_grouped$share_stunted_child_custom_2=cut(data_stunting_grouped$share_stunted_child, breaks = c(min_value, 2, 9.4, 29, max_value), include.lowest = T)
+```
 
+```
+## Error in cut(data_stunting_grouped$share_stunted_child, breaks = c(min_value, : object 'data_stunting_grouped' not found
+```
+
+```r
 describe(data_stunting_grouped$share_stunted_child_custom_2)
 ```
 
 ```
-## data_stunting_grouped$share_stunted_child_custom_2 
-##       n missing  unique 
-##     154       0       4 
-## 
-## [1.3,2] (5, 3%), (2,9.4] (35, 23%), (9.4,29] (65, 42%) 
-## (29,59.3] (49, 32%)
+## Error in describe(data_stunting_grouped$share_stunted_child_custom_2): object 'data_stunting_grouped' not found
 ```
 
 <br>
@@ -427,21 +481,28 @@ Here an example, imagine that in the proposed example we add 4 more cases with v
 ```r
 ## Simulating that 4 new values arrive
 updated_data=c(data_stunting_grouped$share_stunted_child, 88, 2, 7, 3)
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'data_stunting_grouped' not found
+```
+
+```r
 ## discretization by equal frequency
 updated_data_eq_freq=equal_freq(updated_data,4)
+```
 
+```
+## Error in unique(c(x[!is.na(x)], if (!missing(cuts)) cuts)): object 'updated_data' not found
+```
+
+```r
 ## results in...
 describe(updated_data_eq_freq)
 ```
 
 ```
-## updated_data_eq_freq 
-##       n missing  unique 
-##     158       0       4 
-## 
-## [ 1.3, 9.3) (40, 25%), [ 9.3,20.6) (39, 25%) 
-## [20.6,32.9) (40, 25%), [32.9,88.0] (39, 25%)
+## Error in describe(updated_data_eq_freq): object 'updated_data_eq_freq' not found
 ```
 
 Now we compare with the bins we created before:
@@ -452,12 +513,7 @@ describe(data_stunting_grouped$share_stunted_child_eq_freq)
 ```
 
 ```
-## data_stunting_grouped$share_stunted_child_eq_freq 
-##       n missing  unique 
-##     154       0       4 
-## 
-## [ 1.3, 9.5) (40, 26%), [ 9.5,20.8) (37, 24%) 
-## [20.8,32.9) (39, 25%), [32.9,59.3] (38, 25%)
+## Error in describe(data_stunting_grouped$share_stunted_child_eq_freq): object 'data_stunting_grouped' not found
 ```
 
 
@@ -493,7 +549,9 @@ Let's go back to the discretization variable section, and plot all the transform
 grid.arrange(p2, p3, p4, ncol=3)
 ```
 
-<img src="figure/discretization_methods-1.png" title="plot of chunk discretization_methods" alt="plot of chunk discretization_methods" width="600px" />
+```
+## Error in arrangeGrob(...): object 'p2' not found
+```
 
 The input data is always the same. However, all of these methods **exhibits different perspectives of the same _thing_**.
 

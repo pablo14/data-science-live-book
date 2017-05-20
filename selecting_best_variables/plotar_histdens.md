@@ -1,10 +1,10 @@
 
 
 
-Profiling Target with Density Histograms
-===
+# Profiling Target with Density Histograms
 
-### What is this about?
+
+## What is this about?
 
 Density histograms are quite standard in any book/resource when plotting distributions. To use them in selecting variables gives a quick view on how well certain variable separates the class.
 
@@ -33,7 +33,7 @@ This *general shape* is calculated based on a technique called **Kernel Smoother
 <br>
 
 
-#### Relationship with statistical test
+### Relationship with statistical test
 
 Something similar is what a **statistical test** sees: they measured **how different** the curves are reflecting it in some statistics like the p-value using in the frequentist approach. It gives to the analyst reliable information to determine if the curves have -for example- the same mean._
 

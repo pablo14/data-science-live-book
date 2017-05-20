@@ -1,7 +1,9 @@
-Correlation and Relationship
-=====
 
-### What is this about?
+
+# Correlation and Relationship
+
+
+## What is this about?
 
 This chapter contains both methodological and practical aspects of measuring correlation in variables. We will see that _correlation_ word can be translated into "**functional relationship**".
 
@@ -14,8 +16,6 @@ Understanding these concepts in low dimension (two variables) and small data (a 
 From the practical point of view, you'll be able to replicate the analysis with your own data, profiling and exposing their relationships in fancy plots.
 
 <br>
-
-
 
 
 Let's starting loading all needed libraries.
@@ -33,7 +33,7 @@ options(scipen=999) # disable cientific notation
 ```
 <br>
 
-### Linear correlation
+## Linear correlation
 
 Perhaps the most standard correlation measure for numeric variables is the `R statistic` (or Pearson coefficient) which goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
 
@@ -49,11 +49,12 @@ correlation_table(data=heart_disease, str_target="has_heart_disease")
 ## 1      has_heart_disease              1.00
 ## 2 heart_disease_severity              0.83
 ## 3      num_vessels_flour              0.46
-## 4                  slope              0.34
-## 5                    age              0.23
-## 6 resting_blood_pressure              0.15
-## 7      serum_cholestoral              0.08
-## 8         max_heart_rate             -0.42
+## 4                oldpeak              0.42
+## 5                  slope              0.34
+## 6                    age              0.23
+## 7 resting_blood_pressure              0.15
+## 8      serum_cholestoral              0.08
+## 9         max_heart_rate             -0.42
 ```
 Variable `heart_disease_severity` is the most important -numerical- variable, the higher its value the higher the chances of having a heart disease (positive correlation). Just the opposite to `max_heart_rate`, which has a negative correlation.
 
@@ -63,7 +64,7 @@ R statistic is highly influenced by **outliers** and **non-linear** relationship
 
 <br>
 
-#### Correlation on Anscombe's Quartet
+### Correlation on Anscombe's Quartet
 
 Take a look at the **Anscombe's quartet**, quoting <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="blank">Wikipedia</a>:
 
@@ -109,7 +110,7 @@ We'll back on this data later. It can be improved! First, we'll introduce some c
 
 <br>
 
-### Correlation based on Information Theory
+## Correlation based on Information Theory
 
 This relationships can be measure better with <a href="https://en.wikipedia.org/wiki/Information_theory">Information Theory</a> conepts. One of the many algortihms to measure correlation based on this is: **MINE**, acronym for: Maximal Information-based nonparametric exploration.
 
@@ -117,7 +118,7 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 
 <br>
 
-#### An example in R: A perfect relationship
+### An example in R: A perfect relationship
 
 Let's plot a non-linear relationship, directly based on a function (negative exponential), and print the MIC value.
 
@@ -156,7 +157,7 @@ sprintf("MIC: %s", res_mine$MIC[1,2])
 
 <br>
 
-#### Results analysis 
+### Results analysis 
 
 The `MIC=1` indicates there is a perfect correlation between the two variables. If we were doing **feature engineering** this variable should be included.
 
@@ -170,7 +171,7 @@ But let's continue with other examples...
 
 <br>
 
-### Adding noise
+## Adding noise
 
 Noise is an undesired signal adding to the original one. In machine learning noise helps the model to get confused. Concretely: two identical input cases -for example customers- have different outcomes -one buy and the other doesn't-.
 
@@ -195,9 +196,9 @@ res_R2
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 0.3899148 0.3887512
-## y         0.3899148 1.0000000 0.9901031
-## y_noise_1 0.3887512 0.9901031 1.0000000
+## x         1.0000000 0.3899148 0.3830623
+## y         0.3899148 1.0000000 0.9900881
+## y_noise_1 0.3830623 0.9900881 1.0000000
 ```
 
 ```r
@@ -210,9 +211,9 @@ res_mine_2$MIC
 
 ```
 ##                   x         y y_noise_1
-## x         1.0000000 1.0000000 0.7495222
-## y         1.0000000 1.0000000 0.7322629
-## y_noise_1 0.7495222 0.7322629 1.0000000
+## x         1.0000000 1.0000000 0.7183552
+## y         1.0000000 1.0000000 0.7256705
+## y_noise_1 0.7183552 0.7256705 1.0000000
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
@@ -228,7 +229,7 @@ It's quite useful to use the MIC measure to get a sense of the information prese
 
 <br>
 
-### Measuring non-linearity (MIC-R2)
+## Measuring non-linearity (MIC-R2)
 
 `mine` function returns several metrics, we checked only **MIC**, but due to the nature of the algorithm (you can check the original paper at ref. [1]), it computes more interesting indicators. Check them all by inspecting `res_mine_2` object.
 
@@ -283,7 +284,7 @@ This point is important since the **MIC behaves like R2 does in linear relations
 
 <br>
 
-### Measuring information on Anscombe Quartet
+## Measuring information on Anscombe Quartet
 
 Remember the example we review at the beginning? Every pair of Anscombe Quartet returns a **R2 of 0.86**. But based on its plots it was clearly that not every pair exhibits neither a good correlation nor a similar distribution of `x` and `y`.
 
@@ -336,7 +337,7 @@ Something strange for pair 4, a negative number. This is because MIC is lower th
 
 <br>
 
-### Measuring non-monotonicity: MAS measure
+## Measuring non-monotonicity: MAS measure
 
 MINE can also help us to profile time series regarding its non-monotonicity with **MAS** (maximum asymmetry score).
 
@@ -370,7 +371,7 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 
 <br>
 
-#### A more real example: Time Series
+### A more real example: Time Series
 
 Consider the following case which contains three-time series: `y1`, `y2` and `y3`. They can be profiled concerning its non-monotonicity or overall growth trend.
 
@@ -420,7 +421,7 @@ We need to look at `time` column, so we've got the MAS value of each series rega
 
 <br>
 
-### Correlation between time series
+## Correlation between time series
 
 MIC metric can also measure the **correlation in time series**, it is not a general purpose tool but can be helpful to compare different series quickly.
 
@@ -454,7 +455,7 @@ Now we need to look at `y1` column. According to MIC measure, we can confirm the
 
 <br>
 
-#### Going further: Dynamic Time Wrapping
+### Going further: Dynamic Time Wrapping
 
 MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping" target="blank">dynamic time wrapping</a> technique (**DTW**).
 
@@ -472,7 +473,7 @@ Finding correlations between time series is another way of performing **time ser
 
 <br>
 
-### Correlation on categorical variables
+## Correlation on categorical variables
 
 MINE -and many other algorithms- only work with numerical data. We need to do a **data preparation** trick, converting every categorical variable into flag (or dummy variable).
 
@@ -511,25 +512,19 @@ mine_res_hd$MIC[1:5,1:5]
 ```
 
 ```
-##                   max_heart_rate oldpeak..0.0.8. oldpeak..0.8.6.2.
-## max_heart_rate         0.9999825    0.1818300836      0.1818300836
-## oldpeak..0.0.8.        0.1818301    0.8991644437      0.8991644437
-## oldpeak..0.8.6.2.      0.1818301    0.8991644437      0.8991644437
-## thal.3                 0.2252380    0.0158086416      0.0158086416
-## thal.6                 0.1173094    0.0006477959      0.0006477959
-##                       thal.3       thal.6
-## max_heart_rate    0.22523805 0.1173093513
-## oldpeak..0.0.8.   0.01580864 0.0006477959
-## oldpeak..0.8.6.2. 0.01580864 0.0006477959
-## thal.3            0.98903179 0.0648144377
-## thal.6            0.06481444 0.3802814194
+##                max_heart_rate   oldpeak     thal.3     thal.6     thal.7
+## max_heart_rate      0.9999920 0.2440874 0.24448436 0.11965365 0.18392352
+## oldpeak             0.2440874 0.9999283 0.17511070 0.11086221 0.15706631
+## thal.3              0.2444844 0.1751107 0.99233512 0.07257079 0.70987597
+## thal.6              0.1196536 0.1108622 0.07257079 0.32665312 0.04419397
+## thal.7              0.1839235 0.1570663 0.70987597 0.04419397 0.96395831
 ```
 
 Where column `thal.3` takes a value of 1 when `thal=3`.
 
 <br>
 
-#### Printing some fancy plots! 
+### Printing some fancy plots! 
 
 We'll use `corrplot` package in R which can plot a `cor` object (classical correlation matrix), or any other matrix. We will plot **MIC** matrix in this case, but any other can be used as well, for example, **MAS** or another metric that returns an squared matrix of correlations.
 
@@ -571,7 +566,7 @@ Just change the first parameter -`mine_res_hd$MIC`- to the matrix you want and r
 
 <br>
 
-#### A comment about this kind of plots
+### A comment about this kind of plots
 
 They are useful only when the number of variables are not big. Or if you perform a variable selection first, keeping in mind that every variable should be numerical. 
 
@@ -579,7 +574,7 @@ If there is some categorical variable in the selection you can convert it into n
 
 <br>
 
-#### How about some insights from the plots?
+### How about some insights from the plots?
 
 Since the variable to predict is `has_heart_disease`, it appears something interesting, to have a heart disease is more correlated to `thal=3` than to value `thal=6`.
 
@@ -608,7 +603,7 @@ Combining raw tables plus different plots gives us a more real and complementary
 
 <br>
 
-### Feature engineering based on information theory
+## Feature engineering based on information theory
 
 There is a complete chapter treating <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank">**Feature Engineering**</a>. So in this section, we cover a quick overview. 
 
@@ -637,7 +632,7 @@ Although it is recommended to run correlations among all variables in order to e
 
 <br>
 
-#### Practice advice for using `mine` 
+### Practice advice for using `mine` 
 
 If it lasts too much time to finish, consider taking a sample.
 If the amount of data is too little, consider setting a higher number in `alpha` parameter, 0.6 is its default.
@@ -646,7 +641,7 @@ Also, it can be run in parallel, just setting `n.cores=3` in case you have 4 cor
 <br>
 
 
-### But just MINE covers this?
+## But just MINE covers this?
 
 No. We used only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. 
 In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.
@@ -657,7 +652,7 @@ The concept transcends the tool.
 
 <br>
 
-#### Another correlation example (mutual information)
+### Another correlation example (mutual information)
 
 This time we'll use `infotheo` package, we need first to do a **data preparation** step, applying a `discretize` function (or binning) function present in the package. It converts every numerical variable into categorical based on equal frequency criteria. 
 
@@ -685,7 +680,7 @@ Correlation score based on mutual information ranks relationships pretty similar
 
 <br>
 
-### Information Measures: A general perspective
+## Information Measures: A general perspective
 
 Further than correlation, MIC or other information metric measure if there is a _functional relationship_. 
 
@@ -706,7 +701,7 @@ More to come on **Information Theory**. By now you check these didactical lectur
 
 <br>
 
-### Conclussions
+## Conclussions
 
 Anscombe's quartet taught us the good practice of getting the _raw statistic_ together with a plot.
 
@@ -721,7 +716,7 @@ Next recommended chapter: <a href="http://livebook.datascienceheroes.com/selecti
 
 <br>
 
-#### References
+### References
 
 * [1] Original MINE paper: <a href="http://www.uvm.edu/~cdanfort/csc-reading-group/reshef-correlation-science-2011.pdf" target="blank">Detecting Novel Associations in Large Data Sets</a>.
 * [2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a>

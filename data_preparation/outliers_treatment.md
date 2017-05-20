@@ -1,20 +1,31 @@
-Treatment of Outliers
-====
 
-### What is this about?
+
+# Treatment of outliers
+
+
+## What is this about?
 
 `prep_outliers` function tries to automatize as much as it can be outliers preparation. It focus on the values that heavily influence the mean.
 It sets an `NA` or stops at a certain value all outliers for the desired variables.
+
 <br>
 
+**Model building**: Some models such as random forest and gradient boosting machines tend to deal better with outliers, but some noise will affect results anyway. 
 
+**Communicating results:** If we need to report the variables used in the model, we'll end up removing outliers to not see an histogram with only one bar, and/or show not a biased mean. 
 
+It's better to show a non-biased number than justifying the model _will handle_ extreme values.
+
+**Type of outliers:** 
+
+* Numerical: For example the ones which bias the mean.
+* Categorical: Having a variable in which the dispersion of categories is quite high (high cardinallity). For example: postal code.
 
 
 
 ```r
 ## Loading funModeling !
-suppressMessages(library(funModeling))
+library(funModeling)
 data(heart_disease)
 ```
 
@@ -34,13 +45,15 @@ This function covers two typical scenarios (parameter `type`):
 * Case 1: Descriptive statistics / data profiling
 * Case 2: Data for the predictive model
 
+<br>
 
-### Case 1: `type='set_na'`
+## Case 1: `type='set_na'`
 
 In this case all outliers are converted into `NA`, thus applying most of the descriptive functions (max, min, mean) will return a **less-biased mean** value - with the proper `na.rm=TRUE` parameter.
 
+<br>
 
-### Case 2: `type='stop'`
+## Case 2: `type='stop'`
 
 The previous case will cause that all rows with `NA` values will be lost when a machine learning model is trained. To avoid this, but keep the outliers controlled, all values flagged as outlier will be converted to the threshold value.
 
@@ -49,6 +62,8 @@ The previous case will cause that all rows with `NA` values will be lost when a 
 * Try to think variables treatment (and creation) as if you're explaining to the model. Stopping variables at a certain value, 1% for example, you are telling to the model: _consider all extremes values as if they are on the 99% percentile, this value is already high enough_
 * Models try to be noise tolerant, but you can help them by treat some common issues.
 
+
+<br>
 
 ## Examples
 
@@ -75,8 +90,9 @@ summary(df)
 ##  3rd Qu.:   1.3853   3rd Qu.:   0.6242                     
 ##  Max.   :2432.0000   Max.   :2432.0000
 ```
+<br>
 
-### Case 1: `type='set_na'`
+## Case 1: `type='set_na'`
 
 
 ```r
@@ -148,8 +164,9 @@ summary(df_treated3)
 ##  Max.   :6.794558   Max.   : 1.99101                     
 ##  NA's   :11         NA's   :45
 ```
+<br>
 
-### Case 2: `type='stop'`
+## Case 2: `type='stop'`
 
 
 ```r
@@ -178,7 +195,10 @@ summary(df_treated4$var1)
 ## 0.000003 0.098870 0.445500 1.007000 1.385000 7.000000
 ```
 
-### Plots
+<br>
+
+## Plots
+
 Note that when `type='set_na'`, the last points disappear
 
 ```r
@@ -189,13 +209,13 @@ ggplot(df_treated3, aes(x=var1)) + geom_histogram(binwidth=.5) + ggtitle("Settin
 ## Warning: Removed 11 rows containing non-finite values (stat_bin).
 ```
 
-![plot of chunk outliers_treatment4](figure/outliers_treatment4-1.png)
+<img src="figure/outliers_treatment4-1.png" title="plot of chunk outliers_treatment4" alt="plot of chunk outliers_treatment4" width="400px" />
 
 ```r
 ggplot(df_treated4, aes(x=var1)) + geom_histogram(binwidth=.5) + ggtitle("Setting type='stop' (var1)")
 ```
 
-![plot of chunk outliers_treatment4](figure/outliers_treatment4-2.png)
+<img src="figure/outliers_treatment4-2.png" title="plot of chunk outliers_treatment4" alt="plot of chunk outliers_treatment4" width="400px" />
 
 
 <br>

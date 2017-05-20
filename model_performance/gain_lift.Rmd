@@ -1,14 +1,14 @@
-Gain and Lift Analysis
-====
-
-### What is this about?
-
-Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring data <a href="http://livebook.datascienceheroes.com/scoring/scoring.html">here</a>.
-
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-opts_knit$set(base.dir = "model_performance")
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "model_performance")
 ```
+
+# Gain and Lift Analysis
+
+## What is this about?
+
+Both metrics are extremely useful to validate the predictive model (binary outcome) quality. More info about scoring data <a href="http://livebook.datascienceheroes.com/scoring/scoring.html">here</a>.
 
 Make sure you have the latest `funModeling` version (>= 1.3).
 
@@ -24,7 +24,7 @@ heart_disease$score=predict(fit_glm, newdata=heart_disease, type='response')
 gain_lift(data=heart_disease,str_score='score',str_target='has_heart_disease')
 ```
 
-### How to interpret it?
+## How to interpret it?
 
 First, each case is ordered according to the likelihood of being the less representative class, aka, score value.
 
@@ -38,7 +38,7 @@ For example, if we are sending emails based on this model, and we have a budget 
 
 <br>
 
-### What about not using a model?
+## What about not using a model?
 
 If we **don't use a model**, and we select randomly 20%, how many users do we have to reach? Well, 20%. That is the meaning of the **dashed line**, which starts at 0% and ends at 100%. Hopefully, with the predictive model we'll beat the randomness.
 
@@ -47,7 +47,7 @@ The **Lift** column represents the ratio, between the `Gain` and the _gain by ch
 
 <br>
 
-### Using the cut point :scissors:
+###Using the cut point :scissors:
 
 What value of the score reaches 30% of the population? 
 Answer: `0.56`
@@ -58,7 +58,7 @@ The cut point allows us to segment the data.
 
 <br>
 
-### Comparing models
+###Comparing models
 
 In a good model, the gain will reach the 100% "at the beginning" of the population, representing that it separates the classes.
 

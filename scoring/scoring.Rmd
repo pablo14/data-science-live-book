@@ -1,12 +1,12 @@
-The Importance of Scoring Data
-=====
-
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
 opts_knit$set(base.dir = "scoring")
 ```
 
-### The intuition behind
+
+# The Importance of Scoring Data
+
+## The intuition behind
 
 > Events can occur, or not... although we don't have _tomorrow's newspaper_ :newspaper:, we can make a good guess about how is it going to be.
 
@@ -16,13 +16,13 @@ The future is undoubtedly attached to *uncertainty*, and this uncertainty can be
 
 <br>
 
-### And there are differents targets...
+## And there are differents targets...
 
 For now, this book will cover the classical: `Yes`/`No` target -also known as binary or multiclass prediction.
 
 So, this estimation is the _value of truth_ of an event to happen, therefore a probabilistic value between 0 and 1.
 
-#### two-label vs. multi-label outcome : 
+### two-label vs. multi-label outcome : 
 
 Please note this chapter is written for a binary outcome (two-label outcome), but **multi-label** target can be seen as a general approach of a binary class.
 
@@ -31,7 +31,7 @@ For example, having a target with 4 different values, there can be 4 models that
 
 <br>
 
-### Say what? :hushed:
+## Say what? :hushed:
 
 Some examples:
 - Is this client going to buy this product?
@@ -42,7 +42,7 @@ The answers to these last questions are True or False, but **the essence is to h
 
 <br>
 
-### But we need more control...
+## But we need more control...
 
 Many machine learning resources show the simplified version -which is good to start- getting the final class as an output. Let's say:
 
@@ -60,7 +60,7 @@ But there is something else before the "Yes/No" answer, and this is the score:
 So first you get the score, and then according to your needs you set the **cut point**. And this is **really** important.
 
 
-### Let see an example
+## Let see an example
 <img src='tbl_example_1.png' width='400px'> 
 
 Example table showing the following
@@ -98,7 +98,7 @@ Since target variable can be `no` or `yes`, the `[, 2]` return the likelihood of
 
 <br>
 
-### It's all about the cut point :straight_ruler:
+## It's all about the cut point :straight_ruler:
 
 <img src='tbl_example_3.png' width='250px'> 
 
@@ -122,7 +122,7 @@ After assigning the cut point, we can see the classification results getting the
 
 <br>
 
-### The best and the worst scenario
+## The best and the worst scenario
 
 > The analysis of the extremes will help to find the middle point.
 
@@ -143,9 +143,9 @@ In the example provided, class distribution is 5 for `yes`, and 10 for `no`; so:
 
 ---
 
-### Comparing classifiers
+## Comparing classifiers
 
-#### Comparing classification results
+### Comparing classification results
 
 :question: **Trivia**: Is a model which correcltly predict this 33.3% (TP rate=100%) a good one?
 
@@ -155,7 +155,7 @@ _Answer_: It depends on how many 'yes', the model predicted.
 A classifier that always predicts `yes`, will have a TP of 100%, but is absolutely useless since lots of `yes` will be actually `no`. As a matter of fact, FP rate will be high.
 
 
-#### Comparing ordering label based on score 
+### Comparing ordering label based on score 
 
 A classifier must be trustful, and this is what **ROC** curves measures when plotting the TP vs FP rates. The higher the proportion of TP over FP, the higher the Area Under Roc Curve (AUC) is.
 
@@ -182,7 +182,7 @@ There is the comparission of 4 models, given a cutpoint of 0.5:
 
 ---
 
-### Hands on R!
+## Hands on R!
 
 We'll be analyzing 3 scenarios based on 3 cut-points.
 
@@ -198,7 +198,7 @@ data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-liv
 
 ```
 
-#### **Scenario 1** Cut point @ `0.5`
+### **Scenario 1** Cut point @ `0.5`
 
 Classical confusion matrix, indicating how many cases fall in the intersection of real vs predicted value:
 
@@ -238,7 +238,7 @@ Note: The last way of analysis can be found when building an association rules (
 
 <br>
 
-#### **Scenario 2** Cut point @ `0.4`
+### **Scenario 2** Cut point @ `0.4`
 
 Time to change the cut point to `0.4`, so the amount of `yes` will be higher:
 
@@ -255,7 +255,7 @@ Now the model captures `100%` of `yes` (TP), so the total amount of `yes` produc
 
 <br>
 
-#### **Scenario 3** Cut point @ `0.8`
+### **Scenario 3** Cut point @ `0.8`
 
 Want to decrease the FP rate? Set the cut point to a higher value, for example: `0.8`, which will cause the `yes` produced by the model decreases:
 
@@ -276,7 +276,7 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 
 <br>
 
-#### Conclusions
+### Conclusions
 
 * This chapter has focused on the essence of predicting a binary variable: To produce a score or likelihood number which **orders** the target variable.
 

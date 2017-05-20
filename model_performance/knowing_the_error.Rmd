@@ -1,24 +1,22 @@
-# Methodological Aspects on Model Validation
-## Knowing the Error
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "model_performance")
+```
+
+# Methodological Aspects on Model Validation: Knowing the Error
 
 <img src="magnifier.png" width="200px" alt="Error in predictive models">
 
-
 <br>
 
-### What's this about?
+## What's this about?
 
 Once we've built a predictive model, how sure we are about its quality? Did it capture general patterns _-information-_ (excluding the _-noise-_)?
 
-
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-opts_knit$set(base.dir = "model_performance")
-```
-
 <br>
 
-#### What sort of data?
+### What sort of data?
 
 It has other approach rather than the one covered on <a href='http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html' target="blank">Out-of-Time Validation</a>. This approach could be used even when there is not possible to filter cases by date, for example having a data's snapshot at a certain point of time, when no new information will be generated.
 
@@ -26,7 +24,7 @@ For example some health data research from a reduced amount of people, a survey,
 
 <br>
 
-### Reducing unexpected behavior
+## Reducing unexpected behavior
 
 When a model is trained, it just sees a part of reality. It's a sample from a population that cannot be entirely seen.
 
@@ -49,7 +47,7 @@ There is no sense in removing cases like that, but it gets an idea of how sensib
 
 <br>
 
-### Let's illustrate this with Cross-Validation (CV)
+## Let's illustrate this with Cross-Validation (CV)
 
 <img src="k-fold_cross_validation.png" width="400px" alt="Cross-Validation">
 
@@ -57,7 +55,7 @@ _Image credit: Sebastian Raschka_ Ref. [1]
 
 <br>
 
-#### CV short summary
+### CV short summary
 
 * Splits the data into random groups, let's say `10`, equally sized. These groups are commonly called `folds`, represented by the `'k'` letter.
 * Take `9` folds, build a model, and then apply the model to the remaining fold (the one which was left out). This will return the accuracy metric you want: accuracy, ROC, Kappa, etc. We're using accuracy in this example.
@@ -67,7 +65,7 @@ This average will be the one to evaluate if a model is good or not, and also to 
 
 <br>
 
-#### Practical example
+### Practical example
 
 There 150 rows in the `iris` data frame, using <a href="http://topepo.github.io/caret/index.html">caret package</a> to build a `random forest` with `caret` using `cross-validation` will end up in the -internal- construction of 10 random forest, each one based on 135 rows (9/10 * 150), and reporting an accuracy based on remaining 15 (1/10 * 150) cases. This procedure is repeated 10 times.
 
@@ -89,13 +87,13 @@ Rather a single number -the average-, we can see a distribution:
 
 <br>
 
-### But what is Error?
+## But what is Error?
 
 The sum of **Bias**, **Variance** and the **_unexplained error_** -inner noise- in data, or the one that the model will never be able to reduce.
 
 These three elements represent the error reported.
 
-#### What is the nature of Bias and Variance?
+### What is the nature of Bias and Variance?
 
 When the model doesn't work well, there may be several causes:
 
@@ -111,7 +109,7 @@ _Image credit: Scott Fortmann-Roe_ [3]
 
 <br>
 
-#### Complexity vs Accuracy Tradeoff
+### Complexity vs Accuracy Tradeoff
 
 <img src="complexity_accuracy_balance.png" width="100px" alt="Complexity vs accuracy balance in predictive models">
 
@@ -124,7 +122,7 @@ The lower, the better: The accuracy in prediction will lower the value, while th
 
 <br>
 
-#### Bootstrapping vs Cross-Validation
+### Bootstrapping vs Cross-Validation
 
 * **Bootstrapping** is mostly used when estimating a parameter.
 * **Cross-Validation** is the choice when choosing among different predictive models.
@@ -132,7 +130,7 @@ The lower, the better: The accuracy in prediction will lower the value, while th
 
 Note: For a deeper coverage about bias and variance, please go to [3] and [4] at the bottom of the page.
 
-### Any advice on practice?
+## Any advice on practice?
 
 It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`. Other: `5 fold CV, repeated 3 times`.
 
@@ -142,7 +140,7 @@ Since these validation techniques are **time consuming**, consider choosing a mo
 
 Another good option is **gradient boosting machines**, it has more parameters to tune than random forest, but at least in R it's implementation works fast.
 
-#### Going back to bias and variance
+### Going back to bias and variance
 
 * Random Forest focuses on decreasing bias, while...
 * Gradient boosting machine focuses on minimizing variance. [5]
@@ -150,13 +148,13 @@ Another good option is **gradient boosting machines**, it has more parameters to
 <br>
 
 
-### Don't forget: Data Preparation
+## Don't forget: Data Preparation
 
 Tweaking input data by transforming and cleaning it, will impact on model quality. Sometimes more than optimizing the model through its parameters.
 The <a href="http://livebook.datascienceheroes.com/data_preparation/introduction.html">Data Preparation</a> chapter of this book is under heavy development. Coming soon.
 
 
-### Final thoughts
+## Final thoughts
 
 * Validating the models through re-sampling / cross-validation helps us to estimate the "real" error present in the data. If the model runs in the future, that will be the expected error to have.
 * Another advantage is **model tuning**, avoiding the overfitting in selecting best parameters for certain model, <a href="https://topepo.github.io/caret/model-training-and-tuning.html" target="blank"> Example in `caret`</a>. The equivalent in **Python** is included in <a href="http://scikit-learn.org/stable/modules/cross_validation.html"  target="blank">Scikit Learn</a>.
@@ -169,7 +167,7 @@ But each opinion has to be reliable, imagine asking for a medical diagnostic to 
 
 <br>
 
-#### Further reading
+## Further reading
  
 * Tutorial: <a href="http://www.milanor.net/blog/cross-validation-for-predictive-analytics-using-r" target="blank">Cross validation for predictive analytics using r</a>
 * Tutorial by Max Kahn (caret's creator): <a href="http://appliedpredictivemodeling.com/blog/2014/11/27/vpuig01pqbklmi72b8lcl3ij5hj2qm"  target="blank">Comparing Different Species of Cross-Validation</a> 
