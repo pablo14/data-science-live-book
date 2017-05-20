@@ -37,6 +37,7 @@ if(F)
   create_files('cross_plot', 'selecting_best_variables') # PUBLISHED
   create_files('plotar_boxplot', 'selecting_best_variables') # PUBLISHED
   create_files('plotar_histdens', 'selecting_best_variables') # PUBLISHED
+  create_files('introduction', 'selecting_best_variables') # PUBLISHED
   create_files('general_aspects', 'selecting_best_variables')
   
   create_files('scoring', 'scoring') # PUBLISHED

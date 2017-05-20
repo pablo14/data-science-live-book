@@ -4,10 +4,10 @@ knitr::opts_chunk$set(out.width="400px", dpi=120)
 knitr::opts_knit$set(base.dir = "data_preparation")
 ``` 
 
-Considerations involving time
-===
+# Considerations involving time
 
-### What is this about?
+
+## What is this about?
 
 <img src="Heraklit.jpeg" width="200px" alt="Heraclitus doing machine learning">
 

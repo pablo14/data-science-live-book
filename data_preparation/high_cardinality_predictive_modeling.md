@@ -5,7 +5,7 @@
 # High Cardinality Variable in Predictive Modeling
 
 
-### What is this about?
+## What is this about?
 
 As we've seen in the other chapter (<a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">Reducing categories in descriptive stats</a>) we keep the categories with the major representativeness, but how about having another variable to predict with it? That is, to predict `has_flu` based on `country`.
 

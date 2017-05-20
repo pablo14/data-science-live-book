@@ -1,6 +1,6 @@
 
 
-## What is this about?
+# What is this about?
 
 It covers **methodological aspects of the error** in predictive models, how to measure it through **cross-validation** data and its similitude with **bootstrapping** technique. And how these strategies are used internally by some predictive models such us _random forest_ or _gradient boosting machines_.
 
@@ -8,7 +8,7 @@ There is also a chapter about how to validate models when time is involved, whic
 
 <br>
 
-### Regarding predictive models with the multi-label outcome...
+## Regarding predictive models with the multi-label outcome...
 
 There is a chapter about gain and lift quality measures, which gives light to one important aspect when evaluation these models: to be sure the model correctly orders the cases according to their propensity to belong to the specific label.
 
