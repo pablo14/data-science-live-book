@@ -4,7 +4,7 @@ knitr::opts_chunk$set(out.width="400px", dpi=120)
 knitr::opts_knit$set(base.dir = "model_performance")
 ```
 
-## What is this about?
+# What is this about?
 
 It covers **methodological aspects of the error** in predictive models, how to measure it through **cross-validation** data and its similitude with **bootstrapping** technique. And how these strategies are used internally by some predictive models such us _random forest_ or _gradient boosting machines_.
 
