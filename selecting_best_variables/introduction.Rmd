@@ -1,7 +1,6 @@
-Selecting Beast Variables Introduction
-===
+# Selecting Best Variables
 
-### What is this about?
+## What is this about?
 
 This chapter will cover three types of plots which aim to understand what are the most correlated numeric variables against a target variable:
 

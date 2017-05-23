@@ -1,5 +1,4 @@
-Selecting Beast Variables Introduction
-===
+# Selecting Best Variables
 
 ## What is this about?
 
