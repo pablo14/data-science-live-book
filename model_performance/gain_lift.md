@@ -92,3 +92,13 @@ Let's illustrate it...
 **Lift analysis**: Same as before, but also it is suspicious that not every lift number follow a decreasing pattern. Maybe the model is not ordering the first percentiles of the population.
  Same ordering concepts as seen in <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html">`cross_plot`</a>
 
+#<br>
+
+# #Get the pdf 
+
+<a href="https://www.e-junkie.com/ecom/gb.php?c=cart&ejc=2&cl=325010&i=1540911" target="ej_ejc" class="ec_ejc_thkbx" onclick="return EJEJC_lc(this);"><img src="https://www.e-junkie.com/ej/ej_add_to_cart.gif" border="0" alt="Add to Cart"></a>
+<a href="https://www.e-junkie.com/ecom/gb.php?c=cart&ejc=2&cl=325010" target="ej_ejc" class="ec_ejc_thkbx" onclick="return EJEJC_lc(this);"><img src="https://www.e-junkie.com/ej/ej_view_cart.gif" border="0" alt="View Cart"></a>
+<script type="text/javascript">
+function EJEJC_lc(th) { return false; };
+</script>
+<script src="https://www.e-junkie.com/ecom/box.js" type="text/javascript"></script>
