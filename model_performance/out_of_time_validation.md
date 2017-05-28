@@ -106,6 +106,12 @@ If the model is good, this error should be **white noise** [1]. It follows a nor
 * The **error analysis** is a big chapter in data science. Time to go to next chapter which will try to cover key-concepts on this: <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html" target="blank">Knowing the error</a>
 
 <br>
+<a href="https://www.e-junkie.com/ecom/gb.php?c=cart&ejc=2&cl=325010&i=1540911" target="ej_ejc" class="ec_ejc_thkbx" onclick="return EJEJC_lc(this);"><img src="https://www.e-junkie.com/ej/ej_add_to_cart.gif" border="0" alt="Add to Cart"></a>
+<a href="https://www.e-junkie.com/ecom/gb.php?c=cart&ejc=2&cl=325010" target="ej_ejc" class="ec_ejc_thkbx" onclick="return EJEJC_lc(this);"><img src="https://www.e-junkie.com/ej/ej_view_cart.gif" border="0" alt="View Cart"></a>
+<script type="text/javascript">
+function EJEJC_lc(th) { return false; };
+</script>
+<script src="https://www.e-junkie.com/ecom/box.js" type="text/javascript"></script>
 
 **References:**
 
