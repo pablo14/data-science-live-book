@@ -1,3 +1,9 @@
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
+```
+
 # Profiling Data
 
 
@@ -5,11 +11,6 @@
 
 Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
 
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=120)
-knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
-```
 
 ```{r lib, results="hide", message=FALSE}
 ## Loading funModeling !
@@ -18,11 +19,17 @@ library(dplyr)
 data(heart_disease)
 ```
 
-## Checking NA, zeros, data type and unique values
+## Checking missing values, zeros, data type and unique values
 
-```{r df_status}
+Probably one of the first steps when we got a new data set to analyze, is to know if there are missing values (`NA` in **R**), and  the data type.
+
+The `df_status` function coming in `funModeling` can help us showing these numbers in relative and percentual values.  Also it retrieves the infinite and zeros statistics.
+
+```{r df_status, eval=FALSE}
+## Profiling the data input
 my_data_status=df_status(heart_disease)
 ```
+<img src="dataset_profiling.png" width="500px" alt="Profiling data">
 
 * `q_zeros`: quantity of zeros (`p_zeros`: in percentage)
 * `q_inf`:  quantity of infinite values (`p_inf`: in percentage)
@@ -38,23 +45,26 @@ my_data_status=df_status(heart_disease)
 * **Type**: Some variables are encoded as numbers, but they are codes or categories, and the models **don't handle them** in the same way.
 * **Unique**: Factor/categorical variables with a high number of different values (~30), tend to do overfitting if categories have low cardinality, (**decision trees**, for example).
 
+
 <br>
+
 
 ### Filtering unwanted cases
 
-The function `df_status` takes a data frame and returns a the status table to quickly remove unwanted cases.
+The function `df_status` takes a data frame and returns an _status table_ that can help us to quickly remove features (or variables) based on all the metrics described in last section. For example:
 
 
-**Removing variables with high number of NA/zeros**
+**Removing variables with a _high number_ of zeros**
 
 ```{r profiling_data}
 # Removing variables with 60% of zero values
 vars_to_remove=filter(my_data_status, p_zeros > 60)  %>% .$variable
 vars_to_remove
 
-## Keeping all columns except vars_to_remove
+## Keeping all columns except the ones present in 'vars_to_remove' vector
 heart_disease_2=select(heart_disease, -one_of(vars_to_remove))
 ```
+
 
 **Ordering data by percentage of zeros**
 
@@ -64,6 +74,21 @@ arrange(my_data_status, -p_zeros) %>% select(variable, q_zeros, p_zeros)
 
 <br>
 
+The same reasing applies when we want to remove -or keep- those variables above or below a certain threshold. Please check the missing values chapter to get more info about the implications when dealing with variables containing missing values.
+
+
+### Going deep into these topics
+
+Values return by `df_status` are deeply covered in other chapters:
+
+* **Missing values** (NA) treatment, analysis and imputation are deeply cover in <a href="http://livebook.datascienceheroes.com/data_preparation/treating_missing_data.html">Missing Data</a> chapter.
+* **Data types**, its conversions, implications when handling different data types and more, is covered in <a href="http://livebook.datascienceheroes.com/data_preparation/data_types.html">Data Types</a> chapter.
+* A high number of **unique values** is a synonim of high cardinallity variable. This situation is studied in both chapters:
+    + <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Descriptive Stats</a>.
+    + <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html">High Cardinality Variable in Predictive Modeling</a>.
+
+
+<br>
 
 ## Profiling categorical variable
 
@@ -89,4 +114,215 @@ Also, as the other plot functions in the package, if there is the need of export
 ```{r, eval=F}
 freq(data=heart_disease, path_out='my_folder')
 ```
+
+A more complete analysis in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Descriptive Stats</a>.
+
+<br>
+
+## Profiling numerical variable
+
+In this type of variables, common metrics are the mean, max, min values
+
+### About the data
+
+It contains many indicators regarding world development. We
+
+Data source: <a href="http://databank.worldbank.org/data/reports.aspx?source=2&Topic=11#" target="blank">http://databank.worldbank.org</a>. 
+
+First we have to do some data wrangling. We are going to keep with the newest value per indicator.
+
+```{r}
+library(Hmisc)
+
+# Loading data from book repository.
+data_world=read.csv(file = "https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/World_Development_Indicators.csv", header = T, stringsAsFactors = F, na.strings = "..")
+
+
+# The magical function which keeps newest values for each metric. If you're not familiar with R, skip it...
+max_ix<-function(d) 
+{
+  ix=which(!is.na(d))
+  res=ifelse(length(ix)==0, NA, d[max(ix)])
+  return(res)
+}
+
+data_world$newest_value=apply(data_world[,5:ncol(data_world)], 1, FUN=max_ix)
+
+```
+
+The columns `Series.Name` and `Series.Code` are the indicators to be analyzed. 
+`Country.Name` and `Country.Code` are the countries. Each row represent a unique combination of country and indicator. 
+Remaining columns, `X1990..YR1990.` (year 1990),`X2000..YR2000.` (year 2000), `X2007..YR2007.` (year 2007), and so on; indicates the metric value for that year, thus each column is a year. 
+
+<br>
+
+### Taking decision as data scientist
+
+There are many `NA` because some countries don't have the measure of the indicator in those years. And here we have to **take a decision** as data scientist, that maybe neither will be the best nor the most accurate without asking to an expert -i.e. a sociologist- in these kind of data. 
+
+What to do with the `NA` values? In these case, we are gonna to keep with the **newest value** for all the indicators. Perhaps this is not the best way to extract conclusions for a paper, we are going to compare some countries with information up to 2016 while others countries will be updated to 2009. This is a valid approach for the first anaylsis, to compare all the indicators with the newest data.
+
+Other solution could have been to keep with the newest value, only if this number belongs to the last 5 years. It would reduce the number of countries to analyze.
+
+### Profiling data in R
+
+We'll use the indicator: `SI.POV.DDAY`, which according to the documantion measures: _Poverty headcount ratio at $1.90 a day is the percentage of the population living on less than $1.90 a day at 2011 international prices._
+
+One really usefull function to profile data is `describe` coming in `Hmisc` package
+
+```{r}
+## We keep with all the rows belonging to "SI.POV.DDAY" indicator
+data_poverty=filter(data_world,  Series.Code=="SI.POV.DDAY")
+
+library(Hmisc) # contains `describe` function
+
+describe(data_poverty$newest_value)
+```
+
+Where: 
+* `n`: quantity of non-`NA` rows. In this case it indicates there are `116` countries containing a number.
+* `missing`: number of missing values. Summing this indicator to the `n` gives us total number of rows. Almost half of the countries have no data.
+* `unique`: number of unique (or distinct) values.
+* `Info`: An estimator of the amount of information present in the variable, not important at this point.
+* `Mean`: The classical mean or average.
+* Numbers: `.05`, `.10`, `.25`, `.50`, `.75`, `.90` and `.95 ` stands for the percentiles. These values are really useful since it help us to describe the distribution. Will be treated lately. I.e., `.05` is the 5th percentile.
+* `lowest` and `highest`: The 5 lowest/highest values. Here can spot outliers, or errors in data. For example, the variable represents a percentage, thus it cannot contain negative values.
+
+Getting other useful statistics: **total rows**, **total columns** and **column names**:
+
+```{r}
+# Total rows
+nrow(data_poverty)
+
+# Total columns
+ncol(data_poverty)
+
+# Column names
+colnames(data_poverty)
+```
+ 
+<br>
+ 
+### Using percentiles to get semantical descriptions
+
+Percentile is such a crucial concept in data science, that we are going to have a deep cover in the book. It is used in profiling as well as evualating the performance of a predictive model.
+
+#### How to calculate it?
+
+Altough there are several methods to get the percentile, for example based on interpolations, the easist method is to order the numerical variable, and then to see _what is the maximum value if we want to choose the 50% of the population ordered from ascendently._
+
+#### First example using the 50th percentile
+
+The percentile is is based on two concepts, the numerical variable value which was previous ordered, and the population percentage. 
+For example, in the data we're analyzing we got that percentile `.50` (which is also the `median`), was: 6 -_this 6 is a percentage in our data_. 
+
+Thus we can state: _"Half of the countries have a maximum of 6% of poverty."_, or, _"Half of the countries have as much as 6% of poverty."_
+
+#### Indicating where most of the values are
+
+In descriptive statistics we want to descrbibe in general terms, the population. We can speak about ranges using two percentiles, let's take the percentiles 10th (`0.075`) and the 90th (`54.4`):
+
+_The poverty ranges from 0.075% to 54.4% in 80% of the countries._ 80% because we did 90th-10th, focusing on the middle of the population.
+
+We looked at the 80% of the population, which seems a good number to describe where most of the cases are. We could also have used the 90% (pecentile 95th - 0.5th). 
+
+#### Is it realed to quartile?
+
+**Quartile:** is a formal name to the 25, 50, and 75th percentile (quarters or Q). If we look at the 50% of the population, we need to substract the 3rd quartile (or percentile 75th) to 1st quartile (percentile 25th), and we get where 50% of data in concentrated, also known as **inter quartile range**, or IQR.
+
+#### Calculating quantiles 
+
+If we want to get the 25th quantile, there is the `quantile`:
+```{r, warning=FALSe}
+## na.rm=T is necessary if we have null values, like we have in this case
+q_25=quantile(data_poverty$newest_value, probs = 0.25, na.rm=T)
+quantile
+
+## Also we can get multiple quantiles at once:
+q_quartile=quantile(data_poverty$newest_value, probs = c(0.25, 0.5, 0.75), na.rm=T)
+q_quartile
+```
+
+#### Visuallzing percentiles
+
+Plotting an histogram alongisde the places where each percentile is, can help to understand the concept:
+
+```{r, warning=FALSE}
+df_q=data.frame(value=q_quartile, quantile=c("25th", "50th", "75th"))
+
+library(ggplot2)
+ggplot(data_poverty, aes(newest_value)) + geom_histogram() +
+  geom_vline(data=df_q, 
+             aes(xintercept=value, 
+                 colour = quantile),
+             show_guide = TRUE, linetype="dashed") + theme_light()
+
+
+    ggplot(data_poverty, aes(newest_value)) + geom_histogram() + geom_vline(aes(xintercept=mean(data_poverty$newest_value, na.rm=T), color="mean"), linetype="dashed", size=1) + geom_vline(aes(xintercept=, color="mean"), linetype="dashed", size=1) 
+```
+
+Let's say if we sum all the grey bars before the 25th percentile, it will be as tall as the sum of all the grey bars after the 75th percentile. 
+
+In last plot the IQR appears between the first and the last dashed line. Contains the 50% of the population.
+
+#### Rank and top / bottom 'X'% concepts
+
+Rank concept is the same as the one seen in competition, it allow us to answer _what is the country with the highest poverty rate?_
+We'll use `dense_rank` function, from `ggplot2` package. It assigns the position (rank) to each country but we need theín reverse order, that is, assigning the `rank = 1` to the highest value.
+
+```{r}
+library(dplyr)
+
+## Creating rank variable 
+data_poverty$rank=dense_rank(-data_poverty$newest_value) 
+
+# Ordering data by rank
+data_poverty=arrange(data_poverty, rank)
+
+# Printing first 5 results:
+head(select(data_poverty, Country.Name, rank, newest_value))
+```
+
+We can also ask: _In which position is Uruguay?_
+
+```{r}
+filter(data_poverty, Country.Name=="Uruguay") %>% select(rank)
+```
+
+
+
+#### Top and bottom 'X'% concepts
+
+Other questions that we maybe interested in aswered: _What is the value for which I get the top 10% of lowest values?_
+
+Percentile 10th is the answer:
+
+```{r}
+quantile(data_poverty$newest_value, probs=.1, na.rm = T)
+```
+
+Working on the opposite: _What is the value for which I get the bottom 10% of highest values?_
+
+Percentile 90th is the answer.
+
+
+
+#### Using percentiles to spot and remove outliers
+
+```{r}
+## Also we can get multiple quantiles at once:
+q_01_10_90_99=quantile(data_poverty$newest_value, probs = c(0.01, 0.1, 0.9, 0.99), na.rm=T)
+q_01_10_90_99
+```
+
+This is related to: 
+
+
+Percentile and ranking cases consider each value in terms of the others.
+
+
+
+
+
+
 
