@@ -25,9 +25,10 @@ Probably one of the first steps when we got a new data set to analyze, is to kno
 
 The `df_status` function coming in `funModeling` can help us showing these numbers in relative and percentual values.  Also it retrieves the infinite and zeros statistics.
 
+
 ```{r df_status, eval=FALSE}
 ## Profiling the data input
-my_data_status=df_status(heart_disease)
+df_status(heart_disease)
 ```
 <img src="dataset_profiling.png" width="500px" alt="Profiling data">
 
@@ -57,6 +58,9 @@ The function `df_status` takes a data frame and returns an _status table_ that c
 **Removing variables with a _high number_ of zeros**
 
 ```{r profiling_data}
+## Profiling the data input.
+my_data_status=df_status(heart_disease, print_results = F)
+
 # Removing variables with 60% of zero values
 vars_to_remove=filter(my_data_status, p_zeros > 60)  %>% .$variable
 vars_to_remove
@@ -164,7 +168,7 @@ What to do with the `NA` values? In these case, we are gonna to keep with the **
 
 Other solution could have been to keep with the newest value, only if this number belongs to the last 5 years. It would reduce the number of countries to analyze.
 
-### Profiling data in R
+### Profiling numerical data in R
 
 We'll use the indicator: `SI.POV.DDAY`, which according to the documantion measures: _Poverty headcount ratio at $1.90 a day is the percentage of the population living on less than $1.90 a day at 2011 international prices._
 
@@ -224,7 +228,9 @@ In descriptive statistics we want to descrbibe in general terms, the population.
 
 _The poverty ranges from 0.075% to 54.4% in 80% of the countries._ 80% because we did 90th-10th, focusing on the middle of the population.
 
-We looked at the 80% of the population, which seems a good number to describe where most of the cases are. We could also have used the 90% (pecentile 95th - 0.5th). 
+If we consider the 80% as the majority of the population, then we could say: _"Normally, (or in general terms), the poverty goes from 0.07% to 54.4%"_. A semantical description.
+
+We looked at the 80% of the population, which seems a good number to describe where most of the cases are. We could also have used the 90% range (pecentile 95th - 0.5th). 
 
 #### Is it realed to quartile?
 
@@ -233,32 +239,31 @@ We looked at the 80% of the population, which seems a good number to describe wh
 #### Calculating quantiles 
 
 If we want to get the 25th quantile, there is the `quantile`:
-```{r, warning=FALSe}
+
+```{r, warning=FALSE}
 ## na.rm=T is necessary if we have null values, like we have in this case
-q_25=quantile(data_poverty$newest_value, probs = 0.25, na.rm=T)
-quantile
+p_25=quantile(data_poverty$newest_value, probs = 0.25, na.rm=T)
+p_25
 
 ## Also we can get multiple quantiles at once:
-q_quartile=quantile(data_poverty$newest_value, probs = c(0.25, 0.5, 0.75), na.rm=T)
-q_quartile
+p_quartile=quantile(data_poverty$newest_value, probs = c(0.25, 0.5, 0.75), na.rm=T)
+p_quartile
 ```
 
 #### Visuallzing percentiles
 
 Plotting an histogram alongisde the places where each percentile is, can help to understand the concept:
 
-```{r, warning=FALSE}
-df_q=data.frame(value=q_quartile, quantile=c("25th", "50th", "75th"))
+```{r, profiling_numerical_variable, warning=FALSE, message=FALSE}
+df_p=data.frame(value=p_quartile, quantile=c("25th", "50th", "75th"))
 
 library(ggplot2)
 ggplot(data_poverty, aes(newest_value)) + geom_histogram() +
-  geom_vline(data=df_q, 
+  geom_vline(data=df_p, 
              aes(xintercept=value, 
                  colour = quantile),
-             show_guide = TRUE, linetype="dashed") + theme_light()
+             show.legend = TRUE, linetype="dashed") + theme_light()
 
-
-    ggplot(data_poverty, aes(newest_value)) + geom_histogram() + geom_vline(aes(xintercept=mean(data_poverty$newest_value, na.rm=T), color="mean"), linetype="dashed", size=1) + geom_vline(aes(xintercept=, color="mean"), linetype="dashed", size=1) 
 ```
 
 Let's say if we sum all the grey bars before the 25th percentile, it will be as tall as the sum of all the grey bars after the 75th percentile. 
@@ -303,22 +308,118 @@ quantile(data_poverty$newest_value, probs=.1, na.rm = T)
 
 Working on the opposite: _What is the value for which I get the bottom 10% of highest values?_
 
-Percentile 90th is the answer.
+Percentile 90th is the answer, `quantile(data_poverty$newest_value, probs=.1, na.rm = T)`. We can filter all the cases above this value
 
 
 
 #### Using percentiles to spot and remove outliers
 
+Percentiles can be used to spot outlier in univariate analysis, that is, considering the extreme values for each variable at a time.
+
+Latelty we describe the general or "normal" population using the inter quartile range. If something is normal, then there must be cases that are _abnormal_. **When we define the normal, the abnormal concept emerges as its opposite.**
+
 ```{r}
 ## Also we can get multiple quantiles at once:
-q_01_10_90_99=quantile(data_poverty$newest_value, probs = c(0.01, 0.1, 0.9, 0.99), na.rm=T)
-q_01_10_90_99
+outlier_thresholds=quantile(data_poverty$newest_value, probs = c(0.01, 0.1, 0.9, 0.99), na.rm=T)
+outlier_thresholds
 ```
 
-This is related to: 
+Given the skewed shape of the variable distribution, in this case it _could_ makes sense to consider all values above the top 1% (value `newest_value > 76.15`). 
+
+This is the approach shown in the <a href="http://livebook.datascienceheroes.com/data_preparation/outliers_treatment.html" target="blank">Outliers treatment</a> chapter.
 
 
-Percentile and ranking cases consider each value in terms of the others.
+### Comparing the median and mean
+
+In skewed distributions, like the one 
+
+<br>
+
+### Plotting variable distribution
+
+We are going to analyze `heart_disease` data.
+
+
+```{r}
+library(ggplot2)
+library(reshape2) # contains 'melt' and 'cast' functions
+
+# A gentle function to plot numerical data
+plot_numerical <- function(data) 
+{
+  ## The concept of 'wide' and 'long' is crucial to understand how to pass the correct data to ggplot. The official documentation is quite clear about it: http://seananderson.ca/2013/10/19/reshape.html
+  wide_data=melt(data)
+  ggplot(data = melt(wide_data), mapping = aes(x = value)) + 
+    geom_histogram(bins = 10) + facet_wrap(~variable, scales = 'free_x') +  aes(fill = variable) 
+}
+
+## Plotting all numerical variables
+plot_numerical(heart_disease)
+
+v=c("gender", "chest_pain", "fasting_blood_sugar", "resting_electro", "thal", "exter_angina", "has_heart_disease")
+hd=select(heart_disease, -one_of(v))
+plot_numerical(hd)
+
+```
+
+The messages:
+* `Removed 4 rows containing non-finite values (stat_bin).` indicates the function excluded 4 rows contaning missing values.
+* `Using gender, chest_pain, fasting_blood_sugar, resting_electro, thal, exter_angina, has_heart_disease, variable as id variables` is due to the `melt`. Not relevant by now, it doesn't affect the final result. More information at: http://seananderson.ca/2013/10/19/reshape.html.
+
+Use `plot_numerical` function as you pleased with your own data.
+
+<br>
+
+### Profiling data quantitatively
+
+```{r}
+library(moments)
+
+profiling_num <- function(data, digits=2, print_results=T)
+{
+	if(missing(print_results))
+		print_results=T
+
+	df_res=data.frame(
+		avg=sapply(data, function(x) mean(x, na.rm=T)),
+		std_dev=sapply(data, function(x) sd(x, na.rm=T)),
+  	p_01=sapply(data, function(x) quantile(x, probs = 0.01, na.rm=T)),
+	  p_05=sapply(data, function(x) quantile(x, probs = 0.05, na.rm=T)),
+		p_10=sapply(data, function(x) quantile(x, probs = 0.10, na.rm=T)),
+		p_25=sapply(data, function(x) quantile(x, probs = 0.25, na.rm=T)),
+		p_50=sapply(data, function(x) quantile(x, probs = 0.50, na.rm=T)),
+		p_75=sapply(data, function(x) quantile(x, probs = 0.75, na.rm=T)),
+		p_90=sapply(data, function(x) quantile(x, probs = 0.90, na.rm=T)),
+		p_95=sapply(data, function(x) quantile(x, probs = 0.95, na.rm=T)),
+		p_99=sapply(data, function(x) quantile(x, probs = 0.99, na.rm=T)),
+		
+  	skewness=sapply(data, function(x) skewness(x, na.rm=T)),
+		kurtosis=sapply(data, function(x) kurtosis(x, na.rm=T)),
+		iqr=sapply(data, function(x) IQR(x, na.rm=T))
+	)
+
+	df_res$variation_coef=df_res$std_dev/df_res$avg
+	df_res$range_98=sprintf("[%s, %s]", df_res$p_01, df_res$p_99)
+	df_res$range_80=sprintf("[%s, %s]", df_res$p_10, df_res$p_90)
+	  
+	df_res=select(df_res, -p_10, -p_90)
+	
+	## Create new variable for column name
+	df_res$variable=rownames(df_res)
+	rownames(df_res)=NULL
+
+	# setting digits
+	#options(digits=digits)
+  
+	# reordering columns
+	df_res=select(df_res, variable, everything(), skewness, kurtosis, iqr)
+
+	## Print or return results
+	if(df_res) print(digits) else return(df_res)
+}
+
+
+```
 
 
 
