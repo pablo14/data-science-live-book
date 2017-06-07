@@ -51,17 +51,19 @@ Time to next section.
 
 ## Will machines and artificial intelligence rule the world?
 
-Although it is true computation power is being increasing eponentially. The machines rebelion is it is far from happening today.
+Although it is true computation power is being increased exponentially. The machines rebellion is it is far from happening today.
 
-This question is related to _1-click solutions_ and whoala! The predictive system is running and deployed. All the data preparation, transformations, tables joins, timing considerations, tuning, _etc_ is solved in one step. 
+This book tries to expose common issues when creating and handling predictive models. Not a free lunch. There is also a relationship to _1-click solutions_ and whoala! The predictive system is running and deployed. All the data preparation, transformations, tables joins, timing considerations, tuning, _etc_ is solved in one step. 
 
-Perhaps it does, indeed as time goes by there are more robust techniques that help us to automatize tasks in predictive modeling. But just in case, it'd be a good practice not to trust blindly in black-box solutions without knowing, for example, how the system _pick-up best variables_, _what is the inner procedure to validate the model_, _how it deals with extremes or rare values_, among other topics exposed in this book.
+Perhaps it does, indeed as time goes by there are more robust techniques that help us to automatize tasks in predictive modeling. But just in case, it'd be a good practice not to trust blindly in black-box solutions without knowing, for example, how the system _pick-up best variables_, _what is the inner procedure to validate the model_, _how it deals with extremes or rare values_, among other topics covered in this book.
 
 If you are evaluation some machine learning platform, some issues stated in this book can help you to decide the best option. Trying to _unbox the black-box_.
 
-It's really difficult to have a solution that suits all the cases. The human intervention **is crucial** in order to have a sucessful project. Rather than worry about machines, the point is _how_ and _for what_ we use this technology.
+It's tough to have a solution that suits all the cases. The human intervention **is crucial** in order to have a successful project. Rather than worry about machines, the point is _how_ and _which will be_ the use of this technology. The technology is _innocent_, is the data scientist who set the inputs and give to the model the needed target to learn. Patterns will emerge, and some of them can be harmful to other people to use. We have to be aware of the final objective, like in any other technologies. 
 
-Could be that the difference between **machine learning** and **data science**? A machine that learns vs., a human being doing science with data?
+Maybe, this could be the difference between **machine learning** and **data science**? A machine that learns vs., a human being doing science with data?
+
+An open question.
 
 <br>
 
@@ -69,7 +71,7 @@ Could be that the difference between **machine learning** and **data science**? 
 
 In general terms, time and patience. Most of the concepts are independent from the language, but when a technical example is required it is done in <a href="https://cloud.r-project.org" target="blank">**R language**</a>. 
 
-The book uses the following libraries: `funModeling` (developed for the book), `dplyr`, `Hmisc`, `reshape2`, `ggplot2`, `caret`, `minerva`, `missForest`, `gridExtra`, `mice`, `lock5Data`, `corrplot`, `RColorBrewer` and `infotheo`.
+The book uses -at least- the following libraries: `funModeling` (developed for the book), `dplyr`, `Hmisc`, `reshape2`, `ggplot2`, `caret`, `minerva`, `missForest`, `gridExtra`, `mice`, `lock5Data`, `corrplot`, `RColorBrewer` and `infotheo`.
 
 Install any of these by doing: `install.packages("PACKAGE_NAME")`.
 
@@ -78,5 +80,20 @@ The recommended IDE is <a href="https://www.rstudio.com/products/rstudio/downloa
 The book was created with Rstudio, using `knitr` library to create markdown documents (the web-pages in this case), and <a href="https://www.gitbook.com/" target="blank">**GitBook**</a> as the publishing plattform.
 
 It's all free and open-source, GitBook, R, Rstudio and this book 🙂.
+
+Hope you enjoy it!
+
+<br>
+
+## How can I contact you?
+
+If you want to say _hello_, contribute by telling that some part is not well explained, suggest a new topic or share some good experience you had applying any concept explained here, you are welcome to drop me an email at: 
+
+pcasas.biz <at> gmail.com. I'm constantly learning so it's nice to exchange knowledge and keep in touch with other otherss colleagues
+
+Also, you can check the **Github** repositories for both, the book and `funModeling`, so you can report bugs, suggestions, new ideas, etc:
+* `funModeling` R package: https://github.com/pablo14/funModeling
+* **Data Science Live Book**: https://github.com/pablo14/data-science-live-book
+
 
 

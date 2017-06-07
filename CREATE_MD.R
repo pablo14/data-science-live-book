@@ -17,6 +17,7 @@ setwd("~/repos/data-science-live-book")
 ###########################################################################
 ###########################################################################
 
+create_files('profiling', 'exploratory_data_analysis') # PUBLISHED
 
 if(F)
 {
@@ -34,10 +35,10 @@ if(F)
   create_files('data_types', 'data_preparation')
   create_files('modifying_variables', 'data_preparation')
   
+  create_files('introduction', 'selecting_best_variables') # PUBLISHED
   create_files('cross_plot', 'selecting_best_variables') # PUBLISHED
   create_files('plotar_boxplot', 'selecting_best_variables') # PUBLISHED
   create_files('plotar_histdens', 'selecting_best_variables') # PUBLISHED
-  create_files('introduction', 'selecting_best_variables') # PUBLISHED
   create_files('general_aspects', 'selecting_best_variables')
   
   create_files('scoring', 'scoring') # PUBLISHED
@@ -46,6 +47,8 @@ if(F)
   create_files('gain_lift', 'model_performance') # PUBLISHED
   create_files('out_of_time_validation', 'model_performance') # PUBLISHED
   create_files('knowing_the_error', 'model_performance') # PUBLISHED
+  
+  create_files('download_pdf_ebook', 'download_pdf_ebook')
 }
 
 
