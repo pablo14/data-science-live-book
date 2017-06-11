@@ -6,16 +6,18 @@ knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 
 # Profiling Data
 
-> The voice of the numbers. <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer and novelist. 
+> The voice of the numbers. <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer, human being and novelist.
 
-The data we explore could be like Egyptian hieroglyphs without a correct interpretation. This chapter will cover with bunch of functions, a complete data profiling. This should be the entry step in a data project, so we can start knowing the correct data types, numerical distributions, anomaly cases. 
+The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling, the very first step in a series of iterative stages, in the persuit of finding what the data want to tell us, if we are the patient enough to listen to. 
+
+This chapter will cover with bunch of functions, a complete data profiling. This should be the entry step in a data project, so we can start knowing the correct data types, exploring distributions in numerical and catgorical variables,.
 
 It also focus on the extraction of semantical conclusion, useful when writing a report for non-technical people. 
 
 
 **What are we going to review in this chapter?**
 
-* **Data set** profiling:  
+* **Data set health status**:  
   - Getting metrics like total rows, columns, data types, zeros, missing values.
   - How each of the last items impact on different analysis.
   - How to quickly filter and operate on -and with- them, to clean the data.
@@ -26,18 +28,28 @@ It also focus on the extraction of semantical conclusion, useful when writing a 
   - Percentile vs. quantile vs. quartile.
   - Kurtosis, skewness, inter quartile range, variation coefficient.
   - Plotting distributions. 
-
-
-
-
-
+  - Complete **case study** based on Data World. Data Preparation and data analysis.
+* A complete analysis and interpretation of **percentiles** (Annex 1).
 
 <br>
 
-## What is this about?
+Functions summary review in the chapter:
+
+* `df_status(data)`: Profiling data set structure.
+* `describe(data)`:  Numerical and categorical profiling (quantitative).
+* `freq(data)`: Categorical profiling (both  quantitative and plot).
+* `profiling_num(data)`: Profiling for numerical variable (quantitative).
+* `plot_num(data)`: Profiling for numerical variable (plots).
+
+Note: `describe` is in `Hmisc` package, remaining functions are in `funModeling`.
+
+<br>
+
+## Data set health status
 
 Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
 
+Firstly, we load `funModeling` and `dplyr` libraries.
 
 ```{r lib, results="hide", message=FALSE}
 ## Loading funModeling!
@@ -46,7 +58,7 @@ library(dplyr)
 data(heart_disease)
 ```
 
-## Checking missing values, zeros, data type and unique values
+### Checking missing values, zeros, data type and unique values
 
 Probably one of the first steps when we got a new data set to analyze, is to know if there are missing values (`NA` in **R**), and  the data type.
 
@@ -215,9 +227,12 @@ The other information is pretty similar to `freq` function, returns between parh
 
 ## Profiling numerical variable
 
-TODO: Complete...
+This section is separated in two parts:
 
-If you don't want to know how the data is calculated, jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
+* Part 1: Introducing the World Data case study
+* Part 2: Doing the numerical profiling in R
+
+If you don't want to know how is the data prepartion stage from Data World is calculated, you can jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
 
 ### Part 1: Introducing the World Data case study
 
@@ -286,6 +301,9 @@ data_world_2=left_join(data_world, df_conv_world, by="Series.Code", all.x=T)
 data_world_2=mutate(data_world_2, Series.Code_2=ifelse(!is.na(new_name), as.character(data_world_2$new_name), data_world_2$Series.Code))
 ```
 
+Any indicator meaning can be checked in data.worldbank.org. For exampple, if we want to know what `EN.POP.SLUM.UR.ZS` means we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
+
+
 ```{r}
 # The package 'reshape2' contains both 'dcast' and 'melt' functions.
 library(reshape2)
@@ -326,14 +344,16 @@ describe(data_subset)
 ```
 
 
-Where, based on `poverty_headcount_1.9`, we have: 
+Taking `poverty_headcount_1.9` (_Poverty headcount ratio at $1.90 a day is the percentage of the population living on less than $1.90 a day at 2011 international prices._), we can describe it as:
+
 * `n`: quantity of non-`NA` rows. In this case it indicates there are `116` countries containing a number.
 * `missing`: number of missing values. Summing this indicator to the `n` gives us total number of rows. Almost half of the countries have no data.
 * `unique`: number of unique (or distinct) values.
 * `Info`: An estimator of the amount of information present in the variable, not important at this point.
 * `Mean`: The classical mean or average.
 * Numbers: `.05`, `.10`, `.25`, `.50`, `.75`, `.90` and `.95 ` stands for the percentiles. These values are really useful since it help us to describe the distribution. Will be treated lately. I.e., `.05` is the 5th percentile.
-* `lowest` and `highest`: The 5 lowest/highest values. Here we can spot outliers or errors in data. For example, the variable represents a percentage, thus it cannot contain negative values.
+* `lowest` and `highest`: The 5 lowest/highest values. Here we can spot outliers or errors in data. For example, the 
+variable represents a percentage, thus it cannot contain negative values.
 
 <br>
 
@@ -383,6 +403,25 @@ The `range_80` is the same as the `range_98` but having removed bottom and top `
 
 **Important**: All the metrics are calculated having removed the `NA` values. Otherwise, the table would be filled with `NA`s.
 
+<br>
+
+#### Advice when using `profiling_num`
+
+The idea of `profiling_num` is to provide to the data scientist with a full set of metrics, so she or he can select the most relevant. It can easily be done using `select` function from `dplyr` package, 
+
+Also we have to set in `profiling_num` the parameter `print_results = FALSE`. This way we avoid the printing in console.
+
+For example, let's get with the `mean`,  `p_01`,  `p_99` and `range_80`:
+
+```{r}
+my_profiling_table=profiling_num(data_world_wide, print_results = FALSE) %>% select(variable, mean, p_01, p_99, range_80)
+
+## Printing only first 3 rows:
+head(my_profiling_table, 3)
+```
+
+Please note that `profiling_num` returns a table, so we can easily filter cases given on the conditions we set.
+
 <br> 
 
 #### Profiling numerical variable by plotting
@@ -398,14 +437,18 @@ We can adjust the number of bars used in the plot changing setting the `bins` pa
 
 ---
 
+## Final toughts
+
+
+
+
+---
+
 <br>
 
-## The magic of percentiles 
+# Annex 1: The magic of percentiles 
 
-Percentile is such a crucial concept in data analysis, that we are going to have a deep cover in the book. It consider each observation in terms of the others. An isolated number may not be meaningful, but when it is compared to the others, the distribution concept appear.
-
-For example, a person having 30-years-old, is it high
-TODO: complete
+Percentile is such a crucial concept in data analysis, that we are going to have a deep cover in the book. It consider each observation in terms of the others. An isolated number may not be meaningful, but when it is compared to the others, the distribution concept appears.
 
 It is used in profiling as well as evualating the performance of a predictive model.
 
@@ -502,15 +545,17 @@ Percentile vs. quantile vs. quartile
 
 Credits Ref. [3].
 
-#### Visualizing percentiles
+#### Visualizing quantiles
 
 Plotting an histogram alongisde the places where each percentile is, can help to understand the concept:
 
 ```{r, profiling_numerical_variable, warning=FALSE, message=FALSE}
-df_p=data.frame(value=p_quartile, quantile=c("25th", "50th", "75th"))
+quantiles_var=quantile(data_world_wide$poverty_headcount_1.9, c(0.25, 0.5, 0.75), na.rm = T)
+
+df_p=data.frame(value=quantiles_var, quantile=c("25th", "50th", "75th"))
 
 library(ggplot2)
-ggplot(data_poverty, aes(newest_value)) + geom_histogram() +
+ggplot(data_world_wide, aes(poverty_headcount_1.9)) + geom_histogram() +
   geom_vline(data=df_p, 
              aes(xintercept=value, 
                  colour = quantile),
@@ -524,26 +569,31 @@ In last plot the IQR appears between the first and the last dashed line. Contain
 
 #### Rank and top / bottom '_X_'% concepts
 
-Rank concept is the same as the one seen in competition, it allow us to answer _what is the country with the highest poverty rate?_
-We'll use `dense_rank` function, from `ggplot2` package. It assigns the position (rank) to each country but we need theín reverse order, that is, assigning the `rank = 1` to the highest value.
+Rank concept is the same as the one seen in competition, it allow us to answer _what is the country with the highest rate in ?_
+
+We'll use `dense_rank` function, from `ggplot2` package. It assigns the position (rank) to each country but we need them in reverse order, that is, assigning the `rank = 1` to the highest value.
+
+Now the variable will be: _Population living in slums is the proportion of the urban population living in slum households. A slum household is defined as a group of individuals living under the same roof lacking one or more of the following conditions: access to improved water, access to improved sanitation, sufficient living area, and durability of housing._ 
+
+The question to answer: _What are the top 6 countries with the highest rate of people living in slums?_
 
 ```{r}
 library(dplyr)
 
 ## Creating rank variable 
-data_poverty$rank=dense_rank(-data_poverty$newest_value) 
+data_world_wide$rank_pop_living_slums=dense_rank(-data_world_wide$pop_living_slums) 
 
 # Ordering data by rank
-data_poverty=arrange(data_poverty, rank)
+data_world_wide=arrange(data_world_wide, rank_pop_living_slums)
 
-# Printing first 5 results:
-head(select(data_poverty, Country.Name, rank, newest_value))
+# Printing first 6 results:
+select(data_world_wide, Country.Name, rank_pop_living_slums) %>% head(.) 
 ```
 
-We can also ask: _In which position is Uruguay?_
+We can also ask: _In which position is Ecuador?_
 
 ```{r}
-filter(data_poverty, Country.Name=="Uruguay") %>% select(rank)
+filter(data_world_wide, Country.Name=="Ecuador") %>% select(rank_pop_living_slums)
 ```
 
 
@@ -554,12 +604,25 @@ Other questions that we maybe interested in aswered: _What is the value for whic
 Percentile 10th is the answer:
 
 ```{r}
-quantile(data_poverty$newest_value, probs=.1, na.rm = T)
+quantile(data_world_wide$pop_living_slums, probs=.1, na.rm = T)
 ```
 
 Working on the opposite: _What is the value for which I get the bottom 10% of highest values?_
 
-Percentile 90th is the answer, `quantile(data_poverty$newest_value, probs=.1, na.rm = T)`. We can filter all the cases above this value
+Percentile 90th is the answer, `quantile(data_world_wide$pop_living_slums, probs=.9, na.rm = T)`. We can filter all the cases above this value.
+
+#### Percentile in Scoring Data
+
+There are two chapters which uses this concept 
+
+* <a href="http://livebook.datascienceheroes.com/scoring/scoring.html" target="blank">Data Scoring</a>.
+* <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html" target="blank">Gain and Lift Analysis</a>.
+
+The basic idea is, we develop a predictive model which predict a binary variable (`yes`/`no`). We need to score new cases, for example to use in a marketing campaign, the question to answer is:
+
+_What is the score value to suggest to sales people in order to capture 50% of potential new sales?_ The answer comes from a combination of percentile analysis on the scoring value, plus the cummulative analysis of current target.
+
+<img src="gain_curve.png" alt="Model performance gain curve" width="300px">
 
 
 <br>
@@ -572,7 +635,9 @@ For a better definition, please go to the Wikipedia article (Ref. [4]).
 Quoting Wikipedia (Ref. [4]):
 
 > half of the world's wealth belongs to the top 1%,
+
 > top 10% of adults hold 85%, while the bottom 90% hold the remaining 15% of the world's total wealth,
+
 > top 30% of adults hold 97% of the total wealth.
 
 Just as we did before, from 3rd sentence we can state that: _"3% of total wealth is distributed to 70% of adults."_
@@ -581,10 +646,6 @@ The metrics `top 10%` and `top 30%` are the quantiles `0.1` and `0.3`. The wealt
 
 <br>
 
-### Final toughts
-
-
-<br>
 
 ### References
 
