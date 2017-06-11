@@ -4,9 +4,35 @@ knitr::opts_chunk$set(out.width="400px", dpi=120)
 knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 ```
 
-# The Voice of the Numbers: Profiling Data
+# Profiling Data
+
+> The voice of the numbers. <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer and novelist. 
+
+The data we explore could be like Egyptian hieroglyphs without a correct interpretation. This chapter will cover with bunch of functions, a complete data profiling. This should be the entry step in a data project, so we can start knowing the correct data types, numerical distributions, anomaly cases. 
+
+It also focus on the extraction of semantical conclusion, useful when writing a report for non-technical people. 
 
 
+**What are we going to review in this chapter?**
+
+* **Data set** profiling:  
+  - Getting metrics like total rows, columns, data types, zeros, missing values.
+  - How each of the last items impact on different analysis.
+  - How to quickly filter and operate on -and with- them, to clean the data.
+* **Univariate analysis in categorical variable**: 
+  - Frequency, percentage, cummulative value. Colorful plots. 
+* **Univariate analysis in numerical variable**: 
+  - Percentile, dispersion, standard deviation, mean, top and bottom values.
+  - Percentile vs. quantile vs. quartile.
+  - Kurtosis, skewness, inter quartile range, variation coefficient.
+  - Plotting distributions. 
+
+
+
+
+
+
+<br>
 
 ## What is this about?
 
@@ -14,7 +40,7 @@ Quantity of zeros, NA, Inf, unique values; as well as the data type may lead to 
 
 
 ```{r lib, results="hide", message=FALSE}
-## Loading funModeling !
+## Loading funModeling!
 library(funModeling)
 library(dplyr)
 data(heart_disease)
@@ -114,7 +140,7 @@ colnames(heart_disease)
 
 ## Profiling categorical variable
 
-_Make sure you have the latest funModeling version (>= 1.3)._
+_Make sure you have the latest 'funModeling' version (>= 1.3)._
 
 Frequency or distribution analysis is made simple by the `freq` function. It retrieves the distribution in a table and a plot (by default) which shows the distribution in absolute and relative numbers.
 
@@ -129,13 +155,36 @@ As well as in the remaining `funModeling` functions, if `str_input` is missing i
 ```{r, eval=F}
 freq(data=heart_disease)
 ```
-<br>
+ 
 
-Also, as the other plot functions in the package, if there is the need of exporting plots, add the `path_out` parameter (it will create the folder if it's not created yet)
+If we only want to print the table, and excluding the plot, set `plot` parameter to `FALSE`.
+Also `freq` example can handle a **single variable** as an input. 
+By _default_, `NA` values **are considered** in both the table and the plot, if it is needed to excluded the `NA`, set `na.rm = FALSE`.
+Both examples in the following line: 
+
+```{r, eval=F}
+freq(data=heart_disease$thal, plot = FALSE, na.rm = FALSE)
+```
+
+If only one variable is provided, `freq` returns the printed table so it is easy to perform some calculations based on the variables it provides. 
+* For example, to print the categories which represent most of the 80% of the share (based on `cumulative_perc < 80`). 
+* To get the categories belonging to the **long tail**, i.e. filtering by `percentage < 1`, retrieving those categories appearing less than 1% of the times.
+
+Also, as the other plot functions in the package, if there is the need of exporting plots, add the `path_out` parameter (it will create the folder if it's not created yet).
 
 ```{r, eval=F}
 freq(data=heart_disease, path_out='my_folder')
 ```
+
+#### Analysis
+
+The output is ordered by the `frequency` variable. So it allow to quickly analyze what are the most frequent categories, and how much share they represent (`cummulative_perc` variable). In general terms, we as human beings like order, if the variable weren't ordered, our eyes will start moving over all the bars to do the comparison, putting in our brains every bar in perspective to the other bars.
+
+Check the difference, same data input, first without order, second with order:
+
+<img src="profiling_text_variable.png" alt="Giving order to a variable" width="450px">
+
+Most of the times, there are just a few categories which appear most of the time. 
 
 A more complete analysis in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Descriptive Stats</a>.
 
@@ -166,7 +215,7 @@ The other information is pretty similar to `freq` function, returns between parh
 
 ## Profiling numerical variable
 
-Complete...
+TODO: Complete...
 
 If you don't want to know how the data is calculated, jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
 
@@ -294,7 +343,7 @@ Next function is `profiling_num`, which takes a data frame and retrievea _big_ t
 
 The idea of the following table is to give to the user a **full set of metrics**, for then, she or he can decide which ones to pick for the study.
 
-Note: Every metric has a lot of statistical theory behind it. Here we'll be covering just a tiny and **oversimplified** approach to introduce the indicators. 
+Note: Every metric has a lot of statistical theory behind it. Here we'll be covering just a tiny and **oversimplified** approach to introduce the concepts. 
 
 
 ```{r, eval=FALSE}
@@ -308,9 +357,9 @@ profiling_num(data_world_wide)
 
 Each indicator has _its raison d'être_:
 
-* `variable`:Variable name
+* `variable`:Variable name.
 
-* `mean`: The well known mean or average
+* `mean`: The well known mean or average.
 
 * `std_dev`: Standard deviation, or the , a classical measure of **dispertion** or **spread** around the mean value. A value around `0` means almost no variation (thus it seems more like a constant), on the other side is more difficult to set what _high_ is, we can tell that the higher the more spread. 
 _Chaos may look like infinite standard variation_. The unit is the same as the mean, so it can be compared.
@@ -323,7 +372,7 @@ _Chaos may look like infinite standard variation_. The unit is the same as the m
 Check in next plots example, `pop_living_slums` is close to 0 ("equally" distributed), `poverty_headcount_1.9` is positive (tail on the right), and `SI.DST.04TH.20` is negative (tail on the left). The further the skewness is from 0, the more likely the disitrubtion is to have **outliers**. 
 
 * `kurtosis`: It pays attention to the distribution **tails**, keeping it simple, a higher number may indicate the presence of outliers (just we'll see later on the variable `SI.POV.URGP` holding an outlier around value `50`.
-For a complete skewness and kurtosis review, check Ref [1], [2].
+For a complete skewness and kurtosis review, check Ref. [1], [2].
 
 * `iqr`: Interquartile Range, it is the result of looking at percentile `0.25` and `0.75`. It indicates,  in the same variable unit, the dispertion length of 50% of the values. The higher, the more sparse the variable is.
 
@@ -338,38 +387,97 @@ The `range_80` is the same as the `range_98` but having removed bottom and top `
 
 #### Profiling numerical variable by plotting
 
-Other function coming in `funModeling` is `plot_num`, which takes a data set and plot the distribution of every numerical variable (excluding automatically the non-numerical ones)
+Other function coming in `funModeling` is `plot_num`, which takes a data set and plot the distribution of every numerical variable, automatically excluding the non-numerical ones.
 
 ```{r, profiling numerical variable with hisotrograms}
 plot_num(data_world_wide)
 ```
 
+We can adjust the number of bars used in the plot changing setting the `bins` parameter, (default value is set to 10). For example: `plot_num(data_world_wide, bins = 20)`
 
 
 ---
 
+<br>
+
 ## The magic of percentiles 
 
-Percentile is such a crucial concept in data science, that we are going to have a deep cover in the book. It consider each observation in terms of the others. An isolated number may not be meaningful, but when it is compared to the others, the distribution concept appear.
+Percentile is such a crucial concept in data analysis, that we are going to have a deep cover in the book. It consider each observation in terms of the others. An isolated number may not be meaningful, but when it is compared to the others, the distribution concept appear.
 
 For example, a person having 30-years-old, is it high
+TODO: complete
 
 It is used in profiling as well as evualating the performance of a predictive model.
 
 #### How to calculate it?
 
-Altough there are several methods to get the percentile, i.e. based on interpolations, the easiest method is to order ascendently the variable, pick the percentile we want, for example 80% , and then to see _what is the maximum value if we want to choose the 80% of the ordered population._ If we were analyzing salary variable, we'll be able to say: _"80% of employees earn as much as $100."_
+There are several methods to get the percentile, i.e. based on interpolations, the easiest method is to order ascendently the variable, pick the percentile we want, for example 75% , and then see _what is the maximum value if we want to choose the 75% of the ordered population._
+
+Now we are going to use the technique of keeping an small sample, so we can have the maximum control over _what is going on_ behing the calculus.
+
+Let's keep with random 10 countries, and print the vector of `rural_poverty_headcount`, which is the variable we are going to use.
+
+```{r}
+data_sample=filter(data_world_wide, Country.Name %in% c("Kazakhstan", "Zambia", "Mauritania", "Malaysia", "Sao Tome and Principe", "Colombia", "Haiti", "Fiji", "Sierra Leone", "Morocco")) %>% arrange(rural_poverty_headcount)
+
+select(data_sample, Country.Name, rural_poverty_headcount)
+```
+
+Please note that the vector is ordered only for didactic purposes. _Remeber from last section? Our eyes likes order._ 
+
+Now we apply  the `quantile` function on variable `rural_poverty_headcount` (is the percentage of the rural population living below the national poverty lines): 
+
+```{r}
+quantile(data_sample$rural_poverty_headcount)
+```
+
+**Analysis:**
+
+* **Percentile 50%:** 50% of the countries (5 of them) have a `rural_poverty_headcount` below `51.7`. We can check this in last table, these countries are: Fiji, Colombia, Morocco, Kazakhstan, Malaysia.
+* **Percentile 25%:** 25% of the countries are below 20.87. Here we can see an interpolation since 25% represents ~ 2.5 countries. If we use this value to filter the countries, we'll get 3 countries:, Morocco, Kazakhstan, Malaysia.
+
+More info about the different types of quantile, and its interpolation: `help("quantile")`.
 
 #### Getting semantical descriptions
 
-The percentile is is based on two concepts, the numerical variable value which was previous ordered, and the population percentage. 
-For example, in the data we're analyzing we got that percentile `.50` (which is also the `median`), was: 6 -_this 6 is a percentage in our data_. 
+From last example we can state that: 
 
-Thus we can state: _"Half of the countries have a maximum of 6% of poverty."_, or, _"Half of the countries have as much as 6% of poverty."_
+* _"Half of the countries have as much as 51.7% of rural poverty."_
+* _"Three quarters of the countries have a maximum of 64.4% regarding its rural poverty"_ The three quarters is regarding the countries ordered ascendantly.
+
+We can also think **using the opposite**: 
+
+* _"A quarter of the countries that exhibit the highest rural poverty values, have a percentage of at least 64.4%."_
+
+
+#### Calculating custom quantiles 
+
+Commonly we want to calculate certain quantiles. The example variable will be the `gini_index`.
+
+**What is the Gini index?**
+It is a measure of income or wealth inequality.
+* A Gini coefficient of **zero** expresses **perfect equality**, where all values are the same (for example, where everyone has the same income). 
+* A Gini coefficient of **1** (or 100%) expresses **maximal inequality** among values (e.g., for a large number of people, where only one person has all the income or consumption, and all others have none, the Gini coefficient will be very nearly one).
+
+Source: https://en.wikipedia.org/wiki/Gini_coefficient
+
+**Example in R:**
+
+If we want to get the 20, 40, 60 and 80th quantile of the Gini index variable, we use again the `quantile` function. 
+
+The `na.rm=TRUE` parameters is necessary if we have empty values, like in this case:
+
+```{r, warning=FALSE}
+## Also we can get multiple quantiles at once:
+p_custom=quantile(data_world_wide$gini_index, probs = c(0.2, 0.4, 0.6, 0.8), na.rm=TRUE)
+p_custom
+```
+
 
 #### Indicating where most of the values are
 
-In descriptive statistics we want to descrbibe in general terms, the population. We can speak about ranges using two percentiles, let's take the percentiles 10th (`0.075`) and the 90th (`54.4`):
+In descriptive statistics we want to describe in general terms, the population. We can speak about ranges using two percentiles, let's take the percentiles 10 and 90th to describe the 80% of the populuation.
+
 
 _The poverty ranges from 0.075% to 54.4% in 80% of the countries._ 80% because we did 90th-10th, focusing on the middle of the population.
 
@@ -377,9 +485,9 @@ If we consider the 80% as the majority of the population, then we could say: _"N
 
 We looked at the 80% of the population, which seems a good number to describe where most of the cases are. We could also have used the 90% range (pecentile 95th - 0.5th). 
 
-#### Is it realed to quartile?
+#### Is percentile realed to quartile?
 
-**Quartile:** is a formal name to the 25, 50, and 75th percentile (quarters or Q). If we look at the 50% of the population, we need to substract the 3rd quartile (or percentile 75th) to 1st quartile (percentile 25th), and we get where 50% of data in concentrated, also known as **inter quartile range**, or IQR.
+**Quartile:** is a formal name to the 25, 50, and 75th percentile (quarters or 'Q'). If we look at the 50% of the population, we need to substract the 3rd quartile (or percentile 75th) to 1st quartile (percentile 25th), and we get where 50% of data in concentrated, also known as **inter quartile range**, or IQR.
 
 
 Percentile vs. quantile vs. quartile
@@ -392,23 +500,9 @@ Percentile vs. quantile vs. quartile
 4 quartile = 1 quantile = 100 percentile
 ```
 
-Credit: <a href="https://stats.stackexchange.com/questions/156778/percentile-vs-quantile-vs-quartile" target="blank">https://stats.stackexchange.com/questions/156778/percentile-vs-quantile-vs-quartile</a>
+Credits Ref. [3].
 
-#### Calculating quantiles 
-
-If we want to get the 25th quantile, there is the `quantile`:
-
-```{r, warning=FALSE}
-## na.rm=T is necessary if we have null values, like we have in this case
-p_25=quantile(data_poverty$newest_value, probs = 0.25, na.rm=T)
-p_25
-
-## Also we can get multiple quantiles at once:
-p_quartile=quantile(data_poverty$newest_value, probs = c(0.25, 0.5, 0.75), na.rm=T)
-p_quartile
-```
-
-#### Visuallzing percentiles
+#### Visualizing percentiles
 
 Plotting an histogram alongisde the places where each percentile is, can help to understand the concept:
 
@@ -453,7 +547,6 @@ filter(data_poverty, Country.Name=="Uruguay") %>% select(rank)
 ```
 
 
-
 #### Top and bottom 'X'% concepts
 
 Other questions that we maybe interested in aswered: _What is the value for which I get the top 10% of lowest values?_
@@ -469,27 +562,27 @@ Working on the opposite: _What is the value for which I get the bottom 10% of hi
 Percentile 90th is the answer, `quantile(data_poverty$newest_value, probs=.1, na.rm = T)`. We can filter all the cases above this value
 
 
+<br>
 
-#### Using percentiles to spot and remove outliers
+#### Case Study: Distribution of wealth
 
-Percentiles can be used to spot outlier in univariate analysis, that is, considering the extreme values for each variable at a time.
+The distribution of wealth is similar to Gini index, it is focused on unequallity. It measures owner assets (which is different from income), making the comparisson across countries more even to what people can adqcuire according to the place where she or he live. 
+For a better definition, please go to the Wikipedia article (Ref. [4]).
 
-Latelty we describe the general or "normal" population using the inter quartile range. If something is normal, then there must be cases that are _abnormal_. **When we define the normal, the abnormal concept emerges as its opposite.**
+Quoting Wikipedia (Ref. [4]):
 
-```{r}
-## Also we can get multiple quantiles at once:
-outlier_thresholds=quantile(data_poverty$newest_value, probs = c(0.01, 0.1, 0.9, 0.99), na.rm=T)
-outlier_thresholds
-```
+> half of the world's wealth belongs to the top 1%,
+> top 10% of adults hold 85%, while the bottom 90% hold the remaining 15% of the world's total wealth,
+> top 30% of adults hold 97% of the total wealth.
 
-Given the skewed shape of the variable distribution, in this case it _could_ makes sense to consider all values above the top 1% (value `newest_value > 76.15`). 
+Just as we did before, from 3rd sentence we can state that: _"3% of total wealth is distributed to 70% of adults."_
 
-This is the approach shown in the <a href="http://livebook.datascienceheroes.com/data_preparation/outliers_treatment.html" target="blank">Outliers treatment</a> chapter.
+The metrics `top 10%` and `top 30%` are the quantiles `0.1` and `0.3`. The wealth is the numeric variable.
 
+<br>
 
-### Comparing the median and mean
+### Final toughts
 
-In skewed distributions, like the one 
 
 <br>
 
@@ -499,4 +592,10 @@ In skewed distributions, like the one
  https://www.spcforexcel.com/knowledge/basic-statistics/are-skewness-and-kurtosis-useful-statistics
 
 * [2]  Engineering Statistics Handbook, (2013, Oct 30), _Measures of Skewness and Kurtosis_, Retrieved from http://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm
+
+* [3] stats.stackexchange.com,  (2015, Jun 13), _Percentile vs quantile vs quartile_, Retrieved from <a href="https://stats.stackexchange.com/questions/156778/percentile-vs-quantile-vs-quartile" target="blank">https://stats.stackexchange.com/questions/156778/percentile-vs-quantile-vs-quartile</a>.
+
+* [4] Wikipedia, (2017, May 15), _Distribution of wealth_, Retrieved from <a href="https://en.wikipedia.org/wiki/Distribution_of_wealth" target="blank">https://en.wikipedia.org/wiki/Distribution_of_wealth</a>.
+
+* [5] Credit Suisse, (2013, Oct), _Global Wealth Report 2013_, <a href="https://publications.credit-suisse.com/tasks/render/file/?fileID=BCDB1364-A105-0560-1332EC9100FF5C83" target="blank">https://publications.credit-suisse.com/tasks/render/file/?fileID=BCDB1364-A105-0560-1332EC9100FF5C83</a>.
 
