@@ -8,28 +8,27 @@ knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 
 > The voice of the numbers. <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer, human being and novelist.
 
-The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling, the very first step in a series of iterative stages, in the persuit of finding what the data want to tell us, if we are the patient enough to listen to. 
+The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling is the very first step in a series of iterative stages in the persuit of finding what the data want to tell us, if we are patient enough to listen to. 
 
-This chapter will cover with bunch of functions, a complete data profiling. This should be the entry step in a data project, so we can start knowing the correct data types, exploring distributions in numerical and catgorical variables,.
+This chapter will cover, with bunch of functions, a complete data profiling. This should be the entry step in a data project so we can start by knowing the correct data types, exploring distributions in numerical and categorical variables.
 
-It also focus on the extraction of semantical conclusion, useful when writing a report for non-technical people. 
-
+It also focuses on the extraction of semantical conclusions, useful when writing a report for non-technical people. 
 
 **What are we going to review in this chapter?**
 
 * **Data set health status**:  
   - Getting metrics like total rows, columns, data types, zeros, missing values.
-  - How each of the last items impact on different analysis.
+  - How each of the previous items impacts on different analysis.
   - How to quickly filter and operate on -and with- them, to clean the data.
 * **Univariate analysis in categorical variable**: 
   - Frequency, percentage, cummulative value. Colorful plots. 
-* **Univariate analysis in numerical variable**: 
+* **Univariate analysis in numerical variables**: 
   - Percentile, dispersion, standard deviation, mean, top and bottom values.
   - Percentile vs. quantile vs. quartile.
   - Kurtosis, skewness, inter quartile range, variation coefficient.
   - Plotting distributions. 
   - Complete **case study** based on Data World. Data Preparation and data analysis.
-* A complete analysis and interpretation of **percentiles** (Annex 1).
+* A complete analysis and interpretation of **percentiles** (_Annex 1_).
 
 <br>
 
@@ -60,9 +59,9 @@ data(heart_disease)
 
 ### Checking missing values, zeros, data type and unique values
 
-Probably one of the first steps when we got a new data set to analyze, is to know if there are missing values (`NA` in **R**), and  the data type.
+Probably one of the first steps when we get a new data set to analyze is to know if there are missing values (`NA` in **R**), and  the data type.
 
-The `df_status` function coming in `funModeling` can help us showing these numbers in relative and percentual values.  Also it retrieves the infinite and zeros statistics.
+The `df_status` function coming in `funModeling` can help us by showing these numbers in relative and percentual values.  Also it retrieves the infinite and zeros statistics.
 
 
 ```{r df_status, eval=FALSE}
@@ -79,7 +78,7 @@ df_status(heart_disease)
 
 ### Why are these metrics important?
 
-* **Zeros**: Variables with **lots of zeros** may be not useful for modeling, and in some cases it may dramatically bias the model.
+* **Zeros**: Variables with **lots of zeros** may not be useful for modeling, and in some cases it may dramatically bias the model.
 * **NA**: Several models automatically exclude rows with NA (**random forest**, for example). As a result, the final model can be biased due to several missing rows because of only one variable. For example, if the data contains only one out of 100 variables with 90% of NAs, the model will be training with only 10% of original rows.
 * **Inf**: Infinite values may lead to an unexpected behavior in some functions in R.
 * **Type**: Some variables are encoded as numbers, but they are codes or categories, and the models **don't handle them** in the same way.
@@ -117,7 +116,7 @@ arrange(my_data_status, -p_zeros) %>% select(variable, q_zeros, p_zeros)
 
 <br>
 
-The same reasing applies when we want to remove -or keep- those variables above or below a certain threshold. Please check the missing values chapter to get more info about the implications when dealing with variables containing missing values.
+The same reaosing applies when we want to remove -or keep- those variables above or below a certain threshold. Please check the missing values chapter to get more info about the implications when dealing with variables containing missing values.
 
 <br>
 
@@ -194,7 +193,7 @@ The output is ordered by the `frequency` variable. So it allow to quickly analyz
 
 Check the difference, same data input, first without order, second with order:
 
-<img src="profiling_text_variable.png" alt="Giving order to a variable" width="450px">
+<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="450px">
 
 Most of the times, there are just a few categories which appear most of the time. 
 
@@ -437,9 +436,17 @@ We can adjust the number of bars used in the plot changing setting the `bins` pa
 
 ---
 
-## Final toughts
+<br>
 
+## Final thoughts
+ 
+Many numbers have appeared here so far, -and even more in the percentile appendix below-. The important point is for you to find the right approach to explore your data. It can come from other metrics or other approaches.
 
+The functions `df_status`,  `describe`, `freq`, `profiling_num` and `plot_num` can be run at the beginning of a data project.
+
+Regarding the **normal and abnormal behavior** on data, it's important to study both. To describe the data set in general terms, then we should exclude the extreme values, for example with `range_98` variable. The mean should decrease after the exclusion.
+
+These analysis were **univariate**, that is, without taking into account other variables (**multivariate** analysis). This will be part of this book later on. Meanwhile the correlation between input (and output) variables, you can check the <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/correlation.html" target="blank">Correlation</a> chapter.
 
 
 ---
@@ -563,7 +570,7 @@ ggplot(data_world_wide, aes(poverty_headcount_1.9)) + geom_histogram() +
 
 ```
 
-Let's say if we sum all the grey bars before the 25th percentile, it will be as tall as the sum of all the grey bars after the 75th percentile. 
+Let's say if we sum all the grey bars before the 25th percentile, it will be around the height of the grey bars sum after the 75th percentile. 
 
 In last plot the IQR appears between the first and the last dashed line. Contains the 50% of the population.
 

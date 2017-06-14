@@ -13,16 +13,16 @@ knitr::opts_knit$set(base.dir = "data_preparation")
 
 > Everything changes and nothing stands still. - Heraclitus, (535 – 475 BC), pre-Socratic Greek philosopher.
 
-So variables do. 
+So do variables. 
 
-As time goes by, variables may change its values as well, making the time-analysis crucial in order to create a predictive model. Avoiding the use of **effects** as **causes**.
+As time goes by, variables may change their values, making the time-analysis crucial in order to create a predictive model. Avoiding the use of **effects** as **causes**.
 
 <br>
 
 **What are we going to review in this chapter?**
 
 * Concepts of filtering information before the event to predict.
-* How to analyze and prepare variables that increase -or decrease- its value to infinity (and beyond).
+* How to analyze and prepare variables that increase -or decrease- their value to infinity (and beyond).
 
 <br>
 
@@ -183,13 +183,13 @@ But this also happens in _"real life"_, like the case when we write a data scien
 
 ### Final thoughts
 
-Defining a time frame to create a training and validation set **is not a free-lunch** when the data is dynamic, as long as deciding how to handle variables that change over time. That's why the **Exploratory Data Analysis** is important in order to get in touch with the data we're analyzing. 
+Defining a time frame to create a training and validation set **is not a free-lunch** when the data is dynamic, as well as deciding how to handle variables that change over time. That's why the **Exploratory Data Analysis** is important in order to get in touch with the data we're analyzing. 
 
-Many topics are inter-conected, such is the case of _letting the data to develop their behavior_, with the model perfomance <a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>. 
+Many topics are inter-connected, as is the case of _letting the data develop their behavior_, with the model perfomance <a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>. 
 
-The key concept here: **how to handle time in predictive modeling**. It's a good opportunity to ask: _How would it be possible to addresshis time issues with automatic systems?_ 
+The key concept here: **how to handle time in predictive modeling**. It's a good opportunity to ask: _How would it be possible to address this time issues with automatic systems?_ 
 
-Human knowledge is crucial in these contexts to define thresholds based on the experience, intuition and some calculations.
+Human knowledge is crucial in these contexts to define thresholds based on experience, intuition and some calculations.
 
 <br>
 
