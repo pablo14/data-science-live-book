@@ -6,62 +6,133 @@ knitr::opts_knit$set(base.dir = "data_preparation")
 
 # Treatment of outliers
 
+When we define something as "normal", the "abnormal" concept emerges as its opposite. 
 
-## What is this about?
+For example, consider the followig distribution:
+  
+```{r dealing_with_outliers, fig.height=2, fig.width=3}
+df_1=data.frame(var=round(10000*rbeta(1000,0.15,2.5)))
 
-`prep_outliers` function tries to automatize as much as it can be outliers preparation. It focus on the values that heavily influence the mean.
-It sets an `NA` or stops at a certain value all outliers for the desired variables.
+library(ggplot2)
+
+ggplot(df_1, aes(var, fill=var)) + geom_histogram(bins=20) + theme_light()
+```
+
+
+The variable is skewed to the left, showing some outliers points on the right. We want to _deal with them_
+(`r emo::ji("sunglasses")`). So the question appears: _Where to set the threshold?_ Based on intuition, it can be at highest 1% or we can analyze how much the `mean` change after removing top 1%.
+
+Both cases could be right. In fact taking other number as the threshold (i.e. 3% or 0.1%), may be right too. Let's visualize them:
+
+```{r dealing_with_outliers_4, fig.height=2, fig.width=3}
+## Calculating the percentiles top 3% and top 1%
+percentile_var=quantile(df_1$var, c(0.97, 0.99, 0.999), na.rm = T)
+df_p=data.frame(value=percentile_var, percentile=c("a_97th", "b_99th", "c_99.9th"))
+
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
+geom_vline(data=df_p, 
+aes(xintercept=value, 
+colour = percentile),
+show.legend = TRUE, linetype="dashed") + theme_light()
+```
+
+To understand more about percentiles, please go to the _Profiling Appendix_.
+
+Now, we'll keep with top 1% (percentile 99th), as the threshold so all the points after it will be flag as outlier:
+  
+```{r dealing_with_outliers_2, fig.height=3, fig.width=4, echo=FALSE}
+
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
+  geom_rect(aes(xmin = df_p$value[2], xmax = Inf, ymin = -Inf, ymax = Inf), fill = "pink", alpha = 0.01)+
+  geom_vline(data=df_p, 
+             aes(xintercept=value[2], 
+                 colour = percentile[2]),
+             show.legend = F, linetype="dashed") + theme_light() 
+```
+
+
+Well, a conceptual point here is, when we define what abnormal (or anomaly) is, the normal concept emerges as its opposite. A property of the 
+
+
+```{r dealing_with_outliers_3, fig.height=3, fig.width=4, echo=FALSE,tidy=TRUE}
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
+  geom_rect(aes(xmin = -Inf, xmax = df_p$value[2], ymin = -Inf, ymax = Inf), fill = "lightgreen", alpha = 0.01)+
+  geom_vline(data=df_p, 
+             aes(xintercept=value[2], 
+                 colour = percentile[2]),
+             show.legend = F, linetype="dashed") + theme_light() 
+```
+
+
+
+
+Now keep with one The hard thing to do is to define where the normal and abnormal separate. There are several approaches to handle this, based on different criteria. By now this chapter is focused on the outlier treatment of bottom and top X%.
+
+<br>
+  
+**What are we going to review in this chapter?**
+
 
 <br>
 
-**Model building**: Some models such as random forest and gradient boosting machines tend to deal better with outliers, but some noise will affect results anyway. 
+## What is this about?
+
+`prep_outliers` function present in `funModeling` package can help us to automatize as much as it can be the outliers preparation. It focus on the values that heavily influence the mean.
+It sets an `NA` or _stops_ at a certain value all outliers for the desired variables.
+
+<br>
+
+**Model building**: Some models such as random forest and gradient boosting machines tend to deal better with outliers, but some noise may affect the results anyway. 
 
 **Communicating results:** If we need to report the variables used in the model, we'll end up removing outliers to not see an histogram with only one bar, and/or show not a biased mean. 
 
 It's better to show a non-biased number than justifying the model _will handle_ extreme values.
 
 **Type of outliers:** 
-
+  
 * Numerical: For example the ones which bias the mean.
-* Categorical: Having a variable in which the dispersion of categories is quite high (high cardinallity). For example: postal code.
+* Categorical: Having a variable in which the dispersion of categories is quite high (high cardinallity). For example: postal code. More about dealing with outliers in categorical variable in the <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">High Cardinality Variable in Descriptive Stats</a> chapter.
 
 
 ```{r lib, results="hide", message=FALSE}
-## Loading funModeling !
+## Loading funModeling ! Make sure to have the latest version.
 library(funModeling)
 data(heart_disease)
 ```
 
 
-**Outlier threshold**: The method to detect them is based on the percentile, flagging as an outlier if the value is on the top X % (commonly 0.5%, 1%, 2%). Setting the parameter `top_percent` in `0.01` will flag all values on the top 1%.
+**Outlier threshold**: The method to detect them is based on the percentile, flagging as an outlier if the value is on the top X % (commonly 0.5%, 1%, 1.5%). Setting the parameter `top_percent` in `0.01` will treat all values on the top 1%.
 
 Same logic goes for the lowest values, setting parameter `bottom_percent` in 0.01 will flag as an outlier the lowest 1% of all values.
 
-**These models are highly affected by a biased mean** :cry:: linear regressions, logistic regressions, kmeans, decision trees. Random forest deals better with outliers. 
- 
+**These models are highly affected by a biased mean**: linear regressions, logistic regressions, kmeans, decision trees. Random forest deals better with outliers. 
+
 **Automatization**: `prep_outliers` skips all factor/char columns, so it can receive a whole data frame, removing outliers by finally, returning a the _cleaned_ data.
 
 <br>
- 
+  
 This function covers two typical scenarios (parameter `type`):
 
 * Case 1: Descriptive statistics / data profiling
 * Case 2: Data for the predictive model
 
 <br>
-
-## Case 1: `type='set_na'`
+  
+## Case 1: Data profiling: (`type='set_na'`)
 
 In this case all outliers are converted into `NA`, thus applying most of the descriptive functions (max, min, mean) will return a **less-biased mean** value - with the proper `na.rm=TRUE` parameter.
 
 <br>
-
-## Case 2: `type='stop'`
+  
+## Case 2: Case 2: Data for the predictive model (`type='stop'`)
 
 The previous case will cause that all rows with `NA` values will be lost when a machine learning model is trained. To avoid this, but keep the outliers controlled, all values flagged as outlier will be converted to the threshold value.
 
 **Key notes**: 
-
+  
 * Try to think variables treatment (and creation) as if you're explaining to the model. Stopping variables at a certain value, 1% for example, you are telling to the model: _consider all extremes values as if they are on the 99% percentile, this value is already high enough_
 * Models try to be noise tolerant, but you can help them by treat some common issues.
 
@@ -131,7 +202,7 @@ summary(df$var1)
 # after, the max value is 7
 summary(df_treated4$var1)
 
- 	
+
 ```
 
 <br>
