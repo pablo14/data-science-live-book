@@ -108,7 +108,7 @@ The implementation in R can be found in <a href="https://cran.r-project.org/web/
 
 Let's plot a non-linear relationship, directly based on a function (negative exponential), and print the MIC value.
 
-```{r mic_non_linear_relationship, message=FALSE,  fig.width=4, fig.height=3}
+```{r mic_non_linear_relationship, message=FALSE}
 x=seq(0, 20, length.out=500)
 df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
 ggplot(df_exp, aes(x=x, y=y)) + geom_line(color='steelblue') + theme_minimal()

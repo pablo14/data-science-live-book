@@ -5,6 +5,7 @@
   * [Correlation](exploratory_data_analysis/correlation.md)
   * [Annex 1: Percentiles](exploratory_data_analysis/annex_1_profiling_percentiles.md)
 * [Data Preparation]()
+  * [Data Types](data_preparation/data_types.md)
   * [High Cardinality in Descriptive Stats](data_preparation/high_cardinality_descriptive_stats.md)
   * [High Cardinality in Predictive Modeling](data_preparation/high_cardinality_predictive_modeling.md)
   * [Outliers Treatment](data_preparation/outliers_treatment.md)

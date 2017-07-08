@@ -1,6 +1,6 @@
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-knitr::opts_chunk$set(out.width="500px", dpi=120)
+knitr::opts_chunk$set(out.width="600px", dpi=200)
 knitr::opts_knit$set(base.dir = "data_preparation")
 ``` 
 
