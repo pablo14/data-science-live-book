@@ -209,23 +209,12 @@ The following code will show the `visits` depending on `postal_code` transformed
 
 
 ```r
-# creating data -toy- sample 
+ creating data -toy- sample 
 df_pc=data.frame(visits=c(10, 59, 27, 33), postal_code=c("AA1", "BA5", "CG3", "HJ1"), transformation_1=c(1,2,3,4), transformation_2=c(1, 4, 2, 3 ))
 
 # printing table
 knitr::kable(df_pc)
-```
 
-
-
-| visits|postal_code | transformation_1| transformation_2|
-|------:|:-----------|----------------:|----------------:|
-|     10|AA1         |                1|                1|
-|     59|BA5         |                2|                4|
-|     27|CG3         |                3|                2|
-|     33|HJ1         |                4|                3|
-
-```r
 library(gridExtra)
 
 # transformation 1
@@ -239,7 +228,11 @@ plot_2=ggplot(df_pc, aes(x=transformation_2, y=visits, label=postal_code)) +  ge
 grid.arrange(plot_1, plot_2, ncol=2)
 ```
 
-<img src="figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="600px" />
+```
+## Error: <text>:1:11: unexpected symbol
+## 1:  creating data
+##               ^
+```
 
 For sure, nobody does a predictive model with only 4 rows, but the intention of this example is to show how the relationship changes from non-linear (`transformation_1`) to another linear (`transformation_2`).  Making the things easier to the predictive model, as well as explaining the relationship.
 

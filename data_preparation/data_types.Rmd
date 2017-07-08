@@ -162,8 +162,8 @@ The following code will show the `visits` depending on `postal_code` transformed
 * `transformation_1`: Assign a sequence number based on the given order.
 * `transformation_2`: Assign a number based on the amount of `visits`.
 
-```{r, warning=FALSE, fig.width=9, fig.height=3, out.width="600px", message=FALSE}
-# creating data -toy- sample 
+````{r ,handling_data_types, warning=FALSE, fig.width=9, fig.height=3, out.width="600px", message=FALSE}
+ creating data -toy- sample 
 df_pc=data.frame(visits=c(10, 59, 27, 33), postal_code=c("AA1", "BA5", "CG3", "HJ1"), transformation_1=c(1,2,3,4), transformation_2=c(1, 4, 2, 3 ))
 
 # printing table
