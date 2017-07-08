@@ -348,15 +348,15 @@ The solution is to save the cut points when we do data preparation. Then, when w
 
 ### Final thoughts
 
-As we can see, there is no free lunch in discretization or data preparation. How do you think that an _automatic or intelligent system_ will handle all of these situations without human intervention or analysis? 
+As we can see, **there is no free lunch** in discretization or data preparation. How do you think that an _automatic or intelligent system_ will handle all of these situations without human intervention or analysis? 
 
-To be sure, we can delegate some tasks to automatic processes; however, humans are indispensable to monitor and adjust the model, givin the correct input data.
+To be sure, we can delegate some tasks to automatic processes; however, **humans are indispensable** to monitor and adjust the model, giving the correct input data to process.
 
 The assignment of variables as categorical or numerical, the two most used data types varies according to the nature of the data and the selected algorithms as some only support one data type.
 
-The conversion introduces bias to the analysis. A similar case exists when we deal with missing values: <a href="http://livebook.datascienceheroes.com/data_preparation/treating_missing_data.html" target="blank">Handling and Imputation of Missing Data</a>.
+The conversion **introduces some bias** to the analysis. A similar case exists when we deal with missing values: <a href="http://livebook.datascienceheroes.com/data_preparation/treating_missing_data.html" target="blank">Handling and Imputation of Missing Data</a>.
 
-When we work with categorical variables, we can change their distribution by re-arranging the categories according to a target variable in order to better expose their relationship. Converting a non-linear variable relationship, into one linear. 
+When we work with categorical variables, we can change their distribution by re-arranging the categories according to a target variable in order to **better expose their relationship**. Converting a non-linear variable relationship, into one linear. 
 
 <br> 
 
