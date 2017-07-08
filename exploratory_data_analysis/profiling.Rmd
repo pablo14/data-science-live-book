@@ -1,12 +1,12 @@
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_chunk$set(out.width="600px", dpi=200)
 knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 ```
 
 # The voice of the numbers: Profiling Data
 
-<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data" alt="400px">
+<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data" width="300px">
 
 _Image credit:By Binette228 (Own work) [CC BY-SA 3.0, via Wikimedia Commons_
 
@@ -196,7 +196,7 @@ The output is ordered by the `frequency` variable, which quickly analyzes the mo
 
 Check the difference for the same data input, first without order and then with order:
 
-<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="450px">
+<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="600px">
 
 Generally, there are just a few categories that appear most of the time. 
 

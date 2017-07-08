@@ -2,7 +2,7 @@
 
 # The voice of the numbers: Profiling Data
 
-<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data" alt="400px">
+<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data" width="300px">
 
 _Image credit:By Binette228 (Own work) [CC BY-SA 3.0, via Wikimedia Commons_
 
@@ -215,7 +215,7 @@ If you want the distribution for two variables:
 freq(data=heart_disease, str_input = c('thal','chest_pain'))
 ```
 
-<img src="figure/profiling_categorical_variable-1.png" title="plot of chunk profiling_categorical_variable" alt="plot of chunk profiling_categorical_variable" width="400px" />
+<img src="figure/profiling_categorical_variable-1.png" title="plot of chunk profiling_categorical_variable" alt="plot of chunk profiling_categorical_variable" width="600px" />
 
 ```
 ##   thal frequency percentage cumulative_perc
@@ -225,7 +225,7 @@ freq(data=heart_disease, str_input = c('thal','chest_pain'))
 ## 4 <NA>         2       0.66             100
 ```
 
-<img src="figure/profiling_categorical_variable-2.png" title="plot of chunk profiling_categorical_variable" alt="plot of chunk profiling_categorical_variable" width="400px" />
+<img src="figure/profiling_categorical_variable-2.png" title="plot of chunk profiling_categorical_variable" alt="plot of chunk profiling_categorical_variable" width="600px" />
 
 ```
 ##   chest_pain frequency percentage cumulative_perc
@@ -274,7 +274,7 @@ The output is ordered by the `frequency` variable, which quickly analyzes the mo
 
 Check the difference for the same data input, first without order and then with order:
 
-<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="450px">
+<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="600px">
 
 Generally, there are just a few categories that appear most of the time. 
 
@@ -634,7 +634,7 @@ Another function in `funModeling` is `plot_num` which takes a dataset and plots 
 plot_num(data_world_wide)
 ```
 
-<img src="figure/profiling numerical variable with histograms-1.png" title="plot of chunk profiling numerical variable with histograms" alt="plot of chunk profiling numerical variable with histograms" width="400px" />
+<img src="figure/profiling numerical variable with histograms-1.png" title="plot of chunk profiling numerical variable with histograms" alt="plot of chunk profiling numerical variable with histograms" width="600px" />
 
 We can adjust the number of bars used in the plot by changing the `bins` parameter (default value is set to 10). For example: `plot_num(data_world_wide, bins = 20)`.
 

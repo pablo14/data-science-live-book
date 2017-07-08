@@ -16,7 +16,7 @@ This contains many indicators regarding world development. Regardless the profil
 
 The original data source is: <a href="http://databank.worldbank.org/data/reports.aspx?source=2&Topic=11#" target="blank">http://databank.worldbank.org</a>. There you will find a data dictionary that explains all the variables.
 
-In this section we'll be using a table which is already prepared for analysis. The complete step-by-step data preparation is in <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html target="blank">Profiling</a> chapter.
+In this section we'll be using a table which is already prepared for analysis. The complete step-by-step data preparation is in <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html" target="blank">Profiling</a> chapter.
 
 Any indicator meaning can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means, then we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
 
@@ -163,7 +163,7 @@ ggplot(data_world_wide, aes(poverty_headcount_1.9)) + geom_histogram() +
              show.legend = TRUE, linetype="dashed") + theme_light()
 ```
 
-<img src="figure/profiling_numerical_variable-1.png" title="plot of chunk profiling_numerical_variable" alt="plot of chunk profiling_numerical_variable" width="400px" />
+<img src="figure/profiling_numerical_variable-1.png" title="plot of chunk profiling_numerical_variable" alt="plot of chunk profiling_numerical_variable" width="600px" />
 
 If we sum all the gray bars before the 25th percentile, then it will be around the height of the gray bars sum after the 75th percentile. 
 

@@ -1,6 +1,6 @@
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=120)
+knitr::opts_chunk$set(out.width="600px", dpi=200)
 knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 ```
 
@@ -20,7 +20,7 @@ This contains many indicators regarding world development. Regardless the profil
 
 The original data source is: <a href="http://databank.worldbank.org/data/reports.aspx?source=2&Topic=11#" target="blank">http://databank.worldbank.org</a>. There you will find a data dictionary that explains all the variables.
 
-In this section we'll be using a table which is already prepared for analysis. The complete step-by-step data preparation is in <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html target="blank">Profiling</a> chapter.
+In this section we'll be using a table which is already prepared for analysis. The complete step-by-step data preparation is in <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html" target="blank">Profiling</a> chapter.
 
 Any indicator meaning can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means, then we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
 
