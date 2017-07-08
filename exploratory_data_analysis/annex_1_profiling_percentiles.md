@@ -34,19 +34,7 @@ We retain the random 10 countries and print the vector of `rural_poverty_headcou
 
 ```r
 data_world_wide=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/data_world_wide.txt", header = T)
-```
 
-```
-## Warning in file(file, "rt"): URL 'https://raw.githubusercontent.com/
-## pablo14/data-science-live-book/master/exploratory_data_analysis/
-## data_world_wide.txt': status was '404 Not Found'
-```
-
-```
-## Error in file(file, "rt"): cannot open connection
-```
-
-```r
 data_sample=filter(data_world_wide, Country.Name %in% c("Kazakhstan", "Zambia", "Mauritania", "Malaysia", "Sao Tome and Principe", "Colombia", "Haiti", "Fiji", "Sierra Leone", "Morocco")) %>% arrange(rural_poverty_headcount)
 
 select(data_sample, Country.Name, rural_poverty_headcount)
