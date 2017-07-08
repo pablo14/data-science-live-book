@@ -10,6 +10,8 @@ Percentile is such a crucial concept in data analysis that we are going to cover
 
 Percentiles are used in profiling as well as evaluating the performance of a predictive model.
 
+<br>
+
 <img src="how_to_calculate_percentiles.png" width="700px" alt="how to calculate percentiles">
 
 <br>
@@ -126,7 +128,7 @@ Credits Ref. [1].
 
 Plotting a histogram alongisde the places where each percentile is can help us understand the concept:
 
-```{r, profiling_numerical_variable, warning=FALSE, message=FALSE}
+```{r, profiling_numerical_variable, warning=FALSE, message=FALSE, fig.height=3, fig.width=4}
 quantiles_var=quantile(data_world_wide$poverty_headcount_1.9, c(0.25, 0.5, 0.75), na.rm = T)
 
 df_p=data.frame(value=quantiles_var, quantile=c("25th", "50th", "75th"))

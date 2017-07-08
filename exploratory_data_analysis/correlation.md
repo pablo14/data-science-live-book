@@ -211,9 +211,9 @@ res_mine_2$MIC
 
 ```
 ##              x    y y_noise_1
-## x         1.00 1.00      0.74
-## y         1.00 1.00      0.74
-## y_noise_1 0.74 0.74      1.00
+## x         1.00 1.00      0.73
+## y         1.00 1.00      0.73
+## y_noise_1 0.73 0.73      1.00
 ```
 
 Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!
