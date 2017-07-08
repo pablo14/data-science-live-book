@@ -2,11 +2,10 @@
 
 # The voice of the numbers: Profiling Data
 
-<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data" width="300px">
+<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data. Image credit: Image credit: By Binette228 (Own work) [CC BY-SA 3.0, via Wikimedia Commons" width="300px">
 
-_Image credit:By Binette228 (Own work) [CC BY-SA 3.0, via Wikimedia Commons_
 
-> The voice of the numbers: <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer and novelist.
+> "The voice of the numbers" <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer and novelist.
 
 The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling is the very first step in a series of iterative stages in the pursuit of finding what the data want to tell us, if we are patient enough to listen. 
 
