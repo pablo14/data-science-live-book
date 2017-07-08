@@ -1,8 +1,4 @@
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=120)
-knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
-```
+
 
 # Annex 1: The magic of percentiles 
 
@@ -35,20 +31,53 @@ Now we are going to use the technique of keeping a small sample so that we can h
 
 We retain the random 10 countries and print the vector of `rural_poverty_headcount` which is the variable we are going to use.
 
-```{r}
-data_world_wide=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/data_world_wide.txt", header = T)
 
+```r
+data_world_wide=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/data_world_wide.txt", header = T)
+```
+
+```
+## Warning in file(file, "rt"): URL 'https://raw.githubusercontent.com/
+## pablo14/data-science-live-book/master/exploratory_data_analysis/
+## data_world_wide.txt': status was '404 Not Found'
+```
+
+```
+## Error in file(file, "rt"): cannot open connection
+```
+
+```r
 data_sample=filter(data_world_wide, Country.Name %in% c("Kazakhstan", "Zambia", "Mauritania", "Malaysia", "Sao Tome and Principe", "Colombia", "Haiti", "Fiji", "Sierra Leone", "Morocco")) %>% arrange(rural_poverty_headcount)
 
 select(data_sample, Country.Name, rural_poverty_headcount)
+```
+
+```
+##             Country.Name rural_poverty_headcount
+## 1               Malaysia                     1.6
+## 2             Kazakhstan                     4.4
+## 3                Morocco                    14.4
+## 4               Colombia                    40.3
+## 5                   Fiji                    44.0
+## 6             Mauritania                    59.4
+## 7  Sao Tome and Principe                    59.4
+## 8           Sierra Leone                    66.1
+## 9                  Haiti                    74.9
+## 10                Zambia                    77.9
 ```
 
 Please note that the vector is ordered only for didactic purposes. _Remeber from the last section? Our eyes like order._ 
 
 Now we apply  the `quantile` function on the variable `rural_poverty_headcount` (the percentage of the rural population living below the national poverty lines): 
 
-```{r}
+
+```r
 quantile(data_sample$rural_poverty_headcount)
+```
+
+```
+##   0%  25%  50%  75% 100% 
+##  1.6 20.9 51.7 64.4 77.9
 ```
 
 **Analysis**
@@ -87,10 +116,16 @@ If we want to get the 20, 40, 60, and 80th quantiles of the Gini index variable,
 
 The `na.rm=TRUE` parameter is necessary if we have empty values like in this case:
 
-```{r, warning=FALSE}
+
+```r
 ## We also can get multiple quantiles at once
 p_custom=quantile(data_world_wide$gini_index, probs = c(0.2, 0.4, 0.6, 0.8), na.rm=TRUE)
 p_custom
+```
+
+```
+## 20% 40% 60% 80% 
+##  32  35  41  46
 ```
 
 
@@ -126,7 +161,8 @@ Credits Ref. [1].
 
 Plotting a histogram alongisde the places where each percentile is can help us understand the concept:
 
-```{r, profiling_numerical_variable, warning=FALSE, message=FALSE}
+
+```r
 quantiles_var=quantile(data_world_wide$poverty_headcount_1.9, c(0.25, 0.5, 0.75), na.rm = T)
 
 df_p=data.frame(value=quantiles_var, quantile=c("25th", "50th", "75th"))
@@ -137,8 +173,9 @@ ggplot(data_world_wide, aes(poverty_headcount_1.9)) + geom_histogram() +
              aes(xintercept=value, 
                  colour = quantile),
              show.legend = TRUE, linetype="dashed") + theme_light()
-
 ```
+
+<img src="figure/profiling_numerical_variable-1.png" title="plot of chunk profiling_numerical_variable" alt="plot of chunk profiling_numerical_variable" width="400px" />
 
 If we sum all the gray bars before the 25th percentile, then it will be around the height of the gray bars sum after the 75th percentile. 
 
@@ -154,7 +191,8 @@ Now the variable will be: _Population living in slums is the proportion of the u
 
 The question to answer: _What are the top six countries with the highest rates of people living in slums?_
 
-```{r}
+
+```r
 library(dplyr)
 
 ## Creating rank variable 
@@ -167,10 +205,26 @@ data_world_wide=arrange(data_world_wide, rank_pop_living_slums)
 select(data_world_wide, Country.Name, rank_pop_living_slums) %>% head(.) 
 ```
 
+```
+##               Country.Name rank_pop_living_slums
+## 1              South Sudan                     1
+## 2 Central African Republic                     2
+## 3                    Sudan                     3
+## 4                     Chad                     4
+## 5    Sao Tome and Principe                     5
+## 6            Guinea-Bissau                     6
+```
+
 We can also ask: _In which position is Ecuador?_
 
-```{r}
+
+```r
 filter(data_world_wide, Country.Name=="Ecuador") %>% select(rank_pop_living_slums)
+```
+
+```
+##   rank_pop_living_slums
+## 1                    57
 ```
 
 
@@ -180,8 +234,14 @@ Other questions that we may be interested in answered: _What is the value for wh
 
 The 10th percentile is the answer:
 
-```{r}
+
+```r
 quantile(data_world_wide$pop_living_slums, probs=.1, na.rm = T)
+```
+
+```
+## 10% 
+##  12
 ```
 
 Working on the opposite: _What is the value for which I get the bottom 10% of highest values?_

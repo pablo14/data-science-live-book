@@ -6,6 +6,10 @@ knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 
 # The voice of the numbers: Profiling Data
 
+<img src="fractal_manderbolt.png" alt="The voice of the numbers: Profiling Data" alt="400px">
+
+_Image credit:By Binette228 (Own work) [CC BY-SA 3.0, via Wikimedia Commons_
+
 > The voice of the numbers: <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer and novelist.
 
 The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling is the very first step in a series of iterative stages in the pursuit of finding what the data want to tell us, if we are patient enough to listen. 
@@ -28,7 +32,6 @@ It also focuses on the extraction of semantic conclusions, which is useful when 
   - Kurtosis, skewness, inter-quartile range, variation coefficient
   - Plotting distributions 
   - Complete **case study** based on Data World, data preparation, and data analysis
-* A complete analysis and interpretation of **percentiles** (_Annex 1_).
 
 <br>
 
@@ -386,6 +389,8 @@ _Chaos may look like infinite standard variation_. The unit is the same as the m
 
 * `p_01`,    `p_05`,    `p_25`,    `p_50`,    `p_75`,    `p_95`,    `p_99`: **Percentiles** at 1%, 5%, 25%, and so on. Later on in this chapter is a complete review about percentiles.
 
+For a full explanation about percentiles, please go to: <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/annex_1_profiling_percentiles.html" target="blank">Annex 1: The magic of percentiles</a>.
+
 * `skewness`: is a measure of _asymmetry_. Close to **0** indicates that the distribution is _equally_ distributed (or symmetrical) around its mean. A **positive number** implies a long tail on the right, whereas a **negative number** means the opposite.
 After this section, check the skewness in the plots. The variable `pop_living_slums` is close to 0 ("equally" distributed), `poverty_headcount_1.9` is positive (tail on the right), and `SI.DST.04TH.20` is negative (tail on the left). The further the skewness is from 0 the more likely the distribution is to have **outliers** 
 
@@ -439,7 +444,7 @@ We can adjust the number of bars used in the plot by changing the `bins` paramet
 
 ## Final thoughts
  
-Many numbers have appeared here so far, _and even more in the percentile appendix below_. The important point is for you to find the right approach to explore your data. This can come from other metrics or other criteria.
+Many numbers have appeared here so far, _and even more in the percentile appendix_. The important point is for you to find the right approach to explore your data. This can come from other metrics or other criteria.
 
 The functions `df_status`,  `describe`, `freq`, `profiling_num` and `plot_num` can be run at the beginning of a data project.
 
