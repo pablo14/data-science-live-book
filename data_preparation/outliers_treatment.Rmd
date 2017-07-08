@@ -110,7 +110,7 @@ When dealing with outliers, there are several methods to flag values as outliers
 
 The thresholds to spot outliers are not unique. Defining boundaries is one of the most common task in machine learning.
 
-Not all questions have to have an answer, some of them just help us simply to think.
+Not all the questions need to have an answer, some of them just help us simply to think.
 
 <br>
 

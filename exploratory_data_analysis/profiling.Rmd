@@ -4,51 +4,51 @@ knitr::opts_chunk$set(out.width="400px", dpi=120)
 knitr::opts_knit$set(base.dir = "exploratory_data_analysis")
 ```
 
-# Profiling Data
+# The voice of the numbers: Profiling Data
 
-> The voice of the numbers. <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer, human being and novelist.
+> The voice of the numbers: <a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="blank">Eduardo Galeano</a>. Writer and novelist.
 
-The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling is the very first step in a series of iterative stages in the persuit of finding what the data want to tell us, if we are patient enough to listen to. 
+The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling is the very first step in a series of iterative stages in the pursuit of finding what the data want to tell us, if we are patient enough to listen. 
 
-This chapter will cover, with bunch of functions, a complete data profiling. This should be the entry step in a data project so we can start by knowing the correct data types, exploring distributions in numerical and categorical variables.
+This chapter will cover, with a few functions, a complete data profiling. This should be the entry step in a data project, where we start by knowing the correct data types and exploring distributions in numerical and categorical variables.
 
-It also focuses on the extraction of semantical conclusions, useful when writing a report for non-technical people. 
+It also focuses on the extraction of semantic conclusions, which is useful when writing a report for non-technical people. 
 
 **What are we going to review in this chapter?**
 
-* **Data set health status**:  
-  - Getting metrics like total rows, columns, data types, zeros, missing values.
-  - How each of the previous items impacts on different analysis.
-  - How to quickly filter and operate on -and with- them, to clean the data.
+* **Dataset health status**:  
+  - Getting metrics like total rows, columns, data types, zeros, and missing values
+  - How each of the previous items impacts on different analysis
+  - How to quickly filter and operate on (and with) them, to clean the data
 * **Univariate analysis in categorical variable**: 
-  - Frequency, percentage, cummulative value. Colorful plots. 
-* **Univariate analysis in numerical variables**: 
-  - Percentile, dispersion, standard deviation, mean, top and bottom values.
-  - Percentile vs. quantile vs. quartile.
-  - Kurtosis, skewness, inter quartile range, variation coefficient.
-  - Plotting distributions. 
-  - Complete **case study** based on Data World. Data Preparation and data analysis.
+  - Frequency, percentage, cumulative value, and colorful plots 
+* **Univariate analysis with numerical variables**: 
+  - Percentile, dispersion, standard deviation, mean, top and bottom values
+  - Percentile vs. quantile vs. quartile
+  - Kurtosis, skewness, inter-quartile range, variation coefficient
+  - Plotting distributions 
+  - Complete **case study** based on Data World, data preparation, and data analysis
 * A complete analysis and interpretation of **percentiles** (_Annex 1_).
 
 <br>
 
 Functions summary review in the chapter:
 
-* `df_status(data)`: Profiling data set structure.
-* `describe(data)`:  Numerical and categorical profiling (quantitative).
-* `freq(data)`: Categorical profiling (both  quantitative and plot).
-* `profiling_num(data)`: Profiling for numerical variable (quantitative).
-* `plot_num(data)`: Profiling for numerical variable (plots).
+* `df_status(data)`: Profiling dataset structure
+* `describe(data)`:  Numerical and categorical profiling (quantitative)
+* `freq(data)`: Categorical profiling (quantitative and plot).
+* `profiling_num(data)`: Profiling for numerical variables (quantitative)
+* `plot_num(data)`: Profiling for numerical variables (plots)
 
-Note: `describe` is in `Hmisc` package, remaining functions are in `funModeling`.
+Note: `describe` is in the `Hmisc` package while remaining functions are in `funModeling.`
 
 <br>
 
-## Data set health status
+## Dataset health status
 
-The quantity of zeros, NA, Inf, unique values; as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
+The quantity of zeros, NA, Inf, unique values as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
 
-Firstly, we load `funModeling` and `dplyr` libraries.
+First, we load the `funModeling` and `dplyr` libraries.
 
 ```{r lib, results="hide", message=FALSE}
 ## Loading funModeling!
@@ -57,11 +57,11 @@ library(dplyr)
 data(heart_disease)
 ```
 
-### Checking missing values, zeros, data type and unique values
+### Checking missing values, zeros, data type, and unique values
 
-Probably one of the first steps, when we get a new data set to analyze, is to know if there are missing values (`NA` in **R**), and the data type.
+Probably one of the first steps, when we get a new dataset to analyze, is to know if there are missing values (`NA` in **R**) and the data type.
 
-The `df_status` function coming in `funModeling` can help us by showing these numbers in relative and percentual values.  Also, it retrieves the infinite and zeros statistics.
+The `df_status` function coming in `funModeling` can help us by showing these numbers in relative and percentage values. It also retrieves the infinite and zeros statistics.
 
 
 ```{r df_status, eval=FALSE}
@@ -70,19 +70,19 @@ df_status(heart_disease)
 ```
 <img src="dataset_profiling.png" width="500px" alt="Profiling data">
 
-* `q_zeros`: quantity of zeros (`p_zeros`: in percentage)
-* `q_inf`:  quantity of infinite values (`p_inf`: in percentage)
-* `q_na`:  quantity of NA (`p_na`: in percentage)
+* `q_zeros`: quantity of zeros (`p_zeros`: in percent)
+* `q_inf`:  quantity of infinite values (`p_inf`: in percent)
+* `q_na`:  quantity of NA (`p_na`: in percent)
 * `type`: factor or numeric
 * `unique`: quantity of unique values
 
 ### Why are these metrics important?
 
-* **Zeros**: Variables with **lots of zeros** may not be useful for modeling, and in some cases, it may dramatically bias the model.
-* **NA**: Several models automatically exclude rows with NA (**random forest**, for example). As a result, the final model can be biased due to several missing rows because of only one variable. For example, if the data contains only one out of 100 variables with 90% of NAs, the model will be training with only 10% of original rows.
+* **Zeros**: Variables with **lots of zeros** may not be useful for modeling and, in some cases, they may dramatically bias the model.
+* **NA**: Several models automatically exclude rows with NA (**random forest** for example). As a result, the final model can be biased due to several missing rows because of only one variable. For example, if the data contains only one out of 100 variables with 90% of NAs, the model will be training with only 10% of the original rows.
 * **Inf**: Infinite values may lead to an unexpected behavior in some functions in R.
-* **Type**: Some variables are encoded as numbers, but they are codes or categories, and the models **don't handle them** in the same way.
-* **Unique**: Factor/categorical variables with a high number of different values (~30), tend to do overfitting if categories have low cardinality, (**decision trees**, for example).
+* **Type**: Some variables are encoded as numbers, but they are codes or categories and the models **don't handle them** in the same way.
+* **Unique**: Factor/categorical variables with a high number of different values (~30) tend to do overfitting if the categories have low cardinality (**decision trees,** for example).
 
 
 <br>
@@ -90,13 +90,13 @@ df_status(heart_disease)
 
 ### Filtering unwanted cases
 
-The function `df_status` takes a data frame and returns an _status table_ that can help us to quickly remove features (or variables) based on all the metrics described in the last section. For example:
+The function `df_status` takes a data frame and returns a _status table_ that can help us quickly remove features (or variables) based on all the metrics described in the last section. For example:
 
 
 **Removing variables with a _high number_ of zeros**
 
 ```{r profiling_data}
-## Profiling the data input.
+## Profiling the Data Input
 my_data_status=df_status(heart_disease, print_results = F)
 
 # Removing variables with 60% of zero values
@@ -116,17 +116,17 @@ arrange(my_data_status, -p_zeros) %>% select(variable, q_zeros, p_zeros)
 
 <br>
 
-The same reasoning applies when we want to remove -or keep- those variables above or below a certain threshold. Please check the missing values chapter to get more info about the implications when dealing with variables containing missing values.
+The same reasoning applies when we want to remove (or keep) those variables above or below a certain threshold. Please check the missing values chapter to get more information about the implications when dealing with variables containing missing values.
 
 <br>
 
 ### Going deep into these topics
 
-Values return by `df_status` are deeply covered in other chapters:
+Values returned by `df_status` are deeply covered in other chapters:
 
-* **Missing values** (NA) treatment, analysis and imputation are deeply cover in <a href="http://livebook.datascienceheroes.com/data_preparation/treating_missing_data.html">Missing Data</a> chapter.
-* **Data types**, its conversions, implications when handling different data types and more, is covered in <a href="http://livebook.datascienceheroes.com/data_preparation/data_types.html">Data Types</a> chapter.
-* A high number of **unique values** is a synonim of high cardinallity variable. This situation is studied in both chapters:
+* **Missing values** (NA) treatment, analysis, and imputation are deeply covered in the <a href="http://livebook.datascienceheroes.com/data_preparation/treating_missing_data.html">Missing Data</a> chapter.
+* **Data type**, its conversions and implications when handling different data types and more are covered in the <a href="http://livebook.datascienceheroes.com/data_preparation/data_types.html">Data Types</a> chapter.
+* A high number of **unique values** is synonymous for  high-cardinality variables. This situation is studied in both chapters:
     + <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Descriptive Stats</a>.
     + <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html">High Cardinality Variable in Predictive Modeling</a>.
 
@@ -149,11 +149,11 @@ colnames(heart_disease)
 
 ---
 
-## Profiling categorical variable
+## Profiling categorical variables
 
-_Make sure you have the latest 'funModeling' version (>= 1.3)._
+_Make sure you have the latest 'funModeling' version (>= 1.6)._
 
-Frequency or distribution analysis is made simple by the `freq` function. It retrieves the distribution in a table and a plot (by default) which shows the distribution of absolute and relative numbers.
+Frequency or distribution analysis is made simple by the `freq` function. This retrieves the distribution in a table and a plot (by default) and shows the distribution of absolute and relative numbers.
 
 If you want the distribution for two variables: 
 
@@ -161,27 +161,27 @@ If you want the distribution for two variables:
 freq(data=heart_disease, str_input = c('thal','chest_pain'))
 ```
 
-As well as in the remaining `funModeling` functions, if `str_input` is missing it will run for all factor or character variables present in given data frame:
+As well as in the remaining `funModeling` functions, if `str_input` is missing, then it will run for all factor or character variables present in a given data frame:
 
 ```{r, eval=F}
 freq(data=heart_disease)
 ```
  
 
-If we only want to print the table, and excluding the plot, set `plot` parameter to `FALSE`.
-Also `freq` example can handle a **single variable** as an input. 
-By _default_, `NA` values **are considered** in both the table and the plot, if it is needed to excluded the `NA`, set `na.rm = FALSE`.
+If we only want to print the table excluding the plot, then we set the `plot` parameter to `FALSE`.
+The `freq` example can also handle a **single variable** as an input. 
+By _default_, `NA` values **are considered** in both the table and the plot. If it is needed to exclude the `NA` then set `na.rm = FALSE`.
 Both examples in the following line: 
 
 ```{r, eval=F}
 freq(data=heart_disease$thal, plot = FALSE, na.rm = FALSE)
 ```
 
-If only one variable is provided, `freq` returns the printed table, so it is easy to perform some calculations based on the variables it provides. 
-* For example, to print the categories which represent most of the 80% of the share (based on `cumulative_perc < 80`). 
-* To get the categories belonging to the **long tail**, i.e. filtering by `percentage < 1`, retrieving those categories appearing less than 1% of the times.
+If only one variable is provided, then `freq` returns the printed table; thus, it is easy to perform some calculations based on the variables it provides. 
+* For example, to print the categories that represent most of the 80% of the share (based on `cumulative_perc < 80`). 
+* To get the categories belonging to the **long tail**, i.e., filtering by `percentage < 1` by retrieving those categories appearing less than 1% of the time.
 
-Also, as the other plot functions in the package, if there is the need of exporting plots, add the `path_out` parameter (it will create the folder if it's not created yet).
+In addition, as with the other plot functions in the package, if there is a need to export plots, then add the `path_out` parameter, which will create the folder if it's not yet created.
 
 ```{r, eval=F}
 freq(data=heart_disease, path_out='my_folder')
@@ -189,24 +189,24 @@ freq(data=heart_disease, path_out='my_folder')
 
 #### Analysis
 
-The output is ordered by the `frequency` variable. So it allows to quickly analyze what the most frequent categories are, and how many shares they represent (`cummulative_perc` variable). In general terms, we as human beings like order, if the variable weren't ordered, our eyes will start moving over all the bars to do the comparison, putting in our brains every bar in perspective to the other bars.
+The output is ordered by the `frequency` variable, which quickly analyzes the most frequent categories and how many shares they represent (`cummulative_perc` variable). In general terms, we as human beings like order. If the variables are not ordered, then our eyes start moving over all the bars to do the comparison and our brains place each bar in relation to the other bars.
 
-Check the difference, same data input, first without order, second with order:
+Check the difference for the same data input, first without order and then with order:
 
 <img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="450px">
 
-Most of the times, there are just a few categories which appear most of the time. 
+Generally, there are just a few categories that appear most of the time. 
 
-A more complete analysis in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Descriptive Stats</a>.
+A more complete analysis is in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html">High Cardinality Variable in Descriptive Stats</a>.
 
 <br>
 
-### Introducing `describe` function
+### Introducing the `describe` function
 
-This function comes in `Hmisc` package, and allow us to quickly profile a complete data set for both numerical and categorical variables. In this case we'll select only 2 variables, and we will analyze the result.
+This function comes in the `Hmisc` package and allows us to quickly profile a complete dataset for both numerical and categorical variables. In this case, we'll select only two variables and we will analyze the result.
 
 ```{r}
-## Just keepint 2 variables to use in this example
+## Just keeping two variables to use in this example
 heart_disease_3=select(heart_disease, thal, chest_pain)
 
 ## Profiling the data!
@@ -214,43 +214,43 @@ describe(heart_disease_3)
 ```
 
 Where: 
-* `n`: quantity of non-`NA` rows. In this case it indicates there are `301` patients containing a number.
-* `missing`: number of missing values. Summing this indicator to the `n` gives us the total number of rows.
+* `n`: quantity of non-`NA` rows. In this case, it indicates there are `301` patients containing a number.
+* `missing`: number of missing values. Summing this indicator to `n` gives us the total number of rows.
 * `unique`: number of unique (or distinct) values.
 
-The other information is pretty similar to `freq` function, returns between parenthesis the total number in relative and absolute value per each different category.
+The other information is pretty similar to the `freq` function and returns between parentheses the total number in relative and absolute values for each different category.
 
 <br>
 
 ---
 
-## Profiling numerical variable
+## Profiling numerical variables
 
 This section is separated into two parts:
 
-* Part 1: Introducing the World Data case study
+* Part 1: Introducing the “World Data” case study
 * Part 2: Doing the numerical profiling in R
 
-If you don't want to know how is the data preparation stage from Data World is calculated, you can jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
+If you don’t wan't to know how the data preparation stage from Data World is calculated, then you can jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
 
 ### Part 1: Introducing the World Data case study
 
-It contains many indicators regarding world development. Regardless the profiling example, the idea is to provide a ready-to-use table for that sociologist, researchers, etc., that are interested in analyzing this kind of data.
+This contains many indicators regarding world development. Regardless the profiling example, the idea is to provide a ready-to-use table for sociologists, researchers, etc. interested in analyzing this kind of data.
 
-The data original source: <a href="http://databank.worldbank.org/data/reports.aspx?source=2&Topic=11#" target="blank">http://databank.worldbank.org</a>. There you will find the data dictionary explaning all the variables.
+The original data source is: <a href="http://databank.worldbank.org/data/reports.aspx?source=2&Topic=11#" target="blank">http://databank.worldbank.org</a>. There you will find a data dictionary that explains all the variables.
 
 First, we have to do some data wrangling. We are going to keep with the newest value per indicator.
 
 ```{r}
 library(Hmisc)
 
-# Loading data from book repository, just for being sure that it doesn't change the format.
+# Loading data from the book repository without altering the format
 data_world=read.csv(file = "https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/World_Development_Indicators.csv", header = T, stringsAsFactors = F, na.strings = "..")
 
-## Excluding missing values in Series.Code. The data downloaded from the web page contains 4 lines with "free-text" at the bottom of the file.
+## Excluding missing values in Series.Code. The data downloaded from the web page contains four lines with "free-text" at the bottom of the file.
 data_world=filter(data_world, Series.Code!="")
 
-# The magical function which keeps newest values for each metric. If you're not familiar with R, skip it...
+# The magical function that keeps the newest values for each metric. If you're not familiar with R, then skip it.
 max_ix<-function(d) 
 {
   ix=which(!is.na(d))
@@ -260,35 +260,35 @@ max_ix<-function(d)
 
 data_world$newest_value=apply(data_world[,5:ncol(data_world)], 1, FUN=max_ix)
 
-## Printing first 3 rows
+## Printing the first three rows
 head(data_world, 3)
 ```
 
 The columns `Series.Name` and `Series.Code` are the indicators to be analyzed. 
 `Country.Name` and `Country.Code` are the countries. Each row represents a unique combination of country and indicator. 
-Remaining columns, `X1990..YR1990.` (year 1990),`X2000..YR2000.` (year 2000), `X2007..YR2007.` (year 2007), and so on; indicates the metric value for that year, thus each column is a year. 
+Remaining columns, `X1990..YR1990.` (year 1990),`X2000..YR2000.` (year 2000), `X2007..YR2007.` (year 2007), and so on indicate the metric value for that year, thus each column is a year. 
 
 <br>
 
 
 ### Taking a data scientist decision
 
-There are many `NA` because some countries don't have the measure of the indicator in those years. And here we have to **take a decision** as a data scientist, that maybe neither will be the best nor the most accurate without asking an expert -i.e. a sociologist- in this kind of data. 
+There are many `NAs` because some countries don't have the measure of the indicator in those years. At this point, we need to **take a decision** as a data scientist. Probably no the optimal if we don’t ask to an expert, e.g., a sociologist.
 
-What to do with the `NA` values? In these case, we are going to to keep with the **newest value** for all the indicators. Perhaps this is not the best way to extract conclusions for a paper; we are going to compare some countries with information up to 2016 while others countries will be updated to 2009. This is a valid approach for the first analysis, to compare all the indicators with the newest data.
+What to do with the `NA` values? In this case, we are going to to keep with the **newest value** for all the indicators. Perhaps this is not the best way to extract conclusions for a paper as we are going to compare some countries with information up to 2016 while other countries will be updated only to 2009. To compare all the indicators with the newest data is a valid approach for the first analysis.
 
-Other solution could have been to keep with the newest value, only if this number belongs to the last 5 years. It would reduce the number of countries to analyze. 
+Another solution could have been to keep with the newest value, but only if this number belongs to the last five years. This would reduce the number of countries to analyze. 
 
-These questions are impossible to answer for a _artificial intelligence system_, yet the decision can change the results dramatically.
+These questions are impossible to answer for an _artificial intelligence system_, yet the decision can change the results dramatically.
 
-**The last transformation:**
+**The last transformation**
 
-Next step will convert the last table from _long_ to _wide_ format. In short words: Each row will represent a country, and each column an indicator, that thanks to the last transformation, will have the _newest value_, for each combination of indicator-country.
+The next step will convert the last table from _long_ to _wide_ format. In other words, each row will represent a country and each column an indicator (thanks to the last transformation that has the _newest value_ for each combination of indicator-country).
 
-Indicators name are unclear. We are going to "translate" a few of them.
+The indicator names are unclear, so we will "translate" a few of them.
 
 ```{r}
-## Get the list of the indicators description.
+## Get the list of indicator descriptions.
 names=unique(select(data_world, Series.Name, Series.Code))
 head(names, 5)
 
@@ -300,22 +300,22 @@ data_world_2=left_join(data_world, df_conv_world, by="Series.Code", all.x=T)
 data_world_2=mutate(data_world_2, Series.Code_2=ifelse(!is.na(new_name), as.character(data_world_2$new_name), data_world_2$Series.Code))
 ```
 
-Any indicator meaning can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
+Any indicator meaning can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means, then we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
 
 
 ```{r}
-# The package 'reshape2' contains both 'dcast' and 'melt' functions.
+# The package 'reshape2' contains both 'dcast' and 'melt' functions
 library(reshape2)
 
 data_world_wide=dcast(data_world_2, Country.Name  ~ Series.Code_2, value.var = "newest_value")
 ```
 
-Note: To understand more about `long` and `wide` format using `reshape2` package, and how to convert from one to another, please go: <a target="http://seananderson.ca/2013/10/19/reshape.html" target="blank">here</a>.
+Note: To understand more about `long` and `wide` format using `reshape2` package, and how to convert from one to another, please go to <a target="http://seananderson.ca/2013/10/19/reshape.html" target="blank">here</a>.
 
-So we've got the final table to analyze:
+Now we have the final table to analyze:
 
 ```{r}
-## Printing first 3 rows:
+## Printing the first three rows
 head(data_world_wide, 3)
 ```
 
@@ -325,19 +325,19 @@ head(data_world_wide, 3)
 ### Part 2: Doing the numerical profiling in R
 
 We will see the following functions:
-* `describe` from `Hmisc`.
-* `profiling_num` (full univariate analysis),  `plot_num` (hisotgrams); from `funModeling`.
+* `describe` from `Hmisc`
+* `profiling_num` (full univariate analysis), and `plot_num` (hisotgrams) from `funModeling`
 
 
-We'll pick up only 2 variables as an example:
+We'll pick up only two variables as an example:
 
 ```{r}
-library(Hmisc) # contains `describe` function
+library(Hmisc) # contains the `describe` function
 
 vars_to_profile=c("gini_index", "poverty_headcount_1.9")
 data_subset=select(data_world_wide, one_of(vars_to_profile))
 
-## Using the `describe` on a complete dataset. # It can be run with 1 variable, for example: describe(data_subset$poverty_headcount_1.9)
+## Using the `describe` on a complete dataset. # It can be run with one variable; for example, describe(data_subset$poverty_headcount_1.9)
 
 describe(data_subset)
 ```
@@ -345,21 +345,21 @@ describe(data_subset)
 
 Taking `poverty_headcount_1.9` (_Poverty headcount ratio at $1.90 a day is the percentage of the population living on less than $1.90 a day at 2011 international prices._), we can describe it as:
 
-* `n`: quantity of non-`NA` rows. In this case it indicates there are `116` countries containing a number.
-* `missing`: number of missing values. Summing this indicator to the `n` gives us the total number of rows. Almost half of the countries have no data.
+* `n`: quantity of non-`NA` rows. In this case, it indicates `116` countries that contain a number.
+* `missing`: number of missing values. Summing this indicator to `n` gives us the total number of rows. Almost half of the countries have no data.
 * `unique`: number of unique (or distinct) values.
-* `Info`: An estimator of the amount of information present in the variable, not important at this point.
-* `Mean`: The classical mean or average.
-* Numbers: `.05`, `.10`, `.25`, `.50`, `.75`, `.90` and `.95 ` stands for the percentiles. These values are really useful since it helps us to describe the distribution. Will be treated lately, i.e., `.05` is the 5th percentile.
-* `lowest` and `highest`: The 5 lowest/highest values. Here we can spot outliers or errors in data. For example, the variable represents a percentage, thus it cannot contain negative values.
+* `Info`: an estimator of the amount of information present in the variable and not important at this point.
+* `Mean`: the classical mean or average.
+* Numbers: `.05`, `.10`, `.25`, `.50`, `.75`, `.90` and `.95 ` stand for the percentiles. These values are really useful since it helps us to describe the distribution. It will be deeply covered later on, i.e., `.05` is the 5th percentile.
+* `lowest` and `highest`: the five lowest/highest values. Here, we can spot outliers and data errors. For example, if the variable represents a percentage, then it cannot contain negative values.
 
 <br>
 
-Next function is `profiling_num`, which takes a data frame and retrieve a _big_ table, easy to get overwhelmed in a _sea of metrics_. Similar to what we can see in the Matrix Movie:
+The next function is `profiling_num` which takes a data frame and retrieves a _big_ table, easy to get overwhelmed in a _sea of metrics_. This is similar to what we can see in the movie _The Matrix_.
 
 <img src="matrix_movie.png" alt="Entering into the matrix, thanks to R" width="150px">
 
-The idea of the following table is to give to the user a **full set of metrics**, for then, she or he can decide which ones to pick for the study.
+The idea of the following table is to give to the user a **full set of metrics,**, for then, she or he can decide which ones to pick for the study.
 
 Note: Every metric has a lot of statistical theory behind it. Here we'll be covering just a tiny and **oversimplified** approach to introduce the concepts. 
 
@@ -367,7 +367,7 @@ Note: Every metric has a lot of statistical theory behind it. Here we'll be cove
 ```{r, eval=FALSE}
 library(funModeling)
 
-## Full numerical profiling in one function. It automatically excludes the non-numerical variables.
+## Full numerical profiling in one function automatically excludes non-numerical variables
 profiling_num(data_world_wide)
 ```
 <img src="profiling_numerical_data.png" alt="Profiling numerical data in R" width="600px">
@@ -375,46 +375,46 @@ profiling_num(data_world_wide)
 
 Each indicator has _its raison d'être_:
 
-* `variable`:Variable name.
+* `variable`: variable name
 
-* `mean`: The well-known mean or average.
+* `mean`: the well-known mean or average
 
-* `std_dev`: Standard deviation, or the, a standard measure of **dispersion** or **spread** around the mean value. A value around `0` means almost no variation (thus it seems more like a constant), on the other side is harder to set what _high_ is, we can tell that the higher, the more spread. 
+* `std_dev`: standard deviation, a measure of **dispersion** or **spread** around the mean value. A value around `0` means almost no variation (thus, it seems more like a constant); on the other side, it is harder to set what _high_ is, but we can tell that the higher the variation the greater the spread. 
 _Chaos may look like infinite standard variation_. The unit is the same as the mean so that it can be compared.
 
-* `variation_coef`: Variation coefficient=`std_dev`/`mean`. Since the `std_dev` is in absolute number, it's good to have an indicator which puts it in relative number, comparing the `std_dev` against the `mean`. A value of `0.22` indicates the `std_dev` is a 22% of the `mean`. If it were close to `0` the variable tend to be more centered around the mean. If we compare two classifiers, we may prefer the one with less `std_dev` and `variation_coef` on its accuracy.
+* `variation_coef`: variation coefficient=`std_dev`/`mean`. Because the `std_dev` is an absolute number, it's good to have an indicator that puts it in a relative number, comparing the `std_dev` against the `mean` A value of `0.22` indicates the `std_dev` is 22% of the `mean` If it were close to `0` then the variable tends to be more centered around the mean. If we compare two classifiers, then we may prefer the one with less `std_dev` and `variation_coef` on its accuracy.
 
-* `p_01`,    `p_05`,    `p_25`,    `p_50`,    `p_75`,    `p_95`,    `p_99`: **Percentiles** at 1%, 5%, 25%, and so on. Later on this chapter there is a complete review about percentiles.
+* `p_01`,    `p_05`,    `p_25`,    `p_50`,    `p_75`,    `p_95`,    `p_99`: **Percentiles** at 1%, 5%, 25%, and so on. Later on in this chapter is a complete review about percentiles.
 
-* `skewness`: It's a measure of _asymmetry_. Close to **0** indicates that the distribution is _equally_ distributed (or symmetrical) around its mean. A **positive number** implies a long tail on the right, while a **negative number** means the opposite.
-Check in next plots example, `pop_living_slums` is close to 0 ("equally" distributed), `poverty_headcount_1.9` is positive (tail on the right), and `SI.DST.04TH.20` is negative (tail on the left). The further the skewness is from 0, the more likely the distribution is to have **outliers**. 
+* `skewness`: is a measure of _asymmetry_. Close to **0** indicates that the distribution is _equally_ distributed (or symmetrical) around its mean. A **positive number** implies a long tail on the right, whereas a **negative number** means the opposite.
+After this section, check the skewness in the plots. The variable `pop_living_slums` is close to 0 ("equally" distributed), `poverty_headcount_1.9` is positive (tail on the right), and `SI.DST.04TH.20` is negative (tail on the left). The further the skewness is from 0 the more likely the distribution is to have **outliers** 
 
-* `kurtosis`: It pays attention to the distribution **tails**, keeping it simple, a higher number may indicate the presence of outliers (just we'll see later on the variable `SI.POV.URGP` holding an outlier around value `50`.
-For a complete skewness and kurtosis review, check Ref. [1], [2].
+* `kurtosis`: describes the distribution **tails**; keeping it simple, a higher number may indicate the presence of outliers (just as we'll see later for the variable `SI.POV.URGP` holding an outlier around the value `50`
+For a complete skewness and kurtosis review, check Refs. [1] and [2].
 
-* `iqr`: Interquartile Range, it is the result of looking at percentile `0.25` and `0.75`. It indicates,  in the same variable unit, the dispersion length of 50% of the values. The higher, the more sparse the variable is.
+* `iqr`:  the inter-quartile range is the result of looking at percentiles `0.25` and `0.75` and indicates, in the same variable unit, the dispersion length of 50% of the values. The higher the value the more sparse the variable.
 
-* `range_98` and `range_80`: It indicates the range where `98%` of the values are. It removed the bottom and top 1% (thus the `98%` number). Good to know variable range without potential outliers. For example,  `pop_living_slums` goes from `0` to `76.15`. It's **more robust** than comparing the **min** and **max** values. 
-The `range_80` is the same as the `range_98` but having removed bottom and top `10%`
+* `range_98` and `range_80`: indicates the range where `98%` of the values are. It removes the bottom and top 1% (thus, the `98%` number). It is good to know the variable range without potential outliers. For example, `pop_living_slums` goes from `0` to `76.15` It's **more robust** than comparing the **min** and **max** values. 
+The `range_80` is the same as the `range_98` but without the bottom and top `10%`
 
-`iqr`, `range_98` and `range_80`, are based on percentiles, which we'll be covering later in this chapter.
+`iqr`, `range_98` and `range_80` are based on percentiles, which we'll be covering later in this chapter.
 
-**Important**: All the metrics are calculated having removed the `NA` values. Otherwise, the table would be filled with `NA`s.
+**Important**: All the metrics are calculated having removed the `NA` values. Otherwise, the table would be filled with NA`s.
 
 <br>
 
 #### Advice when using `profiling_num`
 
-The idea of `profiling_num` is to provide to the data scientist with a full set of metrics, so she or he can select the most relevant. It can easily be done using `select` function from `dplyr` package, 
+The idea of `profiling_num` is to provide to the data scientist with a full set of metrics, so they can select the most relevant. This can easily be done using the `select` function from the `dplyr` package. 
 
-Also we have to set in `profiling_num` the parameter `print_results = FALSE`. This way we avoid the printing in the console.
+In addition, we have to set in `profiling_num` the parameter `print_results = FALSE`. This way we avoid the printing in the console.
 
 For example, let's get with the `mean`,  `p_01`,  `p_99` and `range_80`:
 
 ```{r}
 my_profiling_table=profiling_num(data_world_wide, print_results = FALSE) %>% select(variable, mean, p_01, p_99, range_80)
 
-## Printing only first 3 rows:
+## Printing only the first three rows
 head(my_profiling_table, 3)
 ```
 
@@ -422,15 +422,15 @@ Please note that `profiling_num` returns a table, so we can quickly filter cases
 
 <br> 
 
-#### Profiling numerical variable by plotting
+#### Profiling numerical variables by plotting
 
-Another function coming in `funModeling` is `plot_num`, which takes a data set and plot the distribution of every numerical variable, automatically excluding the non-numerical ones.
+Another function in `funModeling` is `plot_num` which takes a dataset and plots the distribution of every numerical variable while automatically excluding the non-numerical ones:
 
-```{r, profiling numerical variable with hisotrograms}
+```{r, profiling numerical variable with histograms}
 plot_num(data_world_wide)
 ```
 
-We can adjust the number of bars used in the plot changing setting the `bins` parameter, (default value is set to 10). For example: `plot_num(data_world_wide, bins = 20)`
+We can adjust the number of bars used in the plot by changing the `bins` parameter (default value is set to 10). For example: `plot_num(data_world_wide, bins = 20)`.
 
 
 ---
@@ -439,219 +439,16 @@ We can adjust the number of bars used in the plot changing setting the `bins` pa
 
 ## Final thoughts
  
-Many numbers have appeared here so far, -and even more in the percentile appendix below-. The important point is for you to find the right approach to explore your data. It can come from other metrics or other criteria.
+Many numbers have appeared here so far, _and even more in the percentile appendix below_. The important point is for you to find the right approach to explore your data. This can come from other metrics or other criteria.
 
 The functions `df_status`,  `describe`, `freq`, `profiling_num` and `plot_num` can be run at the beginning of a data project.
 
-Regarding the **normal and abnormal behavior** on data, it's important to study both. To describe the data set in general terms, then we should exclude the extreme values, for example with `range_98` variable. The mean should decrease after the exclusion.
+Regarding the **normal and abnormal behavior** on data, it's important to study both. To describe the dataset in general terms, we should exclude the extreme values: for example, with `range_98` variable. The mean should decrease after the exclusion.
 
-These analysis were **univariate**, that is, without taking into account other variables (**multivariate** analysis). This will be part of this book later on. Meanwhile the correlation between input (and output) variables, you can check the <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/correlation.html" target="blank">Correlation</a> chapter.
+These analyses are **univariate**; that is, they do not take into account other variables (**multivariate** analysis). This will be part of this book later on. Meanwhile, for the correlation between input (and output) variables, you can check the <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/correlation.html" target="blank">Correlation</a> chapter.
 
 
 ---
-
-<br>
-
-# Annex 1: The magic of percentiles 
-
-Percentile is such a crucial concept in data analysis that we are going to have a deep cover in the book. It considers each observation regarding the others. An isolated number may not be meaningful, but when it is compared to the others, the distribution concept appears.
-
-It is used in profiling as well as evaluating the performance of a predictive model.
-
-#### How to calculate it?
-
-There are several methods to get the percentile, i.e. based on interpolations, the easiest way is to order the variable ascendantly, pick the percentile we want, for example 75%, and then see _what is the maximum value if we want to choose the 75% of the ordered population._
-
-Now we are going to use the technique of keeping a small sample so that we can have the maximum control over _what is going on_ behind the calculus.
-
-Let's keep with random 10 countries, and print the vector of `rural_poverty_headcount`, which is the variable we are going to use.
-
-```{r}
-data_sample=filter(data_world_wide, Country.Name %in% c("Kazakhstan", "Zambia", "Mauritania", "Malaysia", "Sao Tome and Principe", "Colombia", "Haiti", "Fiji", "Sierra Leone", "Morocco")) %>% arrange(rural_poverty_headcount)
-
-select(data_sample, Country.Name, rural_poverty_headcount)
-```
-
-Please note that the vector is ordered only for didactic purposes. _Remeber from the last section? Our eyes likes order._ 
-
-Now we apply  the `quantile` function on variable `rural_poverty_headcount` (is the percentage of the rural population living below the national poverty lines): 
-
-```{r}
-quantile(data_sample$rural_poverty_headcount)
-```
-
-**Analysis:**
-
-* **Percentile 50%:** 50% of the countries (5 of them) have a `rural_poverty_headcount` below `51.7`. We can check this in the last table; these countries are: Fiji, Colombia, Morocco, Kazakhstan, Malaysia.
-* **Percentile 25%:** 25% of the countries are below 20.87. Here we can see an interpolation since 25% represents ~ 2.5 countries. If we use this value to filter the countries, we'll get 3 countries:, Morocco, Kazakhstan, Malaysia.
-
-More info about the different types of quantile, and its interpolation: `help("quantile")`.
-
-#### Getting semantical descriptions
-
-From last example we can state that: 
-
-* _"Half of the countries have as much as 51.7% of rural poverty."_
-* _"Three-quarters of the countries have a maximum of 64.4% regarding its rural poverty"_ The three-quarters is regarding the countries ordered ascendantly.
-
-We can also think **using the opposite**: 
-
-* _"A quarter of the countries that exhibit the highest rural poverty values, have a percentage of at least 64.4%."_
-
-
-#### Calculating custom quantiles 
-
-Commonly we want to calculate certain quantiles. The example variable will be the `gini_index`.
-
-**What is the Gini index?**
-It is a measure of income or wealth inequality.
-* A Gini coefficient of **zero** expresses **perfect equality**, where all values are the same (for example, where everyone has the same income). 
-* A Gini coefficient of **1** (or 100%) expresses **maximal inequality** among values (e.g., for a large number of people, where only one person has all the income or consumption, and all others have none, the Gini coefficient will be very nearly one).
-
-Source: https://en.wikipedia.org/wiki/Gini_coefficient
-
-**Example in R:**
-
-If we want to get the 20, 40, 60 and 80th quantile of the Gini index variable, we use again the `quantile` function. 
-
-The `na.rm=TRUE` parameters is necessary if we have empty values, like in this case:
-
-```{r, warning=FALSE}
-## Also we can get multiple quantiles at once:
-p_custom=quantile(data_world_wide$gini_index, probs = c(0.2, 0.4, 0.6, 0.8), na.rm=TRUE)
-p_custom
-```
-
-
-#### Indicating where most of the values are
-
-In descriptive statistics we want to describe in general terms, the population. We can speak about ranges using two percentiles, let's take the percentiles 10 and 90th to describe the 80% of the population.
-
-
-_The poverty ranges from 0.075% to 54.4% in 80% of the countries._ 80% because we did 90th-10th, focusing on the middle of the population.
-
-If we consider the 80% as the majority of the population, then we could say: _"Normally, (or in general terms), the poverty goes from 0.07% to 54.4%"_. A semantical description.
-
-We looked at the 80% of the population, which seems a good number to describe where most of the cases are. We could also have used the 90% range (percentile 95th - 0.5th). 
-
-#### Is percentile related to quartile?
-
-**Quartile:** is a formal name to the 25, 50, and 75th percentile (quarters or 'Q'). If we look at the 50% of the population, we need to subtract the 3rd quartile (or percentile 75th) to 1st quartile (percentile 25th), and we get where 50% of data in concentrated, also known as **inter quartile range**, or IQR.
-
-
-Percentile vs. quantile vs. quartile
-
-```
-0 quartile = 0 quantile = 0 percentile
-1 quartile = 0.25 quantile = 25 percentile
-2 quartile = .5 quantile = 50 percentile (median)
-3 quartile = .75 quantile = 75 percentile
-4 quartile = 1 quantile = 100 percentile
-```
-
-Credits Ref. [3].
-
-#### Visualizing quantiles
-
-Plotting an histogram alongisde the places where each percentile is, can help to understand the concept:
-
-```{r, profiling_numerical_variable, warning=FALSE, message=FALSE}
-quantiles_var=quantile(data_world_wide$poverty_headcount_1.9, c(0.25, 0.5, 0.75), na.rm = T)
-
-df_p=data.frame(value=quantiles_var, quantile=c("25th", "50th", "75th"))
-
-library(ggplot2)
-ggplot(data_world_wide, aes(poverty_headcount_1.9)) + geom_histogram() +
-  geom_vline(data=df_p, 
-             aes(xintercept=value, 
-                 colour = quantile),
-             show.legend = TRUE, linetype="dashed") + theme_light()
-
-```
-
-Let's say if we sum all the gray bars before the 25th percentile, it will be around the height of the gray bars sum after the 75th percentile. 
-
-In last plot, the IQR appears between the first and the last dashed line. Contains the 50% of the population.
-
-#### Rank and top / bottom '_X_'% concepts
-
-Rank concept is the same as the one seen in competition; it allow us to answer _what is the country with the highest rate in ?_
-
-We'll use `dense_rank` function, from `ggplot2` package. It assigns the position (rank) to each country but we need them in reverse order, that is, assigning the `rank = 1` to the highest value.
-
-Now the variable will be: _Population living in slums is the proportion of the urban population living in slum households. A slum household is defined as a group of individuals living under the same roof lacking one or more of the following conditions: access to improved water, access to improved sanitation, sufficient living area, and durability of housing._ 
-
-The question to answer: _What are the top 6 countries with the highest rate of people living in slums?_
-
-```{r}
-library(dplyr)
-
-## Creating rank variable 
-data_world_wide$rank_pop_living_slums=dense_rank(-data_world_wide$pop_living_slums) 
-
-# Ordering data by rank
-data_world_wide=arrange(data_world_wide, rank_pop_living_slums)
-
-# Printing first 6 results:
-select(data_world_wide, Country.Name, rank_pop_living_slums) %>% head(.) 
-```
-
-We can also ask: _In which position is Ecuador?_
-
-```{r}
-filter(data_world_wide, Country.Name=="Ecuador") %>% select(rank_pop_living_slums)
-```
-
-
-#### Top and bottom 'X'% concepts
-
-Other questions that we may be interested in answered: _What is the value for which I get the top 10% of lowest values?_
-
-Percentile 10th is the answer:
-
-```{r}
-quantile(data_world_wide$pop_living_slums, probs=.1, na.rm = T)
-```
-
-Working on the opposite: _What is the value for which I get the bottom 10% of highest values?_
-
-Percentile 90th is the answer, `quantile(data_world_wide$pop_living_slums, probs=.9, na.rm = T)`. We can filter all the cases above this value.
-
-#### Percentile in Scoring Data
-
-There are two chapters which use this concept 
-
-* <a href="http://livebook.datascienceheroes.com/scoring/scoring.html" target="blank">Data Scoring</a>.
-* <a href="http://livebook.datascienceheroes.com/model_performance/gain_lift.html" target="blank">Gain and Lift Analysis</a>.
-
-The basic idea is, we develop a predictive model which predict a binary variable (`yes`/`no`). We need to score new cases, for example, to use in a marketing campaign, the question to answer is:
-
-_What is the score value to suggest to sales people in order to capture 50% of potential new sales?_ The answer comes from a combination of percentile analysis on the scoring value, plus the cumulative analysis of the current target.
-
-<img src="gain_curve.png" alt="Model performance gain curve" width="300px">
-
-
-<br>
-
-#### Case Study: Distribution of wealth
-
-The distribution of wealth is similar to Gini index, it is focused on inequality. It measures owner assets (which is different from income), making the comparison across countries more even to what people can acquire according to the place where she or he lives. 
-For a better definition, please go to the Wikipedia article (Ref. [4]).
-
-Quoting Wikipedia (Ref. [4]):
-
-> half of the world's wealth belongs to the top 1%,
-
-> top 10% of adults hold 85%, while the bottom 90% hold the remaining 15% of the world's total wealth,
-
-> top 30% of adults hold 97% of the total wealth.
-
-Just as we did before, from 3rd sentence we can state that: _"3% of total wealth is distributed to 70% of adults."_
-
-The metrics `top 10%` and `top 30%` are the quantiles `0.1` and `0.3`. The wealth is the numeric variable.
-
-<br>
-
 
 ### References
 
@@ -659,10 +456,3 @@ The metrics `top 10%` and `top 30%` are the quantiles `0.1` and `0.3`. The wealt
  https://www.spcforexcel.com/knowledge/basic-statistics/are-skewness-and-kurtosis-useful-statistics
 
 * [2]  Engineering Statistics Handbook, (2013, Oct 30), _Measures of Skewness and Kurtosis_, Retrieved from http://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm
-
-* [3] stats.stackexchange.com,  (2015, Jun 13), _Percentile vs quantile vs quartile_, Retrieved from <a href="https://stats.stackexchange.com/questions/156778/percentile-vs-quantile-vs-quartile" target="blank">https://stats.stackexchange.com/questions/156778/percentile-vs-quantile-vs-quartile</a>.
-
-* [4] Wikipedia, (2017, May 15), _Distribution of wealth_, Retrieved from <a href="https://en.wikipedia.org/wiki/Distribution_of_wealth" target="blank">https://en.wikipedia.org/wiki/Distribution_of_wealth</a>.
-
-* [5] Credit Suisse, (2013, Oct), _Global Wealth Report 2013_, <a href="https://publications.credit-suisse.com/tasks/render/file/?fileID=BCDB1364-A105-0560-1332EC9100FF5C83" target="blank">https://publications.credit-suisse.com/tasks/render/file/?fileID=BCDB1364-A105-0560-1332EC9100FF5C83</a>.
-
