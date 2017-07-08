@@ -196,7 +196,7 @@ The output is ordered by the `frequency` variable, which quickly analyzes the mo
 
 Check the difference for the same data input, first without order and then with order:
 
-<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="600px">
+<img src="profiling_text_variable-bw.png" alt="Giving order to a variable" width="700px">
 
 Generally, there are just a few categories that appear most of the time. 
 
