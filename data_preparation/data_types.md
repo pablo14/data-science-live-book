@@ -480,7 +480,7 @@ The solution is to save the cut points when we do data preparation. Then, when w
 
 As we can see, **there is no free lunch** in discretization or data preparation. How do you think that an _automatic or intelligent system_ will handle all of these situations without human intervention or analysis? 
 
-To be sure, we can delegate some tasks to automatic processes; however, **humans are indispensable** to monitor and adjust the model, giving the correct input data to process.
+To be sure, we can delegate some tasks to automatic processes; however, **humans are indispensable in data preparation stage**, giving the correct input data to process.
 
 The assignment of variables as categorical or numerical, the two most used data types varies according to the nature of the data and the selected algorithms as some only support one data type.
 
