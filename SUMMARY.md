@@ -1,7 +1,7 @@
 # Summary
 
 * [Exploratory Data Analysis]()
-  * [Profiling](exploratory_data_analysis/profiling.md)
+  * [Profiling: The Voice of the Numbers](exploratory_data_analysis/profiling.md)
   * [Correlation](exploratory_data_analysis/correlation.md)
   * [Annex 1: Percentiles](exploratory_data_analysis/annex_1_profiling_percentiles.md)
 * [Data Preparation]()
@@ -9,6 +9,7 @@
   * [High Cardinality in Descriptive Stats](data_preparation/high_cardinality_descriptive_stats.md)
   * [High Cardinality in Predictive Modeling](data_preparation/high_cardinality_predictive_modeling.md)
   * [Outliers Treatment](data_preparation/outliers_treatment.md)
+  * [Considerations Involving Time](data_preparation/considerations_involving_time.md)
 * [Selecting Best Variables](selecting_best_variables/introduction.md)
   * [Cross Plot (dataViz)](selecting_best_variables/cross_plot.md)
   * [BoxPlot (dataViz)](selecting_best_variables/plotar_boxplot.md)

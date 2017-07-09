@@ -124,22 +124,22 @@ arrange(my_data_status, -p_zeros) %>% select(variable, q_zeros, p_zeros)
 
 ```
 ##                  variable q_zeros p_zeros
-## 1     fasting_blood_sugar     258      85
-## 2             exer_angina     204      67
-## 3            exter_angina     204      67
-## 4       num_vessels_flour     176      58
-## 5  heart_disease_severity     164      54
-## 6         resting_electro     151      50
-## 7                 oldpeak      99      33
-## 8                     age       0       0
-## 9                  gender       0       0
-## 10             chest_pain       0       0
-## 11 resting_blood_pressure       0       0
-## 12      serum_cholestoral       0       0
-## 13         max_heart_rate       0       0
-## 14                  slope       0       0
-## 15                   thal       0       0
-## 16      has_heart_disease       0       0
+## 1     fasting_blood_sugar     258   85.15
+## 2             exer_angina     204   67.33
+## 3            exter_angina     204   67.33
+## 4       num_vessels_flour     176   58.09
+## 5  heart_disease_severity     164   54.13
+## 6         resting_electro     151   49.83
+## 7                 oldpeak      99   32.67
+## 8                     age       0    0.00
+## 9                  gender       0    0.00
+## 10             chest_pain       0    0.00
+## 11 resting_blood_pressure       0    0.00
+## 12      serum_cholestoral       0    0.00
+## 13         max_heart_rate       0    0.00
+## 14                  slope       0    0.00
+## 15                   thal       0    0.00
+## 16      has_heart_disease       0    0.00
 ```
 
 <br>
@@ -218,20 +218,20 @@ freq(data=heart_disease, str_input = c('thal','chest_pain'))
 
 ```
 ##   thal frequency percentage cumulative_perc
-## 1    3       166      54.79              55
-## 2    7       117      38.61              93
-## 3    6        18       5.94              99
-## 4 <NA>         2       0.66             100
+## 1    3       166      54.79           54.79
+## 2    7       117      38.61           93.40
+## 3    6        18       5.94           99.34
+## 4 <NA>         2       0.66          100.00
 ```
 
 <img src="figure/profiling_categorical_variable-2.png" title="plot of chunk profiling_categorical_variable" alt="plot of chunk profiling_categorical_variable" width="600px" />
 
 ```
 ##   chest_pain frequency percentage cumulative_perc
-## 1          4       144       47.5              48
-## 2          3        86       28.4              76
-## 3          2        50       16.5              92
-## 4          1        23        7.6             100
+## 1          4       144      47.52           47.52
+## 2          3        86      28.38           75.90
+## 3          2        50      16.50           92.40
+## 4          1        23       7.59          100.00
 ```
 
 ```
@@ -373,19 +373,19 @@ head(data_world, 3)
 ##   Country.Name Country.Code X1990..YR1990. X2000..YR2000. X2007..YR2007.
 ## 1  Afghanistan          AFG             NA             NA             NA
 ## 2      Albania          ALB             NA             NA             NA
-## 3      Algeria          DZA             12             NA             NA
+## 3      Algeria          DZA           11.8             NA             NA
 ##   X2008..YR2008. X2009..YR2009. X2010..YR2010. X2011..YR2011.
 ## 1             NA             NA             NA             NA
 ## 2             NA             NA             NA             NA
 ## 3             NA             NA             NA             NA
 ##   X2012..YR2012. X2013..YR2013. X2014..YR2014. X2015..YR2015.
-## 1             NA             NA             63             NA
+## 1             NA             NA           62.7             NA
 ## 2             NA             NA             NA             NA
 ## 3             NA             NA             NA             NA
 ##   X2016..YR2016. newest_value
-## 1             NA           63
+## 1             NA         62.7
 ## 2             NA           NA
-## 3             NA           12
+## 3             NA         11.8
 ```
 
 The columns `Series.Name` and `Series.Code` are the indicators to be analyzed. 
@@ -459,24 +459,24 @@ head(data_world_wide, 3)
 
 ```
 ##   Country.Name gini_index pop_living_slums poverty_headcount_1.9
-## 1  Afghanistan         NA               63                    NA
-## 2      Albania         29               NA                   1.1
-## 3      Algeria         NA               12                    NA
+## 1  Afghanistan         NA             62.7                    NA
+## 2      Albania      28.96               NA                  1.06
+## 3      Algeria         NA             11.8                    NA
 ##   rural_poverty_headcount SI.DST.02ND.20 SI.DST.03RD.20 SI.DST.04TH.20
 ## 1                    38.3             NA             NA             NA
-## 2                    15.3             13             17             23
+## 2                    15.3          13.17          17.34          22.81
 ## 3                     4.8             NA             NA             NA
 ##   SI.DST.05TH.20 SI.DST.10TH.10 SI.DST.FRST.10 SI.DST.FRST.20 SI.POV.2DAY
 ## 1             NA             NA             NA             NA          NA
-## 2             38             23            3.7            8.8         6.8
+## 2          37.82          22.93           3.66           8.85        6.79
 ## 3             NA             NA             NA             NA          NA
 ##   SI.POV.GAP2 SI.POV.GAPS SI.POV.NAGP SI.POV.NAHC SI.POV.RUGP SI.POV.URGP
 ## 1          NA          NA         8.4        35.8         9.3         5.6
-## 2         1.4        0.22         2.9        14.3         3.0         2.9
+## 2        1.43        0.22         2.9        14.3         3.0         2.9
 ## 3          NA          NA          NA         5.5         0.8         1.1
 ##   SI.SPR.PC40 SI.SPR.PC40.ZG SI.SPR.PCAP SI.SPR.PCAP.ZG
 ## 1          NA             NA          NA             NA
-## 2         4.1           -1.2         7.4           -1.3
+## 2        4.08        -1.2205        7.41        -1.3143
 ## 3          NA             NA          NA             NA
 ##   urban_poverty_headcount
 ## 1                    27.6

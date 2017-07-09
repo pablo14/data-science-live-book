@@ -73,7 +73,7 @@ Two people, `Ouro` and `Borus`, are users of a web application which has a certa
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
-<img src="figure/data_preparation_time_variable-1.png" title="plot of chunk data_preparation_time_variable" alt="plot of chunk data_preparation_time_variable" width="400px" />
+<img src="figure/data_preparation_time_variable-1.png" title="plot of chunk data_preparation_time_variable" alt="plot of chunk data_preparation_time_variable" width="600px" />
 
 
 User `Borus` starts using `feature_A` from day 3, and after 5 days she has more use -15 vs. 12 clicks- on this feature than `Ouro` who started using it from day 0. 
@@ -103,7 +103,7 @@ Consider the following example. _How much hours are needed to reach the 0 value?
 
 How about 100 hours?
 
-<img src="figure/data_preparation_time_variable_1-1.png" title="plot of chunk data_preparation_time_variable_1" alt="plot of chunk data_preparation_time_variable_1" width="400px" />
+<img src="figure/data_preparation_time_variable_1-1.png" title="plot of chunk data_preparation_time_variable_1" alt="plot of chunk data_preparation_time_variable_1" width="600px" />
 
 Hmm let's check the minimum value.
 
@@ -114,7 +114,7 @@ Hmm let's check the minimum value.
 
 It's close to zero, but _what if we wait 1000 hours?_
 
-<img src="figure/data_preparation_time_variable_3-1.png" title="plot of chunk data_preparation_time_variable_3" alt="plot of chunk data_preparation_time_variable_3" width="400px" />
+<img src="figure/data_preparation_time_variable_3-1.png" title="plot of chunk data_preparation_time_variable_3" alt="plot of chunk data_preparation_time_variable_3" width="600px" />
 
 ```
 ## [1] "Min value after 1,000 hours: 0.14"
@@ -122,13 +122,14 @@ It's close to zero, but _what if we wait 1000 hours?_
 
 Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times more? (10,000 hours)
 
-<img src="figure/data_preparation_time_variable_4-1.png" title="plot of chunk data_preparation_time_variable_4" alt="plot of chunk data_preparation_time_variable_4" width="400px" />
+<img src="figure/data_preparation_time_variable_4-1.png" title="plot of chunk data_preparation_time_variable_4" alt="plot of chunk data_preparation_time_variable_4" width="600px" />
 
 ```
 ## [1] "Min value after 10,000 hours: 0.11"
 ```
 
-_Still no zero! How much time do I need?!_ 😱
+_Still no zero! How much time do I need?!_ `emo::ji("scream")`
+
 
 As you may notice, it will probably reach the zero value in the infinity... We are in the presence of an <a href="https://en.wikipedia.org/wiki/Asymptote" target="blank">Asymptote</a>.
 
@@ -170,7 +171,7 @@ Can be defined as a churned or lost opportunity customer.
 
 **In brain signal analysis**, if these signals come from the visual cortex in a project that, for example, we need to predict what type of image the patient is looking at, then the first 40ms of values are useless because it is time the brain need to start processing the signal.
 
-But this also happens in _"real life"_, like the case when we write a data science book suitable for all ages, how much time is it required to end it? An infinite amount? Probably not 😄.
+But this also happens in _"real life"_, like the case when we write a data science book suitable for all ages, how much time is it required to end it? An infinite amount? Probably not `emo::ji("smile")`.
 
 
 <br>
@@ -179,7 +180,7 @@ But this also happens in _"real life"_, like the case when we write a data scien
 
 Defining a time frame to create a training and validation set **is not a free-lunch** when the data is dynamic, as well as deciding how to handle variables that change over time. That's why the **Exploratory Data Analysis** is important in order to get in touch with the data we're analyzing. 
 
-Many topics are inter-connected, as is the case of _letting the data develop their behavior_, with the model perfomance <a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>. 
+Topics are inter-connected. Now, it's the time to mention the relationship of this chapter with the assessing model performance (<a href="http://livebook.datascienceheroes.com/model_performance/out_of_time_validation.html" target="blank">out-of-time validation</a>). When we predict events in the future, we have to analyze how time is it needed for the target variable to change.
 
 The key concept here: **how to handle time in predictive modeling**. It's a good opportunity to ask: _How would it be possible to address this time issues with automatic systems?_ 
 

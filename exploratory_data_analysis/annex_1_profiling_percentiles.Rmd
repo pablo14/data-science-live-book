@@ -45,7 +45,7 @@ data_sample=filter(data_world_wide, Country.Name %in% c("Kazakhstan", "Zambia", 
 select(data_sample, Country.Name, rural_poverty_headcount)
 ```
 
-Please note that the vector is ordered only for didactic purposes. _Remeber from the last section? Our eyes like order._ 
+Please note that the vector is ordered only for didactic purposes. _As we said in the Profiling chapter, our eyes like order._ 
 
 Now we apply  the `quantile` function on the variable `rural_poverty_headcount` (the percentage of the rural population living below the national poverty lines): 
 

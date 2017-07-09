@@ -6,6 +6,8 @@ Percentile is such a crucial concept in data analysis that we are going to cover
 
 Percentiles are used in profiling as well as evaluating the performance of a predictive model.
 
+<br>
+
 <img src="how_to_calculate_percentiles.png" width="700px" alt="how to calculate percentiles">
 
 <br>
@@ -54,7 +56,7 @@ select(data_sample, Country.Name, rural_poverty_headcount)
 ## 10                Zambia                    77.9
 ```
 
-Please note that the vector is ordered only for didactic purposes. _Remeber from the last section? Our eyes like order._ 
+Please note that the vector is ordered only for didactic purposes. _As we said in the Profiling chapter, our eyes like order._ 
 
 Now we apply  the `quantile` function on the variable `rural_poverty_headcount` (the percentage of the rural population living below the national poverty lines): 
 
