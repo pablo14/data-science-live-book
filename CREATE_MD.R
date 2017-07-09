@@ -16,23 +16,28 @@ setwd("~/repos/data-science-live-book")
 
 ###########################################################################
 ###########################################################################
+create_files('outliers_treatment', 'data_preparation') # PUBLISHED
 
-create_files('profiling', 'exploratory_data_analysis') # PUBLISHED
+create_files('data_types', 'data_preparation')
+create_files('considerations_involving_time', 'data_preparation')
+
+
 
 if(F)
 {
   create_files('readme', 'readme') # PUBLISHED
   
   create_files('correlation', 'exploratory_data_analysis') # PUBLISHED
-  create_files('profiling', 'exploratory_data_analysis') # PUBLISHED
+  create_files('profiling', 'exploratory_data_analysis') # PUBLISHED 
+  create_files('annex_1_profiling_percentiles', 'exploratory_data_analysis') # PUBLISHED 
 
+  create_files('data_types', 'data_preparation') # PUBLISHED
   create_files('high_cardinality_predictive_modeling', 'data_preparation') # PUBLISHED
   create_files('high_cardinality_descriptive_stats', 'data_preparation') # PUBLISHED
   create_files('outliers_treatment', 'data_preparation') # PUBLISHED
   create_files('considerations_involving_time', 'data_preparation')
   create_files('feature_engineering', 'data_preparation')
   create_files('treating_missing_data', 'data_preparation')
-  create_files('data_types', 'data_preparation')
   create_files('modifying_variables', 'data_preparation')
   
   create_files('introduction', 'selecting_best_variables') # PUBLISHED

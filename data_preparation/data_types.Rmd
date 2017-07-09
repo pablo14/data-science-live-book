@@ -11,6 +11,7 @@ Handling Data Types
 
 One of the first things to do when we start a data project is to assign the correct data type for each variable. Although this seems a straightforward task, some algorithms work with certain data types. Here, we'll try to cover these conversions while explaining with examples the implications in each case.
 
+<img src="fibonacci_spiral.jpg" alt="Fibonnacci curve, numeric and categoric?" width="150px">
 
 <br>
 
@@ -54,7 +55,7 @@ Some algorithms work as follows:
 
 * `r emo::ji("bar_chart")` Only with categorical data
 * `r emo::ji("straight_ruler")` Only with numerical data
-* `r emo::ji("bar_chart")``emo::ji("straight_ruler")`  With both types
+* `r emo::ji("bar_chart")``r emo::ji("straight_ruler")`  With both types
 
 Moreover, not every predictive model can handle **missing value**. 
 
@@ -220,10 +221,13 @@ data_stunting_grouped = group_by(data_stunting, Entity) %>% filter(Year == max(Y
 
 The most standard binning criteria are:
 
+* Equal range
+* Equal frequency
+* Custom bins
+
+There are all explained below.
+
 <br>
-
-
-
 
 #### Equal range
 
@@ -292,7 +296,7 @@ Please note it’s only needed to define the maximum value per bucket.
 
 In general, we don’t know the minimum nor maximum value. In those cases, we can use the values `-Inf` and `Inf`. Otherwise, if we define a value out of the range, `cut` will assign the `NA` value.
 
-It's good practice to assign the minimum and maximum using a function. In this case, the variable is a percentage, so we know beforehand its scale is from 0 to 100; however, _what would happen if we did not know the range?_
+It's good practice to assign the minimum and maximum using a function. In this case, the variable is a percentage, so we know beforehand its scale is from 0 to 100; however, `r emo::ji("warning")` _what would happen if we did not know the range?_ 
 
 The function will return `NA` for those values below or above the cut points. One solution is to get variable min and max values:
 
@@ -337,7 +341,7 @@ describe(data_stunting_grouped$share_stunted_child_eq_freq)
 ```
 
 
-**All the bins changed!** Because these are new categories, the predictive model will fail to handle them because they are all new values.
+**All the bins changed!** `r emo::ji("scream")` Because these are new categories, the predictive model will fail to handle them because they are all new values.
 
 The solution is to save the cut points when we do data preparation. Then, when we run the model on production, we use the custom bin discretization and, thereby, force every new case in the proper category. This way, the predictive model will always _sees_ the same.
 
@@ -360,7 +364,7 @@ When we work with categorical variables, we can change their distribution by re-
 
 <br> 
 
-### Bonus track
+### Bonus track `r emo::ji("boom")`
 
 Let's go back to the discretization variable section and plot all the transformations we've seen so far:
 
