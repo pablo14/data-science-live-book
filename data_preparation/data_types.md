@@ -54,9 +54,9 @@ This book suggests using binary variables as numeric when `0` is `FALSE` and `1`
 
 Some algorithms work as follows:
 
-* `emo::ji("bar_chart")` Only with categorical data
-* `emo::ji("straight_ruler")` Only with numerical data
-* `emo::ji("bar_chart")``emo::ji("straight_ruler")`  With both types
+* 📊 Only with categorical data
+* 📏 Only with numerical data
+* 📊`emo::ji("straight_ruler")`  With both types
 
 Moreover, not every predictive model can handle **missing value**. 
 

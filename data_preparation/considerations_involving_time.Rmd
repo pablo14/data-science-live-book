@@ -105,7 +105,7 @@ Consider the following example. _How much hours are needed to reach the 0 value?
 
 How about 100 hours?
 
-```{r data_preparation_time_variable_1, echo=FALSE, fig.height=3.5, fig.width=4.5}
+```{r data_preparation_time_variable_1, echo=FALSE, fig.height=3, fig.width=4}
 # generating 3 series example
 y1=round(1/log(1:100), 2)
 y2=round(1/log(1:1000), 2)
@@ -122,19 +122,19 @@ sprintf("Min value after 100 hours: %s", min(y1))
 
 It's close to zero, but _what if we wait 1000 hours?_
 
-```{r data_preparation_time_variable_3, echo=FALSE, fig.height=3.5, fig.width=4.5}
+```{r data_preparation_time_variable_3, echo=FALSE, fig.height=3, fig.width=4}
 plot(y2, xlab = "time (hs)", col="coral")
 sprintf("Min value after 1,000 hours: %s", min(y2))
 ```
 
 Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times more? (10,000 hours)
 
-```{r data_preparation_time_variable_4, echo=FALSE, fig.height=3.5, fig.width=4.5}
+```{r data_preparation_time_variable_4, echo=FALSE, fig.height=3, fig.width=4}
 plot(y3, xlab = "time (hs)", col="coral")
 sprintf("Min value after 10,000 hours: %s", min(y3))
 ```
 
-_Still no zero! How much time do I need?!_ `emo::ji("scream")`
+_Still no zero! How much time do I need?!_ `r emo::ji("scream")`
 
 
 As you may notice, it will probably reach the zero value in the infinity... We are in the presence of an <a href="https://en.wikipedia.org/wiki/Asymptote" target="blank">Asymptote</a>.

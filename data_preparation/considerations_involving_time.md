@@ -128,7 +128,7 @@ Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times
 ## [1] "Min value after 10,000 hours: 0.11"
 ```
 
-_Still no zero! How much time do I need?!_ `emo::ji("scream")`
+_Still no zero! How much time do I need?!_ 😱
 
 
 As you may notice, it will probably reach the zero value in the infinity... We are in the presence of an <a href="https://en.wikipedia.org/wiki/Asymptote" target="blank">Asymptote</a>.
