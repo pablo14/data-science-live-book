@@ -125,7 +125,6 @@ Also, you can check the **Github** repositories for both, the book and `funModel
 * **Book technical reviewer:** 🛠: **Pablo Seibelt** (https://twitter.com/sicarul)
 * Lovely art cover 👩‍🎨: by Bárbara Muñoz (https://twitter.com/barmercedes_)
 
-_First published at: <a href="http://livebook.datascienceheroes.com">livebook.datascienceheroes.com</a>_
 
 _First published at: <a href="http://livebook.datascienceheroes.com">livebook.datascienceheroes.com</a>_
 
