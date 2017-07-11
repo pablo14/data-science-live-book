@@ -9,7 +9,6 @@
 _Author: Pablo "Jausis" Casas._  (https://twitter.com/pabloc_ds)
 
 
-
 <br>
 
 ## Why this book?
@@ -123,12 +122,14 @@ Also, you can check the **Github** repositories for both, the book and `funModel
 ---
 
 
-* **Book technical reviewer:** 🛠: **Pablo Seibelt** (https://twitter.com/sicarul).
-* ALovely artcover 👩‍🎨: Bárbara Muñoz (https://twitter.com/barmercedes_)
+* **Book technical reviewer:** 🛠: **Pablo Seibelt** (https://twitter.com/sicarul)
+* Lovely art cover 👩‍🎨: by Bárbara Muñoz (https://twitter.com/barmercedes_)
 
 _First published at: <a href="http://livebook.datascienceheroes.com">livebook.datascienceheroes.com</a>_
 
-_This book is under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Attribution-NonCommercial-ShareAlike 4.0 International</a> license._
+_First published at: <a href="http://livebook.datascienceheroes.com">livebook.datascienceheroes.com</a>_
+
+This book is under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Attribution-NonCommercial-ShareAlike 4.0 International</a> license._
 
 
 
