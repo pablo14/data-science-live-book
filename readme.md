@@ -61,7 +61,7 @@ Time for next section.
 
 <br>
 
-## Will machines and artificial intelligence rule the world?
+## Will machines and artificial intelligence rule the world? 😱
 
 Although it is true that computing power is being increased exponentially, the machines rebellion is far from happening today.
 
@@ -80,7 +80,9 @@ It's tough to have a solution that suits all the cases. Human intervention **is 
 
 _By Jorge Drexler (musician, actor and doctor). Extracted from the song "Mi guitarra y vos"_
 
-Maybe, could this be the difference between **machine learning** and **data science**? A machine that learns vs. a human being doing science with data?
+<br>
+
+Maybe, could this be the difference between **machine learning** and **data science**? A machine that learns vs. a human being doing science with data? 🤔
 
 An open question.
 
@@ -122,7 +124,7 @@ Also, you can check the **Github** repositories for both, the book and `funModel
 
 
 * **Book technical reviewer:** 🛠: **Pablo Seibelt** (https://twitter.com/sicarul).
-* Art lovely cover 👩‍🎨: Bárbara Muñoz (https://twitter.com/barmercedes_)
+* ALovely artcover 👩‍🎨: Bárbara Muñoz (https://twitter.com/barmercedes_)
 
 _First published at: <a href="http://livebook.datascienceheroes.com">livebook.datascienceheroes.com</a>_
 
