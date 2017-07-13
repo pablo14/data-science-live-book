@@ -1,22 +1,27 @@
-General Aspects in Selecting Best Variables
-===
 
-### What is this about?
+
+# General Aspects in Selecting Best Variables
+
+## What is this about?
 
 This chapter covers the following topics:
 
-* Best variables ranking from conventional machine learning algorithms, either predictive or clustering.
+* The best variables ranking from conventional machine learning algorithms, either predictive or clustering.
 * The nature of selecting variables with and without predictive models.
 * The effect of variables working in groups (intuition and information theory).
 * Exploring the best variable subset in practice using R.
 
-_Selecting best variables is also known as feature selection, selecting most important predictors, selecting best predictors, among others._
+_Selecting the best variables is also known as feature selection, selecting the most important predictors, selecting the best predictors, among others._
+
+<img src="dark_matter_simulation.png" width="250px" alt="The Millennium Simulation Project">
+
+_Image: Is it a neural network? Nope. Dark matter, from the "The Millennium Simulation Project"._
 
 <br>
 
-### The intuition
+## Intuition
 
-Selecting best variables is like doing a summary of a story, we want to focus on those few details that best describe what we're talking about. The balance threads between talking _too much_ about unnecessary details (overfitting) and talking _too little_ about the essence of the story (underfitting).
+Selecting the best variables is like doing a summary of a story, we want to focus on those few details that best describe what we're talking about. The balance threads between talking _too much_ about unnecessary details (overfitting) and talking _too little_ about the essence of the story (underfitting).
 
 Another example can be the decision of buying a new laptop: _what are the features that we care about the most? Price, color and shipping method? Color and battery life? Or just price?_
 
@@ -24,16 +29,16 @@ From the **Information Theory** point of view -a key point in machine learning-,
 
 <br>
 
-### The "best" selection?
+## The "best" selection?
 
 The chapter says "best", but we'd better mention a conceptual point, in general terms _there is no unique best variable selection._ 
 
-To start from this perspective is important, since in the exploration of many algorithms that _rank_ the variables according to their predictive power we can find different -and similar- results. That is:
+To start from this perspective is important, since in the exploration of many algorithms that _rank_ the variables according to their predictive power, we can find different -and similar- results. That is:
 
 * Algorithm 1 has chosen as the best variable `var_1`, followed by `var_5` and `var_14`.
 * Algorithm 2 did this ranking: `var_1`, `var_5` and `var_3`.
 
-Let's imagine based on algorithm 1, the accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be seen as the same. 
+Let's imagine, based on algorithm 1, the accuracy is 80%, while the accuracy based on algorithm 2 is 78%. Considering that every model has its inner variance, the result can be seen as the same. 
 
 This perspective can help us to reduce time in pursuing the perfect variable selection.
 
@@ -116,7 +121,7 @@ Although the ranking will vary from algorithm to algorithm, in general terms the
 <br>
 
 
-### The nature of the selection
+## The nature of the selection
 
 There are two main approaches when doing variable selection:
 
@@ -134,7 +139,7 @@ One algorithm to perform this is <a href="http://home.penglab.com/proj/mRMR/" ta
 
 <br> 
 
-### Improving variables
+## Improving variables
 
 Variables can increase their predictive power by treating them. 
 
@@ -143,13 +148,13 @@ This book covers by now:
 * <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">Improvement of categorical variables</a>.
 * Reducing the noise in numerical variables through binning in the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html"  target="blank">cross_plot</a> function.
 * <a href="http://livebook.datascienceheroes.com/data_preparation/outliers_treatment.html" target="blank">Preparing outliers</a> for predictive modeling.
-* TODO: agregar NA chapter
+* <a href="http://livebook.datascienceheroes.com/data_preparation/treating_missing_data.html" target="blank">Analysis, Missing Data: Analysis, Handling and Imputation</a> for predictive modeling. 
 
 _And more to come..._
 
 <br>
 
-### Cleaning by domain knowledge
+## Cleaning by domain knowledge
 
 It's not related to algorithmic procedures, but to the area from which the data comes.
 
@@ -165,7 +170,7 @@ To go further on this point, we should do a deeper exploratory data analysis. Bo
 
 <br>
 
-### Variables work in groups
+## Variables work in groups
 
 <img src="variable_groups.png" width="300px" alt="Variable work in groups">
 
@@ -185,7 +190,7 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 <br>
 
-#### Example in R: Variables working in groups
+### Example in R: Variables working in groups
 
 <img src="aristotle.png" width="300px" alt="Aristotle: philosopher and data scientist">
 
@@ -239,14 +244,14 @@ cat(c(results, avg_improvement_text), sep="\n\n")
 ```
 
 ```
-## ROC model based on 'max_heart_rate': 0.72.; based on 'chest_pain': 0.77; and based on both: 0.82
+## ROC model based on 'max_heart_rate': 0.74.; based on 'chest_pain': 0.76; and based on both: 0.82
 ## 
-## Average improvement: 10.27%
+## Average improvement: 8.93%
 ```
 
 <br>
 
-#### Tiny example (based on Information Theory)
+### Tiny example (based on Information Theory)
 
 Consider the following _big data_ table 😜. 4 rows, 2 input variables (`var_1`, `var_2`) and one outcome (`target`):
 
@@ -272,7 +277,7 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 
 <br>
 
-#### Conclusions  
+### Conclusions  
 
 * The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not too bad. 😉 This percentage of improvement is the result of the variables working in groups.
 * This effect appears if the variables contain information, such is the case of `max_heart_rate` and `chest_pain` (or `var_1` and `var_2`). 
@@ -282,7 +287,7 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 
 <br>
 
-### Correlation between input variables
+## Correlation between input variables
 
 The ideal scenario is to build a predictive model with only variables not correlated between them. In practice, it's complicated to keep such a scenario for all variables. 
 
@@ -304,7 +309,7 @@ The general rule would be: Try to add the top N variables that are correlated wi
 
 <br>
 
-### Keep it simple
+## Keep it simple
 
 <img src="fractals_nature.png" alt="Nature operates in the shortest way possible. -Aristotle." width="250px">
 
@@ -340,7 +345,7 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 <br> 
 
-### Variable selection in Clustering?
+## Variable selection in Clustering?
 
 <img src="cluster.png" width="300px" alt="feature engineering in clustering"> 
 
@@ -358,40 +363,40 @@ Finally, we could run, for example, a random forest model with the cluster as a 
 
 <br>
 
-### Selecting best variables in practice 
+## Selecting the best variables in practice 
 
-#### The short answer 
+### The short answer 
 
 Pick up the top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves variable rankings, but if it does, use the same model (for example gradient boosting machine) to get the ranking and to build the final model.
 
-For those models like k-nearest neighbors which doesn't have a built-in select best features procedure, it's valid to use the selection of another algorithm. It will lead to better results than using all the variables. 
+For those models like k-nearest neighbors which don't have a built-in select best features procedure, it's valid to use the selection of another algorithm. It will lead to better results than using all the variables. 
 
 <br>
 
-#### The long answer 
+### The long answer 
 
-* When possible, **validate** the list with someone who knows about the context, the business or the data source. Either for the top _N_ or the bottom _M_ variables. Regarding those _bad_ variables, we may be missing something in the data munging that could be destroying their predictive power.
-* Understand each variable, their meaning in context (business, medical, other).
+* When possible, **validate** the list with someone who knows about the context, the business or the data source. Either for the top _N_ or the bottom _M_ variables. As regards those _bad_ variables, we may be missing something in the data munging that could be destroying their predictive power.
+* Understand each variable, its meaning in context (business, medical, other).
 * Do **exploratory data analysis** to see the distributions of the most important variables regarding a target variable, _does the selection make sense?_ If the target is binary then the function <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">cross_plot</a> can be used. 
-* Does the average of any variable _significatively_ change over time? Check for abrupt changes in distributions.
-Suspect about high cardinality top-ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variables in Predictive Modeling</a> chapter.
-* When doing the selection -as well as predictive modeling-, try to use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in Ref. [3].
+* Does the average of any variable _significantly_ change over time? Check for abrupt changes in distributions.
+* Suspect about high cardinality top-ranked variables (like postal code, let's say above +100 categories). More information at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variables in Predictive Modeling</a> chapter.
+* When making the selection -as well as a predictive modeling-, try and use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in Ref. [3].
 * Try other methods to find **groups of variables**, like the one mentioned before: mRMR.
-* If the selection doesn't meet the needs, try creating new variables, you can check the **data preparation** chapter. (TODO: ADD)
+* If the selection doesn't meet the needs, try creating new variables, you can check the **data preparation** chapter. Coming soon: Feature engineering chapter.
 
 <br>
 
-#### Generate your own knowledge
+### Generate your own knowledge
 
 It's difficult to generalize when the nature of the data is so different, from **genetics** in which there are thousands of variables and a few rows, to web-navigation when new data is coming all the time.
 
-The same applies to the objective of the analysis. Is it to be used in a competition where precision is highly necessary? Perhaps the solution may include more variables that are correlated; in comparison to an ad-hoc study in which the primary goal is a simple explanation.
+The same applies to the objective of the analysis. Is it to be used in a competition where precision is highly necessary? Perhaps the solution may include more varcorrelated iables thn comparison to with ad-hoc study in which the primary goal is a simple explanation.
 
 There is no one-size-fits-all answer to face all possible challenges; you'll find powerful insights using your experience. It's just a matter of practice. 
 
 
 
-<br> 
+<> 
 
 **References:**
 
