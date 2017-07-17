@@ -147,7 +147,7 @@ For example, if the project goal is to predict a binary outcome, like `buy`/`don
 
 This answer may come by the joint work of the data scientist and the domain expert. 
 
-In this case, a zero can be considered the same as the value which has the 95% of the population. In statistics terms it is the `0.95` <a href="https://en.wikipedia.org/wiki/Percentile" target="blank">**percentile**</a>. This is a key topic in exploratory data analysis.
+In this case, a zero can be considered the same as the value which has the 95% of the population. In statistics terms it is the `0.95` **percentile**. This book extensively covers this topic in <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/annex_1_profiling_percentiles.html" target="blank">Annex 1: The magic of percentiles</a>. This is a key topic in exploratory data analysis.
 
 A related case is **dealing with outliers**, when we can apply this cutting percentile criteria, as we saw in <a href="http://livebook.datascienceheroes.com/data_preparation/outliers_treatment.html" target="blank">treating outliers chapter</a>.
 
@@ -171,7 +171,7 @@ Can be defined as a churned or lost opportunity customer.
 
 **In brain signal analysis**, if these signals come from the visual cortex in a project that, for example, we need to predict what type of image the patient is looking at, then the first 40ms of values are useless because it is time the brain need to start processing the signal.
 
-But this also happens in _"real life"_, like the case when we write a data science book suitable for all ages, how much time is it required to end it? An infinite amount? Probably not `emo::ji("smile")`.
+But this also happens in _"real life"_, like the case when we write a data science book suitable for all ages, how much time is it required to end it? An infinite amount? Probably not 😄.
 
 
 <br>
