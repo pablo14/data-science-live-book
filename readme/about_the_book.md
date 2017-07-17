@@ -1,4 +1,16 @@
-# About the book
+# Data Science Live Book
+
+<br>
+
+### An intuitive and practical approach to data analysis, data preparation and machine learning, suitable for all ages! 🚀
+
+<img src="readme/data_science_live_book_cover.png" width="700px" alt="Data Science Live Book" align="center">
+
+_Author: Pablo "Jausis" Casas._  (https://twitter.com/pabloc_ds)
+
+
+
+<br>
 
 ## Why this book?
 
@@ -64,7 +76,7 @@ It's tough to have a solution that suits all the cases. Human intervention **is 
 
 > The machine is made by man, and it is what man does with it.
 
-("La maquina la hace el hombre, y es lo que el hombre hace con ella.")
+(Original quote in Spanish: "La maquina la hace el hombre, y es lo que el hombre hace con ella.")
 
 _By Jorge Drexler (musician, actor and doctor). Extracted from the song "Mi guitarra y vos"_
 
@@ -92,15 +104,30 @@ Hope you enjoy it!
 
 <br>
 
-## How can I contact you?
+## How can I contact you? 📩
 
 If you want to say _hello_, contribute by telling that some part is not well explained, suggest a new topic or share some good experience you had applying any concept explained here, you are welcome to drop me an email at: 
 
-pcasas.biz <at> gmail.com. I'm constantly learning so it's nice to exchange knowledge and keep in touch with other colleagues.
+pcasas.biz (at) gmail.com. I'm constantly learning so it's nice to exchange knowledge and keep in touch with other colleagues.
+
+My twitter: https://twitter.com/pabloc_ds
+
+**Data Science Heroes Blog**: http://blog.datascienceheroes.com/
 
 Also, you can check the **Github** repositories for both, the book and `funModeling`, so you can report bugs, suggestions, new ideas, etc:
 * `funModeling` R package: https://github.com/pablo14/funModeling
 * **Data Science Live Book**: https://github.com/pablo14/data-science-live-book
+
+---
+
+
+* **Book technical reviewer:** 🛠: **Pablo Seibelt** (https://twitter.com/sicarul).
+* Art lovely cover 👩‍🎨: Bárbara Muñoz (https://twitter.com/barmercedes_)
+
+_First published at: <a href="http://livebook.datascienceheroes.com">livebook.datascienceheroes.com</a>_
+
+_This book is under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Attribution-NonCommercial-ShareAlike 4.0 International</a> license._
+
 
 
 

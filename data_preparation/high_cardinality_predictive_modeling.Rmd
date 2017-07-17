@@ -1,7 +1,7 @@
 ```{r ,results="hide", echo=FALSE}
 library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=120)
-knitr::opts_knit$set(base.dir = "data_preparation")
+knitr::opts_chunk$set(out.width="600px", dpi=200)
+#knitr::opts_knit$set(base.dir = "data_preparation")
 ``` 
 
 <img src="http://i.imgur.com/GijXkrp.png" width="800px"> 
@@ -35,7 +35,6 @@ It depends on the case, but the quickest answer is yes. In this chapter we will 
 
 There is a tradeoff between the **representation of the data** (how many rows each category has), and how is each category related to the outcome variable. E.g.: some countries are more prone to cases of flu than others
 
-
 ```{r , message=F}
 # Loading funModeling >=1.6 which contains functions to deal with this. 
 library(funModeling)
@@ -46,7 +45,8 @@ Profiling `data_country`, which comes inside `funModeling` package (please updat
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r high_cardinality_variable,  fig.height=8, fig.width=4}
+```{r high_cardinality_variable,  fig.height=9, fig.width=5, out.width="700px"}
+
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -62,7 +62,7 @@ freq(data_country, "has_flu")
 
 <br>
 
-## The case 🔎
+## The case `r emo::ji("mag")`
 
 The predictive model will try to map certain values with certain outcomes, in our case the target variable is binary.
 
@@ -116,8 +116,7 @@ Without considering the filter by country, we've got:
 
 ---
 
-
-## Analysis for Predictive Modeling 🔮
+## Analysis for Predictive Modeling `r emo::ji("crystal_ball")`
 
 When developing predictive models, we may be interested in those values which increases the likelihood of a certain event. In our case:
 
@@ -210,11 +209,10 @@ Despite the fact this is a prepared example, there are some data preparations te
 
 This procedure uses the `kmeans` clustering technique and the table returned by `categ_analysis` in order to create groups -clusters- which contain categories which exhibit similar behavior in terms of:
 
-* `sum_target`
-* `mean_target`
 * `perc_rows`
+* `perc_target`
 
-The combination of all of them will lead to find groups considering likelihood and representativeness.
+The combination of both will lead to find groups considering likelihood and representativeness.
 
 
 **Hands on R:**
@@ -227,7 +225,7 @@ _Note: the `seed` parameter is optional, but assigning a number will retrieve al
 
 ```{r}
 ## Reducing the cardinality
-country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8, seed = 999)
+country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=9, seed = 999)
 country_groups$df_equivalence
 ```
 
@@ -243,38 +241,41 @@ Let's explore how the new groups behave, this is what the predictive model will 
 country_groups$recateg_results
 ```
 
-Last table is ordered by mean_target, so we can quickly see groups maximizing and minimizing the likelihood.
+Last table is ordered by `mean_target`, so we can quickly see groups maximizing and minimizing the likelihood.
 
-_We'll leave `group_5` to the end._
 
-* `group_3` is the most common, it is present in 31.6% of cases and mean_target (likelihood) is 14.2%.
-* Excluding `group_5` for now, `group_4` has the highest likelihood, while `group_8` has the lowest. Both have good representativeness: 11.9 and 14.7 of all input rows.
-* `group_6` and `group_8` are pretty similar, they can be one group since likelihood is 0 in both cases.
+* `group_2` is the most common, it is present in 31.6% of cases and `mean_target` (likelihood) is 14.2%.
+* `group_8` has the highest likelihood (17.6%). Followed by `group_6` with chance of 15.6% of having a positive case (`has_flu="yes"`).
+* `group_4`, `group_4` and `group_9` looks the same. They can be one group since likelihood is 0 in all the cases.
+* `group_7` and `group_3` have 1 and 2 countries with positive cases. We could consider these numbers as the same, grouping them into one group, which in the end will represent the countries with the lowest likelihood.
 
-**What about `group_5`?**
-
-We see that is the group with the most likelihood, 75% `has_flu`. This is a cluster of outliers, here are the categories with low-representativeness and high likelihood. `Malasia` and `Mexico` are there.
-
-If we are more conscious about false positives, we can consider that this group doesn't have enough information and assign it to `group_8`, so it will have no influence in increasing the likelihood of predicting flu (`mean_target=0`). Or, we can assign to an average group like `group_3`.
+All the groups seems to have a good repreesntation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
 
 
 ```{r, message=F}
-data_country=data_country %>% inner_join(country_groups$df_equivalence)
+data_country_2=data_country %>% inner_join(country_groups$df_equivalence, by="country")
 ```
+
 Now we do the additional transformations replacing:
-`group_5` by `group_3`; and `group_6` by `group_8`.
+
+* `group_4` and `group_5` will be `group_5`.
+* `group_7` will be `group_3`.
 
 ```{r, hide=T}
-data_country$country_rec=ifelse(data_country$country_rec == "group_5", "group_3", data_country$country_rec)
-data_country$country_rec=ifelse(data_country$country_rec == "group_6", "group_8", data_country$country_rec)
+data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_4", "group_5", data_country_2$country_rec)
+data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_9", "group_5", data_country_2$country_rec)
+
+data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_3", "group_7", data_country_2$country_rec)
+
 ```
 
 Checking the final grouping (`country_rec` variable):
+
 ```{r}
-categ_analysis(data=data_country, input="country_rec", target = "has_flu")
+categ_analysis(data=data_country_2, input="country_rec", target = "has_flu")
 ```
 
-Now each group seems to have a good sample size, and values `mean_target` shows a decreasing pattern where each doesn't appear to be so high and is well distributed in the `0.176` to `0` range. [1]
+Each group seems to have a good sample size regarding the `sum_target` distribution. Our transformation left `group_5` with a representation of 21% of total cases, still with 0 positive cases (`sum_target`=0). And `group_7` with 3 positive cases, which represents 3.36% of positive cases.
 
 <br>
 
@@ -297,7 +298,9 @@ _A new category appears? Send to the least meaningful group. After a while, re-a
 
 ## Do predictive models handle high cardinality? Part 1
 
-We're going throught this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs.
+Yes, and no. Some models deal with this high cardinality issue better than others. In some scenarios, this data preparation may not be necessary. This book tries to expose this issue, which sometimes, may lead to a better model. 
+
+Now, we're going throught this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs.
 
 The first model doesn't have treated data, and the second one has been treated by the function in `funModeling` package.
 
@@ -313,45 +316,41 @@ fitControl <- trainControl(method = "cv",
 
 
 fit_gbm_1 <- train(has_flu ~ country,
-                   data = data_country,
+                   data = data_country_2,
                    method = "gbm",
                    trControl = fitControl,
                    verbose = FALSE,
                    metric = "ROC")
 
 
+# Getting best ROC value
+roc=round(max(fit_gbm_1$results$ROC),2)
 ```
 
-```{r}
-roc=round(mean(fit_gbm_1$results$ROC),2)
-sprintf("Area under ROC curve is: %s", roc)
-```
+Area under ROC curve is (`roc`): `r roc`.
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
 
 <br>
   
-```{r, hide=T, echo=F}
-## Building the second model, country_group is based on country.
+```{r, message=F, warning=F}
+## Building the second model, based on the country_rec variable
 fit_gbm_2 <- train(has_flu ~ country_rec,
-                   data = data_country,
+                   data = data_country_2,
                    method = "gbm",
                    trControl = fitControl,
                    verbose = FALSE,
                    metric = "ROC")
 
+## Getting new best ROC value
+new_roc=round(max(fit_gbm_2$results$ROC),2)
 ```
 
-```{r}
-new_roc=round(mean(fit_gbm_2$results$ROC),2)
-sprintf("New ROC value is: %s", new_roc);
-```
+New ROC curve is (`new_roc`): `r new_roc`.
 
-Then we alculate the percentage of improvement over first roc value:
-  
-```{r}
-sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
-```
+Then we calculate the percentage of improvement over first roc value:
+
+**Improvement: ~ `r round(100*(new_roc-roc)/roc,2)`%**.
 
 Not too bad, right?
 
@@ -371,7 +370,8 @@ Let's review how some models deal with this:
 
 **Random Forest** -at least in R implementation- handles only categorical variables with at least 52 different categories. It's highly probable that this limitation is to avoid overfitting. This point in conjunction to the nature of the algorithm -creates lots of trees- reduces the effect of a single decision tree when choosing a high cardinality variable.
 
-**Gradient Boosting Machine** and **Logistic Regression** converts internally categorical variables into flag or dummy variables. In the example we saw about countries, it implies the -internal- creation of 70 flag variables. Checking the model we created before:
+**Gradient Boosting Machine** and **Logistic Regression** converts internally categorical variables into flag or dummy variables. In the example we saw about countries, it implies the -internal- creation of 70 flag variables (this is how `caret` handles formula, if we want to keep the original variable without the dummies, we have to not use a formula). 
+Checking the model we created before:
 
 ```{r}
 # Checking the first model...
@@ -381,7 +381,7 @@ fit_gbm_1$finalModel
 That is: 69 input variables are representing the countries, but the flag columns were reported as not being relevant to make the prediction. 
 
 
-This opens a new chapter which is going to be covered in this book 😉: **Feature engineering** or **selecting best variables**. It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
+This opens a new chapter which is going to be covered in this book `emo::ji("wink")`:**Feature engineering** or **selecting best variables**. It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
 
 **Conclusion: reducing the cardinality will reduce the quantity of variables in these models.**
 
@@ -389,8 +389,7 @@ This opens a new chapter which is going to be covered in this book 😉: **Featu
 
 ---
 
-## Numerical or multi-nominal target variable 📏
-
+## Numerical or multi-nominal target variable `r emo::ji("straight_ruler")`
 The book covered only the target as a binary variable, it is planned in the future to cover numerical and multi-value target.
 
 However, if you read up to here, you may want explore on your own having the same idea in mind. In numerical variables, for example forecasting `page visits` on a web site, there will be certain categories of the input variable that which will be more related with a high value on visits, while there are others that are more correlated with low values.
@@ -399,7 +398,7 @@ The same goes for multi-nominal output variable, there will be some categories m
 
 <br>
 
-## What we've got as an "extra-🎁"  from the grouping?
+## What we've got as an "extra-`r emo::ji("gift")`" from the grouping?
 
 Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativeness and prediction power-.
 
@@ -425,21 +424,15 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 * Key concept: **representativeness** of each category regarding itself, and regarding to the event being predicted.
 
-* What was mentioned in the beginning in respects to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
+* What was mentioned in the beginning in respects to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input).
 
 * _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate all cases. Hopefully it will be a good kick-off for the reader to start doing her-his own optimizations.
 
 <br> 
 
-
-### Fur#her reading
+### Further reading
 
 * Following link contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
 
+
 <br>
-
-*References:* 
-
-* [1] It can be studied with the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
-
-

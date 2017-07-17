@@ -6,7 +6,7 @@ knitr::opts_knit$set(base.dir = "download_pdf_ebook")
 
 # Download PDF and eBook
 
-If you liked the book and wanted to support the project, you can acquire forever and ever the portable **Data Science Live Book version** in both formats, PDF, and eBook 🙂. 
+If you liked the book and wanted to support the project, you can acquire forever and ever the portable **Data Science Live Book version** in both formats, PDF, and eBook `r emo::ji("slightly_smiling_face")`. 
 
 <br> 
 
@@ -16,17 +16,21 @@ No, they are the same. The Data Science Live Book is and will always be fully ac
 
 * _What happen if a new version is released? / Can I access newer versions?_
 
-When you get your first copy, you can download newer versions. You'll be notified via email.
+After your purchase, you will be notified via email with a download link when new versions of the book are released! (You can opt-out of being notified).
 
 _How can I contact you?_
 
-If you want to say hello, contribute by telling that some part is not well explained, suggest a new topic or share some good experience you had applying any concept explained here, you are welcome to drop me an email at: pcasas.biz <at> gmail.com
+If you wish to contact me you can do so at pcasas.biz-at-gmail.com, you don’t need an specific reason anything from suggesting a new topic to just sharing a good experience after applying concepts you learnt here are welcome!
 
-Also, if now the economics times don't go so well and you _need_ the portable version anyway, just let me know.
+`r emo::ji("worried")`: _I don’t have enough money to contribute, but I still *really* want the portable version._
+No worries, we all have rough times, just contact me at pcasas.biz gmail.com `r emo::ji("wink")`.
 
 I like the idea of having -when possible- free education material so anyone who wants to study and explore new horizons will do it.
 
-With a minimum of **US$9** (US dollar), the modality is **name-your-price**, and also there is the option to pick up the quantity. Below the purchase button, you'll be redirected to a secure site.
+
+The modality is name-your-price, with a minimum of 9 US dollar, after clicking the purchase button you’ll be redirect to a **secure site**.
+
+Hope you enjoy it! `r emo::ji("rocket")`
 
 --
 
