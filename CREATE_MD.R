@@ -16,11 +16,9 @@ setwd("~/repos/data-science-live-book")
 
 ###########################################################################
 ###########################################################################
-create_files('outliers_treatment', 'data_preparation') # PUBLISHED
 
-create_files('data_types', 'data_preparation')
-create_files('considerations_involving_time', 'data_preparation')
 
+create_files('high_cardinality_predictive_modeling', 'data_preparation') # PUBLISHED
 
 
 if(F)
@@ -40,11 +38,11 @@ if(F)
   create_files('treating_missing_data', 'data_preparation')
   create_files('modifying_variables', 'data_preparation')
   
-  create_files('introduction', 'selecting_best_variables') # PUBLISHED
+  create_files('introduction', 'selecting_best_variables') # NOT-PUBLISHED
   create_files('cross_plot', 'selecting_best_variables') # PUBLISHED
   create_files('plotar_boxplot', 'selecting_best_variables') # PUBLISHED
   create_files('plotar_histdens', 'selecting_best_variables') # PUBLISHED
-  create_files('general_aspects', 'selecting_best_variables')
+  create_files('general_aspects', 'selecting_best_variables') # PUBLISHED
   
   create_files('scoring', 'scoring') # PUBLISHED
   

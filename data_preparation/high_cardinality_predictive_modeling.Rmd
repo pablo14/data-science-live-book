@@ -41,7 +41,7 @@ library(funModeling)
 library(dplyr)
 ```
 
-Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6).
+Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6.5).
 
 Quick `data_country` profiling (first 10 rows)
 
@@ -75,11 +75,11 @@ Each row represent an unique category of `input` variables. Withing each row you
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
-## Printing first 40 rows (countries) out of 70.
-head(country_profiling, 40)
+## Printing first 15 rows (countries) out of 70.
+head(country_profiling, 15)
 ```
 
-<img src="country_profiling.png" alt="profiling country for predictive modeling">
+<img src="country_profiling.png" alt="profiling country for predictive modeling" width="500px">
 
 <br>
 
@@ -350,7 +350,7 @@ New ROC curve is (`new_roc`): `r new_roc`.
 
 Then we calculate the percentage of improvement over first roc value:
 
-**Improvement: ~ `r round(100*(new_roc-roc)/roc,2)`%**.
+**Improvement: ~ `r round(100*(new_roc-roc)/roc,2)`%**. `r emo::ji("white_check_mark")`
 
 Not too bad, right?
 
@@ -381,7 +381,7 @@ fit_gbm_1$finalModel
 That is: 69 input variables are representing the countries, but the flag columns were reported as not being relevant to make the prediction. 
 
 
-This opens a new chapter which is going to be covered in this book `emo::ji("wink")`:**Feature engineering** or **selecting best variables**. It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
+This opens a new chapter which is going to be covered in this book `r emo::ji("wink")`: **Feature engineering** and <a href="http://livebook.datascienceheroes.com/selecting_best_variables/general_aspects.html" target="blank">selecting best variables</a>. It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
 
 **Conclusion: reducing the cardinality will reduce the quantity of variables in these models.**
 
@@ -426,7 +426,8 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 * What was mentioned in the beginning in respects to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input).
 
-* _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate all cases. Hopefully it will be a good kick-off for the reader to start doing her-his own optimizations.
+* _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate all cases. Hopefully it will be a good kick-off for the reader to start doing her-his own optimizations when they consider relevant for the project. 
+
 
 <br> 
 

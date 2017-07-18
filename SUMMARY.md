@@ -3,7 +3,7 @@
 * [Exploratory Data Analysis]()
   * [Profiling: The Voice of the Numbers](exploratory_data_analysis/profiling.md)
   * [Correlation & Relationship](exploratory_data_analysis/correlation.md)
-  * [Annex 1: Percentiles](exploratory_data_analysis/annex_1_profiling_percentiles.md)
+  * [Annex 1: Percentiles, The Magic of](exploratory_data_analysis/annex_1_profiling_percentiles.md)
 * [Data Preparation]()
   * [Data Types](data_preparation/data_types.md)
   * [High Cardinality in Descriptive Stats](data_preparation/high_cardinality_descriptive_stats.md)

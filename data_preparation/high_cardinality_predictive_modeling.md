@@ -32,14 +32,13 @@ It depends on the case, but the quickest answer is yes. In this chapter we will 
 There is a tradeoff between the **representation of the data** (how many rows each category has), and how is each category related to the outcome variable. E.g.: some countries are more prone to cases of flu than others
 
 
-
 ```r
 # Loading funModeling >=1.6 which contains functions to deal with this. 
 library(funModeling)
 library(dplyr)
 ```
 
-Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6).
+Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6.5).
 
 Quick `data_country` profiling (first 10 rows)
 
@@ -68,7 +67,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-<img src="figure/high_cardinality_variable-1.png" title="plot of chunk high_cardinality_variable" alt="plot of chunk high_cardinality_variable" width="400px" />
+<img src="figure/high_cardinality_variable-1.png" title="plot of chunk high_cardinality_variable" alt="plot of chunk high_cardinality_variable" width="700px" />
 
 ```
 ##           country frequency percentage cumulative_perc
@@ -90,7 +89,7 @@ head(freq(data_country, "country"), 10)
 freq(data_country, "has_flu")
 ```
 
-<img src="figure/data_preparation_high_cardinality_variable-1.png" title="plot of chunk data_preparation_high_cardinality_variable" alt="plot of chunk data_preparation_high_cardinality_variable" width="400px" />
+<img src="figure/data_preparation_high_cardinality_variable-1.png" title="plot of chunk data_preparation_high_cardinality_variable" alt="plot of chunk data_preparation_high_cardinality_variable" width="600px" />
 
 ```
 ##   has_flu frequency percentage cumulative_perc
@@ -101,7 +100,7 @@ freq(data_country, "has_flu")
 
 <br>
 
-## The case 🔎
+## The case 🔍
 
 The predictive model will try to map certain values with certain outcomes, in our case the target variable is binary.
 
@@ -115,11 +114,11 @@ Each row represent an unique category of `input` variables. Withing each row you
 ## `categ_analysis` is available in "funModeling" >= v1.6, please install it before using it.
 country_profiling=categ_analysis(data=data_country, input="country", target = "has_flu")
 
-## Printing first 40 rows (countries) out of 70.
-head(country_profiling, 40)
+## Printing first 15 rows (countries) out of 70.
+head(country_profiling, 15)
 ```
 
-<img src="country_profiling.png" alt="profiling country for predictive modeling">
+<img src="country_profiling.png" alt="profiling country for predictive modeling" width="500px">
 
 <br>
 
@@ -155,7 +154,6 @@ Without considering the filter by country, we've got:
 <br>
 
 ---
-
 
 ## Analysis for Predictive Modeling 🔮
 
@@ -297,11 +295,10 @@ Despite the fact this is a prepared example, there are some data preparations te
 
 This procedure uses the `kmeans` clustering technique and the table returned by `categ_analysis` in order to create groups -clusters- which contain categories which exhibit similar behavior in terms of:
 
-* `sum_target`
-* `mean_target`
 * `perc_rows`
+* `perc_target`
 
-The combination of all of them will lead to find groups considering likelihood and representativeness.
+The combination of both will lead to find groups considering likelihood and representativeness.
 
 
 **Hands on R:**
@@ -315,82 +312,82 @@ _Note: the `seed` parameter is optional, but assigning a number will retrieve al
 
 ```r
 ## Reducing the cardinality
-country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=8, seed = 999)
+country_groups=auto_grouping(data = data_country, input = "country", target="has_flu", n_groups=9, seed = 999)
 country_groups$df_equivalence
 ```
 
 ```
 ##                      country country_rec
-## 1                  Argentina     group_1
-## 2                  Australia     group_1
+## 1                  Australia     group_1
+## 2                     Canada     group_1
 ## 3                    Germany     group_1
-## 4                Netherlands     group_1
-## 5                    Romania     group_1
-## 6                      Spain     group_1
-## 7                     Sweden     group_1
-## 8                      China     group_2
-## 9                     Turkey     group_2
-## 10                    France     group_3
-## 11            United Kingdom     group_4
-## 12                   Uruguay     group_4
-## 13                  Malaysia     group_5
-## 14                    Mexico     group_5
-## 15       Asia/Pacific Region     group_6
-## 16                   Austria     group_6
-## 17                Bangladesh     group_6
-## 18    Bosnia and Herzegovina     group_6
-## 19                  Cambodia     group_6
-## 20                     Chile     group_6
-## 21                Costa Rica     group_6
-## 22                   Croatia     group_6
-## 23                    Cyprus     group_6
-## 24            Czech Republic     group_6
-## 25        Dominican Republic     group_6
-## 26                     Egypt     group_6
-## 27                   Finland     group_6
-## 28                     Ghana     group_6
-## 29                    Greece     group_6
-## 30                  Honduras     group_6
-## 31 Iran, Islamic Republic of     group_6
-## 32                   Ireland     group_6
-## 33               Isle of Man     group_6
-## 34        Korea, Republic of     group_6
-## 35                    Latvia     group_6
-## 36                 Lithuania     group_6
-## 37                Luxembourg     group_6
-## 38                     Malta     group_6
-## 39      Moldova, Republic of     group_6
-## 40                Montenegro     group_6
-## 41                   Morocco     group_6
-## 42               New Zealand     group_6
-## 43                  Pakistan     group_6
-## 44     Palestinian Territory     group_6
-## 45                      Peru     group_6
-## 46        Russian Federation     group_6
-## 47              Saudi Arabia     group_6
-## 48                   Senegal     group_6
-## 49                  Slovenia     group_6
-## 50                    Taiwan     group_6
-## 51                  Thailand     group_6
-## 52                   Vietnam     group_6
-## 53                    Canada     group_7
-## 54                    Israel     group_7
-## 55                  Portugal     group_7
-## 56               Switzerland     group_7
-## 57                   Belgium     group_8
-## 58                    Brazil     group_8
-## 59                  Bulgaria     group_8
-## 60                   Denmark     group_8
-## 61                 Hong Kong     group_8
-## 62                 Indonesia     group_8
-## 63                     Italy     group_8
-## 64                     Japan     group_8
-## 65                    Norway     group_8
-## 66               Philippines     group_8
-## 67                    Poland     group_8
-## 68                 Singapore     group_8
-## 69              South Africa     group_8
-## 70                   Ukraine     group_8
+## 4                     France     group_2
+## 5                      China     group_3
+## 6                     Turkey     group_3
+## 7        Asia/Pacific Region     group_4
+## 8                    Austria     group_4
+## 9                 Bangladesh     group_4
+## 10    Bosnia and Herzegovina     group_4
+## 11                  Cambodia     group_4
+## 12                     Chile     group_4
+## 13                Costa Rica     group_4
+## 14                   Croatia     group_4
+## 15                    Cyprus     group_4
+## 16            Czech Republic     group_4
+## 17        Dominican Republic     group_4
+## 18                     Egypt     group_4
+## 19                     Ghana     group_4
+## 20                    Greece     group_4
+## 21 Iran, Islamic Republic of     group_4
+## 22                   Ireland     group_4
+## 23               Isle of Man     group_4
+## 24                    Latvia     group_4
+## 25                 Lithuania     group_4
+## 26                Luxembourg     group_4
+## 27                     Malta     group_4
+## 28      Moldova, Republic of     group_4
+## 29                Montenegro     group_4
+## 30                  Pakistan     group_4
+## 31     Palestinian Territory     group_4
+## 32                      Peru     group_4
+## 33              Saudi Arabia     group_4
+## 34                   Senegal     group_4
+## 35                  Slovenia     group_4
+## 36                    Taiwan     group_4
+## 37                  Thailand     group_4
+## 38                   Vietnam     group_4
+## 39                   Belgium     group_5
+## 40                    Brazil     group_5
+## 41                  Bulgaria     group_5
+## 42                 Hong Kong     group_5
+## 43                     Italy     group_5
+## 44                    Poland     group_5
+## 45                 Singapore     group_5
+## 46              South Africa     group_5
+## 47                 Argentina     group_6
+## 48                    Israel     group_6
+## 49                  Malaysia     group_6
+## 50                    Mexico     group_6
+## 51                  Portugal     group_6
+## 52                   Romania     group_6
+## 53                     Spain     group_6
+## 54                    Sweden     group_6
+## 55               Switzerland     group_6
+## 56                     Japan     group_7
+## 57               Netherlands     group_7
+## 58            United Kingdom     group_8
+## 59                   Uruguay     group_8
+## 60                   Denmark     group_9
+## 61                   Finland     group_9
+## 62                  Honduras     group_9
+## 63                 Indonesia     group_9
+## 64        Korea, Republic of     group_9
+## 65                   Morocco     group_9
+## 66               New Zealand     group_9
+## 67                    Norway     group_9
+## 68               Philippines     group_9
+## 69        Russian Federation     group_9
+## 70                   Ukraine     group_9
 ```
 
 `auto_grouping` returns a list containing 3 objects:
@@ -408,61 +405,64 @@ country_groups$recateg_results
 
 ```
 ##   country_rec mean_target sum_target perc_target q_rows perc_rows
-## 1     group_5       0.750          3       0.036      4     0.004
-## 2     group_4       0.176         19       0.229    108     0.119
-## 3     group_7       0.167          6       0.072     36     0.040
-## 4     group_3       0.142         41       0.494    288     0.316
-## 5     group_1       0.090         12       0.145    133     0.146
-## 6     group_2       0.015          2       0.024    132     0.145
-## 7     group_6       0.000          0       0.000     75     0.082
-## 8     group_8       0.000          0       0.000    134     0.147
+## 1     group_8       0.176         19       0.229    108     0.119
+## 2     group_6       0.156         10       0.120     64     0.070
+## 3     group_2       0.142         41       0.494    288     0.316
+## 4     group_1       0.111         10       0.120     90     0.099
+## 5     group_7       0.027          1       0.012     37     0.041
+## 6     group_3       0.015          2       0.024    132     0.145
+## 7     group_4       0.000          0       0.000     49     0.054
+## 8     group_5       0.000          0       0.000     85     0.093
+## 9     group_9       0.000          0       0.000     57     0.063
 ```
 
-Last table is ordered by mean_target, so we can quickly see groups maximizing and minimizing the likelihood.
+Last table is ordered by `mean_target`, so we can quickly see groups maximizing and minimizing the likelihood.
 
-_We'll leave `group_5` to the end._
 
-* `group_3` is the most common, it is present in 31.6% of cases and mean_target (likelihood) is 14.2%.
-* Excluding `group_5` for now, `group_4` has the highest likelihood, while `group_8` has the lowest. Both have good representativeness: 11.9 and 14.7 of all input rows.
-* `group_6` and `group_8` are pretty similar, they can be one group since likelihood is 0 in both cases.
+* `group_2` is the most common, it is present in 31.6% of cases and `mean_target` (likelihood) is 14.2%.
+* `group_8` has the highest likelihood (17.6%). Followed by `group_6` with chance of 15.6% of having a positive case (`has_flu="yes"`).
+* `group_4`, `group_4` and `group_9` looks the same. They can be one group since likelihood is 0 in all the cases.
+* `group_7` and `group_3` have 1 and 2 countries with positive cases. We could consider these numbers as the same, grouping them into one group, which in the end will represent the countries with the lowest likelihood.
 
-**What about `group_5`?**
-
-We see that is the group with the most likelihood, 75% `has_flu`. This is a cluster of outliers, here are the categories with low-representativeness and high likelihood. `Malasia` and `Mexico` are there.
-
-If we are more conscious about false positives, we can consider that this group doesn't have enough information and assign it to `group_8`, so it will have no influence in increasing the likelihood of predicting flu (`mean_target=0`). Or, we can assign to an average group like `group_3`.
+All the groups seems to have a good repreesntation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
 
 
 
 ```r
-data_country=data_country %>% inner_join(country_groups$df_equivalence)
+data_country_2=data_country %>% inner_join(country_groups$df_equivalence, by="country")
 ```
+
 Now we do the additional transformations replacing:
-`group_5` by `group_3`; and `group_6` by `group_8`.
+
+* `group_4` and `group_5` will be `group_5`.
+* `group_7` will be `group_3`.
 
 
 ```r
-data_country$country_rec=ifelse(data_country$country_rec == "group_5", "group_3", data_country$country_rec)
-data_country$country_rec=ifelse(data_country$country_rec == "group_6", "group_8", data_country$country_rec)
+data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_4", "group_5", data_country_2$country_rec)
+data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_9", "group_5", data_country_2$country_rec)
+
+data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_3", "group_7", data_country_2$country_rec)
 ```
 
 Checking the final grouping (`country_rec` variable):
 
+
 ```r
-categ_analysis(data=data_country, input="country_rec", target = "has_flu")
+categ_analysis(data=data_country_2, input="country_rec", target = "has_flu")
 ```
 
 ```
 ##   country_rec mean_target sum_target perc_target q_rows perc_rows
-## 1     group_4       0.176         19       0.229    108     0.119
-## 2     group_7       0.167          6       0.072     36     0.040
-## 3     group_3       0.151         44       0.530    292     0.321
-## 4     group_1       0.090         12       0.145    133     0.146
-## 5     group_2       0.015          2       0.024    132     0.145
-## 6     group_8       0.000          0       0.000    209     0.230
+## 1     group_8       0.176         19       0.229    108     0.119
+## 2     group_6       0.156         10       0.120     64     0.070
+## 3     group_2       0.142         41       0.494    288     0.316
+## 4     group_1       0.111         10       0.120     90     0.099
+## 5     group_7       0.018          3       0.036    169     0.186
+## 6     group_5       0.000          0       0.000    191     0.210
 ```
 
-Now each group seems to have a good sample size, and values `mean_target` shows a decreasing pattern where each doesn't appear to be so high and is well distributed in the `0.176` to `0` range. [1]
+Each group seems to have a good sample size regarding the `sum_target` distribution. Our transformation left `group_5` with a representation of 21% of total cases, still with 0 positive cases (`sum_target`=0). And `group_7` with 3 positive cases, which represents 3.36% of positive cases.
 
 <br>
 
@@ -485,7 +485,9 @@ _A new category appears? Send to the least meaningful group. After a while, re-a
 
 ## Do predictive models handle high cardinality? Part 1
 
-We're going throught this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs.
+Yes, and no. Some models deal with this high cardinality issue better than others. In some scenarios, this data preparation may not be necessary. This book tries to expose this issue, which sometimes, may lead to a better model. 
+
+Now, we're going throught this by building two predictive models: Gradient Boosting Machine -quite robust across many different data inputs.
 
 The first model doesn't have treated data, and the second one has been treated by the function in `funModeling` package.
 
@@ -502,49 +504,42 @@ fitControl <- trainControl(method = "cv",
 
 
 fit_gbm_1 <- train(has_flu ~ country,
-                   data = data_country,
+                   data = data_country_2,
                    method = "gbm",
                    trControl = fitControl,
                    verbose = FALSE,
                    metric = "ROC")
-```
 
 
-```r
-roc=round(mean(fit_gbm_1$results$ROC),2)
-sprintf("Area under ROC curve is: %s", roc)
+# Getting best ROC value
+roc=round(max(fit_gbm_1$results$ROC),2)
 ```
 
-```
-## [1] "Area under ROC curve is: 0.65"
-```
+Area under ROC curve is (`roc`): 0.67.
 
 Now we do the same model with the same parameters, but with the data preparation we did before.
 
 <br>
   
 
-
-
 ```r
-new_roc=round(mean(fit_gbm_2$results$ROC),2)
-sprintf("New ROC value is: %s", new_roc);
+## Building the second model, based on the country_rec variable
+fit_gbm_2 <- train(has_flu ~ country_rec,
+                   data = data_country_2,
+                   method = "gbm",
+                   trControl = fitControl,
+                   verbose = FALSE,
+                   metric = "ROC")
+
+## Getting new best ROC value
+new_roc=round(max(fit_gbm_2$results$ROC),2)
 ```
 
-```
-## [1] "New ROC value is: 0.72"
-```
+New ROC curve is (`new_roc`): 0.71.
 
-Then we alculate the percentage of improvement over first roc value:
-  
+Then we calculate the percentage of improvement over first roc value:
 
-```r
-sprintf("Improvement: ~ %s%%", round(100*(new_roc-roc)/roc,2));
-```
-
-```
-## [1] "Improvement: ~ 10.77%"
-```
+**Improvement: ~ 5.97%**. ✅
 
 Not too bad, right?
 
@@ -564,7 +559,8 @@ Let's review how some models deal with this:
 
 **Random Forest** -at least in R implementation- handles only categorical variables with at least 52 different categories. It's highly probable that this limitation is to avoid overfitting. This point in conjunction to the nature of the algorithm -creates lots of trees- reduces the effect of a single decision tree when choosing a high cardinality variable.
 
-**Gradient Boosting Machine** and **Logistic Regression** converts internally categorical variables into flag or dummy variables. In the example we saw about countries, it implies the -internal- creation of 70 flag variables. Checking the model we created before:
+**Gradient Boosting Machine** and **Logistic Regression** converts internally categorical variables into flag or dummy variables. In the example we saw about countries, it implies the -internal- creation of 70 flag variables (this is how `caret` handles formula, if we want to keep the original variable without the dummies, we have to not use a formula). 
+Checking the model we created before:
 
 
 ```r
@@ -575,13 +571,13 @@ fit_gbm_1$finalModel
 ```
 ## A gradient boosted model with bernoulli loss function.
 ## 100 iterations were performed.
-## There were 69 predictors of which 8 had non-zero influence.
+## There were 69 predictors of which 9 had non-zero influence.
 ```
 
 That is: 69 input variables are representing the countries, but the flag columns were reported as not being relevant to make the prediction. 
 
 
-This opens a new chapter which is going to be covered in this book 😉: **Feature engineering** or **selecting best variables**. It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
+This opens a new chapter which is going to be covered in this book 😉: **Feature engineering** and <a href="http://livebook.datascienceheroes.com/selecting_best_variables/general_aspects.html" target="blank">selecting best variables</a>. It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
 
 **Conclusion: reducing the cardinality will reduce the quantity of variables in these models.**
 
@@ -590,7 +586,6 @@ This opens a new chapter which is going to be covered in this book 😉: **Featu
 ---
 
 ## Numerical or multi-nominal target variable 📏
-
 The book covered only the target as a binary variable, it is planned in the future to cover numerical and multi-value target.
 
 However, if you read up to here, you may want explore on your own having the same idea in mind. In numerical variables, for example forecasting `page visits` on a web site, there will be certain categories of the input variable that which will be more related with a high value on visits, while there are others that are more correlated with low values.
@@ -599,7 +594,7 @@ The same goes for multi-nominal output variable, there will be some categories m
 
 <br>
 
-## What we've got as an "extra-🎁"  from the grouping?
+## What we've got as an "extra-🎁" from the grouping?
 
 Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativeness and prediction power-.
 
@@ -625,21 +620,16 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 * Key concept: **representativeness** of each category regarding itself, and regarding to the event being predicted.
 
-* What was mentioned in the beginning in respects to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input). [1]
+* What was mentioned in the beginning in respects to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input).
 
-* _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate all cases. Hopefully it will be a good kick-off for the reader to start doing her-his own optimizations.
+* _Should we always reduce the cardinality?_ It depends, two tests on a simple data are not enough to extrapolate all cases. Hopefully it will be a good kick-off for the reader to start doing her-his own optimizations when they consider relevant for the project. 
+
 
 <br> 
 
-
-### Fur#her reading
+### Further reading
 
 * Following link contains many different accuracy results based on different treatments for categorical variable: <a href="http://www.kdnuggets.com/2015/12/beyond-one-hot-exploration-categorical-variables.html">Beyond One-Hot: an exploration of categorical variables</a>.
 
+
 <br>
-
-*References:* 
-
-* [1] It can be studied with the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> function.
-
-
