@@ -273,9 +273,9 @@ Remaining columns, `X1990..YR1990.` (year 1990),`X2000..YR2000.` (year 2000), `X
 <br>
 
 
-### Taking a data scientist decision
+### Making a data scientist decision
 
-There are many `NAs` because some countries don't have the measure of the indicator in those years. At this point, we need to **take a decision** as a data scientist. Probably no the optimal if we don’t ask to an expert, e.g., a sociologist.
+There are many `NAs` because some countries don't have the measure of the indicator in those years. At this point, we need to **make a decision** as a data scientist. Probably no the optimal if we don’t ask to an expert, e.g., a sociologist.
 
 What to do with the `NA` values? In this case, we are going to to keep with the **newest value** for all the indicators. Perhaps this is not the best way to extract conclusions for a paper as we are going to compare some countries with information up to 2016 while other countries will be updated only to 2009. To compare all the indicators with the newest data is a valid approach for the first analysis.
 
