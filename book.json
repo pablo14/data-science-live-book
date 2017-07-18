@@ -1,5 +1,5 @@
 {
-	"plugins": ["ga", "advanced-emoji", "custom-favicon", "verifications", "meta-single"],
+	"plugins": ["ga", "advanced-emoji", "custom-favicon", "verifications", "meta-single", "sitemap"],
 	"pluginsConfig": {
 		"ga": {
 			"token": "UA-82047152-1"
@@ -11,6 +11,9 @@
 		},
 		"theme-default": {
              "showLevel": false
+        },
+        "sitemap": {
+            "hostname": "http://livebook.datascienceheroes.com"
         }
 	},
 	"title": "Data Science Live Book",
