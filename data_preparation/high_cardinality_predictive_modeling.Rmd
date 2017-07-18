@@ -45,7 +45,7 @@ Profiling `data_country`, which comes inside `funModeling` package (please updat
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r high_cardinality_variable, out.width="700px", out.height="700px"}
+```{r high_cardinality_variable, out.width="600px", out.height="1000px", dpi=300}
 
 # plotting first 10 rows
 head(data_country, 10)

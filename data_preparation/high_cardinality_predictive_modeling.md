@@ -67,7 +67,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-<img src="figure/high_cardinality_variable-1.png" title="plot of chunk high_cardinality_variable" alt="plot of chunk high_cardinality_variable" width="700px" height="700px" />
+<img src="figure/high_cardinality_variable-1.png" title="plot of chunk high_cardinality_variable" alt="plot of chunk high_cardinality_variable" width="600px" height="1000px" />
 
 ```
 ##           country frequency percentage cumulative_perc
