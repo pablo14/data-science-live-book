@@ -1,5 +1,5 @@
 {
-	"plugins": ["ga", "advanced-emoji", "custom-favicon", "verifications", "meta-single"],
+	"plugins": ["ga", "advanced-emoji", "custom-favicon", "verifications", "meta-single", "sitemap"],
 	"pluginsConfig": {
 		"ga": {
 			"token": "UA-82047152-1"
@@ -11,10 +11,13 @@
 		},
 		"theme-default": {
              "showLevel": false
+        },
+        "sitemap": {
+            "hostname": "http://livebook.datascienceheroes.com"
         }
 	},
 	"title": "Data Science Live Book",
 	"author": "Pablo Casas",
 	"language": "en",
-	"description": "An intuitive and practical approach in data analysis, data preparation and machine learning, suitable for all ages!"
+	"description": "An intuitive and practical approach to data analysis, data preparation and machine learning, suitable for all ages!"
 }
