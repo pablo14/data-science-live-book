@@ -618,7 +618,7 @@ Further in this book we'll cover this topic from other points of view linking ba
 
 * We saw two cases to reduce cardinality, the first one doesn't care about the target variable, which can be dangerous in a predictive model, while the second one does. It creates a new variable based on the affinity -and representativity- of each input category to the target variable.
 
-* Key concept: **representativeness** of each category regarding itself, and regarding to the event being predicted.
+* Key concept: **representativeness** of each category regarding itself, and regarding to the event being predicted. One good point to explore is to analyze it based on statistical tests.
 
 * What was mentioned in the beginning in respects to **destroying the information in the input variable**, implies that the resultant grouping have the same rates across groups (in a binary variable input).
 
