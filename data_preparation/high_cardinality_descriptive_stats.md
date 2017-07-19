@@ -1,5 +1,6 @@
-# High Cardinality Variable in Descriptive Stats
 
+
+# High Cardinality Variable in Descriptive Stats
   
 ## What is this about?
   
@@ -7,10 +8,6 @@ A **high cardinality** variable is one in which it can take _many_ different val
 
 This chapter will cover cardinality reduction based on Pareto rule, using the `freq` function which gives a quick view about where the most of values are concentrated and variable distribution.
 
-
-
- 
- 
 <br> 
 
 ## High Cardinality in Descriptive Statistics
@@ -51,20 +48,20 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-<img src="figure/data_preparation_nominal_variable-1.png" title="plot of chunk data_preparation_nominal_variable" alt="plot of chunk data_preparation_nominal_variable" width="400px" />
+<img src="figure/data_preparation_nominal_variable-1.png" title="plot of chunk data_preparation_nominal_variable" alt="plot of chunk data_preparation_nominal_variable" width="600px" />
 
 ```
 ##           country frequency percentage cumulative_perc
-## 1          France       288      31.65           31.65
-## 2          Turkey        67       7.36           39.01
-## 3           China        65       7.14           46.15
-## 4         Uruguay        63       6.92           53.07
-## 5  United Kingdom        45       4.95           58.02
-## 6       Australia        41       4.51           62.53
-## 7         Germany        30       3.30           65.83
-## 8          Canada        19       2.09           67.92
-## 9     Netherlands        19       2.09           70.01
-## 10          Japan        18       1.98           71.99
+## 1          France       288       31.6              32
+## 2          Turkey        67        7.4              39
+## 3           China        65        7.1              46
+## 4         Uruguay        63        6.9              53
+## 5  United Kingdom        45        5.0              58
+## 6       Australia        41        4.5              63
+## 7         Germany        30        3.3              66
+## 8          Canada        19        2.1              68
+## 9     Netherlands        19        2.1              70
+## 10          Japan        18        2.0              72
 ```
 
 
@@ -73,12 +70,12 @@ head(freq(data_country, "country"), 10)
 freq(data_country, "has_flu")
 ```
 
-<img src="figure/data_preparation_nominal_variable_2-1.png" title="plot of chunk data_preparation_nominal_variable_2" alt="plot of chunk data_preparation_nominal_variable_2" width="400px" />
+<img src="figure/data_preparation_nominal_variable_2-1.png" title="plot of chunk data_preparation_nominal_variable_2" alt="plot of chunk data_preparation_nominal_variable_2" width="600px" />
 
 ```
 ##   has_flu frequency percentage cumulative_perc
-## 1      no       827      90.88           90.88
-## 2     yes        83       9.12          100.00
+## 1      no       827       90.9              91
+## 2     yes        83        9.1             100
 ```
 
 <br>
@@ -98,16 +95,16 @@ country_freq[1:10,]
 
 ```
 ##           country frequency percentage cumulative_perc
-## 1          France       288      31.65           31.65
-## 2          Turkey        67       7.36           39.01
-## 3           China        65       7.14           46.15
-## 4         Uruguay        63       6.92           53.07
-## 5  United Kingdom        45       4.95           58.02
-## 6       Australia        41       4.51           62.53
-## 7         Germany        30       3.30           65.83
-## 8          Canada        19       2.09           67.92
-## 9     Netherlands        19       2.09           70.01
-## 10          Japan        18       1.98           71.99
+## 1          France       288       31.6              32
+## 2          Turkey        67        7.4              39
+## 3           China        65        7.1              46
+## 4         Uruguay        63        6.9              53
+## 5  United Kingdom        45        5.0              58
+## 6       Australia        41        4.5              63
+## 7         Germany        30        3.3              66
+## 8          Canada        19        2.1              68
+## 9     Netherlands        19        2.1              70
+## 10          Japan        18        2.0              72
 ```
 
 <br>
@@ -120,21 +117,21 @@ data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'count
 freq(data_country, 'country_2')
 ```
 
-<img src="figure/data_preparation_profiling_nominal_variable_2-1.png" title="plot of chunk data_preparation_profiling_nominal_variable_2" alt="plot of chunk data_preparation_profiling_nominal_variable_2" width="400px" />
+<img src="figure/data_preparation_profiling_nominal_variable_2-1.png" title="plot of chunk data_preparation_profiling_nominal_variable_2" alt="plot of chunk data_preparation_profiling_nominal_variable_2" width="600px" />
 
 ```
 ##         country_2 frequency percentage cumulative_perc
-## 1          France       288      31.65           31.65
-## 2           other       255      28.02           59.67
-## 3          Turkey        67       7.36           67.03
-## 4           China        65       7.14           74.17
-## 5         Uruguay        63       6.92           81.09
-## 6  United Kingdom        45       4.95           86.04
-## 7       Australia        41       4.51           90.55
-## 8         Germany        30       3.30           93.85
-## 9          Canada        19       2.09           95.94
-## 10    Netherlands        19       2.09           98.03
-## 11          Japan        18       1.98          100.00
+## 1          France       288       31.6              32
+## 2           other       255       28.0              60
+## 3          Turkey        67        7.4              67
+## 4           China        65        7.1              74
+## 5         Uruguay        63        6.9              81
+## 6  United Kingdom        45        5.0              86
+## 7       Australia        41        4.5              91
+## 8         Germany        30        3.3              94
+## 9          Canada        19        2.1              96
+## 10    Netherlands        19        2.1              98
+## 11          Japan        18        2.0             100
 ```
 
 <br> 
