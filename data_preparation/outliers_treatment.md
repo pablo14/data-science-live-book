@@ -2,6 +2,16 @@
 
 # Treatment of outliers
 
+<br>
+
+---
+
+⚠️ **Atention!**⚠️  This chapter is being rewriting from scratch! And it will be updated around July 15th. Follow in twitter <a href="https://twitter.com/dataSciHeroes" target="blank">@dataSciHeroes</a> and <a href="https://twitter.com/pabloc_ds" target="blank">@pabloc_ds</a>. to get the latests news. Thanks 🙂.
+
+---
+
+
+<br>
 
 ## What is this about?
 
