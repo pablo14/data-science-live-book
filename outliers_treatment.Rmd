@@ -1,0 +1,623 @@
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width="400px", dpi=150, fig.width = 4, fig.height = 3)
+knitr::opts_knit$set(base.dir = "data_preparation")
+``` 
+
+# Treatment of outliers
+
+## What is this about?
+
+The extreme values are a concept that, as well as many other topics in machine learning, it's not exclusive of this area. What it is an outlier today, may not be tomorrow. The boundaries between normal and abnormal behavior are fuzzy, on the other hand, to stand in the extremes it's easy.
+
+<br>
+  
+**What are we going to review in this chapter?**
+
+* What is an outlier? Phylosophical and practical approaches.
+* Outliers by its dimensionality and data type (numerical or categorical)
+* How to detect outliers in R (bottom/top X%, Tukey and Hampel)
+* Outliers preparation for profiling in R
+* Outliers preparation for predictive modeling in R
+
+
+<br>
+
+## The intuition behind
+
+For example, consider the followig distribution:
+  
+```{r dealing_with_outliers}
+## Loading ggplot2 to visualize the distribution
+library(ggplot2)
+
+## Creating a sample dataset
+set.seed(31415)
+df_1=data.frame(var=round(10000*rbeta(1000,0.15,2.5)))
+
+## Plotting...
+ggplot(df_1, aes(var, fill=var)) + geom_histogram(bins=20) + theme_light()
+```
+
+The variable is skewed to the left, showing some outliers points on the right. We want to _deal with them_
+(`r emo::ji("sunglasses")`). So the question appears: _Where to set the threshold?_ Based on intuition, it can be at highest 1% or we can analyze how much the `mean` change after removing top 1%.
+
+Both cases could be right. In fact taking other number as the threshold (i.e. 2% or 0.1%), may be right too. Let's visualize them:
+
+```{r dealing_with_outliers_4}
+## Calculating the percentiles top 3% and top 1%
+percentile_var=quantile(df_1$var, c(0.98, 0.99, 0.999), na.rm = T)
+df_p=data.frame(value=percentile_var, percentile=c("a_98th", "b_99th", "c_99.9th"))
+
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) + geom_vline(data=df_p, aes(xintercept=value,  colour = percentile), show.legend = TRUE, linetype="dashed") + theme_light()
+```
+
+To understand more about percentiles, please go to <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/annex_1_profiling_percentiles.html" target="blank">Annex 1: The magic of percentiles</a> chapter.
+
+Now, we'll keep with top 1% (percentile 99th), as the threshold to flag all the points after it as outliers.
+  
+```{r dealing_with_outliers_2, fig.height=3, fig.width=4, echo=FALSE}
+
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
+  geom_rect(aes(xmin = df_p$value[2], xmax = Inf, ymin = -Inf, ymax = Inf), fill = "pink", alpha = 0.01)+
+  geom_vline(data=df_p, 
+             aes(xintercept=value[2], 
+                 colour = percentile[2]),
+             show.legend = F, linetype="dashed") + theme_light() 
+```
+
+
+One interesting conceptual raises here, when we define what **abnormal** (or anomaly) is, the **normal concept emerges as its opposite**.
+
+This "normal" behavior is shown as the green area:
+
+
+```{r dealing_with_outliers_3, fig.height=3, fig.width=4, echo=FALSE,tidy=TRUE}
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
+  geom_rect(aes(xmin = -Inf, xmax = df_p$value[2], ymin = -Inf, ymax = Inf), fill = "lightgreen", alpha = 0.01)+
+  geom_vline(data=df_p, 
+             aes(xintercept=value[2], 
+                 colour = percentile[2]),
+             show.legend = F, linetype="dashed") + theme_light() 
+```
+
+
+
+
+The hard thing to do is to define where the normal and abnormal separates. There are several approaches to deal with it. We are going to review a few of them.
+
+<br>
+
+---
+
+### Where is the boundary between hot and cold wheater? 
+
+Let's put this section more phylosophical. Some good mathematiscian were also phylosophers, such is the case of <a href="https://en.wikipedia.org/wiki/Pythagoras">Pythagoras</a> and <a href="https://en.wikipedia.org/wiki/Isaac_Newton" target="blank">Isaac Newton</a>.
+
+Where can we put the threshold to stablish where the hot wheater begins? Or analyzing on the oppositive, when do the cold wheather end?
+
+<img src="where_is_the_cutpoint.png" alt="Finding the cutpoint" width="300px">
+
+Near the Ecuator, probably a temperature around 10°C (50°F) is an extreme low value, but in the Antarctica, it's a beach day! 
+`r emo::ji("snowman")` `r emo::ji("beach_umbrella")`
+
+`r emo::ji("japanese_goblin")`: _"Oh! But that is taking an extreme example with two different locations!"_
+
+No problem! like a fractal, let's zoom in to any city, the boundary when one start (and the other end) will not have one unique value to state the following: _"Ok, the hot wheather starts at 25.5°C (78°F)."_ 
+
+It's relative.
+
+However, it's quite easy to stand in the extremes, the uncertanty decreases to almost 0, for example when we consider a temperature of 60°C (140°F).
+
+`r emo::ji("thinking")`: _"Ok. But how are these concepts related with machine learning?"_
+
+We're exposing here the relativness in the decision when dealing with the labels (hot/cold) in a numeric variable (temperature). It can be thought for any other numeric, such as `income`, and the labels `normal`/`abnormal`.
+
+To understand **variable the extremes** is one of the first task in **exploratory data analysis**. Then we can see what the normal values are. This is covered in the <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html" target="blank">**Profiling**</a> chapter.
+
+When dealing with outliers, there are several methods to flag values as outliers. Just as we analyze the whather temperature, this flag is _relative_ and all the methods can be right. The quickest maybe to treat as outliers the top and bottom X%. 
+
+Others more robust take into consideration the distribution variables using the quantiles (Tukey's method) or how far the values are from considering using the standard deviation (Hampel's method).
+
+The definition of these boundaries is one of the most common task in machine learning. 
+
+Going back to the orignal issue, _when do the cold wheather end?_ Not all the questions need to have an answer, some of them just help us simply to think.
+
+<br>
+
+---
+
+## The impact of outliers
+
+### Model building
+
+Some models such as random forest and gradient boosting machines tend to deal better with outliers, but some noise may affect the results anyway. The impact of outliers in these models are lower than others like linear regressions, logistic regressions, kmeans, decision trees.
+
+One point that contributes to decrease the impact is both models create _many_ sub-models. If any of the model take one outlier as information, probably other of the sub-model won't. The error is cancelled. 
+
+### Communicating results
+
+If we need to report the variables used in the model, we'll end up removing outliers to not see an histogram with only one bar, and/or show not a biased mean. 
+
+It's better to show a non-biased number than justifying the model _will handle_ extreme values.
+
+### Types of outliers by data type
+  
+* **Numerical** `r emo::ji("straight_ruler")`: Like the one we saw before:
+
+```{r numerical_outliers_1, echo=FALSE}
+
+## Plotting the same distribution plus the percentiles
+ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
+  geom_rect(aes(xmin = df_p$value[2], xmax = Inf, ymin = -Inf, ymax = Inf), fill = "pink", alpha = 0.01)+
+  geom_vline(data=df_p, 
+             aes(xintercept=value[2], 
+                 colour = percentile[2]),
+             show.legend = F, linetype="dashed") + theme_light() 
+```
+
+
+* **Categorical** `r emo::ji("bar_chart")`: Having a variable in which the dispersion of categories is quite high (high cardinallity). For example: postal code. More about dealing with outliers in categorical variable in the <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_descriptive_stats.html" target="blank">High Cardinality Variable in Descriptive Stats</a> chapter.
+
+```{r categorical_outliers_1, echo=FALSE, message=FALSE}
+library(funModeling)
+library(dplyr)
+data_country_sample=filter(data_country, country %in% c("France", "China", "Uruguay", "Peru", "Vietnam"))
+
+freq(data_country_sample$country)
+```
+
+Countries `Peru` and `Vietnam` are the outliers here. Their share in data is less than 1%.
+
+<br>
+
+### Types of outliers by their dimensionsianlity
+
+We saw the one dimension (1-D) so far, univariate outlier analysis. But we can consider two -or more- variables at a time.
+
+For instance we have the following data set `df_hello_world` with two variables, `v1` and `v2`. Doing the same analysis as before:
+
+```{r outlier_analysis_2_in_r, echo=FALSE}
+## Creation data set
+v1=c(rep("Argentina",50), rep("Uruguay",50), rep("Uruguay",30), "Argentina", "Argentina", "Argentina", "Argentina")
+v2=c(rep("cat_A",50), rep("cat_B",50), rep("cat_A",30), "cat_B", "cat_A", "cat_A", "cat_A")
+df_hello_world=data.frame(v1, v2)
+```
+
+```{r outlier_analysis_in_r, echo=FALSE}
+freq(df_hello_world)
+```
+
+No one outlier so far, isn't that right?
+
+Now we build a contigency table which tells us the distribution of both variables against each other:
+
+```{r outlier_analysis, echo=FALSE}
+## First, it is needed to crate the table object, for then, calculating the percentage per cell
+tbl_hello_world=table(df_hello_world)
+
+## Print the results in percentage per cell
+round(100*prop.table(tbl_hello_world), 2)
+```
+
+Oh `r emo::ji("scream")`! The combination of `Argentina` and `cat_B` is _really low_ (0.75%) in comparisson with the other values. Less than 1% while the other intersections are above `22%`.
+
+<br>
+
+### Some thoughts...
+
+The last examples, shown the _potential_ extreme values or outliers, are just exmaples to keep in mind when we are in touch with a new data set.
+
+We mention the **1%** as a possible threshold to flag a value as an outlier. This value could be 0.5% or 3%, depending on the case.
+
+Also the presence of these kind of outliers may not be a problem.
+
+
+<br>
+
+---
+
+## How to deal with outliers in R?
+
+The `prep_outliers` function present in `funModeling` package can help us in this task. It can handle from one to 'N'  variables at a time (specifying the `str_input` parameter)
+
+The core is:
+
+* It supports three different methods (`method` parameter) to consider a value as an outlier: `bottom_top`, `tukey` and `hampel`.
+* It works in two modes (`type` parameter), by setting an `NA` value or by _stopping the variable_ at a certain value. 
+Besides the explanation below, `prep_outliers` is well documented, type: `help("prep_outliers")`.
+
+<br>
+
+### Step 1: How to detect outliers?
+
+We have the following methods implemented in `prep_outliers` function. They retrieve different result so the user can select the one that most fits her/his needs.
+
+#### Bottom and top values method
+
+It considers an outlier based on the bottom and top X% values, based on the percentile. The values are commonly 0.5%, 1%, 1.5%, 3%, among others.
+
+Setting the parameter `top_percent` in `0.01` will treat all values on the top 1%.
+
+Same logic goes for the lowest values, setting parameter `bottom_percent` in 0.01 will flag as an outlier the lowest 1% of all values.
+
+The internal function used is `quantile`, if we want to flag bottom and top 1%, we type:
+
+```{r}
+quantile(heart_disease$age, probs = c(0.01, 0.99), na.rm = T)
+```
+All below 35 and above 71 will be consider as outlier.
+
+For more information about percentiles, check the chapter: <a href="http://livebook.datascienceheroes.com/exploratory_data_analysis/annex_1_profiling_percentiles.html" target="blank">The magic of percentiles</a>.
+
+<br>
+
+#### Tukey's method
+
+It flags outliers considering the quartiles values, `Q1`, `Q2` and `Q3`. Where `Q1` is equivalent to percentile 25th, `Q2` equals to percentile 50th (also known as the median) and `Q3` is the percentile 75th.
+
+The IQR, (aka. inter quartile range), comes from: `Q3`-`Q1`.
+
+**The formula:**
+* The bottom threshold is: `Q1 - 3*IQR`. All below is consider as an outlier.
+* The top threshold is: `Q1 + 3*IQR`. All above is considered as an outlier.
+
+The value `3` is to consider the "extreme" boundary detection. This method comes from the box plot, and there the multiplier is `1.5` (not `3`). This causes that a lot of more values are flagged as shown in the next image.
+
+<img src="boxplot.png" alt="Boxplot, it shows the outliers using the 1.5 multiplier" width="400px">
+
+The internal function used in `prep_outliers` to calculate the Tukey's boundary can be accessed:
+
+```{r}
+tukey_outlier(heart_disease$age)
+```
+
+It returns a two-value vector. And there we have the bottom and the top threshold. All below 9 and all above 100 will be considered as an outlier.
+
+A nice visual and step-by-step example can be found in Ref. [1]. 
+
+<br>
+
+#### Hampel's method
+
+**The formula:**
+* The bottom threshold is: `median_value-3*mad_value`. All below is consider as an outlier.
+* The top threshold is: `median_value+3*mad_value`. All above is considered as an outlier.
+
+
+The internal function used in `prep_outliers` to calculate the Tukey's boundary can be accessed:
+
+```{r}
+hampel_outlier(heart_disease$age)
+```
+
+It returns a two-value vector. And there we have the bottom and the top threshold. All below 29.31 and all above 82.68 will be considered as an outlier.
+
+The value 3 can be changed, but not in the `prep_outliers` function. This value is the most common.
+
+  
+<br>
+
+---
+  
+### Step 2: What to do with the outliers?
+
+We've already detected which points are the outliers. So the question now is: _What to do with them?_ `r emo::ji("thinking")`
+
+There are two scenarios:
+
+* Scenario 1: Prepare outliers for data profiling
+* Scenario 2: Prepare outliers for predictive modeling
+
+There is a 3rd escenario, in which we don't do anything with the spotted outliers. We just let them be.
+
+We propose the function `prep_outliers`, coming in `funModeling` package, to give a hand on this task.
+
+Regardless the function itself, the important point here is the concept, and the possibility of development an improbvent method thanks to the concept.
+
+`prep_outliers` function covers these two scenarios through parameter `type`:
+
+* `type = "set_na"`, for scenario 1
+* `type = "stop"`, for scenario 2
+
+### Scenario 1: Prepare outliers for data profiling
+
+**The initial analysis:**
+
+Data profiling, or well, an statistical reporting.
+
+In this case all outliers are converted into `NA`, thus applying most of the descriptive functions (max, min, mean, etc) will return a **less-biased indicator** value. Remember to set the paramenter `na.rm=TRUE` parameter in those functions, otherwise the result will be `NA`.
+
+
+For example, let's consider the following variable (the one we saw at the beginning with some outliers):
+
+```{r}
+## To understand all of these metrics, please go to the Profiling data chapter: http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html
+profiling_num(df_1$var)
+```
+
+Here we can see several indicators that give us some clues. The `std_dev` is really high comparing with the `mean`, and it is reflected on the `variation_coef`. Also the `kurtosis` is high (16). And the `p_99` is almost twice than the `p_95` value (5767 vs 3382).
+
+_This last analysis is like imaging a picture by what other person tell us, we convert the voice (which is a signal), into an image in our brain._ `r emo::ji("speaking_head")` `r emo::ji("roll_eyes")` ... => `r emo::ji("mountain_snow")` 
+
+<br>
+
+#### Using `prep_outliers` for data profiling
+
+We need to set `type="set_na"`. It implies that every point flagged as an outlier, will be converted into `NA`.
+
+We will use the three methods: Tukey, Hampel and bottom-top X%.
+
+**Using Tukey's method**:
+
+```{r}
+df_1$var_tukey=prep_outliers(df_1$var, type = "set_na", method = "tukey")
+```
+
+Now, we check how many `NA`s value are there before (the original variable) and after the transformation based on Tukey.
+
+```{r}
+# before
+df_status(df_1$var, print_results = F) %>% select(variable, q_na, p_na)
+
+# after
+df_status(df_1$var_tukey, print_results = F) %>% select(variable, q_na, p_na)
+```
+
+Before the transformation, there were 0 `NA`s values, and after 120 values (around 12%) were spoted as outliers according to the Tukey's test, and they were reeplaced by `NA`.
+
+And we can compare the before and after:
+
+```{r}
+profiling_num(df_1, print_results = F) %>% select(variable, mean, std_dev, variation_coef, kurtosis, range_98)
+```
+
+The `mean` decreased by almost the 3rd part. And all the other metrics decreased as well.
+
+**Hampel's method**:
+
+Let's see what happen with Hampel's method (`method="hampel"`):
+
+```{r}
+df_1$var_hampel=prep_outliers(df_1$var, type = "set_na", method="hampel")
+```
+
+Checking...
+
+```{r}
+df_status(df_1, print_results = F) %>% select(variable, q_na, p_na)
+```
+
+This last method was much more severed spotting outliers. 36% of values were spotted as outliers. Probably because the variable is _quite_ skewed to the left.
+
+More info can be found at Ref. [2]. 
+
+<br>
+
+**Bottom and Top X% method**
+
+Finally we can try the easiest method, to remove the top 2%. 
+
+```{r}
+df_1$var_top2=prep_outliers(df_1$var, type = "set_na", method="bottom_top", top_percent = 0.02)
+```
+
+Please note that the 2% value was arbitrary choosed. Other values like 3% or 0.5% can be tried as well.
+
+Time to compare all the methods!
+
+<br> 
+
+#### Putting all together
+
+We'll pick a few indicators to make the quantitative comparisson.
+
+```{r}
+df_status(df_1, print_results = F) %>% select(variable, q_na, p_na)
+prof_num=profiling_num(df_1, print_results = F) %>% select(variable, mean, std_dev, variation_coef, kurtosis, range_98)
+prof_num
+```
+
+
+**Plotting**
+
+```{r, comparing_outliers_methods, warning=FALSE, message=FALSE}
+# First we need to convert the dataset into wide format
+df_1_m=reshape2::melt(df_1) 
+plotar(df_1_m,  str_target= "variable", str_input = "value", plot_type = "boxplot")
+```
+
+<br>
+
+
+When selecting the bottom-top X% we will always have some values matching that condition. While with the others methods it has not to be.
+
+
+#### Conclusions for dealing with outliers in data profiling  
+
+The idea is to modify the outliers as less as it can be. So in this case, if we were interested only in describing the general behavior.
+
+To accomplish this task, for example when creating an ad-hoc report, we can use the `mean`. We could choose the top 2% method, since this it only affects to 2% of all values, and causes the `mean` to be lowered drastically. From 548 to 432, **21% less**.
+
+`r emo::ji("point_right")` The correct balance between modifying, and not modifying the data.
+
+Hampel modified too much the mean, from 548 to 17! That is based on the _standard_ value considered with this method, which is 3-MAD (kind of robust standard deviation).
+
+Please note that this demostration doesn't mean that Hampel nor Tukey are a bad choice. In fact they are more robust since the threshold can be higher than current value. As a matter of fact, no value is treated as an outlier.
+
+On the other extreme... we can consider for example `age` variable from `heart_disease` data, let's analyze its outliers:
+
+```{r}
+# Getting outliers threshold
+tukey_outlier(heart_disease$age)
+
+# Getting  min and max values
+min(heart_disease$age)
+max(heart_disease$age)
+```
+
+* The bottom threshold is 9, and the minimum value is 29. 
+* The top threshold is 100, and the minimum value is 77.
+
+Ergo: `age` variable has not outliers.
+
+If we were used the bottom/top, it would have been detected the input percentages as outliers.
+
+All the examples so for have been taking one variable at a time, but `prep_outliers` can handle several at the same time using the parameter `str_input` as we will see in next section. All what we saw up to here will be equivalent, except for what we do once we detect the outlier, in other words, the imputation method. 
+
+<br>
+  
+### Scenario 2: Prepare outliers for predictive modeling
+
+The previous case causes that all spotted outliers were converted to `NA`s values. This is a huge problem if we are building a machine learning model since many of them don't work with `NA`s values. 
+
+To deal with outliers in order to use in a predictive model, we can adjust the paramter `type='stop'` so all values flagged as outliers will be converted to the threshold value.
+
+**Some things to keep in mind:**
+  
+Try to think variable treatment (and creation) as if you're explaining to the model. Stopping variables at a certain value, 1% for example, we are telling to the model: _Hey model, please consider all extremes values as if they are on the 99% percentile, this value is already high enough. Thanks._
+
+Some predictive models are more **noise tolerant** than others. We can help them by treateating some of the outliers values. In practice, it tends to be more resitant to unseen data.
+
+<br>
+
+### Imputing outliers for predictive modeling
+
+First we create a dataset with some outliers. Now the example has two variables.
+
+```{r outliers_treatment1,  fig.height=3, fig.width=4}
+# Creating data frame with outliers
+options(scipen=999) # deactivating scientific notation
+set.seed(10) # setting the seed to have a reproducible example
+df_2=data.frame(var1=rchisq(1000,df = 1), var2=rnorm(1000)) # creating the variables
+df_2=rbind(df_2, 135, rep(400, 30), 245, 300, 303, 200) # forcing outliers
+```
+
+Dealing with outliers in both variables, `var1` and `var2` using Tukey's method:
+
+```{r outliers_treatment_3,  fig.height=3, fig.width=4}
+df_2_tukey=prep_outliers(data = df_2, str_input = c("var1", "var2"), type='stop', method = "tukey")
+```
+
+Checking some metrics before and after the imputation:
+
+```{r outliers_treatment_4,  fig.height=3, fig.width=4}
+profiling_num(df_2, print_results = F) %>% select(variable, mean, std_dev, variation_coef)
+profiling_num(df_2_tukey, print_results = F) %>% select(variable, mean, std_dev, variation_coef)
+```
+
+Tukey worked perfect this time, exposing a more accurate mean in both variables: `1` for `var1` and `0` for `var2`.
+
+Note this time there are no one `NA` values. What the function did this time was **"to stop the variable"** at the threshold values. So now, the minimum and maximum values will be the same as the ones reported by Tukey's method.   
+
+Checking thershold for `var1`:
+
+```{r}
+tukey_outlier(df_2$var1)
+```
+
+Now checking the min max, before and after the transformation:
+
+```{r}
+# before:
+min(df_2$var1)
+max(df_2$var1)
+```
+
+After the transformation...
+
+```{r}
+# after
+min(df_2_tukey$var1)
+max(df_2_tukey$var1)
+```
+
+The min remains the same, at `0.0000031` but the maximum was set to the Tukey's value: ~ `5.3`. 
+
+The top 5 highest values before the prepartion were: 
+```{r}
+# before
+tail(df_2$var1[order(df_2$var1)], 5)
+```
+
+But after...
+```{r}
+# after:
+tail(df_2_tukey$var1[order(df_2_tukey$var1)], 5)
+```
+
+And checking there is no one `NA`:
+
+```{r}
+df_status(df_2_tukey, print_results = F) %>% select(variable, q_na, p_na)
+```
+
+Pretty clear, right?
+
+<br>
+
+Now let's replicate the example we dis in last section with only one variable, in order to compare all the three methods.
+
+```{r outliers_treatment3,  fig.height=3, fig.width=4}
+df_2$tukey_var2=prep_outliers(data=df_2$var2, type='stop', method = "tukey")
+df_2$hampel_var2=prep_outliers(data=df_2$var2, type='stop', method = "hampel")
+df_2$bot_top_var2=prep_outliers(data=df_2$var2, type='stop', method = "bottom_top", bottom_percent=0.01, top_percent = 0.01)
+```
+
+<br>
+
+#### Putting all together
+
+```{r}
+# excluding var1
+df_2_b=select(df_2, -var1)
+
+# profiling
+profiling_num(df_2_b, print_results = F) %>% select(variable, mean, std_dev, variation_coef, kurtosis, range_98)
+```
+
+All the three methods show very similar results with this data.
+
+**Plotting**
+
+
+```{r, outliers_method_comparison, warning=FALSE, message=FALSE}
+# First we need to convert the dataset into wide format
+df_2_m=reshape2::melt(df_2_b) %>% filter(value<100) 
+plotar(df_2_m,  str_target= "variable", str_input = "value", plot_type = "boxplot")
+```
+
+_Important_: The two points obove the value 100, only for `var1`, were excluded otherwise it was impossible to appreaciate the difference between the methods.
+
+<br>
+
+## Final toughts
+
+We've cover the outliers issue from both phylosophical and technical perspectives. Inviting to the reader improving her/his critical thinking when defining the boundaries(thresholds). It is easy to be stand in the extremes, but a tought task to find the balance. 
+
+In technical terms, we covered three methods to spot outliers whose bases are different: 
+
+* **Top/Bottom X%**: It will always spot points as outliers, since there is always a bottom and top X%.
+* **Tukey**: Based on the boxplot, (or quartiles), but it is more restrictive to spot outliers. The constant
+* **Hampel**: The method that most cases detect as anomalous. It's based on the median and MAD value (similar to standard deviation but less sensitve to outliers).
+
+After we've got the outliers, the next step is to decide what to do with them. It'd be the case that the treatment is not necesary at all. In really small data sets, just take them out, or well change by some percentile would be enough.
+
+The rule of: _**"Only modify what is necessary"**_, (which can also be applicable to the _human being_-_nature_ relationship), tell us not to treat or exclude all the extreme outliers blindly. **With every action we took, we introduce some bias**. That's why it's so importance to know the implications of every method. Whether is it a good decision or not according to the data under analysis.
+
+In **predictive modeling**, those who have any type of internal reesampling technique, or create _several tiny models_ to get a final prediction, are more stable to extreme values. More on reesampling and error in: <a href="http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html" target="blank">Knowing the error</a> chapter.
+
+In some cases when the predictive model is **running on production**, it's recomendable to report or to consider the preparation of any new extreme value, a value which was not present during the model building. More on this topic, but with categorical variable, can be found at <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html" target="blank">High Cardinality Variable in Predictive Modeling</a>, section: _Handling new categories when the predictive model is on production_.
+
+**One nice test** for the reader to do is, to pick up dataset, to treat the outliers, and then to compare some performance metrics like Kappa, ROC, Accuracy, etc; **did the data preparation improve any of them?** Or in reporting, to see how much the mean changes. Even if we plot some variable, does the plot now tell us anything clear?; and this way the reader will create new knwoledge, based on her/his experience `r emo::ji("wink")`.
+
+<br>
+
+## References
+
+* [1] http://datapigtechnologies.com/blog/index.php/highlighting-outliers-in-your-data-with-the-tukey-method/
+* [2] http://exploringdatablog.blogspot.com.ar/2013/02/finding-outliers-in-numerical-data.html
+
