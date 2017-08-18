@@ -1,13 +1,17 @@
-Analysis, Handling and Imputation of Missing Data
-===
+```{r ,results="hide", echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width="600px", dpi=200)
+``` 
 
-### What is this about?
+# Analysis, Handling, and Imputation of Missing Data
 
-The analysis of missing values is the estimation of emptiness itself. An obstacle to overcome to reach our goal, like creating a predictive model, a cluster analysis, a report, and so on.
+## What is this about?
 
-In this chapter, we cover from the concept of an empty value to the treatment of it. We will do a lot of analysis over the different approaches and the interpretation of the different results. 
+The analysis of missing values is the estimation of emptiness itself. Missing values present an obstacle to creating predictive models, cluster analyses, reports, etc.
 
-Hopefully, after studying the whole chapter, the reader will understand key concepts of dealing with missing values, going further in the pursuit of finding better approaches than the ones purposed here.
+In this chapter, we discuss the concept and treatment of empty values. We will perform analyses using different approaches and interpret the different results. 
+
+Hopefully, after studying the whole chapter, the reader will understand key concepts of dealing with missing values and pursue better approaches than the ones proposed here.
 
 <br>
 
@@ -19,31 +23,36 @@ Hopefully, after studying the whole chapter, the reader will understand key conc
 * Transforming and imputing numeric and categorical variables.
 * Imputing values: from easy to more complex approaches.
 
-All of this from a practical approach in R. The code intends to be generic enough to apply to your projects 🙂.
+These will be exemplified using a practical approach in R. The code intends to be generic enough to apply to your projects 🙂.
 
 <br>
 
-### When the empty value represents information
 
-Empty values are also known as `NULL` in databases, `NA` in R or just the empty string in Spreadsheet programs. It can also be represented by some number like: "`0`", "`-1`" or "`-999`". 
+---
 
-For example, imagine a travel agency which joins two tables, one of persons and another of countries. The result shows the number of travels per person: 
+
+
+## When the empty value represents information
+
+Empty values are also known as “NULL” in databases, `NA` in R, or just the “empty” string in spreadsheet programs. It can also be represented by some number like: `0`, `-1` or `−999`. 
+
+For example, imagine a travel agency that joins two tables, one of persons and another of countries. The result shows the number of travels per person: 
 
 ```{r, echo=FALSE}
 df_travel=data.frame(person=c("Fotero", "Herno", "Mamarul"), South_Africa=c(1, NA, 34), Brazil=c(5,NA,40), Costa_Rica=c(5,NA,NA), stringsAsFactors = F)
 df_travel
 ```
 
-E.g., person `Mamarul` traveled `34` times to `South_Africa`.
+In this result, `Mamarul` traveled to `South Africa` `34` times.
 
-_What does `NA` (or NULL) value represent there?_
+_What does the `NA` (or NULL) value represent?_
 
-In this case `NA` should be replaced by `0`. Indicating zero travels in that person-country intersection. After the conversion, the table is ready to be used:
+In this case, NA should be replaced by 0, indicating zero travels in that person–country intersection. After the conversion, the table is ready to be used.
 
-**Example: Reeplace all NA values by 0**
+**Example: Replace all NA values by 0**
 
 ```{r}
-# making a copy..
+# Making a copy
 df_travel_2=df_travel
   
 # Replacing all NA values with 0
@@ -51,83 +60,90 @@ df_travel_2[is.na(df_travel_2)]=0
 df_travel_2
 ```
 
-The last example transforms **all** `NA` values into `0`. However in other scenarios, this transformation may not apply to all columns.
+The last example transforms **all** `NA` values into `0`. However, in other scenarios, this transformation may not apply to all columns.
 
-**Example: Reeplace NA values by 0 only in certain columns**
+**Example: Replace NA values by 0 only in certain columns**
 
-This is probably the most common scenario, to replace NA by some value -zero in this case-, only to some columns. We define a vector containing all the variables to replace, and then we call `mutate_at` function from `dplyr` package.
+It is probably the most common scenario to replace NA by some value—zero in this case—only to some columns. We define a vector containing all the variables to replace and then we call on the `mutate_at` function from the `dplyr` package.
 
-```{r}
-# Replacing NA values with 0 only in selected columns.
-vars_to_reeplace=c("Brazil", "Costa_Rica")
+```{r, message=FALSE}
+library(dplyr) # vers 0.7.1
 
-df_travel_3=df_travel %>% mutate_at(.cols=vars_to_reeplace, .funs = funs(ifelse(is.na(.), 0, .)))
+# Replacing NA values with 0 only in selected columns
+vars_to_replace=c("Brazil", "Costa_Rica")
+
+df_travel_3=df_travel %>% mutate_at(.vars=vars_to_replace, .funs = funs(ifelse(is.na(.), 0, .)))
 
 df_travel_3
 ```
   
-Keep at hand the last function; it's very common to face the situation of applying a specified function to a subset of variables, returning the transformed and the non-transformed variables in the same data set.
+Keep at hand the last function as it is very common to face the situation of applying a specified function to a subset of variables and returning the transformed and the non-transformed variables in the same dataset.
 
 Let's go to a more complex example.
 
 <br>
 
-### When the empty value, is an empty value
 
-Another time the empty value is correct. We need to treat them to use the table. Many predictive models don't handle input tables with missing values.
+## When the empty value is an empty value
 
-Perhaps they start measuring certain variable _after_ a period of time, so we have data from this point on and `NA` before. 
+Other times, to have an empty value is correct, it’s expressing the absence of something. We need to treat them to use the table. Many predictive models don't handle input tables with missing values.
 
-Another times there are random cases, like a machine which fails in collecting the data, or a user who forgot to complete some field in a form, among others.
+In some cases, a variable is measured _after_ a period of time, so we have data from this point on and NA before. 
 
-One important question arises: _What to do?!_😱
+Sometimes there are random cases, like a machine that fails to collect the data or a user who forgot to complete some field in a form, among others.
 
-The following recommendations are just that, recommendations. You can try different approaches discovering the best strategy to the data you are analyzing. There is no "one-size-fits-all".
+One important question arises: _What to do?!_ `r emo::ji("scream")`
+
+The following recommendations are just that, recommendations. You can try different approaches to discover the best strategy for the data you are analyzing. **There is no “one-size-fits-all”**.
 
 <br>
 
-### Excluding the entire row
+---
+
+## Excluding the entire row
 
 If at least one column has an `NA` value, then exclude the row.
 
-A fast and easy method, right? It's recommended when the number of rows is _low_. But how low is low? That's up to you. 10 cases in 1000 of rows _may not_ have a huge impact. Unless those 10 cases are related to an anomaly event to predict, in this instance, it represents information. We pointed out this issue in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#case-1-reducing-by-re-categorizing-less-representative-values" target="blank">case 1: reducing by re-categorizing less representative values.</a>
+A fast and easy method, right? It's recommended when the number of rows is _low_. But how low is low? That's up to you. Ten cases in 1,000 of rows _may not_ have a huge impact unless those 10 cases are related to the prediction of an anomaly; in this instance, it represents information. We pointed out this issue in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html#case-1-reducing-by-re-categorizing-less-representative-values" target="blank">case 1: reducing by re-categorizing less representative values.</a>
 
 <br>
 
 **Example in R:**
 
-Let's inspect the `heart_disease` data set, with the `df_status` function, which one of its primary objectives is to help us in these kind of decisions. 
+Let's inspect the `heart_disease` dataset with the `df_status` function, where one of its primary objectives is to help us with these kinds of decisions. 
 
 ```{r, message=FALSE}
-library(dplyr)
-library(funModeling)
+library(dplyr) # vers 0.7.1
+library(funModeling) # vers 1.6.4
 df_status(heart_disease, print_results = F) %>% select(variable, q_na, p_na) %>% arrange(-q_na)
 ```
 
-`q_na` indicates the quantity of `NA` values, and `p_na` is the percentage. Full info about `df_status` can be found in <a href="http://livebook.datascienceheroes.com/data_preparation/profiling.html" target="blank">Profiling chapter</a>
+`q_na` indicates the quantity of `NA` values and `p_na` is the percentage. Full info about `df_status` can be found in <a href="http://livebook.datascienceheroes.com/data_preparation/profiling.html" target="blank">Profiling chapter</a>.
 
-Two of the variables have 4 and 2 rows with `NA` values, let's exclude these rows:
+Two variables have 4 and 2 rows with `NA` values, so we exclude these rows:
 
 ```{r}
-# na.omit returns the same data frame having excluded all rows containing at least 1 NA value
+# na.omit returns the same data frame having excluded all rows containing at least one NA value
 heart_disease_clean=na.omit(heart_disease)
 nrow(heart_disease) # number of rows before exclusion
 nrow(heart_disease_clean) # number of rows after exclusion
 ```
 
-After the exclusion, 6 rows out of 303 were eliminated. This approach seems suitable for this data set.
+After the exclusion, six rows out of 303 were eliminated. This approach seems suitable for this dataset.
 
-But, there are other scenarios in which almost all cases are empty values. The exclusion will delete the entire data!
+However, there are other scenarios in which almost all cases are empty values, thus exclusion will delete the entire dataset!
 
 <br>
 
-### Excluding the column
+---
 
-Similar to the last case, but excluding the column. If we apply the same reasoning, if the deletion is about a _few_ columns, and the remaining ones provide a reliable final result, it may be ok. 
+## Excluding the column
+
+Similar to the last case, we exclude the column. If we apply the same reasoning and if the deletion is about a _few_ columns and the remaining ones provide a reliable final result, then it may be acceptable. 
 
 **Example in R:**
 
-These exclusions are easily handled with the `df_status` function. The following code will keep all variable names for which the percentage of `NA` values are higher than `0`.
+These exclusions are easily handled with the `df_status` function. The following code will keep all variable names for which the percentage of `NA` values are higher than 0.
 
 ```{r}
 ## Getting variable names with NA values
@@ -136,99 +152,99 @@ vars_to_exclude=df_status(heart_disease, print_results = F) %>% filter(p_na > 0)
 ## Checking variables to exclude
 vars_to_exclude
 
-## Excluding variables from original data set
+## Excluding variables from original dataset
 heart_disease_clean_2=select(heart_disease, -one_of(vars_to_exclude))
 ```
 
 <br>
 
+---
 
-### Treating empty values in categorical variables
+## Treating empty values in categorical variables
 
 We cover different perspectives to convert as well as treat empty values in nominal variables.
 
-The data of the following example is `web_navigation_data` which contains standard information regarding how users come to particular web page. It contains: `source_page` (the page the visitor comes from), `landing_page` (first page visited) and `country`.
+Data for the following example are derived from `web_navigation_data` which contains standard information regarding how users come to a particular web page. It contains the `source_page` (the page the visitor comes from), `landing_page` (first page visited), and `country`.
 
 ```{r}
-# Reading example data, pay attention to the na.strings parameter.
+# When reading example data, pay attention to the na.strings parameter
 web_navigation_data=read.delim(file="https://raw.githubusercontent.com/pablo14/data-science-live-book/master/data_preparation/web_navigation_data.txt", sep="\t", header = T, stringsAsFactors=F, na.strings="")
 ```
 
 
-**Profiling the data: **
+**Profiling the data:**
 
 ```{r}
 stat_nav_data=df_status(web_navigation_data)
 ```
 
-The three variables have empty (`NA`) values. Almost half of the values in `source_page` are missing, while the other two variables have 5% and 3% of `NA`s.
+The three variables have empty (`NA`) values. Almost half of the values in `source_page` are missing while the other two variables have 5% and 3% `NA`s.
 
-#### Case A: Convert the empty value into string
+### Case A: Convert the empty value into a string
 
-In categorical or nominal variables, the quickest treatment is to convert the empty value into the string `"unknown"`. So the machine learning model will handle the "empty" values as another category. Think about it like rules: `If variable_X="unknown" then outcome="yes"`.
+In categorical or nominal variables, the quickest treatment is to convert the empty value into the string `unknown`. Therefore, the machine learning model will handle the "empty" values as another category. Think about it like a rule: "If variable_X = unknown, then the outcome = yes".
 
-Next, we propose two methods intended to cover common scenarios.
+Next, we propose two methods intended to cover typical scenarios.
 
 **Example in R:**
 
 ```{r}
-## Method 1: Converting just one variable and create a new variable:
+## Method 1: Converting just one variable and create a new variable
 web_navigation_data_1=web_navigation_data # making a copy
 
-# creating a new variable
+# Creating a new variable
 web_navigation_data_1$source_page_2=ifelse(is.na(web_navigation_data$source_page), "unknown_source", web_navigation_data$source_page)
 
-## Method 2: It's a typical situation to only apply a function to specific variables and then return the original data frame
-# First we define the conversion function
-convert_categ<-function(x) 
+## Method 2: It's a typical situation only to apply a function to specific variables and then return the original data frame
+# First, we define the conversion function
+convert_categ<-function(x)
 {
-  # If 'NA' then put 'unknown', othwewise return the same value
+  # If NA, then put “unknown,” otherwise return the same value
   ifelse(is.na(x), "unknown", x)                                                                 
 }                                 
 
-# We obtain the variables to process, imagine we want to convert all variables with less than 6% of NA values:
+# Wmagine we want to convert all variables with less than 6% NA values:
 vars_to_process=filter(stat_nav_data, p_na<6) 
 
-# create the new data frame, with the transformed variables
-#  Adding a minus in front of one_of(vars_to_process$variable) will apply the function to all columns except to the defined ones
-web_navigation_data_2=web_navigation_data %>% mutate_each(funs(convert_categ), one_of(vars_to_process$variable))
-  
+# Create the new data frame with the transformed variables
+web_navigation_data_2=web_navigation_data %>% mutate_at(.vars=vars(vars_to_process$variable), .funs=funs(convert_categ))
 ```
+
 Checking the results:
 
 ```{r}
 df_status(web_navigation_data_2)
 ```
 
+Note: To apply a function to certain columns is a very common task in any data project. More info about how to use it `mutate_at` from `dplyr`: https://stackoverflow.com/questions/27027347/mutate-each-summarise-each-in-dplyr-how-do-i-select-certain-columns-and-give
+
 <br>
 
-#### Case B: Assign the most frequent category
+### Case B: Assign the most frequent category
 
-TODO: add example
+The intuition behind this method is _to add more of the same as to not affect the variable_. However,  sometimes it does. It will not have the same impact if the most common value appears 90% of the time than if it does 10%; that is, it depends on the distribution.
 
-The intuition behind this method is _to add more of the same, so it does not affect_. But sometimes it does. It will not have the same impact if the most common value appears 90% of the time, than if it does 10%. It depends on the distribution.
-
-This technique is more suitable in a predictive model that is running on production, and a new value in categorical variables. If the predictive model is robust, like **random forest** is, it will throw the message: `New factor levels not present in the training data.`, where `factor level` equals to "new category value". 
+This technique is more suitable in a predictive model that is run on production and a new value for categorical variables. If the predictive model is robust, like **random forest** is, then it will throw the message: `New factor levels not present in the training data` where `factor level` is equal to `new category value`. 
 
 This book covered this point in <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
  target="blank">High Cardinality Variable in Predictive Modeling</a>.
 
-As you can see the situation is not the same if we are building a predictive model to go live or doing an ad-hoc report.
+As you can see, the situation is not the same if we are building a predictive model to go live or doing an ad hoc report.
 
 
 <br>
 
-#### Case C: Exclude some columns and transform others
+### Case C: Exclude some columns and transform others
 
-The easy case is if the column contains, let's say, 50% of NA cases, making it highly likely not to be reliable. 
+The easy case is if the column contains, let's say, 50% `NA` cases, making it highly likely not to be reliable. 
 
-In the case we saw before, `source_page` have more than half of the values empty. We could exclude this variable and transform -as we did- the remaining two.
+In the case we saw before, `source_page` has more than half of the values empty. We could exclude this variable and transform —as we did— the remaining two.
 
 The example is prepared to be generic:
 
 ```{r}
 # Setting the threshold
-threshold_to_exclude=50 # 50 reprents 50%
+threshold_to_exclude=50 # 50 Represents 50%
 vars_to_exclude=filter(stat_nav_data, p_na>=threshold_to_exclude) 
 vars_to_keep=filter(stat_nav_data, p_na<threshold_to_exclude) 
 
@@ -236,35 +252,39 @@ vars_to_keep=filter(stat_nav_data, p_na<threshold_to_exclude)
 vars_to_exclude$variable
 vars_to_keep$variable
 
-# Next line will exclude variables above the threshold, and it will transform the remaining ones
-web_navigation_data_3=select(web_navigation_data, -one_of(vars_to_exclude$variable)) %>% mutate_each(funs(convert_categ), one_of(vars_to_keep$variable))
+# Next line will exclude variables above the threshold and transform the remaining ones
+web_navigation_data_3=select(web_navigation_data, -one_of(vars_to_exclude$variable)) %>%
+  mutate_at(.vars=vars_to_keep$variable, .funs=funs(convert_categ))
 
-# Checking, there is no NA values and the variable above NA threshold disappeared
+# Checking there are no NA values and the variable above the NA threshold has disappeared
 df_status(web_navigation_data_3)
 
 ```
 
 <br>  
 
-#### Summing-up 
+### Summing-up 
 
-But how about if it contains 40% of NA values? It depends on what the objective is, and the data. 
+What if the data contain 40% `NA` values? It depends on the objective of the analysis and the nature of the data. 
 
-The important point here is "to save" the variable so we can use it. Finding many variables with missing values is common. Maybe those _incomplete variables_ carries useful predictive information when they have a value, so we need to treat them and then build the predictive model. 
+The important point here is to “save” the variable so we can use it. Finding many variables with missing values is common. It may be that those _incomplete variables_ carry useful predictive information when they have a value, therefore, we need to treat them and then build a predictive model. 
 
-But, we need to minimize the bias we are introducing, because the missing value is a value that "is not there".
+However, we need to minimize the bias we are introducing because the missing value is a value that "is not there".
 
-* When doing a report the suggest is to replace with the string "empty".
-* When doing a predictive model that is running live is to assign the most repetitive category. 
+* When doing a report, the suggestion is to replace `NA` by the string `empty`,
+* When doing a predictive model that is running live, assign the most repetitive category. 
 
 <br>
 
-### Is there any pattern in missing values?
+---
 
-First load the example movie data. And do a quick a  quick profile.
+## Is there any pattern in missing values?
+
+First, load the example movie data and do a quick profile.
 
 ```{r}
 # Lock5Data contains many data frames to practice
+# install.packages("Lock5Data")
 library(Lock5Data)
 
 # loading data
@@ -274,49 +294,51 @@ data("HollywoodMovies2011")
 df_status(HollywoodMovies2011)
 ```
 
-Let's take a look at the values present in `p_na` column, there is a pattern in the missing values, 4 variables have `1.47`% of NA values, and another 4 have around `11.7`%. In this case are not able to check the data source, but it is a good idea to check if those cases have a common issue.
+Let's take a look at the values present in the `p_na` column. There is a pattern in the missing values: four variables have 1.47% NA values and another four have around 11.7%. In this case, we are not able to check the data source; however, it is a good idea to check if those cases have a common issue.
 
 <br> 
 
-### Treating missing values in numerical variables
+---
 
-We've already approached this point in the beginning of the chapter by converting all `NA` values into `0`.
+## Treating missing values in numerical variables
 
-One solution is to replace the empty by the mean, median or other criteria. But we have to be aware of the change in the distribution.
+We approached this point at the beginning of the chapter by converting all `NA` values to 0.
 
-If the see that the variable seems to be correlated when it's not empty (same as categorical), another method is to create bins, also known as buckets or segments, converting it into categorical.
+One solution is to replace the empty by the mean, median, or other criteria. However,  we have to be aware of the change in the distribution that this creates.
+
+If we see that the variable seems to be correlated when it's not empty (same as categorical), the an alternative method is to create bins, also known as "buckets" or "segments", thereby converting it to categorical.
 
 
-#### Method 1: Converting into categorical
+### Method 1: Converting into categorical
 
-The function `equal_freq` splits the variable into the desiere bins:
+The function `equal_freq` splits the variable into the desired bins:
 
-```{r, fig.height=3, fig.width=6, echo=F, out.width = "400px"}
+```{r na_missing_values_analysis, fig.height=3, fig.width=6, echo=FALSE, out.width = "400px"}
 HollywoodMovies2011$TheatersOpenWeek_2=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
 
 freq(HollywoodMovies2011, "TheatersOpenWeek_2")
 ```
 
-As we can see, `TheatersOpenWeek_2` contains 5 buckets of 24 cases each where each one represents 20% of total cases. But the NA values are still there.
+As we can see, `TheatersOpenWeek_2` contains five buckets of 24 cases each, where each represents 20% of total cases. But, the `NA` values are still there.
 
-Finally, we have to convert the `NA` into the string `empty`.
+Finally, we have to convert the NA into the string `empty`.
 
-```{r, fig.height=3, fig.width=6, echo=F, out.width = "400px", results=FALSE}
+```{r, fig.height=3, fig.width=6, echo=FALSE, out.width = "400px", results=FALSE}
 HollywoodMovies2011$TheatersOpenWeek_2=as.character(HollywoodMovies2011$TheatersOpenWeek_2)
-HollywoodMovies2011$TheatersOpenWeek_2=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_2), "empty",  HollywoodMovies2011$TheatersOpenWeek_2)
+HollywoodMovies2011$TheatersOpenWeek_2=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_2), "empty", HollywoodMovies2011$TheatersOpenWeek_2)
 
 freq(HollywoodMovies2011, "TheatersOpenWeek_2")
 ```
 
-And that's it; the variable is ready to be used. 
+And that's it: the variable is ready to be used. 
 
 **Custom cuts**:
-If we want to use custom bucket sizes, not the ones provided by equal frequency, we can do the following:
+If we want to use custom bucket sizes instead of the ones provided by equal frequency, then we can do the following:
 
 ```{r}
 options(scipen=999) # disabling scientific notation in current R session
 
-# Creating custom buckets, with limits in 1000, 2300 and a max of 4100. Values above 4100 will be assigned as NA.
+# Creating custom buckets, with limits in 1,000, 2,300, and a max of 4,100. Values above 4,100 will be assigned to NA.
 
 HollywoodMovies2011$TheatersOpenWeek_3=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 1000, 2300, 4100), include.lowest = T, dig.lab = 10)
 
@@ -324,17 +346,17 @@ freq(HollywoodMovies2011, "TheatersOpenWeek_3", plot = F)
 ```
 
 
-It should be noted that **equal frequency binning**, it tends to be more robust than the equal distance which splits the variable taking the min and max and separating regardless how many cases fall into each bin. 
+It should be noted that **equal frequency binning** tends to be more robust than the equal distance that splits the variable, which is based on taking the min and max, and the distance between each segment, regardless how many cases fall into each bucket. 
 
-The equal frequency puts the outliers values in the first or last bin as appropriate. Normal values can range from 3 to 20 buckets. A higher number of buckets tend to be noisier. More info about check the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> chapter function.
+The equal frequency puts the outliers values in the first or last bin as appropriate. Normal values can range from 3 to 20 buckets. A higher number of buckets tend to be noisier. For more info, check the <a href="http://livebook.datascienceheroes.com/selecting_best_variables/cross_plot.html" target="blank">`cross_plot`</a> chapter function.
 
 <br>
 
-#### Method 2: Filling the NA with some value
+### Method 2: Filling the NA with some value
 
-Same as categorical, we can replace by a number such as the mean, the median. 
+As with categorical variables, we can replace values by a number such as the mean or the median. 
 
-In this case, we'll replace by the average, and plot the before and after side by side.
+In this case, we'll replace `NA` by the average and plot the before and after results side-by-side.
 
 ```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE}
 # Filling all NA values with the mean of the variable
@@ -346,140 +368,79 @@ p1=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek)) + geom_histogram(colour=
 # Plotting transformed variable
 p2=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek_mean)) + geom_histogram(colour="black", fill="white") + ylim(0, 30)
 
-# Putting the plots side by side 
+# Putting the plots side-by-side 
 library(gridExtra)
 grid.arrange(p1, p2, ncol=2)
   
 ```
 
-We can see a peak around the `2828` product of the transformation. This introduces a bias around this point. If we are predicting some event, it would be safer not to have some special event around this value. 
+We can see a peak at `2828`, which is a product of the transformation. This introduces a bias around this point. If we are predicting some event, then it would be safer not to have some special event around this value. 
 
-For example, if we are predicting a binary event, and the least representative event is correlated with having a mean of `3000` in `TheatersOpenWeek`, then the odds of having a higher **False Positive rate** may be higher.  Again the link to the <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
+For example, if we are predicting a binary event and the least representative event is correlated with having a mean of `3000` in `TheatersOpenWeek`, then the odds of having a higher **False Positive rate** may be higher. Again, the link to the <a href="http://livebook.datascienceheroes.com/data_preparation/high_cardinality_predictive_modeling.html"
  target="blank">High Cardinality Variable in Predictive Modeling</a> chapter.
 
-An extra comment regarding the last visualization, it was important to set the y-axis maximum to 30 to make the plots comparable.
+As an extra comment regarding the last visualization, it was important to set the y-axis maximum to 30 to make the plots comparable.
 
-As you can see, there is an inter-relationship between all concepts.
+As you can see, there is an inter-relationship between all concepts `r emo::ji("wink")`.
 
 <br>
   
-#### Picking up the right value to fill 
+### Picking up the right value to fill 
 
-The last example replaced the NA with the mean, but how about other value? It depends on the distribution of the variable.
+The last example replaced the `NA` with the mean, but how about other values? It depends on the distribution of the variable.
 
-The variable we used, `TheatersOpenWeek` _seems normally distributed_, that's why we used the `mean`. But if the variable is more skewed, probably another metric would be more suitable. For example the `median`, which is less sensitive to outliers. 
-
-<br>
-
-### Advanced imputation methods
-
-Now we are going to do a quick review of more sophisticated imputation methods, in which we create a predictive model, with all it implies.
+The variable we used (`TheatersOpenWeek`) seems normally distributed, which is the reason we used the mean. However, if the variable is more skewed, then another metric probably would be more suitable; for example, the median is less sensitive to outliers. 
 
 <br>
 
-#### Method 1: Using MICE approach
+---
 
-MICE stands for "Multivariate Imputation by Chained Equations", also known as Fully Conditional Specification. This book covers a minimal aspect of it since its popularity.
+## Advanced imputation methods
 
-It is a whole framework to analyze and deal with missing values. It considers the interaction among **all variables** at the same time, (multivariate) not just one, and bases its functionality on a **iterative** process which uses different predictive models to fill each variable. 
+Now we are going to do a quick review of more sophisticated imputation methods in which we create a predictive model, with all that it implies.
 
-Internally it fills variable `A`, based on `B` and `C`. Then it fills `B` based on `A` and `C` (`A` previously predicted). And the iteration continues... The name "chained equations" comes from the fact that we can specify the algorithm per variable to impute the cases.
+<br>
 
-It creates `M` replications of the original data with no missing values. _But why create `M` replications?_ 
+### Method 1: Using random forest (missForest)
 
-In each replication, the decision of what value insert in the _empty slot_ is based on a distribution. 
+The <a href="https://cran.r-project.org/web/packages/missForest/missForest.pdf" target="target">`missForest` package</a> its functionality its based on running several random forests in order to complete each missing value in an iterative process, handling both categorical and numerical variables at the same time.
 
-Many `mice` demonstrations focus on validating the imputation and using the predictive models that support the package, which is only a few. This is great if we don't want to use other predictive models (random forest, gradient boosting machine, etc.), nor a cross-validation technique (`caret` for example). 
-
-`mice` puts the final result by calling a `pool()` function which averages the parameters (or betas) of the `M` predictive models providing facilities for measuring the variance due to missing values. 
-
-Yes, one model per each generated data frame. Sounds like <a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating" target="blank">bagging</a>, isn't it? But we don't have this possibility with the mentioned models. 
-
-`mice` has many functions to help us the process and validate the filling results. But to keep it very simple, we'll cover just a little part of it. Following example will focus on extracting a **data frame with no missing values ready to be used** with other program or predictive model. 
-
-**Example in R:**
-
-It will impute data for `nhanes` data frame coming in <a href="https://cran.r-project.org/web/packages/mice/mice.pdf" target="blank">`mice` package</a>. Let's check it:
+Regardless of missing value imputation, the random forest model has one of the best performances of many different kinds of data.
+In next example, we will complete the `HollywoodMovies2011` data we were working with before. These data contain `NA` values in both numerical and categorical variables.
 
 ```{r, message=FALSE}
-# install.packages("mice")
-library(mice)
-df_status(nhanes)
-```
-
-Three variables have missing values. Let's fill it:
-
-```{r}
-# Default imputation, it creates 5 complete data sets
-imp_data=mice(nhanes, m = 5, printFlag = FALSE)
-
-# Get a final data set containing the 5 imputed data frames, total rows=nrow(nhanes)*5
-data_all=complete(imp_data, "long")
-
-# data_all contains the same columns as nhanes plus 2 more: '.id' and '.imp'
-# .id=row number, from 1 to 25
-# .imp=imputation data frame id, 1 to 5 ('m' parameter)
-```
-
-Original data, `nhanes`, has 25 rows, `data_all` contains 125 rows, which is the result of creating 5 (`m=5`) complete data frames of 25 rows each. 
-
-Time to check the results:
-
-```{r, fig.height=3, fig.width=6}
-densityplot(imp_data)
-```
-
-Each red line shows the distribution of each imputed data frame, and the blue one contains the original distribution. The idea behind it is, if they look similar, then the imputation followed the original distribution. 
-
-For example, `chl` contains one imputed data frame -thus only one red line- containing two peaks around two values much higher than the original one.  
-
-The drawbacks are it is a slow process, and it may require some tuning to work. For example: `mice_hollywood=mice(HollywoodMovies2011, m=5)` will fail after some time processing it, and it is a small data frame.
-
-<a href="https://datascienceplus.com/handling-missing-data-with-mice-package-a-simple-approach/" target="blank"></a>
- 
-Original `mice` paper: <a href="https://www.jstatsoft.org/article/view/v045i03" target="blank">Multivariate Imputation by Chained Equations in R.</a>
-
-<br>
-
-#### Method 2: Using random forest (missForest)
-
-The <a href="https://cran.r-project.org/web/packages/missForest/missForest.pdf" target="target">`missForest` package</a> yields in running several random forest to complete each missing value in an iterative process, handling both categorical and numerical variables at the same time.
-
-Regardless the missing value imputation, random forest model have one of the most reliable performances across many kinds of data, as a matter of is a good call to use them for this task.
-
-In next example we will complete the `HollywoodMovies2011` data we were working before. It contains `NA` values in both variables, numerical and categorical.
-
-```{r, message=FALSE}
+# install.packages("missForest")
 library(missForest)
 
-# copying the data
+# Copying the data
 df_holly=HollywoodMovies2011
 
-# We will introduce more 15% more of NA values in TheatersOpenWeek_3 to produce a better example. Function 'prodNA' in missForest will help us.
+# We will introduce 15% more NA values in TheatersOpenWeek_3 to produce a better example. The function prodNA in missForest will help us.
 set.seed(31415) # to get always the same number of NA values...
 df_holly$TheatersOpenWeek_3=prodNA(select(df_holly, TheatersOpenWeek_3), 0.15)[,1]
 
-# missForest failed if it has any character variable, so we convert the only character into factor:
+# missForest fails if it has any character variable, so we convert the only character into the factor:
 df_holly$TheatersOpenWeek_2=as.factor(df_holly$TheatersOpenWeek_2)
 
-# excluding the Id column
+# Excluding the .id column
 df_holly=select(df_holly, -Movie)
 
-# Now the magic! Imputing the data frame. xmis parameter=the data with missing values
+# Now the magic! Imputing the data frame
+# xmis parameter=the data with missing values
 imputation_res=missForest(xmis = df_holly)
 
 # Final imputed data frame
 df_imputed=imputation_res$ximp
 ```
 
-Now it's time to compare the distribution of some of the imputed variables. Hopefully, they will look similar at a visual analysis. 
+Now it's time to compare the distributions of some of the imputed variables. Hopefully, they will look similar on a visual analysis. 
 
 
-```{r, warning=FALSE, message=FALSE}
-# Creating another imputation based on na.rougfix from random forest pacakge
+```{r how_to_impute_missing_values, warning=FALSE, message=FALSE,  out.width="500px", fig.height=4, fig.width=5}
+# Creating another imputation based on na.rougfix from the random forest package
 df_rough=na.roughfix(df_holly)
 
-# Compare distributions before-after imputation
+# Compare distributions before and after imputation
 df_holly$imputation="original"
 df_rough$imputation="na.roughfix"
 df_imputed$imputation="missForest"
@@ -487,7 +448,7 @@ df_imputed$imputation="missForest"
 # Putting the two data frames in only one, but split by is_imputed variable
 df_all=rbind(df_holly, df_imputed, df_rough)
 
-# converting to factor for using in a plot
+# Converting to factor for using in a plot
 df_all$imputation=factor(df_all$imputation, levels=unique(df_all$imputation))
 
 # Plotting
@@ -495,26 +456,26 @@ ggplot(df_all, aes(TheatersOpenWeek, colour=imputation)) + geom_density() + them
 ```
 
 
-* The green curve shows the distribution after the imputation based on `missForest` package.
-* The orange shows the imputation method we talked at the beginning, it replaces all `NA` by the median, it is done by `na.roughfix` coming in `randomForest` package.
-* The blue one shows the distribution without any imputation (of course, `NA` values are not displayed). 
+* The green curve shows the distribution after the imputation based on the `missForest` package.
+* The orange shows the imputation method we discussed at the beginning, which replaces all `NA` by the median using the `na.roughfix` function in the `randomForest` package.
+* The blue one shows the distribution without any imputation (of course, NA values are not displayed). 
 
 **Analysis:**
 
-Replace by the median tends to concentrate -as we expected- all the values around 3000. On the other side, the imputation given by `missForest` package does a **more natural distribution** since it doesn't concentrate around a single value. That's why the peak around 3000 is lower than the original one.
+Replacement of `NA` by the median tends to concentrate, as expected, all the values around 3000. On the other side, the imputation given by the missForest package provides a **more natural distribution** because it doesn't concentrate around a single value. That's why the peak around 3000 is lower than the original one.
 
 The orange and blue look pretty similar!
 
-If we want to analyze from the analytical point of view, and don't play to be an art critic staring at a painting, we may run a statistical test comparing, for example, the means or the variance.
+If we want to take an analytical point of view, then we can run a statistical test to compare, for example, the means or the variance.
  
 <br>
 
-```{r}
-# an ugly hack to plot NA as a category...
+```{r missing_value_imputation, out.width="500px", fig.height=4, fig.width=7}
+# An ugly hack to plot NA as a category
 levels(df_all$TheatersOpenWeek_3)=c(levels(df_all$TheatersOpenWeek_3), "NA")
 df_all$TheatersOpenWeek_3[is.na(df_all$TheatersOpenWeek_3)]="NA"
 
-# now the plot!
+# Now the plot!
 ggplot(df_all, aes(x = TheatersOpenWeek_3, fill = TheatersOpenWeek_3)) +
     geom_bar(na.rm=T) + facet_wrap(~imputation)  + geom_text(stat='count',aes(label=..count..),vjust=-1) + ylim(0, 125) + scale_fill_brewer(palette="Set2") + theme_minimal() + theme(axis.text.x=element_text(angle = 45, hjust = 0.7))
 
@@ -526,26 +487,99 @@ ggplot(df_all, aes(x = TheatersOpenWeek_3, fill = TheatersOpenWeek_3)) +
 
 **Analysis:**
 
-The original variable contains 31 `NA` values which were replaced, by using the mode (most frequent value) in `na.roughfix`, and with smoother and more reasonable criteria using `missForest`.
+The original variable contains 31 `NA` values that were replaced using the mode (most frequent value) in `na.roughfix`, and with smoother and more reasonable criteria using `missForest`.
 
-`missForest` added 2 rows in category `"[0, 1000]"`, 1 in `"(1000,2300]"` and 32 in the `(2300,4100]`. While `na.roughfix` added 35 only to `(2300,4100]`.
+`missForest` added two rows in the category `[0, 1000]`, 1 in `[1000, 2300]`, and 32 in the `[2300, 4100]` category, whereas `na.roughfix` added only 35 to `[2300, 4100]`.
 
 
 <br>
 
-### Conclusions
+### Method 2: Using the MICE approach
 
-After covering everything, we could ask, what is the best strategy? Well, it depends on how much we need to go in the project handling missing values.
+**Advice:** For the very first approach to missing value imputation, this method is really complex `r emo::ji("fearful")`. 
 
-SA quick review ofthe strategies: 
+MICE stands for "Multivariate Imputation by Chained Equations" also known as "Fully Conditional Specification". This book covers it due to its popularity.
 
-A) Excluding the rows and columns with missing values. Only applicable if there are _a few_ rows (or columns) with missing values, **and** if the remaining data is enough to achieve the project goal. However, when we exclude rows with missing values, and we build a predictive model that will run on production, when a **new case arrives** and contains missing value comes, we must assign a value to process it. 
+MICE entails a complete framework to analyze and deal with missing values. It considers the interactions among **all variables** at the same time (multivariate and not just one) and bases its functionality on an **iterative** process that uses different predictive models to fill each variable. 
 
-B) The strategies of **converting** numerical variables into categorical, and then creating the "`empty`" value (also applicable to categorical variables), is the quickest option, and we are introducing the missing value to the model so that it will consider the uncertainty. 
+Internally, it fills variable A, based on B and C. Then, it fills B based on A and C (A is previously predicted) and the iteration continues. The name "chained equations" comes from the fact that we can specify the algorithm per variable to impute the cases.
 
-C) The **imputation methods** like the ones we covered with `mice` and `missForest` are considerably more complex. With these methods, we introduce a **controlled-bias**, so we don't have to exclude any rows nor columns the variables from the analysis nor the predictive model.
+This creates M replications of the original data with no missing values. _But why create M replications?_ 
 
-Regardless the method, it's quite important to analyze the impact of teachdecision. It has a lot of try-and-error ans well asexploratory data analysis, dleading up to the discover ofthe bmost suitablemethod for your data and project.
+In each replication, the decision of what value to insert in the _empty slot_ is based on the distribution. 
+
+Many MICE demonstrations focus on validating the imputation and using the predictive models that support the package, which number only a few. This is great if we don't want to use other predictive models (random forest, gradient boosting machine, etc.), or a cross-validation technique (e.g., `caret`). 
+
+The MICE technique puts the final result by setting a `pool()` function that averages the parameters (or betas) of the M predictive models providing facilities for measuring the variance due to missing values. 
+
+Yes, one model per each generated data frame. Sounds like <a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating" target="blank">bagging</a>, isn't it? But we don't have this possibility with the mentioned models. 
+
+MICE has many functions to help us process and validate the filling results. But, to keep it very simple, we'll cover just a little part of it. The following example will focus on extracting a **data frame with no missing values ready to be used** with other programs or predictive models. 
+
+**Example in R:**
+
+This will impute data for the `nhanes` data frame coming in <a href="https://cran.r-project.org/web/packages/mice/mice.pdf" target="blank">mice package</a>. Let's check it:
+
+```{r, message=FALSE}
+# install.packages("mice")
+library(mice)
+df_status(nhanes)
+```
+
+Three variables have missing values. Let's fill them:
+
+```{r}
+# Default imputation creates five complete datasets
+imp_data=mice(nhanes, m = 5, printFlag = FALSE)
+
+# Get a final dataset containing the five imputed data frames, total rows=nrow(nhanes)*5
+data_all=complete(imp_data, "long")
+
+# data_all contains the same columns as nhanes plus two more: .id and .imp
+# .id=row number from 1 to 25
+# .imp=imputation data frame .id 1 to 5 (m parameter)
+```
+
+In the original data, `nhanes` has 25 rows and data_all contains 125 rows, which is the result of creating 5 (`m=5`) complete data frames of 25 rows each. 
+
+Time to check the results:
+
+```{r, fig.height=3, fig.width=6}
+densityplot(imp_data)
+```
+
+Each red line shows the distribution of each imputed data frame and the blue one contains the original distribution. The idea behind this is that if they look similar, then the imputation followed the original distribution. 
+
+For example, chl contains one imputed data frame; thus, only one red line containing two peaks around two values much higher than the original ones.  
+
+The drawbacks are it is a slow process that may require some tuning to work. For example: `mice_hollywood=mice(HollywoodMovies2011, m=5)` will fail after some time processing it and it is a small data frame.
+
+<a href="https://datascienceplus.com/handling-missing-data-with-mice-package-a-simple-approach/" target="blank"></a>
+
+
+Original MICE paper: <a href="https://www.jstatsoft.org/article/view/v045i03" target="blank">Multivariate Imputation by Chained Equations in R.</a>
+
+<br>
+
+---
+
+## Conclusions
+
+After covering everything, we could ask: what is the best strategy? Well, it depends on how much we need to intervene in order to handle missing values.
+
+A quick review of the strategies follows: 
+
+A) Excluding the rows and columns with missing values. Only applicable if there is _a few_ rows (or columns) with missing values, **and** if the remaining data are enough to achieve the project goal. However, when we exclude rows with missing values and we build a predictive model that will run on production, when a **new case arrives** that contains missing values, we must assign a value to process these. 
+
+B) The strategies of **converting numerical variables to categorical** and then creating the “empty” value (also applicable to categorical variables), is the quickest option and we are introducing the missing value to the model so that it will consider the uncertainty. 
+
+C) The **imputation methods** like the ones we covered with MICE and missForest are considerably more complex. With these methods, we introduce a **controlled-bias** so that we don't have to exclude any rows or columns. 
+
+It's an art to find the correct balance between digging deeply into these transformations and keeping it simple. The invested time may not be reflected in the overall accuracy.
+
+Regardless the method, it's quite important to analyze the impact of each decision. There is a lot of trial-and-error as well as exploratory data analysis leading up to the discovery of the most suitable method for your data and project.
  
 <br>
+
+
 
