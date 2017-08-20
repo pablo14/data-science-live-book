@@ -23,6 +23,8 @@ The concept of extreme values, much like other topics in machine learning, is no
 
 <br>
 
+---
+
 ## The intuition behind outliers
 
 For example, consider the following distribution:
@@ -126,7 +128,7 @@ The definition of these boundaries is one of the most common tasks in machine le
 
 * Example 1: When we develop a predictive model which returns a probabilty for calling or not certain client, we need to set the score threshold to assign the final label: "yes call!"/"no call". More info about it in <a href="http://livebook.datascienceheroes.com/scoring/scoring.html" tareget="blank">Scoring</a> chapter.
 
-* Example 2: Another example is when we need to discretize a numerical variable because we need it as categorical. The boundaries in each bin/segment will affect the overall result. More info about it in <a href="http://livebook.datascienceheroes.com/data_preparation/data_types.html" tareget="blank">Scoring</a> chapter, section _Discretizing numerical variables_. 
+* Example 2: Another example is when we need to discretize a numerical variable because we need it as categorical. The boundaries in each bin/segment will affect the overall result. More info about it in <a href="http://livebook.datascienceheroes.com/data_preparation/data_types.html" tareget="blank">Data Types</a> chapter, section _Discretizing numerical variables_. 
 
 `r emo::ji("pushpin")` Going back to the original issue (_where does the cold weather end?_), not all the questions need to have an answer: some of them just help us simply to think.
 
@@ -180,6 +182,8 @@ freq(data_country_sample$country)
 
 <br>
 
+---
+
 ### Types of outliers by dimensionality
 
 So far, we have observed one-dimensional univariate outliers. We also can consider two or more variables at a time.
@@ -221,8 +225,6 @@ We mention **1%** as a possible threshold to flag a value as an outlier. This va
 
 In addition, the presence of this kind of outlier may not pose a problem.
 
-Outliers can be other name for **anomaly detection**, and its treatment in time series can be slighty different. Where each point, a value for certain date, is correlated with the another previous values.
-
 <br>
 
 ---
@@ -239,7 +241,7 @@ Besides the explanation below, `prep_outliers` is a well-documented type: `help(
 
 <br>
 
-### Step 1: How to detect outliers
+### Step 1: How to detect outliers `r emo::ji("mag_right")`
 
 The following methods are implemented in the `prep_outliers` function. They retrieve different results so the user can select the one that best fits her or his needs.
 
@@ -268,7 +270,7 @@ This method flags outliers considering the quartiles values, Q1, Q2, and Q3, whe
 
 The IQR (Inter-quartile range) comes from Q3 − Q1.
 
-**The formula:**
+The formula:
 * The bottom threshold is: Q1 − 3*IQR. All below are considered as outliers.
 * The top threshold is: Q1 + 3*IQR. All above are considered as outliers.
 
@@ -290,7 +292,7 @@ A subtle visual and step-by-step example can be found in Ref. [1].
 
 #### Hampel's method
 
-**The formula:**
+The formula:
 * The bottom threshold is: `median_value − 3*mad_value`. All below are considered as outliers.
 * The top threshold is: `median_value + 3*mad_value`. All above are considered as outliers.
 
@@ -316,7 +318,7 @@ hampel_outlier(heart_disease$age, k_mad_value = 6)
 
 ---
   
-### Step 2: What to do with the outliers?
+## Step 2: What to do with the outliers? `r emo::ji("hammer_and_wrench")`
 
 We've already detected which points are the outliers. Therefore, the question now is: _What to do with them?_ `r emo::ji("thinking")`
 
@@ -347,12 +349,13 @@ For example, let's consider the following variable (the one we saw at the beginn
 
 ```{r}
 ## To understand all of these metrics, please go to the Profiling Data chapter: http://livebook.datascienceheroes.com/exploratory_data_analysis/profiling.html
-profiling_num(df_1$var).
+profiling_num(df_1$var)
 ```
 
 Here we can see several indicators that give us some clues. The `std_dev` is really high compared with the `mean`, and it is reflected on the `variation_coef`. In addition, the kurtosis is high (16) and the `p_99` is almost twice the `p_95` value (5767 vs. 3382).
 
-_This last analysis is like imaging a picture by what another person tell us: we convert the voice (which is a signal) into an image in our brain._ `r emo::ji("speaking_head")` `r emo::ji("roll_eyes")` ... => `r emo::ji("mountain_snow")` 
+
+_This last task of looking at some numbers and visualize the variable distribution is like imaging a picture by what another person tells us: we convert the voice (which is a signal) into an image in our brain._ `r emo::ji("speaking_head")` `r emo::ji("roll_eyes")` ... => `r emo::ji("mountain_snow")` 
 
 <br>
 
@@ -604,6 +607,8 @@ plotar(df_2_m,  str_target= "variable", str_input = "value", plot_type = "boxplo
 _Important_: The two points above the value 100 ( only for `var1`) were excluded, otherwise it was impossible to appreciate the difference between the methods.
 
 <br>
+
+---
 
 ## Final thoughts
 
