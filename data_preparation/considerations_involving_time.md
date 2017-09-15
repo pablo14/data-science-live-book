@@ -187,7 +187,3 @@ The key concept here: **how to handle time in predictive modeling**. It's a good
 Human knowledge is crucial in these contexts to define thresholds based on experience, intuition and some calculations.
 
 <br>
-
-
-<script src="https://gumroad.com/js/gumroad-embed.js"></script>
-<div class="gumroad-product-embed" data-gumroad-product-id="tORBv"><a href="https://gumroad.com/l/tORBv">Loading...</a></div>
