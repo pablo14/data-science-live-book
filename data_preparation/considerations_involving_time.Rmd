@@ -1,13 +1,7 @@
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-knitr::opts_chunk$set(out.width="600px", dpi=200)
-knitr::opts_knit$set(base.dir = "data_preparation")
-``` 
-
-# Considerations involving time
+## Considerations involving time
 
 
-## What is this about?
+### What is this about?
 
 <img src="Heraklit.jpeg" width="200px" alt="Heraclitus doing machine learning">
 
@@ -26,7 +20,7 @@ As time goes by, variables may change their values, making the time-analysis cru
 
 <br>
 
-### Don't use information from the future
+#### Don't use information from the future
 
 <img src="back_to_the_future.png" width='250px' alt="Data Preparation - Don't use variables from the future"> 
 
@@ -52,7 +46,7 @@ We build the predictive model, we got a perfect accuracy, and an inspection thro
 
 <br>
 
-### Play fair with data, let it develop their behavior
+#### Play fair with data, let it develop their behavior
 
 Like in nature, things have a minimum and maximum time to start showing certain behavior. This time oscillates from 0 to infinity. In practice it's recommended to study what is the best period to analyze, in other words, we may exclude all the behavior before and after this observation period. To establish ranges in variables, it's not straight forward since it may be kind of subjective.
 
@@ -93,7 +87,7 @@ The behavior in this kick-off period may be more relevant -regarding prediction 
 
 <br> 
 
-### Fighting the infinite
+#### Fighting the infinite
 
 <img src="infinity.png" alt="Cutting the inifinity" width="150px">
 
@@ -143,7 +137,7 @@ _What do we have to do?_ Time to go to the next section.
 
 <br>
 
-### Befriend the infinite
+#### Befriend the infinite
 
 The last example can be seen in the analysis of customer age in the company. _This value can be infinite._
 
@@ -160,7 +154,7 @@ A related case is **dealing with outliers**, when we can apply this cutting perc
 
 <br>
 
-### Examples in other areas
+#### Examples in other areas
 
 It's really common to find this kind of variables in many data sets or projects.
 
@@ -182,7 +176,7 @@ But this also happens in _"real life"_, like the case when we write a data scien
 
 <br>
 
-### Final thoughts
+#### Final thoughts
 
 Defining a time frame to create a training and validation set **is not a free-lunch** when the data is dynamic, as well as deciding how to handle variables that change over time. That's why the **Exploratory Data Analysis** is important in order to get in touch with the data we're analyzing. 
 

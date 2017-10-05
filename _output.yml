@@ -1,0 +1,24 @@
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
+  template: template.tex
+
+
+
+bookdown::epub_book: default
+
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      collapse: subsection
+      before: |
+        <li><a href="./">Data Science Live Book</a></li>
+      scroll_highlight: yes
+    edit: https://github.com/pablo14/data-science-live-book/master/%s
+
+
+

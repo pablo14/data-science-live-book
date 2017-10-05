@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Correlation and Relationship</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Correlation and Relationship</h1>
+
+<h2>What is this about?</h2>
+
+<p>This chapter contains both methodological and practical aspects of measuring correlation in variables. We will see that <em>correlation</em> word can be translated into &ldquo;<strong>functional relationship</strong>&rdquo;.</p>
+
+<p>In methodological you will find the Anscombe Quartet, a set of four plots with dissimilar spatial distribution, but sharing the same correlation measure. We&#39;ll go one step ahead re-calculating their relationship though a more robust metric (MIC).</p>
+
+<p>We will mention <strong>Information Theory</strong> several times, although by now it&#39;s not going to be covered at the mathematical level, it&#39;s planned to. Many algorithms are based on it, even deep learning.</p>
+
+<p>Understanding these concepts in low dimension (two variables) and small data (a bunch of rows) allow us to better understand high dimensional data. Nonetheless, some real cases are only <em>small</em> data.</p>
+
+<p>From the practical point of view, you&#39;ll be able to replicate the analysis with your own data, profiling and exposing their relationships in fancy plots.</p>
+
+<p><br></p>
+
+<p>Let&#39;s starting loading all needed libraries.</p>
+
+<pre><code class="r">## Loading needed libraries
+library(funModeling) ## contains heart_disease data
+library(minerva) ## contains MIC statistic
+library(ggplot2)
+library(dplyr)
+library(reshape2) 
+library(gridExtra) ## allow us to plot two plots in a row
+options(scipen=999) # disable cientific notation
+</code></pre>
+
+<p><br></p>
+
+<h2>Linear correlation</h2>
+
+<p>Perhaps the most standard correlation measure for numeric variables is the <code>R statistic</code> (or Pearson coefficient) which goes from <code>1</code> <em>positive correlation</em> to <code>-1</code> <em>negative correlation</em>. A value around <code>0</code> implies no correlation.</p>
+
+<p>Consider the following example, which calculates R measure based on a target variable (for example to do feature engineering). Function <code>correlation_table</code> retrieves R  metric for all numeric variables skipping the categorical/nominal ones.</p>
+
+<pre><code class="r">correlation_table(data=heart_disease, str_target=&quot;has_heart_disease&quot;)
+</code></pre>
+
+<pre><code>##                 Variable has_heart_disease
+## 1      has_heart_disease              1.00
+## 2 heart_disease_severity              0.83
+## 3      num_vessels_flour              0.46
+## 4                oldpeak              0.42
+## 5                  slope              0.34
+## 6                    age              0.23
+## 7 resting_blood_pressure              0.15
+## 8      serum_cholestoral              0.08
+## 9         max_heart_rate             -0.42
+</code></pre>
+
+<p>Variable <code>heart_disease_severity</code> is the most important -numerical- variable, the higher its value the higher the chances of having a heart disease (positive correlation). Just the opposite to <code>max_heart_rate</code>, which has a negative correlation.</p>
+
+<p>Squaring this number returns the <code>R-squared</code> statistic (aka <code>R2</code>), which goes from <code>0</code> <em>no correlation</em> to <code>1</code> <em>high correlation</em>. </p>
+
+<p>R statistic is highly influenced by <strong>outliers</strong> and <strong>non-linear</strong> relationships.</p>
+
+<p><br></p>
+
+<h3>Correlation on Anscombe&#39;s Quartet</h3>
+
+<p>Take a look at the <strong>Anscombe&#39;s quartet</strong>, quoting <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="blank">Wikipedia</a>:</p>
+
+<blockquote>
+<p>They were constructed in 1973 by the statistician Francis Anscombe to demonstrate both the importance of graphing data before analyzing it and the effect of outliers on statistical properties. </p>
+</blockquote>
+
+<p>1973 and still valid, fantastic.</p>
+
+<p>These four relationships are different, but all of them have the same R2: <code>0.816</code>.</p>
+
+<p>Following example calculates the R2 and plot every pair.</p>
+
+<pre><code class="r">## Reading anscombe quartet data
+anscombe_data=read.delim(file=&quot;https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/anscombe_quartet.txt&quot;, header = T)
+
+## calculating the correlation (R squared, or R2) for every pair, every value is the same: 0.86.
+cor_1=cor(anscombe_data$x1, anscombe_data$y1)
+cor_2=cor(anscombe_data$x2, anscombe_data$y2)
+cor_3=cor(anscombe_data$x3, anscombe_data$y3)
+cor_4=cor(anscombe_data$x4, anscombe_data$y4)
+
+## defining the function
+plot_anscombe &lt;- function(x, y, value, type)
+{
+  # &#39;anscombe_data&#39; is a global variable, this is a bad programming practice :D
+  p=ggplot(anscombe_data, aes_string(x,y))  + geom_smooth(method=&#39;lm&#39;, fill=NA) + geom_point(aes(colour=factor(1), fill = factor(1)), shape=21, size = 2) + ylim(2, 13)+ xlim(4, 19) + theme_minimal() + theme(legend.position=&quot;none&quot;) +  annotate(&quot;text&quot;, x = 12, y =4.5, label = sprintf(&quot;%s: %s&quot;, type, round(value,2)))  
+
+  return(p)
+}
+
+## plotting in a 2x2 grid
+grid.arrange(plot_anscombe(&quot;x1&quot;, &quot;y1&quot;, cor_1, &quot;R2&quot;), plot_anscombe(&quot;x2&quot;, &quot;y2&quot;, cor_2, &quot;R2&quot;), plot_anscombe(&quot;x3&quot;, &quot;y3&quot;, cor_3, &quot;R2&quot;), plot_anscombe(&quot;x4&quot;, &quot;y4&quot;, cor_4, &quot;R2&quot;), ncol=2, nrow=2)
+</code></pre>
+
+<p><img src="figure/anscombe_data-1.png" title="plot of chunk anscombe_data" alt="plot of chunk anscombe_data" width="600px" /></p>
+
+<p>4-different plots, having the same <code>mean</code> for every <code>x</code> and <code>y</code> variable (9 and 7.501 respectively), and the same degree of correlation. You can check all the measures by typing <code>summary(anscombe_data)</code>. </p>
+
+<p>This is why is so important to plot relationships when analyzing correlations.</p>
+
+<p>We&#39;ll back on this data later. It can be improved! First, we&#39;ll introduce some concepts of information theory.</p>
+
+<p><br></p>
+
+<h2>Correlation based on Information Theory</h2>
+
+<p>This relationships can be measure better with <a href="https://en.wikipedia.org/wiki/Information_theory">Information Theory</a> conepts. One of the many algortihms to measure correlation based on this is: <strong>MINE</strong>, acronym for: Maximal Information-based nonparametric exploration.</p>
+
+<p>The implementation in R can be found in <a href="https://cran.r-project.org/web/packages/minerva/index.html">minerva</a> package. It&#39;s also available in other languages like Python.</p>
+
+<p><br></p>
+
+<h3>An example in R: A perfect relationship</h3>
+
+<p>Let&#39;s plot a non-linear relationship, directly based on a function (negative exponential), and print the MIC value.</p>
+
+<pre><code class="r">x=seq(0, 20, length.out=500)
+df_exp=data.frame(x=x, y=dexp(x, rate=0.65))
+ggplot(df_exp, aes(x=x, y=y)) + geom_line(color=&#39;steelblue&#39;) + theme_minimal()
+</code></pre>
+
+<p><img src="figure/mic_non_linear_relationship-1.png" title="plot of chunk mic_non_linear_relationship" alt="plot of chunk mic_non_linear_relationship" width="600px" /></p>
+
+<pre><code class="r"># position [1,2] contains the correlation of both variables, excluding the correlation measure of each variable against itself.
+
+# Calculating linear correlation
+res_cor_R2=cor(df_exp)[1,2]^2
+sprintf(&quot;R2: %s&quot;, round(res_cor_R2,2))
+</code></pre>
+
+<pre><code>## [1] &quot;R2: 0.39&quot;
+</code></pre>
+
+<pre><code class="r"># now computing the MIC metric
+res_mine=mine(df_exp)
+sprintf(&quot;MIC: %s&quot;, res_mine$MIC[1,2])
+</code></pre>
+
+<pre><code>## [1] &quot;MIC: 1&quot;
+</code></pre>
+
+<p><strong>MIC</strong> value goes from 0 to 1. Being 0 implies no correlation and 1 highest correlation. The interpretation is the same as the R-squared.</p>
+
+<p><br></p>
+
+<h3>Results analysis</h3>
+
+<p>The <code>MIC=1</code> indicates there is a perfect correlation between the two variables. If we were doing <strong>feature engineering</strong> this variable should be included.</p>
+
+<p>Further than a simple correlation, what the MIC says is: &ldquo;Hey these two variables show a functional relationship&rdquo;. </p>
+
+<p>In machine learning terms (and oversimplifying): &ldquo;variable <code>y</code> is dependant of variable <code>x</code> and a function -that we don&#39;t know which one- can be found model the relationship.&rdquo;</p>
+
+<p>This is tricky because that relationship was effectively created based on a function, an exponential one.</p>
+
+<p>But let&#39;s continue with other examples&hellip;</p>
+
+<p><br></p>
+
+<h2>Adding noise</h2>
+
+<p>Noise is an undesired signal adding to the original one. In machine learning noise helps the model to get confused. Concretely: two identical input cases -for example customers- have different outcomes -one buy and the other doesn&#39;t-.</p>
+
+<p>Now we are going to add some noise creating the <code>y_noise_1</code> variable.</p>
+
+<pre><code class="r">df_exp$y_noise_1=jitter(df_exp$y, factor = 1000, amount = NULL)
+ggplot(df_exp, aes(x=x, y=y_noise_1)) + geom_line(color=&#39;steelblue&#39;) + theme_minimal()
+</code></pre>
+
+<p><img src="figure/noisy_relationship-1.png" title="plot of chunk noisy_relationship" alt="plot of chunk noisy_relationship" width="600px" /></p>
+
+<p>Calculating the correlation and MIC again, printing in both cases the entire matrix, which shows the correlation/MIC metric of each input variable against all the others including themselves.</p>
+
+<pre><code class="r">## calculating R squared
+res_R2=cor(df_exp)^2
+res_R2
+</code></pre>
+
+<pre><code>##              x    y y_noise_1
+## x         1.00 0.39      0.38
+## y         0.39 1.00      0.99
+## y_noise_1 0.38 0.99      1.00
+</code></pre>
+
+<pre><code class="r">## Calculating mine
+res_mine_2=mine(df_exp)
+
+## Printing MIC 
+res_mine_2$MIC
+</code></pre>
+
+<pre><code>##              x    y y_noise_1
+## x         1.00 1.00      0.73
+## y         1.00 1.00      0.73
+## y_noise_1 0.73 0.73      1.00
+</code></pre>
+
+<p>Adding noise to the data decreases the MIC value from 1 to 0.7226365 (-27%), and this is great!</p>
+
+<p>R2 also decreased but just a little bit, from 0.3899148 to 0.3866319 (-0.8%). </p>
+
+<p><strong>Conclusion:</strong> MIC reflects a noisy relationship much better than R2, and it&#39;s helpful to find correlated associations. </p>
+
+<p><strong>About the last example:</strong> Generate data based on a function is only for teaching purposes. But the concept of noise in variables is quite common in <em>almost</em> <strong>every data set</strong>, no matter its source. You don&#39;t have to do anything to add noise to variables, it&#39;s already there.
+Machine learning models deal with this noise, by approaching to the <em>real</em> shape of data.</p>
+
+<p>It&#39;s quite useful to use the MIC measure to get a sense of the information present in a relationship between two variables.</p>
+
+<p><br></p>
+
+<h2>Measuring non-linearity (MIC-R2)</h2>
+
+<p><code>mine</code> function returns several metrics, we checked only <strong>MIC</strong>, but due to the nature of the algorithm (you can check the original paper at ref. [1]), it computes more interesting indicators. Check them all by inspecting <code>res_mine_2</code> object.</p>
+
+<p>One of them is <code>MICR2</code>, used as a measure of <strong>non-linearity</strong>. It is calculated by doing the: MIC - R2. Since R2 measures the linearity, a high <code>MICR2</code> would indicate a non-linear relationship.</p>
+
+<p>We can check it by calculating the MICR2 manually, following two matrix returns the same result:</p>
+
+<pre><code class="r"># MIC r2: non-linearity metric
+round(res_mine_2$MICR2, 3)
+# calculating MIC r2 manually
+round(res_mine_2$MIC-res_R2, 3)
+</code></pre>
+
+<p>Non-linear relationships are harder to build a model, even more using a linear algorithm like decision trees or linear regression. </p>
+
+<p>Imagine we need to explain the relationship to another person, we&#39;ll need &ldquo;more words&rdquo; to do it. It&#39;s easier to say: <em>&ldquo;A increases as B increases and the ratio is always 3x&rdquo;</em> (if A=1 then B=3, linear). </p>
+
+<p>In comparison to: <em>&ldquo;A increases as B increases, but A is almost 0 until B reaches the value 10, then A raises to 300; and when B reaches 15, A goes to 1000.&rdquo;</em></p>
+
+<pre><code class="r">## creating data example
+df_example=data.frame(x=df_exp$x, y_exp=df_exp$y, y_linear=3*df_exp$x+2)
+
+## getting mine metrics
+res_mine_3=mine(df_example)
+
+## generating labels to print the results
+results_linear=sprintf(&quot;MIC: %s \n MIC-R2 (non-linearity): %s&quot;, res_mine_3$MIC[1,3],round(res_mine_3$MICR2[1,3],2))
+
+results_exp=sprintf(&quot;MIC: %s \n MIC-R2 (non-linearity): %s&quot;, res_mine_3$MIC[1,2],round(res_mine_3$MICR2[1,2],4))
+
+## Plotting results 
+## Creating plot exponential variable
+p_exp=ggplot(df_example, aes(x=x, y=y_exp)) + geom_line(color=&#39;steelblue&#39;) + annotate(&quot;text&quot;, x = 11, y =0.4, label = results_exp) + theme_minimal()
+
+## Creating plot linear variable
+p_linear=ggplot(df_example, aes(x=x, y=y_linear)) + geom_line(color=&#39;steelblue&#39;) + annotate(&quot;text&quot;, x = 8, y = 55, label = results_linear) + theme_minimal()
+grid.arrange(p_exp,p_linear,ncol=2)
+</code></pre>
+
+<p><img src="figure/measuring_non_linearity-1.png" title="plot of chunk measuring_non_linearity" alt="plot of chunk measuring_non_linearity" width="600px" /></p>
+
+<p><br></p>
+
+<p>Both plots show a perfect correlation (or relationship), holding an MIC=1.
+Regarding non-linearity, MICR2 behaves as expected, in <code>y_exp</code>=0.6101, and in <code>y_linear</code>=0. </p>
+
+<p>This point is important since the <strong>MIC behaves like R2 does in linear relationships</strong>, plus it adapts quite well to <strong>non-linear</strong> relationships as we saw before, retrieving a particular score metric (<code>MICR2</code>) to profile the relationship. </p>
+
+<p><br></p>
+
+<h2>Measuring information on Anscombe Quartet</h2>
+
+<p>Remember the example we review at the beginning? Every pair of Anscombe Quartet returns a <strong>R2 of 0.86</strong>. But based on its plots it was clearly that not every pair exhibits neither a good correlation nor a similar distribution of <code>x</code> and <code>y</code>.</p>
+
+<p>But what happen if we measure the relationship with a metric based on Information Theory? Yes, MIC again.</p>
+
+<pre><code class="r">## calculating the MIC for every pair
+mic_1=mine(anscombe_data$x1, anscombe_data$y1, alpha=0.8)$MIC
+mic_2=mine(anscombe_data$x2, anscombe_data$y2, alpha=0.8)$MIC
+mic_3=mine(anscombe_data$x3, anscombe_data$y3, alpha=0.8)$MIC
+mic_4=mine(anscombe_data$x4, anscombe_data$y4, alpha=0.8)$MIC
+
+## plotting MIC in a 2x2 grid
+grid.arrange(plot_anscombe(&quot;x1&quot;, &quot;y1&quot;, mic_1, &quot;MIC&quot;), plot_anscombe(&quot;x2&quot;, &quot;y2&quot;, mic_2,&quot;MIC&quot;), plot_anscombe(&quot;x3&quot;, &quot;y3&quot;, mic_3,&quot;MIC&quot;), plot_anscombe(&quot;x4&quot;, &quot;y4&quot;, mic_4,&quot;MIC&quot;), ncol=2, nrow=2)
+</code></pre>
+
+<p><img src="figure/anscombe_set_information-1.png" title="plot of chunk anscombe_set_information" alt="plot of chunk anscombe_set_information" width="600px" /></p>
+
+<p>As you may notice we increased the <code>alpha</code> value to 0.8, this is a good practice -according to the documentation- when we analyzed small samples. The default value is 0.6 and its maximum 1.</p>
+
+<p>In this case, MIC value spotted the most spurious relationship in the pair <code>x4 - y4</code>. Probably due to a few cases per plot (11 rows) the MIC was the same for all the others pairs. Having more cases will show different MIC values.</p>
+
+<p>But when combining the MIC with <strong>MIC-R2</strong> (non-linearity measurement) new insights appears:</p>
+
+<pre><code class="r">## Calculating the MIC for every pair, note the &quot;MIC-R2&quot; object has the hyphen when the input are two vectors, unlike when it takes a data frame which is &quot;MICR2&quot;.
+mic_r2_1=mine(anscombe_data$x1, anscombe_data$y1, alpha = 0.8)$`MIC-R2`
+mic_r2_2=mine(anscombe_data$x2, anscombe_data$y2, alpha = 0.8)$`MIC-R2`
+mic_r2_3=mine(anscombe_data$x3, anscombe_data$y3, alpha = 0.8)$`MIC-R2`
+mic_r2_4=mine(anscombe_data$x4, anscombe_data$y4, alpha = 0.8)$`MIC-R2`
+
+## Ordering according mic_r2
+df_mic_r2=data.frame(pair=c(1,2,3,4), mic_r2=c(mic_r2_1,mic_r2_2,mic_r2_3,mic_r2_4)) %&gt;% arrange(-mic_r2)
+df_mic_r2
+</code></pre>
+
+<pre><code>##   pair mic_r2
+## 1    2   0.33
+## 2    3   0.33
+## 3    1   0.33
+## 4    4  -0.23
+</code></pre>
+
+<p>Ordering decreasingly by its <strong>non-linearity</strong> the results are consisent with the plots: 2 &gt; 3 &gt; 1 &gt; 4.
+Something strange for pair 4, a negative number. This is because MIC is lower than the R2. A relationship that worth to be plotted.</p>
+
+<p><br></p>
+
+<h2>Measuring non-monotonicity: MAS measure</h2>
+
+<p>MINE can also help us to profile time series regarding its non-monotonicity with <strong>MAS</strong> (maximum asymmetry score).</p>
+
+<p>A monotonic series is such it never changes its tendency, it always goes up or down. More on this on ref [3].</p>
+
+<p>Following example simulates two-time series, one not-monotonic <code>y_1</code> and the other monotonic <code>y_2</code>.</p>
+
+<pre><code class="r"># creating sample data (simulating time series)
+time_x=sort(runif(n=1000, min=0, max=1))
+y_1=4*(time_x-0.5)^2
+y_2=4*(time_x-0.5)^3
+
+# Calculating MAS for both series
+mas_y1=round(mine(time_x,y_1)$MAS,2)
+mas_y2=mine(time_x,y_2)$MAS
+
+## Putting all together
+df_mono=data.frame(time_x=time_x, y_1=y_1, y_2=y_2)
+
+## Plotting
+p_y_1=ggplot(df_mono, aes(x=time_x, y=y_1)) + geom_line(color=&#39;steelblue&#39;) + theme_minimal()  + annotate(&quot;text&quot;, x = 0.45, y =0.75, label = sprintf(&quot;MAS=%s (goes down \n and up =&gt; not-monotonic)&quot;, mas_y1))
+
+p_y_2=ggplot(df_mono, aes(x=time_x, y=y_2)) + geom_line(color=&#39;steelblue&#39;) + theme_minimal() + annotate(&quot;text&quot;, x = 0.43, y =0.35, label = sprintf(&quot;MAS=%s (goes up =&gt; monotonic)&quot;, mas_y2))
+
+grid.arrange(p_y_1,p_y_2,ncol=2)
+</code></pre>
+
+<p><img src="figure/monotonic_non-monotonic_function-1.png" title="plot of chunk monotonic_non-monotonic_function" alt="plot of chunk monotonic_non-monotonic_function" width="600px" /></p>
+
+<p><br></p>
+
+<h3>A more real example: Time Series</h3>
+
+<p>Consider the following case which contains three-time series: <code>y1</code>, <code>y2</code> and <code>y3</code>. They can be profiled concerning its non-monotonicity or overall growth trend.</p>
+
+<pre><code class="r">## reading data
+df_time_series=read.delim(file=&quot;https://raw.githubusercontent.com/pablo14/data-science-live-book/master/exploratory_data_analysis/df_time.txt&quot;)
+
+## converting to long format so they can be plotted
+df_time_series_long=melt(df_time_series, id=&quot;time&quot;)
+
+## Plotting
+plot_time_series=ggplot(data=df_time_series_long,
+       aes(x=time, y=value, colour=variable)) +
+       geom_line() + theme_minimal()  + scale_color_brewer(palette=&quot;Set2&quot;)
+
+plot_time_series
+</code></pre>
+
+<p><img src="figure/correlation_time_series-1.png" title="plot of chunk correlation_time_series" alt="plot of chunk correlation_time_series" width="600px" /></p>
+
+<pre><code class="r"># Calculating and printing MAS values for time series data
+mine_ts=mine(df_time_series)
+mine_ts$MAS 
+</code></pre>
+
+<pre><code>##      time    y1    y2    y3
+## time 0.00 0.120 0.105 0.191
+## y1   0.12 0.000 0.068 0.081
+## y2   0.11 0.068 0.000 0.057
+## y3   0.19 0.081 0.057 0.000
+</code></pre>
+
+<p><br></p>
+
+<p>We need to look at <code>time</code> column, so we&#39;ve got the MAS value of each series regarding the time.
+<code>y2</code> is the most not-monotonic series, and it can be confirmed by looking at it. It seems to be always up.</p>
+
+<p><strong>MAS summary:</strong></p>
+
+<ul>
+<li>MAS ~ 0 indicates monotonic function</li>
+<li>MAS ~ 1 indicates non-monotonic function (<em>always</em> up or down)</li>
+</ul>
+
+<p><br></p>
+
+<h2>Correlation between time series</h2>
+
+<p>MIC metric can also measure the <strong>correlation in time series</strong>, it is not a general purpose tool but can be helpful to compare different series quickly.</p>
+
+<p>This section is based on the same data we used in MAS example.</p>
+
+<pre><code class="r">## printing again the 3-time series
+plot_time_series
+</code></pre>
+
+<p><img src="figure/time_series-1.png" title="plot of chunk time_series" alt="plot of chunk time_series" width="600px" /></p>
+
+<pre><code class="r"># Printing MIC values
+mine_ts$MIC
+</code></pre>
+
+<pre><code>##      time   y1   y2   y3
+## time 1.00 0.38 0.69 0.34
+## y1   0.38 1.00 0.62 0.71
+## y2   0.69 0.62 1.00 0.52
+## y3   0.34 0.71 0.52 1.00
+</code></pre>
+
+<p><br></p>
+
+<p>Now we need to look at <code>y1</code> column. According to MIC measure, we can confirm the same that it&#39;s shown in last plot: </p>
+
+<p><code>y1</code> is more similar to <code>y3</code> (MIC=0.709) than what is <code>y2</code> (MIC=0.61). </p>
+
+<p><br></p>
+
+<h3>Going further: Dynamic Time Wrapping</h3>
+
+<p>MIC will not be helpful for more complex esenarios having time series which vary in speed, you would use <a href="https://en.wikipedia.org/wiki/Dynamic_time_warping" target="blank">dynamic time wrapping</a> technique (<strong>DTW</strong>).</p>
+
+<p>Let&#39;s use an image to catch up the concept visually:</p>
+
+<p><img src="dynamic_time_wrapping.png" alt="time series clustering with dynamic time wrapping" width="350px"></p>
+
+<p><em>Image source: Ref [4].</em></p>
+
+<p>The last image shows two different approaches to compare time series, and the <strong>euclidean</strong> is more similar to MIC measure. While DTW can track similarities occurring at different times.</p>
+
+<p>A nice implementation in <strong>R</strong>: <a href="http://dtw.r-forge.r-project.org/">dtw package</a>.</p>
+
+<p>Finding correlations between time series is another way of performing <strong>time series clustering</strong>.</p>
+
+<p><br></p>
+
+<h2>Correlation on categorical variables</h2>
+
+<p>MINE -and many other algorithms- only work with numerical data. We need to do a <strong>data preparation</strong> trick, converting every categorical variable into flag (or dummy variable).</p>
+
+<p>If the original categorical variable has 30 possible values, it will result in 30 new columns holding the value <code>0</code> or <code>1</code>, when <code>1</code> represents the presence of that category in the row.</p>
+
+<p>If we use package <code>caret</code> from R, this conversion only takes two lines of code:</p>
+
+<pre><code class="r">library(caret)
+
+## selecting just a few variables
+heart_disease_2=select(heart_disease, max_heart_rate, oldpeak, thal, chest_pain,exer_angina, has_heart_disease)
+
+## this conversion from categorical to a numeric is merely to have a cleaner plot
+heart_disease_2$has_heart_disease=ifelse(heart_disease_2$has_heart_disease==&quot;yes&quot;, 1, 0)
+
+## it converts all categorical variables (factor and character for R) into numerical variables
+## skipping the original so the data is ready to use
+dmy = dummyVars(&quot; ~ .&quot;, data = heart_disease_2)
+heart_disease_3 = data.frame(predict(dmy, newdata = heart_disease_2))
+
+# Important: If you recieve this message `Error: Missing values present in input variable &#39;x&#39;. Consider using use = &#39;pairwise.complete.obs&#39;.` is because data has missing values.
+## Please don&#39;t omit NA without an impact analysis first, in this case it is not important. 
+heart_disease_4=na.omit(heart_disease_3)
+
+## compute the mic!
+mine_res_hd=mine(heart_disease_4)
+</code></pre>
+
+<p>Printing a sample&hellip;</p>
+
+<pre><code class="r">mine_res_hd$MIC[1:5,1:5]
+</code></pre>
+
+<pre><code>##                max_heart_rate oldpeak thal.3 thal.6 thal.7
+## max_heart_rate           1.00    0.24  0.244  0.120  0.184
+## oldpeak                  0.24    1.00  0.175  0.111  0.157
+## thal.3                   0.24    0.18  0.992  0.073  0.710
+## thal.6                   0.12    0.11  0.073  0.327  0.044
+## thal.7                   0.18    0.16  0.710  0.044  0.964
+</code></pre>
+
+<p>Where column <code>thal.3</code> takes a value of 1 when <code>thal=3</code>.</p>
+
+<p><br></p>
+
+<h3>Printing some fancy plots!</h3>
+
+<p>We&#39;ll use <code>corrplot</code> package in R which can plot a <code>cor</code> object (classical correlation matrix), or any other matrix. We will plot <strong>MIC</strong> matrix in this case, but any other can be used as well, for example, <strong>MAS</strong> or another metric that returns an squared matrix of correlations.</p>
+
+<p>The two plots are based on the same data but display the correlation in different ways. </p>
+
+<pre><code class="r">library(corrplot) ## library wto plot that matrix
+library(RColorBrewer) # to use the color pallete brewer.pal
+
+# hack to visualize the maximum value of the scale excluding the diagonal (variable against itself)
+diag(mine_res_hd$MIC)=0
+
+## Correlation plot with circles. 
+corrplot(mine_res_hd$MIC, method=&quot;circle&quot;,col=brewer.pal(n=10, name=&quot;PuOr&quot;),
+         type=&quot;lower&quot;, # only display upper diagonal
+         tl.col=&quot;red&quot;, tl.cex = 0.9, tl.srt=90, #label color, size and rotation
+         diag=FALSE, # dont print diagonal (var against itself)
+         is.corr = F # accept a any matrix, mic in this case (not a correlation element),
+
+)
+</code></pre>
+
+<p><img src="figure/correlation_information_theory-1.png" title="plot of chunk correlation_information_theory" alt="plot of chunk correlation_information_theory" width="600px" /></p>
+
+<pre><code class="r">## Correlation plot with color and correlation MIC
+corrplot(mine_res_hd$MIC, method=&quot;color&quot;,
+         type=&quot;lower&quot;, number.cex=0.8,
+         addCoef.col = &quot;black&quot;, # Add coefficient of correlation
+         tl.col=&quot;red&quot;, tl.srt=90, tl.cex = 0.9,
+         diag=FALSE, is.corr = F 
+)
+</code></pre>
+
+<p><img src="figure/correlation_information_theory-2.png" title="plot of chunk correlation_information_theory" alt="plot of chunk correlation_information_theory" width="600px" /></p>
+
+<p>Just change the first parameter -<code>mine_res_hd$MIC</code>- to the matrix you want and reuse with your data. </p>
+
+<p><br></p>
+
+<h3>A comment about this kind of plots</h3>
+
+<p>They are useful only when the number of variables are not big. Or if you perform a variable selection first, keeping in mind that every variable should be numerical. </p>
+
+<p>If there is some categorical variable in the selection you can convert it into numerical first and inspect the relationship between the variables, thus sneak peak how certain values in categorical variables are more related to certain outcomes, like in this case.</p>
+
+<p><br></p>
+
+<h3>How about some insights from the plots?</h3>
+
+<p>Since the variable to predict is <code>has_heart_disease</code>, it appears something interesting, to have a heart disease is more correlated to <code>thal=3</code> than to value <code>thal=6</code>.</p>
+
+<p>Same analysis for variable <code>chest_pain</code>, a value of 4 is more dangerous than a value of 1.</p>
+
+<p>And we can check it with other plot:</p>
+
+<pre><code class="r">cross_plot(heart_disease, str_input = &quot;chest_pain&quot;, str_target = &quot;has_heart_disease&quot;, plot_type = &quot;percentual&quot;)
+</code></pre>
+
+<p><img src="figure/profiling_target_variable-1.png" title="plot of chunk profiling_target_variable" alt="plot of chunk profiling_target_variable" width="300px" height="200px" /></p>
+
+<p>The likelihood of having a heart disease is 72.9% if the patient has <code>chest_pain=4</code>. More than 2x more likely if she/(he) has <code>chest_pain=1</code> (72.9 vs 30.4%).</p>
+
+<p><br></p>
+
+<p><strong>Some thoughts&hellip;</strong></p>
+
+<p>The data is the same, but the approach to browse it is different. The same goes when we are creating a predictive model, the input data in the <em>N-dimensional</em> space can be approached through different models like support vector machine, a random forest, etc. </p>
+
+<p>Like a photographer shooting from different angles, or different cameras. The object is always the same, but the perspective gives different information.</p>
+
+<p>Combining raw tables plus different plots gives us a more real and complementary object perspective.</p>
+
+<p><br></p>
+
+<h2>Feature engineering based on information theory</h2>
+
+<p>There is a complete chapter treating <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank"><strong>Feature Engineering</strong></a>. So in this section, we cover a quick overview. </p>
+
+<p>Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).</p>
+
+<pre><code class="r">## Getting the index of the variable to predict: has_heart_disease
+target=&quot;has_heart_disease&quot;
+index_target=grep(target, colnames(heart_disease_4))
+
+## master takes the index column number to calculate all the correlations
+mic_predictive=mine(heart_disease_4, master = index_target)$MIC
+
+## creating the data frame containing the results, ordering descently by its correlation and excluding the correlation of target vs itself
+df_predictive=data.frame(variable=rownames(mic_predictive), mic=mic_predictive[,1], stringsAsFactors = F) %&gt;% arrange(-mic) %&gt;% filter(variable!=target)
+
+# creating a colorful plot showing importance variable  based on MIC measure
+ggplot(df_predictive, aes(x=reorder(variable, mic),y=mic, fill=variable)) + geom_bar(stat=&#39;identity&#39;) + coord_flip() + theme_bw() + xlab(&quot;&quot;) + ylab(&quot;Variable Importance (based on MIC)&quot;) + guides(fill=FALSE)
+</code></pre>
+
+<p><img src="figure/importance_variable_ranking-1.png" title="plot of chunk importance_variable_ranking" alt="plot of chunk importance_variable_ranking" width="600px" /></p>
+
+<p>Although it is recommended to run correlations among all variables in order to exclude correlated input features.</p>
+
+<p><br></p>
+
+<h3>Practice advice for using <code>mine</code></h3>
+
+<p>If it lasts too much time to finish, consider taking a sample.
+If the amount of data is too little, consider setting a higher number in <code>alpha</code> parameter, 0.6 is its default.
+Also, it can be run in parallel, just setting <code>n.cores=3</code> in case you have 4 cores. A general good practice when running parallel processes, the extra core will be used by the operating system.</p>
+
+<p><br></p>
+
+<h2>But just MINE covers this?</h2>
+
+<p>No. We used only MINE suite, but there are other algortihms related to <a href="http://www.scholarpedia.org/article/Mutual_information" target="blank">mutual information</a>. 
+In R some of the packages are: <a href="https://cran.r-project.org/web/packages/entropy/entropy.pdf" target="blank">entropy</a> and <a href="https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html" target="blank">infotheo</a>.</p>
+
+<p>In <strong>Python</strong> mutual information can be calculated through scikit-learn, <a href="stackoverflow.com/questions/20491028/optimal-way-to-compute-pairwise-mutual-information-using-numpy" target="blank">here an example</a>.</p>
+
+<p>The concept transcends the tool.</p>
+
+<p><br></p>
+
+<h3>Another correlation example (mutual information)</h3>
+
+<p>This time we&#39;ll use <code>infotheo</code> package, we need first to do a <strong>data preparation</strong> step, applying a <code>discretize</code> function (or binning) function present in the package. It converts every numerical variable into categorical based on equal frequency criteria. </p>
+
+<p>Next code will create the correlation matrix as we seen before, but based on the mutual information index. </p>
+
+<pre><code class="r">library(infotheo)
+## discretizing every variable
+heart_disease_4_disc=discretize(heart_disease_4) 
+
+## calculating &quot;correlation&quot; based on mutual information
+heart_info=mutinformation(heart_disease_4_disc, method= &quot;emp&quot;)
+
+# hack to visualize the maximum value of the scale excluding the diagonal (var against itself)
+diag(heart_info)=0
+
+## Correlation plot with color and correlation Mutual Information from Infotheo package. This line only retrieves the plot of the right. 
+corrplot(heart_info, method=&quot;color&quot;,type=&quot;lower&quot;, number.cex=0.6,addCoef.col = &quot;black&quot;, tl.col=&quot;red&quot;, tl.srt=90, tl.cex = 0.9, diag=FALSE, is.corr = F)
+</code></pre>
+
+<p><img src="mic_mutual_info.png" width="700" alt="Comparing MIC and mutual information index"></p>
+
+<p>Correlation score based on mutual information ranks relationships pretty similar to MIC, doesn’t it?</p>
+
+<p><br></p>
+
+<h2>Information Measures: A general perspective</h2>
+
+<p>Further than correlation, MIC or other information metric measure if there is a <em>functional relationship</em>. </p>
+
+<p>A high MIC value indicates that the relationship between the two variables can be explained by a function. Is
+our job to find that function or predictive model.</p>
+
+<p>This analysis is extended to n-variables, this book introduces another algorithm in the selecting best variables chapter. </p>
+
+<p>Some predictive models perform better than other, but if the relationship is absolutely noisy no matter how advance the algorithm is, it will end up in bad results. </p>
+
+<p><br></p>
+
+<p>More to come on <strong>Information Theory</strong>. By now you check these didactical lectures: </p>
+
+<ul>
+<li>7-min introductory video <a href="https://www.youtube.com/watch?v=2s3aJfRr9gE">https://www.youtube.com/watch?v=2s3aJfRr9gE</a> </li>
+<li><a href="http://alex.smola.org/teaching/cmu2013-10-701x/slides/R8-information_theory.pdf">http://alex.smola.org/teaching/cmu2013-10-701x/slides/R8-information_theory.pdf</a></li>
+<li><a href="http://www.scholarpedia.org/article/Mutual_information">http://www.scholarpedia.org/article/Mutual_information</a></li>
+</ul>
+
+<p><br></p>
+
+<h2>Conclussions</h2>
+
+<p>Anscombe&#39;s quartet taught us the good practice of getting the <em>raw statistic</em> together with a plot.</p>
+
+<p>We could see how <strong>noise</strong> can affect the relationship between two variables, and this phenomenon always appears in data. Noise in data confuses the predictive model. </p>
+
+<p>Noise is related to error, and it can be studied with measures based on information theory such as 
+<strong>mutual information</strong> and <strong>maximal information coefficient</strong>, which go one further step than typical R squared. </p>
+
+<p>These methods are applicable in <strong>feature engineering</strong> as a method which does not rely on a predictive model to rank most important variables. Also applicable to cluster time series.</p>
+
+<p>Next recommended chapter: <a href="http://livebook.datascienceheroes.com/selecting_best_variables/introduction.html" target="blank">Selecting best variables.</a></p>
+
+<p><br></p>
+
+<h3>References</h3>
+
+<ul>
+<li>[1] Original MINE paper: <a href="http://www.uvm.edu/~cdanfort/csc-reading-group/reshef-correlation-science-2011.pdf" target="blank">Detecting Novel Associations in Large Data Sets</a>.</li>
+<li>[2] Some uses and explanations of MINE measurments in clinical data <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3561932/" target="blank">Characterizing Non-Linear Dependencies in clinical data</a></li>
+<li>[3] Wikipedia <a href="https://en.wikipedia.org/wiki/Monotonic_function" target="blank">Monotonic function</a></li>
+<li>[4] Dynamic time wrapping <a href="https://izbicki.me/blog/converting-images-into-time-series-for-data-mining.html" target="blank">Converting images into time series for data mining</a></li>
+</ul>
+
+</body>
+
+</html>

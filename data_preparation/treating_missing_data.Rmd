@@ -1,11 +1,6 @@
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-knitr::opts_chunk$set(out.width="600px", dpi=200)
-``` 
+## Analysis, Handling, and Imputation of Missing Data {#missing_data}
 
-# Analysis, Handling, and Imputation of Missing Data
-
-## What is this about?
+### What is this about?
 
 The analysis of missing values is the estimation of emptiness itself. Missing values present an obstacle to creating predictive models, cluster analyses, reports, etc.
 
@@ -32,7 +27,7 @@ These will be exemplified using a practical approach in R. The code intends to b
 
 
 
-## When the empty value represents information
+### When the empty value represents information
 
 Empty values are also known as “NULL” in databases, `NA` in R, or just the “empty” string in spreadsheet programs. It can also be represented by some number like: `0`, `-1` or `−999`. 
 
@@ -84,7 +79,7 @@ Let's go to a more complex example.
 <br>
 
 
-## When the empty value is an empty value
+### When the empty value is an empty value
 
 Other times, to have an empty value is correct, it’s expressing the absence of something. We need to treat them to use the table. Many predictive models don't handle input tables with missing values.
 
@@ -100,7 +95,7 @@ The following recommendations are just that, recommendations. You can try differ
 
 ---
 
-## Excluding the entire row
+### Excluding the entire row
 
 If at least one column has an `NA` value, then exclude the row.
 
@@ -137,7 +132,7 @@ However, there are other scenarios in which almost all cases are empty values, t
 
 ---
 
-## Excluding the column
+### Excluding the column
 
 Similar to the last case, we exclude the column. If we apply the same reasoning and if the deletion is about a _few_ columns and the remaining ones provide a reliable final result, then it may be acceptable. 
 
@@ -160,7 +155,7 @@ heart_disease_clean_2=select(heart_disease, -one_of(vars_to_exclude))
 
 ---
 
-## Treating empty values in categorical variables
+### Treating empty values in categorical variables
 
 We cover different perspectives to convert as well as treat empty values in nominal variables.
 
@@ -180,7 +175,7 @@ stat_nav_data=df_status(web_navigation_data)
 
 The three variables have empty (`NA`) values. Almost half of the values in `source_page` are missing while the other two variables have 5% and 3% `NA`s.
 
-### Case A: Convert the empty value into a string
+#### Case A: Convert the empty value into a string
 
 In categorical or nominal variables, the quickest treatment is to convert the empty value into the string `unknown`. Therefore, the machine learning model will handle the "empty" values as another category. Think about it like a rule: "If variable_X = unknown, then the outcome = yes".
 
@@ -220,7 +215,7 @@ Note: To apply a function to certain columns is a very common task in any data p
 
 <br>
 
-### Case B: Assign the most frequent category
+#### Case B: Assign the most frequent category
 
 The intuition behind this method is _to add more of the same as to not affect the variable_. However,  sometimes it does. It will not have the same impact if the most common value appears 90% of the time than if it does 10%; that is, it depends on the distribution.
 
@@ -234,7 +229,7 @@ As you can see, the situation is not the same if we are building a predictive mo
 
 <br>
 
-### Case C: Exclude some columns and transform others
+#### Case C: Exclude some columns and transform others
 
 The easy case is if the column contains, let's say, 50% `NA` cases, making it highly likely not to be reliable. 
 
@@ -263,7 +258,7 @@ df_status(web_navigation_data_3)
 
 <br>  
 
-### Summing-up 
+#### Summing-up 
 
 What if the data contain 40% `NA` values? It depends on the objective of the analysis and the nature of the data. 
 
@@ -278,7 +273,7 @@ However, we need to minimize the bias we are introducing because the missing val
 
 ---
 
-## Is there any pattern in missing values?
+### Is there any pattern in missing values?
 
 First, load the example movie data and do a quick profile.
 
@@ -300,7 +295,7 @@ Let's take a look at the values present in the `p_na` column. There is a pattern
 
 ---
 
-## Treating missing values in numerical variables
+### Treating missing values in numerical variables
 
 We approached this point at the beginning of the chapter by converting all `NA` values to 0.
 
@@ -309,7 +304,7 @@ One solution is to replace the empty by the mean, median, or other criteria. How
 If we see that the variable seems to be correlated when it's not empty (same as categorical), the an alternative method is to create bins, also known as "buckets" or "segments", thereby converting it to categorical.
 
 
-### Method 1: Converting into categorical
+#### Method 1: Converting into categorical
 
 The function `equal_freq` splits the variable into the desired bins:
 
@@ -352,7 +347,7 @@ The equal frequency puts the outliers values in the first or last bin as appropr
 
 <br>
 
-### Method 2: Filling the NA with some value
+#### Method 2: Filling the NA with some value
 
 As with categorical variables, we can replace values by a number such as the mean or the median. 
 
@@ -385,7 +380,7 @@ As you can see, there is an inter-relationship between all concepts `r emo::ji("
 
 <br>
   
-### Picking up the right value to fill 
+#### Picking up the right value to fill 
 
 The last example replaced the `NA` with the mean, but how about other values? It depends on the distribution of the variable.
 
@@ -395,13 +390,13 @@ The variable we used (`TheatersOpenWeek`) seems normally distributed, which is t
 
 ---
 
-## Advanced imputation methods
+### Advanced imputation methods
 
 Now we are going to do a quick review of more sophisticated imputation methods in which we create a predictive model, with all that it implies.
 
 <br>
 
-### Method 1: Using random forest (missForest)
+#### Method 1: Using random forest (missForest)
 
 The <a href="https://cran.r-project.org/web/packages/missForest/missForest.pdf" target="target">`missForest` package</a> its functionality its based on running several random forests in order to complete each missing value in an iterative process, handling both categorical and numerical variables at the same time.
 
@@ -494,7 +489,7 @@ The original variable contains 31 `NA` values that were replaced using the mode 
 
 <br>
 
-### Method 2: Using the MICE approach
+#### Method 2: Using the MICE approach
 
 **Advice:** For the very first approach to missing value imputation, this method is really complex `r emo::ji("fearful")`. 
 
@@ -563,7 +558,7 @@ Original MICE paper: <a href="https://www.jstatsoft.org/article/view/v045i03" ta
 
 ---
 
-## Conclusions
+### Conclusions
 
 After covering everything, we could ask: what is the best strategy? Well, it depends on how much we need to intervene in order to handle missing values.
 

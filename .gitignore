@@ -1,6 +1,12 @@
-*.html
 .Rproj.user
 .Rhistory
-node_modules
-dslv.pdf
-dslb.pdf
+.RData
+_publish.R
+_book
+_bookdown_files
+rsconnect
+data-playbook.Rmd
+data-playbook_files
+tmp-*.tex
+figure/
+.Rapp.history

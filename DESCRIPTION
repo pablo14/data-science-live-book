@@ -1,0 +1,6 @@
+Package: data-science-live-book
+Title: Data Science Live Book
+Version: Ago 2017
+Imports: bookdown
+Remotes: rstudio/bookdown
+ 

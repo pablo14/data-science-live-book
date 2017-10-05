@@ -1,12 +1,6 @@
-```{r ,results="hide", echo=FALSE}
-library(knitr)
-knitr::opts_chunk$set(out.width="400px", dpi=150, fig.width = 4, fig.height = 3)
-knitr::opts_knit$set(base.dir = "data_preparation")
-``` 
+## Treatment of outliers
 
-# Treatment of outliers
-
-## What is this about?
+### What is this about?
 
 The concept of extreme values, much like other topics in machine learning, is not a concept exclusive to this area. What it is an outlier today may not be tomorrow. The boundaries between normal and abnormal behavior are fuzzy; on the other hand, to stand in the extremes is easy.
 
@@ -25,7 +19,7 @@ The concept of extreme values, much like other topics in machine learning, is no
 
 ---
 
-## The intuition behind outliers
+### The intuition behind outliers
 
 For example, consider the following distribution:
   
@@ -136,22 +130,22 @@ The definition of these boundaries is one of the most common tasks in machine le
 
 ---
 
-## The impact of outliers
+### The impact of outliers
 
-### Model building
+#### Model building
 
 Some models, such as random forest and gradient-boosting machines, tend to deal better with outliers; however, “noise” may affect the results anyway. The impact of outliers in these models is lower than others, such as linear regressions, logistic regressions, kmeans, and decision trees.
 
 One aspect that contributes to the decrease in impact is that both models create _many_ sub-models. If any of the models takes one outlier as information, then other sub-models probably won't; thus, the error is canceled. The balance yields in the plurality of voices.
 
 
-### Communicating results `r emo::ji("earth_africa")` `r emo::ji("mega")`
+#### Communicating results `r emo::ji("earth_africa")` `r emo::ji("mega")`
 
 If we need to report the variables used in the model, we'll end up removing outliers not to see a histogram with only one bar and/or show a biased mean. 
 
 It's better to show a nonbiased number than justifying that the model _will handle_ extreme values.
 
-### Types of outliers by data type
+#### Types of outliers by data type
 
 
 * **Numerical** `r emo::ji("straight_ruler")`: Like the one we saw before:
@@ -184,7 +178,7 @@ freq(data_country_sample$country)
 
 ---
 
-### Types of outliers by dimensionality
+#### Types of outliers by dimensionality
 
 So far, we have observed one-dimensional univariate outliers. We also can consider two or more variables at a time.
 
@@ -217,7 +211,7 @@ Oh `r emo::ji("scream")`! The combination of `Argentina` and `cat_B` is _really 
 
 <br>
 
-### Some thoughts...
+#### Some thoughts...
 
 The last examples show  the _potential_ of extreme values or outliers and are presented as considerations we must make with a new dataset.
 
@@ -229,7 +223,7 @@ In addition, the presence of this kind of outlier may not pose a problem.
 
 ---
 
-## How to deal with outliers in R
+### How to deal with outliers in R
 
 The `prep_outliers` function present in the funModeling package can help us in this task. It can handle from one to 'N' variables at a time (by specifying the `str_input` parameter).
 
@@ -241,11 +235,11 @@ Besides the explanation below, `prep_outliers` is a well-documented type: `help(
 
 <br>
 
-### Step 1: How to detect outliers `r emo::ji("mag_right")`
+#### Step 1: How to detect outliers `r emo::ji("mag_right")`
 
 The following methods are implemented in the `prep_outliers` function. They retrieve different results so the user can select the one that best fits her or his needs.
 
-#### Bottom and top values method
+##### Bottom and top values method
 
 This considers outliers based on the bottom and top X% values, based on the percentile. The values are commonly 0.5%, 1%, 1.5%, 3%, among others.
 
@@ -264,7 +258,7 @@ For more information about percentiles, check the chapter: <a href="http://liveb
 
 <br>
 
-#### Tukey's method
+##### Tukey's method
 
 This method flags outliers considering the quartiles values, Q1, Q2, and Q3, where Q1 is equivalent to the percentile 25th, Q2 equals to percentile 50th (also known as the median), and Q3 is the percentile 75th.
 
@@ -286,11 +280,11 @@ tukey_outlier(heart_disease$age)
 
 It returns a two-value vector; thus, we have the bottom and the top thresholds: all below nine and all above 100 will be considered as outliers.
 
-A subtle visual and step-by-step example can be found in Ref. [1]. 
+A subtle visual and step-by-step example can be found in [tukey_outliers]. 
 
 <br>
 
-#### Hampel's method
+##### Hampel's method
 
 The formula:
 * The bottom threshold is: `median_value − 3*mad_value`. All below are considered as outliers.
@@ -318,7 +312,7 @@ hampel_outlier(heart_disease$age, k_mad_value = 6)
 
 ---
   
-## Step 2: What to do with the outliers? `r emo::ji("hammer_and_wrench")`
+### Step 2: What to do with the outliers? `r emo::ji("hammer_and_wrench")`
 
 We've already detected which points are the outliers. Therefore, the question now is: _What to do with them?_ `r emo::ji("thinking")`
 
@@ -338,7 +332,7 @@ The `prep_outliers` function covers these two scenarios through the parameter `t
 * `type = "set_na"`, for scenario 1
 * `type = "stop"`, for scenario 2
 
-### Scenario 1: Prepare outliers for data profiling
+#### Scenario 1: Prepare outliers for data profiling
 
 **The initial analysis:**
 
@@ -359,7 +353,7 @@ _This last task of looking at some numbers and visualize the variable distributi
 
 <br>
 
-#### Using `prep_outliers` for data profiling
+##### Using `prep_outliers` for data profiling
 
 We need to set `type="set_na"`. This implies that every point flagged as an outlier will be converted into `NA`.
 
@@ -407,7 +401,7 @@ df_status(df_1, print_results = F) %>% select(variable, q_na, p_na)
 
 This last method is much more severe in spotting outliers, identifying 36% of values as outliers. This is probably because the variable is _quite_ skewed to the left.
 
-More info can be found at Ref. [2]. 
+More info can be found at [finding_outliers]. 
 
 <br>
 
@@ -425,7 +419,7 @@ Time to compare all the methods!
 
 <br> 
 
-#### Putting it all together
+##### Putting it all together
 
 We'll pick a few indicators to make the quantitative comparison.
 
@@ -450,7 +444,7 @@ plotar(df_1_m,  str_target= "variable", str_input = "value", plot_type = "boxplo
 When selecting the bottom/top X%, we will always have some values matching that condition, whereas with other methods this may not be the case.
 
 
-#### Conclusions for dealing with outliers in data profiling  
+##### Conclusions for dealing with outliers in data profiling  
 
 The idea is to modify the outliers as least as possible (for example, if we were interested only in describing the general behavior).
 
@@ -484,7 +478,7 @@ All the examples so far have been taking one variable at a time; however, `prep_
 
 <br>
   
-### Scenario 2: Prepare outliers for predictive modeling
+#### Scenario 2: Prepare outliers for predictive modeling
 
 The previous case results in spotted outliers being converted to `NA` values. This is a huge problem if we are building a machine learning model as many of them don't work with `NA` values. More about dealing with missing data at <a href="livebook.datascienceheroes.com/data_preparation/treating_missing_data.html" target="blank">Analysis, Handling, and Imputation of Missing Data</a>.
 
@@ -498,7 +492,7 @@ Some predictive models are more **noise tolerant** than others. We can help them
 
 <br>
 
-### Imputing outliers for predictive modeling
+#### Imputing outliers for predictive modeling
 
 First, we create a dataset with some outliers. Now the example has two variables.
 
@@ -583,7 +577,7 @@ df_2$bot_top_var2=prep_outliers(data=df_2$var2, type='stop', method = "bottom_to
 
 <br>
 
-#### Putting it all together
+##### Putting it all together
 
 ```{r}
 # excluding var1
@@ -610,7 +604,7 @@ _Important_: The two points above the value 100 ( only for `var1`) were excluded
 
 ---
 
-## Final thoughts
+### Final thoughts
 
 We've covered the outliers issue from both philosophical and technical perspectives, thereby inviting the reader to improve her/his critical thinking skills when defining the boundaries (thresholds). It is easy to stand in the extremes, but a tough task to find the balance. 
 
@@ -631,11 +625,6 @@ In some cases when the predictive model is **running on production**, it's recom
 **One nice test** for the reader to do is to pick up a dataset, treat the outliers, and then compare some performance metrics like Kappa, ROC, Accuracy, etc.; **did the data preparation improve any of them?** Or, in reporting, to see how much the mean changes. Even if we plot some variable, does the plot now tell us anything?. In this way, the reader will create new knowledge based on her/his experience `r emo::ji("wink")`.
 
 <br>
-
-## References
-
-* [1] http://datapigtechnologies.com/blog/index.php/highlighting-outliers-in-your-data-with-the-tukey-method/
-* [2] http://exploringdatablog.blogspot.com.ar/2013/02/finding-outliers-in-numerical-data.html
 
 
 
