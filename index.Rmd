@@ -117,7 +117,7 @@ In general terms, time and patience. Most of the concepts are independent from t
 The book uses the following libraries, (between parenthesis it's the package version):
 
 ```{r, echo=FALSE}
-used_packages=c("funModeling","dplyr", "Hmisc", "reshape2", "ggplot2", "caret", "minerva", "missForest", "gridExtra", "mice", "lock5Data", "corrplot", "RColorBrewer", "infotheo")
+used_packages=c("funModeling","dplyr", "Hmisc", "reshape2", "ggplot2", "caret", "minerva", "missForest", "gridExtra", "mice", "Lock5Data", "corrplot", "RColorBrewer", "infotheo")
 
 str_p=""
 for(i in 1:length(used_packages))
