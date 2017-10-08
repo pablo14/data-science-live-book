@@ -1,7 +1,7 @@
 --- 
 title: "Data Science Live Book"
 author: "Pablo Casas"
-date: "Ago 2017"
+date: "October 2017"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 classoption: oneside

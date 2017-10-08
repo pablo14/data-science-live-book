@@ -19,6 +19,8 @@ bookdown::gitbook:
         <li><a href="./">Data Science Live Book</a></li>
       scroll_highlight: yes
     edit: https://github.com/pablo14/data-science-live-book/master/%s
+  includes:
+    in_header: google_analytics.html
 
 
 
