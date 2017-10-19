@@ -161,16 +161,37 @@ Also, you can check the **Github** repositories for both, the book and `funModel
 
 Special thanks to my mentors: Miguel Spindiak and Marcelo Ferreyra.
 
-* Book technical reviewer: `r emo::ji("hammer_and_wrench")`: [Pablo Seibelt (aka The Sicarul)](https://twitter.com/sicarul)
+* Book technical reviewer: `r emo::ji("hammer_and_wrench")`: [Pablo Seibelt (aka The Sicarul)](https://www.linkedin.com/in/pabloseibelt)
 * Lovely art cover `r emo::ji("woman_artist")`: by [Bárbara Muñoz](https://twitter.com/barmercedes_)
 
-First published at: [livebook.datascienceheroes.com](http://livebook.datascienceheroes.com)
+First published at: [livebook.datascienceheroes.com](http://livebook.datascienceheroes.com).
 
-This book is under [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+Book licensed under [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
 ```{r echo=FALSE, fig.link='http://creativecommons.org/licenses/by-sa/4.0/'}
 knitr::include_graphics('introduction/cc.png')
 ```
+
+Copyright (c) 2017.
+
+ISBN: 978-987-42-5911-0
+
+```{r echo=FALSE, out.width='20%'}
+knitr::include_graphics('introduction/ISBN_number.jpg')
+```
+
+---
+
+This book is dedicated to _[The Nobodies](https://holywaters.wordpress.com/2011/12/08/los-nadiesthe-nobodies-by-eduardo-galeano)_, a short story written by Eduardo Galeano.
+
+
+---
+
+```{r, echo=FALSE}
+knitr::include_graphics("introduction/spacer_bar.png") 
+```
+
+---
 
 
 ```{r include=FALSE}

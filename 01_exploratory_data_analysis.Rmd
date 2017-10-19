@@ -17,7 +17,6 @@ Listening to the numbers :)
 knitr::include_graphics("exploratory_data_analysis/Galeano.jpg")
 ```
 
-
 > "The voice of the numbers" -- a metaphor by [Eduardo Galeano](https://en.wikipedia.org/wiki/Eduardo_Galeano). Writer and novelist.
 
 The data we explore could be like Egyptian hieroglyphs without a correct interpretation. Profiling is the very first step in a series of iterative stages in the pursuit of finding what the data want to tell us, if we are patient enough to listen. 
@@ -62,7 +61,7 @@ The quantity of zeros, NA, Inf, unique values as well as the data type may lead 
 First, we load the `funModeling` and `dplyr` libraries.
 
 ```{r, results="hide", message=FALSE}
-## Loading funModeling!
+# Loading funModeling!
 library(funModeling)
 library(dplyr)
 data(heart_disease)
@@ -495,6 +494,13 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 ## Correlation and Relationship {#correlation}
 
+```{r echo=FALSE, out.width="150px"}
+knitr::include_graphics("exploratory_data_analysis/fractal_manderbolt.png")
+```
+
+_Manderbolt fractal, where the chaos expresses its beauty; image source: Wikipedia._ 
+
+<br>
 
 ### What is this about?
 
@@ -508,6 +514,7 @@ Understanding these concepts in low dimension (two variables) and small data (a 
 
 From the practical point of view, you'll be able to replicate the analysis with your own data, profiling and exposing their relationships in fancy plots.
 
+
 <br>
 
 
@@ -515,12 +522,12 @@ Let's starting loading all needed libraries.
 
 ```{r lib, message=F, results="hide"}
 # Loading needed libraries
-library(funModeling) ## contains heart_disease data
-library(minerva) ## contains MIC statistic
+library(funModeling) # contains heart_disease data
+library(minerva) # contains MIC statistic
 library(ggplot2)
 library(dplyr)
 library(reshape2) 
-library(gridExtra) ## allow us to plot two plots in a row
+library(gridExtra) # allow us to plot two plots in a row
 options(scipen=999) # disable cientific notation
 ```
 <br>
@@ -937,7 +944,7 @@ We'll use `corrplot` package in R which can plot a `cor` object (classical corre
 The two plots are based on the same data but display the correlation in different ways. 
 
 ```{r correlation_information_theory}
-library(corrplot) ## library wto plot that matrix
+library(corrplot) # library wto plot that matrix
 library(RColorBrewer) # to use the color pallete brewer.pal
 
 # hack to visualize the maximum value of the scale excluding the 

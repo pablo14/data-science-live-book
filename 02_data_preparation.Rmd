@@ -19,6 +19,7 @@ One of the first things to do when we start a data project is to assign the corr
 knitr::include_graphics("data_preparation/fibonacci_spiral.jpg")
 ```
 
+_The Fibonacci series. A sequence of numbers present in nature and human bodies._
 
 <br>
 
@@ -960,6 +961,8 @@ The concept of extreme values, much like other topics in machine learning, is no
 ```{r outliers_intuition, echo=FALSE ,out.width="100%"}
 knitr::include_graphics("data_preparation/outlier_intuition.png")
 ```
+
+_Image created by: [Guillermo Mesyngier](https://dribbble.com/gmesyngier)_
 
 <br>
 
