@@ -62,7 +62,15 @@ The book's seed was the `funModeling` *R* library which started having a didacti
 
 This book, as well as the development of a data project, is not linear. The chapters are related among them. For example, the **missing values** chapter can lead to the **cardinality reduction in categorical variables**. Or you can read the **data type** chapter and then change the way you deal with missing values.
 
-You'll find references to other websites so you can expand your study, _this book is just another step in the learning journey_
+You'll find references to other websites so you can expand your study, _this book is just another step in the learning journey_.
+
+<br>
+
+---
+
+`r emo::ji("pushpin")` **Update!** The Data Science Live Book is [available for download](#download-book) `r emo::ji("blue_book")``r emo::ji("inbox_tray")`. 
+
+---
 
 <br>
 
@@ -73,6 +81,8 @@ If you already are in the Data Science field, probably you don't think so. You'l
 But if you are starting a data science career, you'll face a common problem in education: _To have answers to the questions that have not been made._  
 
 For sure you will get closer to the data science world. All the code is well commented so you don't even need to be a programmer. This is the challenge of this book, to try and be friendly when reading, using logic, common sense and intuition. 
+
+
 
 
 ### Programming language {-}

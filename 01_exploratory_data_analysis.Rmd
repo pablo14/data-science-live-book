@@ -54,6 +54,14 @@ Note: `describe` is in the `Hmisc` package while remaining functions are in `fun
 
 <br>
 
+---
+
+`r emo::ji("pushpin")` **Update!** This book is [available for download](#download-book) `r emo::ji("blue_book")``r emo::ji("inbox_tray")`. 
+
+---
+
+<br>
+
 ### Dataset health status
 
 The quantity of zeros, NA, Inf, unique values as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
