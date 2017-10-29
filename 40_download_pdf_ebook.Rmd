@@ -15,12 +15,13 @@ Secure purchase by **Gumroad** `r emo::ji("closed_lock_with_key")`:
 
 In case you want to buy it directly from the Gumroad site, follow this link: https://gumroad.com/l/tORBv
 
+---
 
-_Is there any difference between the on-line and the PDF/eBook version?_
+_Is there any difference between the on-line and the PDF, mobi or Kindle versions?_
 
-No, they are the same. The Data Science Live Book is and will always be fully accessible, actually it's open source  (`Attribution-NonCommercial-ShareAlike 4.0 International`). The portable versions will have priority for the newest changes.
+No, they are the same. The Data Science Live Book is and will always be fully accessible, actually it's open source  (`Attribution-NonCommercial-ShareAlike 4.0 International`).
 
-* _What happen if a new version is released? / Can I access newer versions?_
+_What happen if a new version is released? / Can I access newer versions?_
 
 Sure! After the purchase, from time to time you'll be notified via email about a newer version, (you can opt-out about this notification).
 
