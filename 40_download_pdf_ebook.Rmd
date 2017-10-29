@@ -13,7 +13,7 @@ Secure purchase by **Gumroad** `r emo::ji("closed_lock_with_key")`:
 
 ---
 
-In case you want to buy it directly from the Gumroad site, follow this link: https://gumroad.com/l/tORBv
+If the above form did not appear or you want to buy it directly from the Gumroad site, follow this link: https://gumroad.com/l/tORBv
 
 ---
 
