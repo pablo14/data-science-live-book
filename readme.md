@@ -2,7 +2,7 @@
 
 <img src="https://datascienceheroes.com/img/blog/book_cover_hidef.png" alt="Data Science Live Book">
 
-<img src="https://datascienceheroes.com/img/blog/book_cover_hidef.png" alt="Data Science Live Book" width="50%">
+
  
 <font size="+2">**`tl;dr`**</font>: Hi there! I invite you to <a href="https://livebook.datascienceheroes.com" target="blank">read the book online</a> and/or <a href="https://livebook.datascienceheroes.com/download-book.html" target="blank">download here</a>. Thanks and have a nice day :)
 
