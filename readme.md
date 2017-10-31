@@ -74,9 +74,8 @@ There is no difference between the portable and web versions :)
 
 After the purchase you'll will receive an email to download it in the three formats.
 
----
 
-> <font size="+2"><b><a href="https://gumroad.com/l/tORBv" target="blank">Download here!</a> </b></font> <
+<font size="+2"><b><a href="https://gumroad.com/l/tORBv" target="blank">Download here!</a> </b></font>
 
 <br>
 
