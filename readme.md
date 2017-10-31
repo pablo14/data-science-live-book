@@ -74,7 +74,9 @@ There is no difference between the portable and web versions :)
 
 After the purchase you'll will receive an email to download it in the three formats.
 
-?? <font size="+2"><b><a href="https://gumroad.com/l/tORBv" target="blank">Download here!</a> ??</b></font>
+---
+
+> <font size="+2"><b><a href="https://gumroad.com/l/tORBv" target="blank">Download here!</a> </b></font> <
 
 <br>
 
@@ -82,4 +84,4 @@ After the purchase you'll will receive an email to download it in the three form
 
 `Keep in touch:`  <a href="https://twitter.com/pabloc_ds" target="blank">@pabloc_ds</a>.
 
-~ Thanks for reading ??. 
+~ Thanks for reading !. 
