@@ -3,7 +3,7 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
 options(width=80)
 ```
 
-# Assesing Model Perfromance {#model-performance}
+# Assesing Model Performance {#model-performance}
 
 It covers **methodological aspects of the error** in predictive models, how to measure it through **cross-validation** data and its similitude with **bootstrapping** technique. And how these strategies are used internally by some predictive models such us _random forest_ or _gradient boosting machines_.
 
