@@ -890,7 +890,7 @@ Let's use an image to catch up the concept visually:
 
 
 ```{r Dynamic_Time_warping, echo=FALSE, out.width="300px"}
-knitr::include_graphics("exploratory_data_analysis/dynamic_time_wrapping.png")
+knitr::include_graphics("exploratory_data_analysis/dynamic_time_warping.png")
 ```
 
 
