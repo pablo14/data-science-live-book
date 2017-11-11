@@ -454,7 +454,7 @@ freq(data_country, "has_flu")
 
 The last table shows there are **70 different countries**, and ~9% of people who had flu -`has_flu="yes"`.
 
-But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present the a high percentahge of data share, for example 70, 80 or 90%, the Pareto principle.
+But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present in a high percentage of data share, for example 70, 80 or 90%, the Pareto principle.
 
 ```{r data_preparation_profiling_nominal_variable}
 # 'freq' function, from 'funModeling' package, retrieves the cumulative_percentage that will help to do the cut. 
@@ -690,7 +690,8 @@ ab_analysis=categ_analysis(d_abnormal, input = "country", target = "abnormal")
 # displaying only first 6 elements
 head(ab_analysis)
 
-# inspecting distributrion, just a few belongs to ' 'no' categoryreq(d_abnormal, "abnormal", plot = F)
+# inspecting distribution, just a few belongs to 'no' category
+freq(d_abnormal, "abnormal", plot = F)
 ```
 
 _How many abnormal values are there?_
@@ -748,10 +749,10 @@ Last table is ordered by `mean_target`, so we can quickly see groups maximizing 
 
 * `group_2` is the most common, it is present in 31.6% of cases and `mean_target` (likelihood) is 14.2%.
 * `group_8` has the highest likelihood (17.6%). Followed by `group_6` with chance of 15.6% of having a positive case (`has_flu="yes"`).
-* `group_4`, `group_4` and `group_9` looks the same. They can be one group since likelihood is 0 in all the cases.
+* `group_4`, `group_5` and `group_9` looks the same. They can be one group since likelihood is 0 in all the cases.
 * `group_7` and `group_3` have 1 and 2 countries with positive cases. We could consider these numbers as the same, grouping them into one group, which in the end will represent the countries with the lowest likelihood.
 
-All the groups seems to have a good repreesntation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
+All the groups seems to have a good representation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
 
 
 ```{r, message=F}
