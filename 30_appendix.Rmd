@@ -10,7 +10,7 @@ Complementary reading.
 
 ## The magic of percentiles {#appendix-percentiles}
 
-Percentile is such a crucial concept in data analysis that we are going to cover it extensively in this book. It considers each observation with respect to others. An isolated number may not be meaningful, but when it is compared with others the distribution concept appears.
+The percentile is such a crucial concept in data analysis that we are going to cover it extensively in this book. It considers each observation with respect to others. An isolated number may not be meaningful, but when it is compared with others the distribution concept appears.
 
 Percentiles are used in profiling as well as evaluating the performance of a predictive model.
 
@@ -23,15 +23,15 @@ knitr::include_graphics("exploratory_data_analysis/how_to_calculate_percentiles.
 
 <br>
 
-**The dataset, an advice before continue:**
+**The dataset, an advice before continuing:**
 
-This contains many indicators regarding world development. Regardless the profiling example, the idea is to provide a ready-to-use table for sociologists, researchers, etc. interested in analyzing this kind of data.
+This contains many indicators regarding world development. Regardless of the profiling example, the idea is to provide a ready-to-use table for sociologists, researchers, etc. interested in analyzing this kind of data.
 
 The original data source is: <a href="http://databank.worldbank.org/data/reports.aspx?source=2&Topic=11#" target="blank">http://databank.worldbank.org</a>. There you will find a data dictionary that explains all the variables.
 
-In this section we'll be using a table which is already prepared for analysis. The complete step-by-step data preparation is in [Profiling](#profiling) chapter.
+In this section we'll be using a table which is already prepared for analysis. The complete step-by-step data preparation is in the [Profiling](#profiling) chapter.
 
-Any indicator meaning can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means, then we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
+The meaning of any of the indicators can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means, then we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
 
 
 <br>
@@ -117,7 +117,7 @@ _The poverty ranges from 0.075% to 54.4% in 80% of the countries_. (80% because 
 
 If we consider the 80% as the majority of the population, then we could say: _"Normally (or in general terms), poverty goes from 0.07% to 54.4%"_. This is a semantical description.
 
-We looked at 80% of the population, which seems a good number to describe where most of the cases are. We also could have used the 90% range (percentile 95th - 0.5th). 
+We looked at 80% of the population, which seems like a good number to describe where most of the cases are. We also could have used the 90% range (percentile 95th - 0.5th). 
 
 #### Is percentile related to quartile?
 
@@ -127,11 +127,11 @@ We looked at 80% of the population, which seems a good number to describe where 
 Percentile vs. quantile vs. quartile
 
 ```
-0 quartile = 0 quantile = 0 percentile
-1 quartile = 0.25 quantile = 25 percentile
-2 quartile = .5 quantile = 50 percentile (median)
-3 quartile = .75 quantile = 75 percentile
-4 quartile = 1 quantile = 100 percentile
+quartile 0 = quantile 0 = percentile 0
+quartile 1 = quantile 0.25 = percentile 25
+quartile 2 = quantile 0.5 = percentile 50 (median)
+quartile 3 = quantile 0.75 = percentile 75
+quartile 4 = quantile 1 = percentile 100
 ```
 
 Credits: [@perc_quan_quar].
