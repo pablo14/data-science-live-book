@@ -362,10 +362,129 @@ describe(d_stunt_grp$stunt_child_ef)
 
 **All the bins changed!** `r emo::ji("scream")` Because these are new categories, the predictive model will fail to handle them because they are all new values.
 
-The solution is to save the cut points when we do data preparation. Then, when we run the model on production, we use the custom bin discretization and, thereby, force every new case in the proper category. This way, the predictive model will always _sees_ the same.
+The solution is to save the cut points when we do data preparation. Then, when we run the model on production, we use the custom bin discretization and, thereby, force every new case in the proper category. This way, the predictive model will always _sees_ the same. 
+
+The solution in next section.
+
+<br> 
+
+### Automatic data frame discretization
+
+The package `funModeling` (from version > 1.6.6), introduces two functions -`discretize_get_bins` & `discretize_df`- that work together, in order to help us in the discretization of a data frame, considering that such transformation should work well with new data.
+
+Firstly, we check current data types:
+
+```{r}
+df_status(heart_disease, print_results = F) %>% select(variable, type, unique, q_na) %>% arrange(type)
+```
+
+We've got factor, integer and numeric variables, a good mix! The transformation has two steps. First, it gets the cuts or threshold values from which each segment begins. The second step, is the usage of such threshold to get the variables as categoricals.
+
+
+Two variables will be discretized in the following example: `max_heart_rate` and `oldpeak`. Also, we'll introduce some `NA`s values into `oldpeak` to test how the function works with missing data.
+
+```{r}
+# Introducing some missing values in the first 30 rows of oldpeak variable
+heart_disease$oldpeak[1:30]=NA
+```
+
+Step 1) Getting the bins thresholds for each input variable:
+
+`discretize_get_bins` returns a data frame, that needs to be used in `discretize_df` function, which returns the final processed data frame.
+
+
+```{r}
+d_bins=discretize_get_bins(data=heart_disease, input=c("max_heart_rate", "oldpeak"), n_bins=5)
+
+# Checking `d_bins` object:
+d_bins
+
+```
+Parameters: 
+
+- `data`: the data frame containing the variables to be processed
+- `input`: vector of strings containing the variable names
+- `n_bins`: The number of bins/segments to have in the discretized data
+
+We can see each threshold point (or upper boundary), for each variable. _Please note `-Inf` is not an actual upper boundary, more info in the upcoming example._
+
+
+Step 2) Appling the thresholds for each variable:
+
+```{r}
+# Now it can be applied on the same data frame, or in a new one (for example in a predictive model that change data over time)
+heart_disease_discretized=discretize_df(data=heart_disease, data_bins=d_bins, stringsAsFactors=T)
+```
+
+Parameters:
+
+- `data`: data frame containing the numerical variables to be discretized.
+- `data_bins`: data frame returned by `discretize_get_bins`. If it is changed by the user, each upper boundary must be separated by pipe character (`|`) as shown in the example.
+- `stringsAsFactors`: `TRUE` by default, final variables will be factor (insted of character), useful when plotting.
+
+Final distribution results and their plots:
+
+```{r}
+describe(heart_disease_discretized %>% select(max_heart_rate,oldpeak))
+
+p5=ggplot(heart_disease_discretized, aes(max_heart_rate)) + geom_bar(fill="#0072B2") + theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+p6=ggplot(heart_disease_discretized, aes(oldpeak)) + geom_bar(fill="#CC79A7") + theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+gridExtra::grid.arrange(p5, p6, ncol=2)
+```
+  
+
+Sometimes when computing **equal frequency** it is **not** possible to get the same number of cases per bucket, as it is shown in `oldpeak` variable.
+
+#### NA handling
+
+Regarding the `NA`s values, the new `oldpeak` variable has 6 categories, the 5 categories defined in `n_bins=5`, plus the `NA.` value -_note the point at the end_- indicating the presence of missing values. 
+
+
+#### More info
+
+- `discretize_df` will never return an `NA` value without transforming it to the string `NA.`.
+- `n_bins` sets the number of bins for all the variables.
+- If `input` is missing, it will run for all numeric/integer variables whose number of unique values is greater than the number of bins (`n_bins`). 
+- Only the variables defined in `input` will be processed, remaining variables will **not be modified at all**. 
+- `discretize_get_bins` returns just a data frame, it can be changed by hand as needed, either in a text file or in the R session. 
 
 
 
+#### Discretization with new data 
+
+In our data the minimum value for `max_heart_rate` is 71. The data preparation must be robust with new data, if a new patient arrives whose `max_heart_rate` is 68, the current process will assign her/him to the lowest category. 
+
+In other functions, this preparation may return an `NA`, since it is out of the segment.
+
+As we pointed out before if new data comes over time, it's likely to get new min/max value/s This can break our process. To solve this `discretize_df` will always have as min/max the values `-Inf`/`Inf`, so any new value falling below/above the minimum/maximum will be added to the lowest or highest segment as applicable. 
+
+The data frame returned by `discretize_get_bins` must be saved in order to apply it to new data. If the discretization is not intendeed to run with new data, then there is no sense in having two functions, thus no need of saving the results of `discretize_get_bins`.
+
+
+#### Conclusions in discretize_df
+
+The usage of `discretize_get_bins` + `discretize_df` provides a quick data preparation to have a clean data frame, ready to be used. Having well-defined segments (
+
+This decision of _not fail_ when dealing with a new min/max in new data is just a decision. In some contexts, failure would be the desired behavior.
+
+**The human intervention**: The easiest way to discretize a data frame is to select the same number of bins per variable, however if tunning is needed, some variables may need different numbers, for example, a variable with less dispersion can work well with a low number of bins. 
+
+Common values for the number of segments could be 3, 5, 10, 20 (no more). But it's up to the data scientist this decision. 
+
+#### Bonus track: The trade-off
+
+- A high number of bins => More noise captured.
+- A low number of bins => Oversimplification, less variance.
+
+Do these terms sound similar to any other ones in machine learning? 
+
+The answer: **Yes!**. Just to mention one example, the trade-off between adding or subtracting variables from a predictive model. 
+
+- More variables: Overfitting alert, (too detailed predictive model)
+- Fewer variables: Underfitting danger (not enough information to capture general patterns) 
+
+_Just like Zen philosophy points out, how can we found the correct balance between the extremes?_
 
 <br>
 
