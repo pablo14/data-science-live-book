@@ -178,7 +178,7 @@ First published at: [livebook.datascienceheroes.com](http://livebook.datascience
 
 Book licensed under [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
-```{r echo=FALSE, fig.link='http://creativecommons.org/licenses/by-sa/4.0/'}
+```{r echo=FALSE, fig.link='https://creativecommons.org/licenses/by-nc-sa/4.0/'}
 knitr::include_graphics('introduction/cc.png')
 ```
 
