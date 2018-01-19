@@ -368,7 +368,7 @@ data(heart_disease)
 ```{r fig.width=12, fig.height=3}
 fit_glm=glm(has_heart_disease ~ age + oldpeak, data=heart_disease, family = binomial)
 heart_disease$score=predict(fit_glm, newdata=heart_disease, type='response')
-gain_lift(data=heart_disease,str_score='score',str_target='has_heart_disease')
+gain_lift(data=heart_disease,score='score',target='has_heart_disease')
 ```
 
 ### How to interpret it?

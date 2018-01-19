@@ -270,7 +270,7 @@ It appears `45` times and represents `29%` of total cases.
 
 <br>
 
-#### Equal frequency
+#### Equal frequency {#equal-frequency-binning}
 
 This technique groups the same number of observations using criteria based on percentiles. More information about percentiles at [Annex 1: The magic of percentiles](#appendix-percentiles) chapter.
 
@@ -368,9 +368,9 @@ The solution in next section.
 
 <br> 
 
-### Automatic data frame discretization
+### Automatic data frame discretization {#data-discretization}
 
-The package `funModeling` (from version > 1.6.6) introduces two functions— `discretize_get_bins` & `discretize_df` —that work together in order to help us in the discretization task.
+The package `funModeling` (from version > 1.6.6) introduces two functions— `discretize_get_bins` & `discretize_df` —that work together in order to help us in the discretization task.  
 
 ```{r, warning=FALSE, message=FALSE}
 # First we load the libraries
@@ -414,8 +414,15 @@ Parameters:
 - `input`: vector of strings containing the variable names.
 - `n_bins`: the number of bins/segments to have in the discretized data.
 
-We can see each threshold point (or upper boundary) for each variable. _Please note, `-Inf` is not an actual upper boundary: more info in the upcoming example._
+We can see each threshold point (or upper boundary) for each variable. 
 
+**Note**: Changes from version 1.6.6 to 1.6.7:
+
+* `discretize_get_bins` doesn't create the `-Inf` threshold since that value was always considered to be the minimum. 
+* The one value category now it is represented as a range, for example, what it was `"5"`, now it is `"[5, 6)"`.
+* Buckets formatting may have changed, if you were using this function in production, you would need to check the new values.
+
+Time to continue with next step!
 
 Step 2) Applying the thresholds for each variable:
 
@@ -693,7 +700,7 @@ freq(data_country, "has_flu")
 
 <br>
 
-### The case `r emo::ji("mag")`
+### The case `r emo::ji("mag")` {#analyze-binary-outcome-vs-categorical-variable}
 
 The predictive model will try to map certain values with certain outcomes, in our case the target variable is binary.
 
@@ -1331,7 +1338,7 @@ In addition, the presence of this kind of outlier may not pose a problem.
 
 ### How to deal with outliers in R {#how_to_deal_with_outliers_in_r}
 
-The `prep_outliers` function present in the funModeling package can help us in this task. It can handle from one to 'N' variables at a time (by specifying the `str_input` parameter).
+The `prep_outliers` function present in the funModeling package can help us in this task. It can handle from one to 'N' variables at a time (by specifying the `input` parameter).
 
 The core is as follows:
 
@@ -1364,7 +1371,7 @@ For more information about percentiles, check the chapter: [The magic of percent
 
 <br>
 
-##### Tukey's method
+##### Tukey's method {#detecting-outliers-using-tukey-method}
 
 This method flags outliers considering the quartiles values, Q1, Q2, and Q3, where Q1 is equivalent to the percentile 25th, Q2 equals to percentile 50th (also known as the median), and Q3 is the percentile 75th.
 
@@ -1395,7 +1402,7 @@ A subtle visual and step-by-step example can be found in [tukey_outliers].
 
 <br>
 
-##### Hampel's method
+##### Hampel's method {#detecting-outliers-using-hampel-method}
 
 The formula:
 * The bottom threshold is: `median_value − 3*mad_value`. All below are considered as outliers.
@@ -1548,7 +1555,7 @@ prof_num
 ```{r, comparing_outliers_methods, warning=FALSE, message=FALSE}
 # First we need to convert the dataset into wide format
 df_1_m=reshape2::melt(df_1) 
-plotar(df_1_m,  str_target= "variable", str_input = "value", plot_type = "boxplot")
+plotar(df_1_m,  target= "variable", input = "value", plot_type = "boxplot")
 ```
 
 <br>
@@ -1587,7 +1594,7 @@ Ergo: the `age` variable has not outliers.
 
 If we were to have used the bottom/top method, then the input percentages would have been detected as outliers.
 
-All the examples so far have been taking one variable at a time; however, `prep_outliers` can handle several at the same time using the parameter `str_input` as we will see in next section. All that we have seen up to here will be equivalent, except for what we do once we detect the outlier, i.e., the imputation method. 
+All the examples so far have been taking one variable at a time; however, `prep_outliers` can handle several at the same time using the parameter `input` as we will see in next section. All that we have seen up to here will be equivalent, except for what we do once we detect the outlier, i.e., the imputation method. 
 
 <br>
   
@@ -1625,7 +1632,7 @@ df_2=rbind(df_2, 135, rep(400, 30), 245, 300, 303, 200)
 Dealing with outliers in both variables (`var1` and `var2`) using Tukey's method:
 
 ```{r outliers_treatment_3,  fig.height=3, fig.width=4}
-df_2_tukey=prep_outliers(data = df_2, str_input = c("var1", "var2"), type='stop', method = "tukey")
+df_2_tukey=prep_outliers(data = df_2, input = c("var1", "var2"), type='stop', method = "tukey")
 ```
 
 Checking some metrics before and after the imputation:
@@ -1713,7 +1720,7 @@ All three methods show very similar results with these data.
 ```{r, outliers_method_comparison, warning=FALSE, message=FALSE}
 # First we need to convert the dataset into wide format
 df_2_m=reshape2::melt(df_2_b) %>% filter(value<100) 
-plotar(df_2_m,  str_target= "variable", str_input = "value", plot_type = "boxplot")
+plotar(df_2_m,  target= "variable", input = "value", plot_type = "boxplot")
 ```
 
 _Important_: The two points above the value 100 ( only for `var1`) were excluded, otherwise it was impossible to appreciate the difference between the methods.
@@ -2343,7 +2350,7 @@ Regardless the method, it's quite important to analyze the impact of each decisi
 
 
 
-## Considerations involving time
+## Considerations involving time {#considerations-involving-time}
 
 
 ### What is this about?

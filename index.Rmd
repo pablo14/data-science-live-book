@@ -42,13 +42,13 @@ That's it.
 
 But, data has its dirtiness in practice. We need to sculp it, just like an artist does, to expose its information in order to find answers (and new questions).
 
-There are many challenges to solve, some data sets requiere more _sculpting_ than others. Just to give an example, random forest does not accept empty values, so what to do then? Do we remove the rows in conflict? Or do we transfom the empty values into other values? **What is the implication**, in any case, to _my_ data?
+There are many challenges to solve, some data sets requiere more _sculpting_ than others. Just to give an example, random forest does not accept empty values, so what to do then? Do we remove the rows in conflict? Or do we transform the empty values into other values? **What is the implication**, in any case, to _my_ data?
 
 Despite the empty values issue, we have to face other situations such as the extreme values (outliers) that tend to bias not only the predictive model itself, but the interpretation of the final results. It's common to "try and guess" _how_ the predictive model considers each variable (ranking best variables), and what the values that increase (or decrease) the likelihood of some event to happening (profiling variables) are.
 
 Deciding the **data type** of the variables may not be trivial. A categorical variable _could be_ numerical and viceversa, depending on the context, the data, and the algorithm itself (some of which only handle one data type). The conversion also has its own implications in _how the model sees the variables_.
 
-It is a book about data preparation, data anaylsis and machine learning. Generally in literature, data preparation is not as popular as the creation of machine learning models.
+It is a book about data preparation, data analysis and machine learning. Generally in literature, data preparation is not as popular as the creation of machine learning models.
 
 <br>
 
@@ -178,8 +178,8 @@ First published at: [livebook.datascienceheroes.com](http://livebook.datascience
 
 Book licensed under [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
-```{r echo=FALSE, fig.link='http://creativecommons.org/licenses/by-sa/4.0/'}
-knitr::include_graphics('introduction/cc.png')
+```{r echo=FALSE, fig.link='https://creativecommons.org/licenses/by-nc-sa/4.0'}
+knitr::include_graphics('introduction/by-nc-sa.png')
 ```
 
 Copyright (c) 2017.

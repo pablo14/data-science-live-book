@@ -62,7 +62,7 @@ Note: `describe` is in the `Hmisc` package while remaining functions are in `fun
 
 <br>
 
-### Dataset health status
+### Dataset health status {#dataset-health-status}
 
 The quantity of zeros, NA, Inf, unique values as well as the data type may lead to a good or bad model. Here's an approach to cover the very first step in data modeling. 
 
@@ -172,7 +172,7 @@ colnames(heart_disease)
 
 ---
 
-### Profiling categorical variables
+### Profiling categorical variables {#profiling-categorical-variables}
 
 _Make sure you have the latest 'funModeling' version (>= 1.6)._
 
@@ -181,10 +181,10 @@ Frequency or distribution analysis is made simple by the `freq` function. This r
 If you want the distribution for two variables: 
 
 ```{r profiling_categorical_variable,fig.height=3, fig.width=5}
-freq(data=heart_disease, str_input = c('thal','chest_pain'))
+freq(data=heart_disease, input = c('thal','chest_pain'))
 ```
 
-As well as in the remaining `funModeling` functions, if `str_input` is missing, then it will run for all factor or character variables present in a given data frame:
+As well as in the remaining `funModeling` functions, if `input` is missing, then it will run for all factor or character variables present in a given data frame:
 
 ```{r profiling_categorical_variable_4, eval=F}
 freq(data=heart_disease)
@@ -351,7 +351,7 @@ head(data_world_wide, 3)
 
 <br>
 
-#### Part 2: Doing the numerical profiling in R
+#### Part 2: Doing the numerical profiling in R {#numerical-profiling-in-r}
 
 We will see the following functions:
 * `describe` from `Hmisc`
@@ -391,24 +391,20 @@ The next function is `profiling_num` which takes a data frame and retrieves a _b
 knitr::include_graphics("exploratory_data_analysis/matrix_movie.png")
 ```
 
+_Picture from "The Matrix" movie (1999)_
+
 
 The idea of the following table is to give to the user a **full set of metrics,**, for then, she or he can decide which ones to pick for the study.
 
 Note: Every metric has a lot of statistical theory behind it. Here we'll be covering just a tiny and **oversimplified** approach to introduce the concepts. 
 
 
-```{r, eval=FALSE}
+```{r}
 library(funModeling)
 
 # Full numerical profiling in one function automatically excludes non-numerical variables
 profiling_num(data_world_wide)
 ```
-
-
-```{r Profiling_numerical_data_in_R, out.width="400px", echo=F}
-knitr::include_graphics("exploratory_data_analysis/profiling_numerical_data.png")
-```
-
 
 Each indicator has _its raison d'être_:
 
@@ -461,7 +457,7 @@ Please note that `profiling_num` returns a table, so we can quickly filter cases
 
 <br> 
 
-##### Profiling numerical variables by plotting
+##### Profiling numerical variables by plotting {#plotting-numerical-variable}
 
 Another function in `funModeling` is `plot_num` which takes a dataset and plots the distribution of every numerical variable while automatically excluding the non-numerical ones:
 
@@ -536,18 +532,18 @@ library(ggplot2)
 library(dplyr)
 library(reshape2) 
 library(gridExtra) # allow us to plot two plots in a row
-options(scipen=999) # disable cientific notation
+options(scipen=999) # disable scientific notation
 ```
 <br>
 
-### Linear correlation
+### Linear correlation {#linear-correlation}
 
 Perhaps the most standard correlation measure for numeric variables is the `R statistic` (or Pearson coefficient) which goes from `1` _positive correlation_ to `-1` _negative correlation_. A value around `0` implies no correlation.
 
 Consider the following example, which calculates R measure based on a target variable (for example to do feature engineering). Function `correlation_table` retrieves R  metric for all numeric variables skipping the categorical/nominal ones.
 
 ```{r}
-correlation_table(data=heart_disease, str_target="has_heart_disease")
+correlation_table(data=heart_disease, target="has_heart_disease")
 ```
 Variable `heart_disease_severity` is the most important -numerical- variable, the higher its value the higher the chances of having a heart disease (positive correlation). Just the opposite to `max_heart_rate`, which has a negative correlation.
 
@@ -604,7 +600,7 @@ We'll back on this data later. It can be improved! First, we'll introduce some c
 
 ### Correlation based on Information Theory
 
-This relationships can be measure better with [Information Theory](https://en.wikipedia.org/wiki/Information_theory) conepts. One of the many algortihms to measure correlation based on this is: **MINE**, acronym for: Maximal Information-based nonparametric exploration.
+This relationships can be measure better with [Information Theory](https://en.wikipedia.org/wiki/Information_theory) concepts. One of the many algorithms to measure correlation based on this is: **MINE**, acronym for: Maximal Information-based nonparametric exploration.
 
 The implementation in R can be found in [minerva](https://cran.r-project.org/web/packages/minerva/index.html) package. It's also available in other languages like Python.
 
@@ -1006,7 +1002,7 @@ Same analysis for variable `chest_pain`, a value of 4 is more dangerous than a v
 And we can check it with other plot:
 
 ```{r profiling_target_variable, fig.height=2, fig.width=3}
-cross_plot(heart_disease, str_input = "chest_pain", str_target = "has_heart_disease", plot_type = "percentual")
+cross_plot(heart_disease, input = "chest_pain", target = "has_heart_disease", plot_type = "percentual")
 ```
 
 The likelihood of having a heart disease is 72.9% if the patient has `chest_pain=4`. More than 2x more likely if she/(he) has `chest_pain=1` (72.9 vs 30.4%).
@@ -1027,8 +1023,8 @@ Combining raw tables plus different plots gives us a more real and complementary
 
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
-
 ```{r importance_variable_ranking, fig.width=6, fig.height=4.5, tidy.opts=list(width.cutoff=40)}
+
 # Getting the index of the variable to predict: has_heart_disease
 target="has_heart_disease"
 index_target=grep(target, colnames(heart_disease_4))
@@ -1061,6 +1057,8 @@ Also, it can be run in parallel, just setting `n.cores=3` in case you have 4 cor
 
 No. We used only MINE suite, but there are other algortihms related to [mutual information](http://www.scholarpedia.org/article/Mutual_information). 
 In R some of the packages are: [entropy](https://cran.r-project.org/web/packages/entropy/entropy.pdf) and [infotheo](https://artax.karlin.mff.cuni.cz/r-help/library/infotheo/html/mutinformation.html).
+
+Package `funModeling` (from version 1.6.6) introduces the function `var_rank_info` which calculates several information theory metrics, as it was seen in section [Rank best features using information theory](#select_features_var_rank_info).
 
 In **Python** mutual information can be calculated through scikit-learn, [here an example](tackoverflow.com/questions/20491028/optimal-way-to-compute-pairwise-mutual-information-using-numpy).
 
