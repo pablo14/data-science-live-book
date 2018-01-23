@@ -1057,7 +1057,7 @@ In R some of the packages are: [entropy](https://cran.r-project.org/web/packages
 
 Package `funModeling` (from version 1.6.6) introduces the function `var_rank_info` which calculates several information theory metrics, as it was seen in section [Rank best features using information theory](#select_features_var_rank_info).
 
-In **Python** mutual information can be calculated through scikit-learn, [here an example](tackoverflow.com/questions/20491028/optimal-way-to-compute-pairwise-mutual-information-using-numpy).
+In **Python** mutual information can be calculated through scikit-learn, [here an example](stackoverflow.com/questions/20491028/optimal-way-to-compute-pairwise-mutual-information-using-numpy).
 
 The concept transcends the tool.
 

@@ -354,7 +354,7 @@ Notes:
 
 <br>
 
-### Correlation
+### Correlations 
 
 #### `correlation_table`: Calculates R statistic
 
