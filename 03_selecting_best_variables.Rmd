@@ -1,6 +1,9 @@
 ```{r include = FALSE}
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
-options(width=80)
+if(!knitr:::is_html_output())
+{
+  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
+  options(width=80)
+}
 ```
 
 # Selecting Best Variables {#selecting_best_variables}
@@ -94,6 +97,7 @@ fit_gbm = train(x=select(heart_disease, -has_heart_disease, -heart_disease_sever
              verbose = FALSE,
              metric = "ROC")
 ```
+
 
 Now we can proceed with the comparison.
 
@@ -267,6 +271,10 @@ results=sprintf("ROC model based on 'max_heart_rate': %s.;
 cat(c(results, avg_improvement_text), sep="\n\n")
 ```
 
+```{r, message=FALSE, echo=FALSE}
+detach("package:caret")
+```
+
 <br>
 
 #### Tiny example (based on Information Theory)
@@ -308,7 +316,7 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 <br>
 
 
-#### #### Rank best features using information theory {#select_features_var_rank_info}
+#### Rank best features using information theory {#select_features_var_rank_info}
 
 As introduced at the beginning of the chapter, we can get variable importance without using a predictive model using information theory.
 

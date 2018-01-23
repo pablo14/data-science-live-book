@@ -1,7 +1,7 @@
 --- 
 title: "Data Science Live Book"
 author: "Pablo Casas"
-date: "October 2017"
+date: "`r format(Sys.time(), '%B %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 classoption: oneside
@@ -63,14 +63,6 @@ The book's seed was the `funModeling` *R* library which started having a didacti
 This book, as well as the development of a data project, is not linear. The chapters are related among them. For example, the **missing values** chapter can lead to the **cardinality reduction in categorical variables**. Or you can read the **data type** chapter and then change the way you deal with missing values.
 
 You'll find references to other websites so you can expand your study, _this book is just another step in the learning journey_.
-
-<br>
-
----
-
-`r emo::ji("pushpin")` **Update!** The Data Science Live Book is [available for download](#download-book) `r emo::ji("blue_book")``r emo::ji("inbox_tray")`. 
-
----
 
 <br>
 

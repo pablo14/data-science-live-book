@@ -1,2 +1,7 @@
 book_filename: "data-science-live-book"
 delete_merged_file: true
+new_session: yes
+rmd_files:
+  #html: ["index.Rmd", "30_appendix.Rmd"]
+  html: ["index.Rmd", "01_exploratory_data_analysis.Rmd", "02_data_preparation.Rmd", "03_selecting_best_variables.Rmd", "04_assesing_model_performance.Rmd", "30_appendix.Rmd", "40_download_pdf_ebook.Rmd", "99_references.Rmd"]
+  latex: ["index.Rmd", "01_exploratory_data_analysis.Rmd", "02_data_preparation.Rmd", "03_selecting_best_variables.Rmd", "04_assesing_model_performance.Rmd", "30_appendix.Rmd", "99_references.Rmd"]

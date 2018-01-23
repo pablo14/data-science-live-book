@@ -7,17 +7,18 @@ create_site <- function(is_pdf=F)
   {
     rmarkdown::render_site(output_format = 'bookdown::gitbook', encoding = 'UTF-8')
   } else {
+    #rmarkdown::render_site(output_format = bookdown::pdf_book(template='template.tex', latex_engine = "pdflatex",
+     #                                                         split_bib = T,toc_unnumbered=F))
     rmarkdown::render_site(output_format = bookdown::pdf_book(template='template.tex', latex_engine = "pdflatex",
-                                                              split_bib = T,toc_unnumbered=F))
+                                                              toc_unnumbered=F))
   }
 }
 
 
-create_site(F)
-#create_site(F)
+create_site(is_pdf = F)
+
+create_site(is_pdf = T)
 
 
-
-
-rmarkdown::render_site(output_format =  bookdown::epub_book(toc=T,toc_depth = 2), encoding = 'UTF-8')
-
+#rmarkdown::render_site(output_format =  bookdown::epub_book(toc=T,toc_depth = 2), encoding = 'UTF-8')
+#rmarkdown::render_site(output_format = bookdown::pdf_book(template='template.tex', latex_engine = "pdflatex"))

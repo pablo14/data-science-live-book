@@ -362,13 +362,17 @@ Make sure we have the latest `funModeling` version (>= 1.3).
 ```{r lib_loading, results="hide", message=FALSE}
 ## Loading funModeling
 library(funModeling)
-data(heart_disease)
 ```
 
-```{r fig.width=12, fig.height=3}
+```{r model_performance_gain_curve, fig.width=12, fig.height=3}
+# Create a GLM model
 fit_glm=glm(has_heart_disease ~ age + oldpeak, data=heart_disease, family = binomial)
+
+# Get the scores/probabilities for each row
 heart_disease$score=predict(fit_glm, newdata=heart_disease, type='response')
-gain_lift(data=heart_disease,score='score',target='has_heart_disease')
+
+# Plot the gain and lift curve
+gain_lift(data=heart_disease, score='score', target='has_heart_disease')
 ```
 
 ### How to interpret it?

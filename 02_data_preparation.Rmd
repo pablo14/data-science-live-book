@@ -97,6 +97,11 @@ heart_disease_2 = data.frame(predict(dmy, newdata = heart_disease))
 colnames(heart_disease_2)
 ```
 
+```{r, message=FALSE, echo=FALSE}
+detach("package:caret")
+#detach("package:plyr")
+```
+
 Original data `heart_disease` has been converted into `heart_disease_2` with no categorical variables, only numerical and dummy. Note that every new variable has a _dot_ followed by the _value_.
 
 If we check the before and after for the 7th patient (row) in variable `chest_pain` which can take the values `1`, `2`, `3` or `4`, then
@@ -392,8 +397,11 @@ Two variables will be discretized in the following example: `max_heart_rate` and
 
 
 ```{r}
+# creating a copy to keep original data clean
+heart_disease_2=heart_disease
+
 # Introducing some missing values in the first 30 rows of the oldpeak variable
-heart_disease$oldpeak[1:30]=NA
+heart_disease_2$oldpeak[1:30]=NA
 ```
 
 Step 1) Getting the bin thresholds for each input variable:
@@ -402,7 +410,7 @@ Step 1) Getting the bin thresholds for each input variable:
 
 
 ```{r}
-d_bins=discretize_get_bins(data=heart_disease, input=c("max_heart_rate", "oldpeak"), n_bins=5)
+d_bins=discretize_get_bins(data=heart_disease_2, input=c("max_heart_rate", "oldpeak"), n_bins=5)
 
 # Checking `d_bins` object:
 d_bins
@@ -428,7 +436,7 @@ Step 2) Applying the thresholds for each variable:
 
 ```{r}
 # Now it can be applied on the same data frame or in a new one (for example, in a predictive model that changes data over time)
-heart_disease_discretized=discretize_df(data=heart_disease, data_bins=d_bins, stringsAsFactors=T)
+heart_disease_discretized=discretize_df(data=heart_disease_2, data_bins=d_bins, stringsAsFactors=T)
 ```
 
 Parameters:
@@ -442,7 +450,7 @@ Parameters:
 Before and after:
 
 ```{r, echo=FALSE, eval=FALSE}
-df_compare=data.frame(max_heart_rate_before=heart_disease$max_heart_rate[29:34], max_heart_rate_after=heart_disease_discretized$max_heart_rate[29:34], oldpeak_before=heart_disease$oldpeak[29:34], oldpeak_after=heart_disease_discretized$oldpeak[29:34])
+df_compare=data.frame(max_heart_rate_before=heart_disease_2$max_heart_rate[29:34], max_heart_rate_after=heart_disease_discretized$max_heart_rate[29:34], oldpeak_before=heart_disease_2$oldpeak[29:34], oldpeak_after=heart_disease_discretized$oldpeak[29:34])
 
 df_compare
 ```
@@ -995,6 +1003,11 @@ fit_gbm_2 <- train(has_flu ~ country_rec,
 
 # Getting new best ROC value
 new_roc=round(max(fit_gbm_2$results$ROC),2)
+```
+
+```{r, message=FALSE, echo=FALSE}
+detach("package:caret")
+#detach("package:plyr")
 ```
 
 New ROC curve is (`new_roc`): `r new_roc`.

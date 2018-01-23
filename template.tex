@@ -13,7 +13,7 @@ $endif$
 
 % Define all emojis :) :( :P
 
-
+\usepackage{coloremoji}
 
 
 \NewDocumentCommand{\emojiInsert}{m G{}}
@@ -23,6 +23,7 @@ $endif$
   }%
  }
 
+\DeclareUnicodeCharacter{2696}{\emojiInsert{2696}}
 \DeclareUnicodeCharacter{1F004}{\emojiInsert{1F004}}
 \DeclareUnicodeCharacter{1F0CF}{\emojiInsert{1F0CF}}
 \DeclareUnicodeCharacter{1F170}{\emojiInsert{1F170}}
@@ -864,6 +865,7 @@ $endif$
 \DeclareUnicodeCharacter{FE0F}{}
 \DeclareUnicodeCharacter{1F1E6}{}
 \DeclareUnicodeCharacter{2212}{-}
+\DeclareUnicodeCharacter{323}{}
 
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript

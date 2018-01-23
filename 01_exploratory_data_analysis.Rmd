@@ -52,13 +52,6 @@ Functions summary review in the chapter:
 
 Note: `describe` is in the `Hmisc` package while remaining functions are in `funModeling.`
 
-<br>
-
----
-
-`r emo::ji("pushpin")` **Update!** This book is [available for download](#download-book) `r emo::ji("blue_book")``r emo::ji("inbox_tray")`. 
-
----
 
 <br>
 
@@ -929,6 +922,10 @@ heart_disease_4=na.omit(heart_disease_3)
   
 # compute the mic!
 mine_res_hd=mine(heart_disease_4)
+```
+
+```{r, message=FALSE, echo=FALSE}
+detach("package:caret")
 ```
 
 Printing a sample...
