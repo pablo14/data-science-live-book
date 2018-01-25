@@ -4,7 +4,10 @@ If you liked the book and wanted to support the project, you can acquire forever
 
 <br> 
 
-Secure purchase by **Gumroad** `r emo::ji("closed_lock_with_key")`:
+Secure purchase by **Gumroad** `r emo::ji("closed_lock_with_key")`: 
+
+_Note: Try disabling 'Ghostery' addon during the purchase, it has known issues._ 
+
 
 ---
 
