@@ -1,8 +1,8 @@
 ```{r include = FALSE}
 if(!knitr:::is_html_output())
 {
-  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
-  options(width=80)
+  options("width"=56)
+  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
 }
 ```
 
@@ -225,15 +225,25 @@ Data source: [ourworldindata.org, hunger and undernourishment](https://ourworldi
 
 First of all, we have to do a quick **data preparation**. Each row represents a country–year pair, so we have to obtain the most recent indicator per country. 
 
-```{r equal_range_discretization_a, tidy.opts=list(width.cutoff=30)}
-data_stunting=read.csv(file = "https://goo.gl/hFEUfN", header = T, stringsAsFactors = F)
+```{r equal_range_discretization_a, tidy=FALSE}
+data_stunting=read.csv(file = "https://goo.gl/hFEUfN", 
+                       header = T, 
+                       stringsAsFactors = F)
 
-# ranaming the metric
-data_stunting=dplyr::rename(data_stunting, share_stunted_child=WHO....Share.of.stunted.children.under.5.)
+# renaming the metric
+data_stunting=
+  dplyr::rename(
+    data_stunting,
+    share_stunted_child=
+      WHO....Share.of.stunted.children.under.5.
+    )
 
 # doing the grouping mentioned before
-d_stunt_grp = group_by(data_stunting, Entity) %>% filter(Year == max(Year)) %>%
-  dplyr::summarise(share_stunted_child=max(share_stunted_child))
+d_stunt_grp = group_by(data_stunting, Entity) %>% 
+  filter(Year == max(Year)) %>%
+  dplyr::summarise(share_stunted_child=
+                     max(share_stunted_child)
+                   )
 
 ```
 
@@ -252,21 +262,27 @@ There are all explained below.
 The range is commonly found in histograms looking at distribution, but is highly susceptible to outliers. To create, for example, four bins, requires the min and max values divided by 4. 
 
 
-```{r, equal_range_discretization, fig.width=4, fig.height=3}
+```{r, equal_range_discretization, fig.width=4, fig.height=3, tidy=FALSE}
 # funModeling contains equal_freq (discretization)
 library(funModeling)
 
-# ggplot2 it provides 'cut_interval' function used to split the variables based on equal range criteria
+# ggplot2 it provides 'cut_interval' function used to 
+# split the variables based on equal range criteria
 library(ggplot2) 
 
-# Creating equal range variable, add `dig.lab=9` parameter to deactivate scientific notation as with the `cut` function.
-d_stunt_grp$share_stunted_child_eq_range=cut_interval(d_stunt_grp$share_stunted_child, n = 4)
+# Creating equal range variable, add `dig.lab=9` 
+# parameter to deactivate scientific notation as with 
+# the `cut` function.
+d_stunt_grp$share_stunted_child_eq_range=
+  cut_interval(d_stunt_grp$share_stunted_child, n = 4)
 
-# The ‘describe’ function from Hmiscpackage is extremely useful to profile data
+# The ‘describe’ function from Hmiscpackage is 
+# extremely useful to profile data
 describe(d_stunt_grp$share_stunted_child_eq_range)
 
 # Plotting the variable
-p2=ggplot(d_stunt_grp, aes(share_stunted_child_eq_range)) + geom_bar(fill="#009E73") + theme_bw()
+p2=ggplot(d_stunt_grp, aes(share_stunted_child_eq_range)) +
+  geom_bar(fill="#009E73") + theme_bw()
 p2
 ```
 
@@ -282,14 +298,18 @@ This technique groups the same number of observations using criteria based on pe
 The `funModeling` package includes the `equal_freq` function to create bins based on these criteria:
 
 
-```{r equal_frequency_discretization, fig.width=4, fig.height=3, tidy.opts=list(width.cutoff=15)}
+```{r equal_frequency_discretization, fig.width=4, fig.height=3, tidy=FALSE}
 
-d_stunt_grp$stunt_child_ef=equal_freq(var = d_stunt_grp$share_stunted_child, n_bins = 4)
+d_stunt_grp$stunt_child_ef=
+  equal_freq(var = d_stunt_grp$share_stunted_child, 
+             n_bins = 4
+             )
 
 # profiling variable 
 describe(d_stunt_grp$stunt_child_ef)
 
-p3=ggplot(d_stunt_grp, aes(stunt_child_ef)) + geom_bar(fill="#CC79A7") + theme_bw()
+p3=ggplot(d_stunt_grp, aes(stunt_child_ef)) + 
+  geom_bar(fill="#CC79A7") + theme_bw()
 p3
 ```
 
@@ -302,14 +322,18 @@ In this case, we select four bins so that each bin will contain an approximate 2
 
 If we already have the points for which we want the segments, we can use the `cut` function.
 
-```{r discretization_custom_bins, fig.width=4, fig.height=3,tidy.opts=list(width.cutoff=40)}
+```{r discretization_custom_bins, fig.width=4, fig.height=3, tidy=FALSE}
 # parameter dig.lab "disable" scientific notation 
 d_stunt_grp$share_stunted_child_custom=
-  cut(d_stunt_grp$share_stunted_child, breaks = c(0, 2, 9.4, 29, 100))
+  cut(d_stunt_grp$share_stunted_child, 
+      breaks = c(0, 2, 9.4, 29, 100)
+      )
 
 describe(d_stunt_grp$share_stunted_child_custom)
 
-p4=ggplot(d_stunt_grp, aes(share_stunted_child_custom)) + geom_bar(fill="#0072B2") + theme_bw()
+p4=ggplot(d_stunt_grp, aes(share_stunted_child_custom)) + 
+  geom_bar(fill="#0072B2") + 
+  theme_bw()
 p4
 ```
 
@@ -322,12 +346,13 @@ It's good practice to assign the minimum and maximum using a function. In this c
 The function will return `NA` for those values below or above the cut points. One solution is to get variable min and max values:
 
 
-```{r, tidy.opts=list(width.cutoff=40)}
+```{r, tidy=FALSE}
 # obtaining the min and max 
 min_value=min(d_stunt_grp$share_stunted_child)
 max_value=max(d_stunt_grp$share_stunted_child)
 
-# `include.lowest=T` is necessary to include the min value, otherwise it will be assigned as NA.
+# `include.lowest=T` is necessary to include the min value, 
+# otherwise it will be assigned as NA.
 d_stunt_grp$share_stunted_child_custom_2=
   cut(d_stunt_grp$share_stunted_child, 
       breaks = c(min_value, 2, 9.4, 29, max_value), 
@@ -434,9 +459,14 @@ Time to continue with next step!
 
 Step 2) Applying the thresholds for each variable:
 
-```{r}
-# Now it can be applied on the same data frame or in a new one (for example, in a predictive model that changes data over time)
-heart_disease_discretized=discretize_df(data=heart_disease_2, data_bins=d_bins, stringsAsFactors=T)
+```{r, tidy=FALSE}
+# Now it can be applied on the same data frame or in 
+# a new one (for example, in a predictive model that 
+# changes data over time)
+heart_disease_discretized = 
+  discretize_df(data=heart_disease_2, 
+                data_bins=d_bins, 
+                stringsAsFactors=T)
 ```
 
 Parameters:
@@ -457,11 +487,25 @@ df_compare
 
 Final distribution: 
 
-```{r}
-describe(heart_disease_discretized %>% select(max_heart_rate,oldpeak))
+```{r, binning_variable, tidy=FALSE}
+describe(heart_disease_discretized %>% 
+           select(max_heart_rate,oldpeak))
 
-p5=ggplot(heart_disease_discretized, aes(max_heart_rate)) + geom_bar(fill="#0072B2") + theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-p6=ggplot(heart_disease_discretized, aes(oldpeak)) + geom_bar(fill="#CC79A7") + theme_bw() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+p5=ggplot(heart_disease_discretized, 
+          aes(max_heart_rate)) + 
+  geom_bar(fill="#0072B2") + 
+  theme_bw() + 
+  theme(axis.text.x = 
+          element_text(angle = 45, vjust = 1, hjust=1)
+        )
+
+p6=ggplot(heart_disease_discretized, 
+          aes(oldpeak)) + 
+  geom_bar(fill="#CC79A7") +
+  theme_bw() + 
+  theme(axis.text.x = 
+          element_text(angle = 45, vjust = 1, hjust=1)
+        )
 
 gridExtra::grid.arrange(p5, p6, ncol=2)
 ```
@@ -564,7 +608,6 @@ When we build predictive models, we describe the same bunch of points in differe
 ```{r, echo=FALSE}
 knitr::include_graphics("introduction/spacer_bar.png")
 ```
-
 
 ---
 
@@ -812,18 +855,13 @@ data_country$country_new=ifelse(data_country$country %in% countries_high_rep, da
 
 Checking again the likelihood:
 
-```{r, echo=FALSE}
-options(width = 120)
-```
 
 ```{r}
 country_profiling_new=categ_analysis(data=data_country, input="country_new", target = "has_flu")
 country_profiling_new
 ```
 
-```{r, echo=FALSE}
-options(width = 60)
-```
+
 
 We've reduced the quantity of countries drastically -**74% less**- only by shrinking the less representative at 1%. Obtaining 18 out of 70 countries.
 
@@ -920,11 +958,23 @@ Now we do the additional transformations replacing:
 * `group_4` and `group_5` will be `group_5`.
 * `group_7` will be `group_3`.
 
-```{r, hide=T}
-data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_4", "group_5", data_country_2$country_rec)
-data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_9", "group_5", data_country_2$country_rec)
+```{r, hide=TRUE, tidy=FALSE}
+data_country_2$country_rec=
+  ifelse(data_country_2$country_rec == "group_4", 
+         "group_5", 
+         data_country_2$country_rec
+         )
 
-data_country_2$country_rec=ifelse(data_country_2$country_rec == "group_3", "group_7", data_country_2$country_rec)
+data_country_2$country_rec=
+  ifelse(data_country_2$country_rec == "group_9", 
+         "group_5", 
+         data_country_2$country_rec
+         )
+
+data_country_2$country_rec=
+  ifelse(data_country_2$country_rec == "group_3", 
+         "group_7", 
+         data_country_2$country_rec)
 
 ```
 
@@ -1054,6 +1104,7 @@ This opens a new chapter which is going to be covered in this book `r emo::ji("w
 ---
 
 ### Numerical or multi-nominal target variable `r emo::ji("straight_ruler")`
+
 The book covered only the target as a binary variable, it is planned in the future to cover numerical and multi-value target.
 
 However, if you read up to here, you may want explore on your own having the same idea in mind. In numerical variables, for example forecasting `page visits` on a web site, there will be certain categories of the input variable that which will be more related with a high value on visits, while there are others that are more correlated with low values.
@@ -1937,9 +1988,15 @@ We cover different perspectives to convert as well as treat empty values in nomi
 
 Data for the following example are derived from `web_navigation_data` which contains standard information regarding how users come to a particular web page. It contains the `source_page` (the page the visitor comes from), `landing_page` (first page visited), and `country`.
 
-```{r}
-# When reading example data, pay attention to the na.strings parameter
-web_navigation_data=read.delim(file="https://goo.gl/dz7zNx", sep="\t", header = T, stringsAsFactors=F, na.strings="")
+```{r, tidy=FALSE}
+# When reading example data, pay attention to 
+# the na.strings parameter
+web_navigation_data=
+  read.delim(file="https://goo.gl/dz7zNx", 
+             sep="\t", 
+             header = T, 
+             stringsAsFactors=F, 
+             na.strings="")
 ```
 
 
@@ -1959,28 +2016,42 @@ Next, we propose two methods intended to cover typical scenarios.
 
 **Example in R:**
 
-```{r, tidy.opts=list(width.cutoff=40)}
-# Method 1: Converting just one variable and create a new variable
-web_navigation_data_1=web_navigation_data # making a copy
+```{r, tidy=FALSE}
+# Method 1: Converting just one variable and create
+# a new variable
+
+# making a copy
+web_navigation_data_1=web_navigation_data 
 
 # Creating a new variable
 web_navigation_data_1$source_page_2=
-  ifelse(is.na(web_navigation_data$source_page), "unknown_source", web_navigation_data$source_page)
+  ifelse(is.na(web_navigation_data$source_page), 
+         "unknown_source", 
+         web_navigation_data$source_page
+         )
 
-# Method 2: It's a typical situation only to apply a function to specific variables and then return the original data frame
+# Method 2: It's a typical situation only to apply a 
+# function to specific variables and then return the 
+# original data frame
+
 # First, we define the conversion function
 convert_categ<-function(x)
 {
-  # If NA, then put “unknown,” otherwise return the same value
+  # If NA, then put “unknown,” otherwise return the 
+  # same value
   ifelse(is.na(x), "unknown", x)                                                                 
 }                                 
 
-# Imagine we want to convert all variables with less than 6% NA values:
+# Imagine we want to convert all variables with less
+# than 6% NA values:
 vars_to_process=filter(stat_nav_data, p_na<6) 
 
-# Create the new data frame with the transformed variables
+# Create the new data frame with the transformed 
+# variables
 web_navigation_data_2=web_navigation_data %>%
-  mutate_at(.vars=vars(vars_to_process$variable), .funs=funs(convert_categ))
+  mutate_at(.vars=vars(vars_to_process$variable),
+            .funs=funs(convert_categ)
+            )
 ```
 
 Checking the results:
@@ -2107,12 +2178,19 @@ And that's it: the variable is ready to be used.
 **Custom cuts**:
 If we want to use custom bucket sizes instead of the ones provided by equal frequency, then we can do the following:
 
-```{r}
-options(scipen=999) # disabling scientific notation in current R session
+```{r, tidy=FALSE}
+# disabling scientific notation in current R session
+options(scipen=999) 
 
-# Creating custom buckets, with limits in 1,000, 2,300, and a max of 4,100. Values above 4,100 will be assigned to NA.
+# Creating custom buckets, with limits in 1,000, 
+# 2,300, and a max of 4,100. Values above 4,100 
+# will be assigned to NA.
 
-HollywoodMovies2011$TheatersOpenWeek_3=cut(HollywoodMovies2011$TheatersOpenWeek, breaks = c(0, 1000, 2300, 4100), include.lowest = T, dig.lab = 10)
+HollywoodMovies2011$TheatersOpenWeek_3=
+  cut(HollywoodMovies2011$TheatersOpenWeek, 
+      breaks = c(0, 1000, 2300, 4100), 
+      include.lowest = T,
+      dig.lab = 10)
 
 freq(HollywoodMovies2011, "TheatersOpenWeek_3", plot = F)
 ```
@@ -2130,15 +2208,24 @@ As with categorical variables, we can replace values by a number such as the mea
 
 In this case, we'll replace `NA` by the average and plot the before and after results side-by-side.
 
-```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE}
+```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE, tidy=FALSE}
 # Filling all NA values with the mean of the variable
-HollywoodMovies2011$opweek_mean=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek), mean(HollywoodMovies2011$TheatersOpenWeek, na.rm = T), HollywoodMovies2011$TheatersOpenWeek)
+HollywoodMovies2011$opweek_mean=
+  ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek), 
+         mean(HollywoodMovies2011$TheatersOpenWeek, 
+              na.rm = T), 
+         HollywoodMovies2011$TheatersOpenWeek
+         )
 
 # Plotting original variable
-p1=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek)) + geom_histogram(colour="black", fill="white") + ylim(0, 30)
+p1=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek)) +
+  geom_histogram(colour="black", fill="white") + 
+  ylim(0, 30)
  
 # Plotting transformed variable
-p2=ggplot(HollywoodMovies2011, aes(x=opweek_mean)) + geom_histogram(colour="black", fill="white") + ylim(0, 30)
+p2=ggplot(HollywoodMovies2011, aes(x=opweek_mean)) + 
+  geom_histogram(colour="black", fill="white") + 
+  ylim(0, 30)
 
 # Putting the plots side-by-side 
 library(gridExtra)
@@ -2179,18 +2266,26 @@ The [missForest](https://cran.r-project.org/web/packages/missForest/missForest.p
 Regardless of missing value imputation, the random forest model has one of the best performances of many different kinds of data.
 In next example, we will complete the `HollywoodMovies2011` data we were working with before. These data contain `NA` values in both numerical and categorical variables.
 
-```{r, message=FALSE}
+```{r, message=FALSE, tidy=FALSE}
 # install.packages("missForest")
 library(missForest)
 
 # Copying the data
 df_holly=HollywoodMovies2011
 
-# We will introduce 15% more NA values in TheatersOpenWeek_3 to produce a better example. The function prodNA in missForest will help us.
-set.seed(31415) # to get always the same number of NA values...
-df_holly$TheatersOpenWeek_3=prodNA(select(df_holly, TheatersOpenWeek_3), 0.15)[,1]
+# We will introduce 15% more NA values in 
+# TheatersOpenWeek_3 to produce a better example. 
+# The function prodNA in missForest will help us.
 
-# missForest fails if it has any character variable, so we convert the only character into the factor:
+# seting the seed to get always the same number of 
+# NA values
+set.seed(31415) 
+
+df_holly$TheatersOpenWeek_3=
+  prodNA(select(df_holly, TheatersOpenWeek_3), 0.15)[,1]
+
+# missForest fails if it has any character variable, 
+# so we convert the only character into the factor:
 df_holly$TheatersOpenWeek_2=as.factor(df_holly$TheatersOpenWeek_2)
 
 # Excluding the .id column
@@ -2241,14 +2336,30 @@ If we want to take an analytical point of view, then we can run a statistical te
  
 <br>
 
-```{r missing_value_imputation, fig.height=4, fig.width=7}
+```{r missing_value_imputation, fig.height=4, fig.width=7, tidy=FALSE}
 # An ugly hack to plot NA as a category
-levels(df_all$TheatersOpenWeek_3)=c(levels(df_all$TheatersOpenWeek_3), "NA")
-df_all$TheatersOpenWeek_3[is.na(df_all$TheatersOpenWeek_3)]="NA"
+levels(df_all$TheatersOpenWeek_3)=
+  c(levels(df_all$TheatersOpenWeek_3), "NA")
+
+flag_na=is.na(df_all$TheatersOpenWeek_3)
+
+df_all$TheatersOpenWeek_3[flag_na]="NA"
 
 # Now the plot!
-ggplot(df_all, aes(x = TheatersOpenWeek_3, fill = TheatersOpenWeek_3)) +
-    geom_bar(na.rm=T) + facet_wrap(~imputation)  + geom_text(stat='count',aes(label=..count..),vjust=-1) + ylim(0, 125) + scale_fill_brewer(palette="Set2") + theme_minimal() + theme(axis.text.x=element_text(angle = 45, hjust = 0.7))
+ggplot(df_all, aes(x = TheatersOpenWeek_3, 
+                   fill = TheatersOpenWeek_3)
+       ) +
+  geom_bar(na.rm=T) + 
+  facet_wrap(~imputation) + 
+  geom_text(stat='count',
+            aes(label=..count..),
+            vjust=-1) + 
+  ylim(0, 125) + 
+  scale_fill_brewer(palette="Set2") + 
+  theme_minimal() + 
+  theme(axis.text.x=
+          element_text(angle = 45, hjust = 0.7)
+        )
 
 
 ```
@@ -2355,7 +2466,9 @@ Regardless the method, it's quite important to analyze the impact of each decisi
 
 ---
 
-```{r, echo=FALSE} knitr::include_graphics("introduction/spacer_bar.png") ```
+```{r, echo=FALSE}
+knitr::include_graphics("introduction/spacer_bar.png")
+```
 
 ---
 

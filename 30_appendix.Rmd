@@ -1,8 +1,8 @@
 ```{r include = FALSE}
 if(!knitr:::is_html_output())
 {
-  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
-  options(width=80)
+  options("width"=56)
+  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
 }
 ```
 
@@ -47,7 +47,7 @@ Now we are going to use the technique of keeping a small sample so that we can h
 
 We retain the random 10 countries and print the vector of `rural_poverty_headcount` which is the variable we are going to use.
 
-```{r,  tidy.opts=list(width.cutoff=40)}
+```{r}
 
 library(dplyr)
 
@@ -171,7 +171,7 @@ Now the variable will be: _Population living in slums is the proportion of the u
 
 The question to answer: _What are the top six countries with the highest rates of people living in slums?_
 
-```{r, tidy.opts=list(width.cutoff=30)}
+```{r}
 # Creating rank variable 
 data_world_wide$rank_pop_living_slums=dense_rank(-data_world_wide$pop_living_slums) 
 

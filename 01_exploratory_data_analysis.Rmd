@@ -1,8 +1,8 @@
 ```{r include = FALSE}
 if(!knitr:::is_html_output())
 {
-  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
-  options(width=80)
+  options("width"=56)
+  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
 }
 ```
 
@@ -347,6 +347,7 @@ head(data_world_wide, 3)
 #### Part 2: Doing the numerical profiling in R {#numerical-profiling-in-r}
 
 We will see the following functions:
+
 * `describe` from `Hmisc`
 * `profiling_num` (full univariate analysis), and `plot_num` (hisotgrams) from `funModeling`
 
@@ -1020,7 +1021,7 @@ Combining raw tables plus different plots gives us a more real and complementary
 
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
-```{r importance_variable_ranking, fig.width=6, fig.height=4.5, tidy.opts=list(width.cutoff=40)}
+```{r importance_variable_ranking, fig.width=6, fig.height=4.5}
 
 # Getting the index of the variable to predict: has_heart_disease
 target="has_heart_disease"

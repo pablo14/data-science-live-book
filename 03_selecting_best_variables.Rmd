@@ -1,8 +1,8 @@
 ```{r include = FALSE}
 if(!knitr:::is_html_output())
 {
-  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=50),tidy = TRUE)
-  options(width=80)
+  options("width"=56)
+  knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
 }
 ```
 
@@ -104,7 +104,7 @@ Now we can proceed with the comparison.
 The columns `importance_rf` and `importance_gbm` represent the importance measured by each algorithm. Based on each metric, there are `rank_rf` and `rank_gbm` which represent the importance order, finally `rank_diff` (`rank_rf` - `rank_gbm`) represents how different each algorithm rank the variables.
 
 
-```{r, eval=FALSE, tidy.opts=list(width.cutoff=30)}
+```{r, eval=FALSE}
 # Here we manipulate to show a nice the table described before
 var_imp_rf=data.frame(varImp(fit_rf, scale=T)["importance"]) %>%
   dplyr::mutate(variable=rownames(.)) %>% dplyr::rename(importance_rf=Overall) %>%
@@ -231,7 +231,7 @@ It creates 3 models based on different variable subsets:
 
 Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs. taking each variable isolated.
 
-```{r, eval=TRUE, message=FALSE, tidy.opts=list(width.cutoff=40)}
+```{r, eval=TRUE, message=FALSE}
 library(caret)
 library(funModeling)
 library(dplyr)
@@ -322,7 +322,7 @@ As introduced at the beginning of the chapter, we can get variable importance wi
 
 From version 1.6.6 the package `funModeling` introduces the function `var_rank_info`, which takes two arguments, the data and the target variable, because it follows:
 
-```{r variable_ranking_using_information_theory, fig.width=6, fig.height=4.5, tidy.opts=list(width.cutoff=40)}
+```{r variable_ranking_using_information_theory, fig.width=6, fig.height=4.5}
 variable_importance=var_rank_info(heart_disease, "has_heart_disease")
 
 # Printing results
@@ -635,7 +635,7 @@ library(funModeling)
 data(heart_disease)
 ```
 
-```{r variable_importance2b,  fig.height=3, fig.width=5, tidy.opts=list(width.cutoff=40)}
+```{r variable_importance2b,  fig.height=3, fig.width=5}
 plotar(data=heart_disease, input="age", target="has_heart_disease", plot_type = "boxplot")
 ```
 
