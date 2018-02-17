@@ -1,6 +1,6 @@
 ## Data Science Live Book
 
-<img src="https://datascienceheroes.com/img/blog/book_cover_hidef.png" alt="Data Science Live Book">
+<img src="https://datascienceheroes.com/img/blog/data-science-live-book-cover-2.png" alt="Data Science Live Book">
 
 
  
