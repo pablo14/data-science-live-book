@@ -1,6 +1,6 @@
 ## Data Science Live Book
 
-<img src="https://datascienceheroes.com/img/blog/book_cover_hidef.png" alt="Data Science Live Book" width="400px">
+<img src="https://datascienceheroes.com/img/blog/data-science-live-book-cover-2.png" alt="Data Science Live Book" width="400px">
 
 
  
@@ -11,7 +11,7 @@
 
 #### `!(tl;dr)`: An overview...
 
-It?s a book to learn data science, machine learning, data analysis with tons of examples and explanations around several topics like:
+It's a book to learn data science, machine learning, data analysis with tons of examples and explanations around several topics like:
  
 - Exploratory data analysis
 - Data preparation
@@ -19,7 +19,7 @@ It?s a book to learn data science, machine learning, data analysis with tons of 
 - Model performance
 
 
-Most of the written R code can be used in real scenarios! I worked on the `funModeling` R package at the same time, soit is used many times in the book.
+Most of the written R code can be used in real scenarios! I worked on the `funModeling` R package at the same time, so it is used many times in the book.
 
 <br>
 
