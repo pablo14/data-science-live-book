@@ -66,7 +66,7 @@ It's quite common to find in literature and algorithms, that covers this topic a
 
 We're going to create two models: random forest and gradient boosting machine (GBM) using `caret` R package to cross-validate the data. Next, we'll compare the best variable ranking that every model returns.
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, warning=FALSE}
 library(caret)
 library(funModeling)
 library(dplyr)
@@ -231,20 +231,26 @@ It creates 3 models based on different variable subsets:
 
 Each model returns the metric ROC, and the result contains the improvement of considering the two variables at the same time vs. taking each variable isolated.
 
-```{r, eval=TRUE, message=FALSE}
+```{r, eval=TRUE, message=FALSE, tidy=FALSE, warning=FALSE}
 library(caret)
 library(funModeling)
 library(dplyr)
 
 # setting cross-validation 4-fold
-fitControl = trainControl(method = "cv",
-                          number = 4,
-                          classProbs = TRUE,
-                          summaryFunction = twoClassSummary)
+fitControl = 
+  trainControl(method = "cv",
+               number = 4,
+               classProbs = TRUE,
+               summaryFunction = twoClassSummary
+               )
 
-create_model<-function(input_variables) {
-  # create gradient boosting machine model based on input variables
-  fit_model = train(x=select(heart_disease, one_of(input_variables)),
+create_model<-function(input_variables) 
+{
+  # create gradient boosting machine model
+  # based on input variables
+  fit_model = train(x=select(heart_disease, 
+                             one_of(input_variables)
+                             ),
               y = heart_disease$has_heart_disease,
               method = "gbm",
               trControl = fitControl,
@@ -260,12 +266,19 @@ roc_1=create_model("max_heart_rate")
 roc_2=create_model("chest_pain")
 roc_3=create_model(c("max_heart_rate", "chest_pain"))
 
-avg_improvement=round(100*(((roc_3-roc_1)/roc_1)+((roc_3-roc_2)/roc_2))/2,2)
-avg_improvement_text=sprintf("Average improvement: %s%%", avg_improvement)
+avg_improvement=round(100*(((roc_3-roc_1)/roc_1)+
+                             ((roc_3-roc_2)/roc_2))/2,
+                      2)
+avg_improvement_text=sprintf("Average improvement: %s%%", 
+                             avg_improvement)
 
-results=sprintf("ROC model based on 'max_heart_rate': %s.;
-                based on 'chest_pain': %s;
-                and based on both: %s", round(roc_1,2), round(roc_2,2), round(roc_3, 2))
+results = 
+  sprintf("ROC model based on 'max_heart_rate': %s.;
+  based on 'chest_pain': %s; and based on both: %s", 
+  round(roc_1,2), 
+  round(roc_2,2), 
+  round(roc_3, 2)
+  )
 
 # printing the results!
 cat(c(results, avg_improvement_text), sep="\n\n")
@@ -322,18 +335,26 @@ As introduced at the beginning of the chapter, we can get variable importance wi
 
 From version 1.6.6 the package `funModeling` introduces the function `var_rank_info`, which takes two arguments, the data and the target variable, because it follows:
 
-```{r variable_ranking_using_information_theory, fig.width=6, fig.height=4.5}
-variable_importance=var_rank_info(heart_disease, "has_heart_disease")
+```{r variable_ranking_using_information_theory, fig.width=6, fig.height=4.5, tidy=FALSE}
+variable_importance = 
+  var_rank_info(heart_disease, "has_heart_disease")
 
 # Printing results
 variable_importance
 
 # Plotting 
-ggplot(variable_importance, aes(x = reorder(var, 
-    gr), y = gr, fill = var)) + geom_bar(stat = "identity") + 
-    coord_flip() + theme_bw() + xlab("") + 
-    ylab("Variable Importance (based on Information Gain)") + 
-    guides(fill = FALSE)
+ggplot(variable_importance, 
+       aes(x = reorder(var, gr), 
+           y = gr, fill = var)
+       ) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  theme_bw() + 
+  xlab("") + 
+  ylab("Variable Importance 
+       (based on Information Gain)"
+       ) + 
+  guides(fill = FALSE)
 ```
 
 Is `heart_disease_severity` the feature that explains the target the most? 
@@ -561,18 +582,28 @@ This new plot based on `oldpeak_2` shows clearly how: the likelihood of **having
 
 Converting variable `max_heart_rate` into a one of 10 bins:
 
-```{r variable_importance_c5, results="hide",fig.height=4, fig.width=9.9}
-heart_disease$max_heart_rate_2=equal_freq(var=heart_disease$max_heart_rate, n_bins = 10)
-cross_plot(heart_disease, input="max_heart_rate_2", target="has_heart_disease")
+```{r variable_importance_c5, results="hide",fig.height=4, fig.width=9.9, tidy=FALSE}
+heart_disease$max_heart_rate_2 = 
+  equal_freq(var=heart_disease$max_heart_rate, n_bins = 10)
+
+cross_plot(heart_disease, 
+           input="max_heart_rate_2", 
+           target="has_heart_disease"
+           )
 ```
 
 At first glance, `max_heart_rate_2` shows a negative and linear relationship. However, there are some buckets which add noise to the relationship. For example, the bucket `(141, 146]` has a higher heart disease rate than the previous bucket, and it was expected to have a lower. *This could be noise in data.*
 
 **Key note**: One way to reduce the **noise** (at the cost of **losing** some information), is to split with less bins:
 
-```{r feature_engineering, results="hide", fig.height=4, fig.width=9.5}
-heart_disease$max_heart_rate_3=equal_freq(var=heart_disease$max_heart_rate, n_bins = 5)
-cross_plot(heart_disease, input="max_heart_rate_3", target="has_heart_disease")
+```{r feature_engineering, results="hide", fig.height=4, fig.width=9.5, tidy=FALSE}
+heart_disease$max_heart_rate_3 = 
+  equal_freq(var=heart_disease$max_heart_rate, n_bins = 5)
+
+cross_plot(heart_disease, 
+           input="max_heart_rate_3", 
+           target="has_heart_disease"
+           )
 ```
 
 **Conclusion**: As it can be seen, now the relationship is much clean and clear. Bucket *'N'* has a higher rate than *'N+1'*, which implies a negative correlation.
@@ -663,7 +694,7 @@ Using more than one variable as inputs is useful in order to compare boxplots qu
 plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'),  target="has_heart_disease", plot_type = "boxplot")
 ```
 
-`max_heart_rate` is clearly a better predictor than `resting_blood_pressure`.
+We can conclude that `max_heart_rate` is a better predictor than `resting_blood_pressure`.
 
 As a general rule, a variable will rank as **more important** if boxplots are **not aligned** horizontally.
 

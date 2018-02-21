@@ -14,6 +14,7 @@ github-repo: pablo14/data-science-live-book
 description: "An intuitive and practical approach to data analysis, data preparation and machine learning, suitable for all ages!"
 linestretch: 1.15
 linkcolor: NavyBlue
+links-as-notes: true
 ---
 
 
@@ -154,31 +155,40 @@ If you want to say _hello_, contribute by telling that some part is not well exp
 
 pcasas.biz (at) gmail.com. I'm constantly learning so it's nice to exchange knowledge and keep in touch with other colleagues.
 
-[My twitter](https://twitter.com/pabloc_ds).
+* [Twitter](https://twitter.com/pabloc_ds)
+* [Linkedin](https://www.linkedin.com/in/pcasas)
+* [Github](https://github.com/pablo14)
+* [Data Science Heroes Blog](http://blog.datascienceheroes.com)
 
-**Data Science Heroes Blog**: http://blog.datascienceheroes.com/
+Also, you can check the **Github** repositories for both, the b ook and `funModeling`, so you can report bugs, suggestions, new ideas, etc:
 
-Also, you can check the **Github** repositories for both, the book and `funModeling`, so you can report bugs, suggestions, new ideas, etc:
+* [funModeling](https://github.com/pablo14/funModeling)
+* [Data Science Live Book](https://github.com/pablo14/data-science-live-book)
 
-* `funModeling` R package: https://github.com/pablo14/funModeling
-* **Data Science Live Book**: https://github.com/pablo14/data-science-live-book
+<br>
 
----
 
-Special thanks to my mentors: Miguel Spindiak and Marcelo Ferreyra.
+### Acknowledgements
 
-* Book technical reviewer: `r emo::ji("hammer_and_wrench")`: [Pablo Seibelt (aka The Sicarul)](https://www.linkedin.com/in/pabloseibelt)
-* Lovely art cover `r emo::ji("woman_artist")`: by [Bárbara Muñoz](https://twitter.com/barmercedes_)
+Special thanks to my mentors in this data world, Miguel Spindiak and Marcelo Ferreyra.
+
+Book technical reviewer: [Pablo Seibelt (aka The Sicarul)](https://www.linkedin.com/in/pabloseibelt) `r emo::ji("hammer_and_wrench")`. Thank you for your sincere and selfless help.
+
+Art cover made: [Bárbara Muñoz](https://www.linkedin.com/in/barbaramercedes/)`r emo::ji("art")`.
+
+This book is dedicated to _[The Nobodies](https://holywaters.wordpress.com/2011/12/08/los-nadiesthe-nobodies-by-eduardo-galeano)_, a short story written by Eduardo Galeano.
+
+<br>
+
+### Book's information
 
 First published at: [livebook.datascienceheroes.com](http://livebook.datascienceheroes.com).
 
-Book licensed under [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
+Licensed under [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
-```{r echo=FALSE, fig.link='https://creativecommons.org/licenses/by-nc-sa/4.0'}
+```{r echo=FALSE, out.width='20%'}
 knitr::include_graphics('introduction/by-nc-sa.png')
 ```
-
-Copyright (c) 2017.
 
 ISBN: 978-987-42-5911-0
 
@@ -186,10 +196,7 @@ ISBN: 978-987-42-5911-0
 knitr::include_graphics('introduction/ISBN_number.jpg')
 ```
 
----
-
-This book is dedicated to _[The Nobodies](https://holywaters.wordpress.com/2011/12/08/los-nadiesthe-nobodies-by-eduardo-galeano)_, a short story written by Eduardo Galeano.
-
+Copyright (c) 2018.
 
 ---
 

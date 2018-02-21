@@ -10,3 +10,4 @@ data-playbook_files
 tmp-*.tex
 figure/
 .Rapp.history
+data-science-live-book.rds

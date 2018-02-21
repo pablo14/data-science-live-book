@@ -79,7 +79,7 @@ If the original categorical variable has thirty possible values, then it will re
 
 If we use the caret package from R, then this conversion only takes two lines of code:
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(caret) # contains dummyVars function
 library(dplyr) # data munging library
 library(funModeling) # df_status function
@@ -281,8 +281,11 @@ d_stunt_grp$share_stunted_child_eq_range=
 describe(d_stunt_grp$share_stunted_child_eq_range)
 
 # Plotting the variable
-p2=ggplot(d_stunt_grp, aes(share_stunted_child_eq_range)) +
-  geom_bar(fill="#009E73") + theme_bw()
+p2=ggplot(d_stunt_grp, 
+          aes(share_stunted_child_eq_range)
+          ) +
+  geom_bar(fill="#009E73") + 
+  theme_bw()
 p2
 ```
 
@@ -351,7 +354,7 @@ The function will return `NA` for those values below or above the cut points. On
 min_value=min(d_stunt_grp$share_stunted_child)
 max_value=max(d_stunt_grp$share_stunted_child)
 
-# `include.lowest=T` is necessary to include the min value, 
+# set `include.lowest=T` to include the min value, 
 # otherwise it will be assigned as NA.
 d_stunt_grp$share_stunted_child_custom_2=
   cut(d_stunt_grp$share_stunted_child, 
@@ -636,7 +639,7 @@ library(funModeling)
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r data_preparation_nominal_variable, fig.height=11, fig.width=6, dpi=200}
+```{r data_preparation_nominal_variable, fig.height=9, fig.width=5, dpi=300}
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -724,7 +727,7 @@ It depends on the case, but the quickest answer is yes. In this chapter we will 
 
 There is a tradeoff between the **representation of the data** (how many rows each category has), and how is each category related to the outcome variable. E.g.: some countries are more prone to cases of flu than others
 
-```{r , message=F}
+```{r , message=FALSE, warning=FALSE}
 # Loading funModeling >=1.6 which contains functions to deal with this. 
 library(funModeling)
 library(dplyr)
@@ -1341,7 +1344,7 @@ ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
 
 * **Categorical** `r emo::ji("bar_chart")`: Having a variable in which the dispersion of categories is quite high (high cardinality): for example, postal code. More about dealing with outliers in categorical variables in the [High Cardinality Variable in Descriptive Stats](#high_cardinality_descriptive_stats) chapter.
 
-```{r categorical_outliers_1, echo=FALSE, message=FALSE}
+```{r categorical_outliers_1, echo=FALSE, message=FALSE, warning=FALSE}
 library(funModeling)
 library(dplyr)
 data_country_sample=filter(data_country, country %in% c("France", "China", "Uruguay", "Peru", "Vietnam"))
@@ -1934,9 +1937,9 @@ A fast and easy method, right? It's recommended when the number of rows is _low_
 
 Let's inspect the `heart_disease` dataset with the `df_status` function, where one of its primary objectives is to help us with these kinds of decisions. 
 
-```{r, message=FALSE}
-library(dplyr) # vers 0.7.1
-library(funModeling) # vers 1.6.4
+```{r, message=FALSE, warning=FALSE}
+library(dplyr) 
+library(funModeling) 
 df_status(heart_disease, print_results = F) %>% select(variable, q_na, p_na) %>% arrange(-q_na)
 ```
 
@@ -2286,7 +2289,8 @@ df_holly$TheatersOpenWeek_3=
 
 # missForest fails if it has any character variable, 
 # so we convert the only character into the factor:
-df_holly$TheatersOpenWeek_2=as.factor(df_holly$TheatersOpenWeek_2)
+df_holly$TheatersOpenWeek_2 = 
+  as.factor(df_holly$TheatersOpenWeek_2)
 
 # Excluding the .id column
 df_holly=select(df_holly, -Movie)
@@ -2509,6 +2513,8 @@ As time goes by, variables may change their values, making the time-analysis cru
 ```{r data_preparation_variable_selection, echo=FALSE, out.width="200px"}
 knitr::include_graphics("data_preparation/back_to_the_future.png")
 ```
+
+_Picture from the movie: "Back to the future" (1985). Robert Zemeckis (Director)._
 
 
 Using a variable which contains information **after** the event it's being predicted, is a common mistake when starting a new predictive model project, like playing the lottery today using the tomorrow's newspaper.

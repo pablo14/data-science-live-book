@@ -47,12 +47,17 @@ Now we are going to use the technique of keeping a small sample so that we can h
 
 We retain the random 10 countries and print the vector of `rural_poverty_headcount` which is the variable we are going to use.
 
-```{r}
-
+```{r, tidy=FALSE, warning=FALSE}
 library(dplyr)
 
-data_world_wide=read.delim(file="https://goo.gl/NNYhCW", header = T)
+data_world_wide =
+  read.delim(file="https://goo.gl/NNYhCW", 
+             header = T
+             )
 
+```
+
+```{r}
 data_sample=filter(data_world_wide, Country.Name %in% c("Kazakhstan", "Zambia", "Mauritania", "Malaysia", "Sao Tome and Principe", "Colombia", "Haiti", "Fiji", "Sierra Leone", "Morocco")) %>% arrange(rural_poverty_headcount)
 
 select(data_sample, Country.Name, rural_poverty_headcount)
@@ -60,7 +65,7 @@ select(data_sample, Country.Name, rural_poverty_headcount)
 
 Please note that the vector is ordered only for didactic purposes. _As we said in the Profiling chapter, our eyes like order._ 
 
-Now we apply  the `quantile` function on the variable `rural_poverty_headcount` (the percentage of the rural population living below the national poverty lines): 
+Now we apply the `quantile` function on `rural_poverty_headcount` variable (the percentage of the rural population living below the national poverty lines): 
 
 ```{r}
 quantile(data_sample$rural_poverty_headcount)
@@ -143,17 +148,27 @@ Credits: [@perc_quan_quar].
 
 Plotting a histogram alongisde the places where each percentile is can help us understand the concept:
 
-```{r, profiling_numerical_variable, warning=FALSE, message=FALSE, fig.height=3, fig.width=4}
-quantiles_var=quantile(data_world_wide$poverty_headcount_1.9, c(0.25, 0.5, 0.75), na.rm = T)
+```{r, profiling_numerical_variable, warning=FALSE, message=FALSE, fig.height=3, fig.width=4, tidy=FALSE}
+quantiles_var = 
+  quantile(data_world_wide$poverty_headcount_1.9, 
+           c(0.25, 0.5, 0.75), 
+           na.rm = T
+           )
 
-df_p=data.frame(value=quantiles_var, quantile=c("25th", "50th", "75th"))
+df_p = data.frame(value=quantiles_var, 
+                quantile=c("25th", "50th", "75th")
+                )
 
 library(ggplot2)
-ggplot(data_world_wide, aes(poverty_headcount_1.9)) + geom_histogram() +
+ggplot(data_world_wide, aes(poverty_headcount_1.9)) + 
+  geom_histogram() +
   geom_vline(data=df_p, 
              aes(xintercept=value, 
                  colour = quantile),
-             show.legend = TRUE, linetype="dashed") + theme_light()
+             show.legend = TRUE, 
+             linetype="dashed"
+             ) + 
+  theme_light()
 
 ```
 
@@ -171,10 +186,13 @@ Now the variable will be: _Population living in slums is the proportion of the u
 
 The question to answer: _What are the top six countries with the highest rates of people living in slums?_
 
-```{r}
+```{r, tidy=FALSE}
 # Creating rank variable 
-data_world_wide$rank_pop_living_slums=dense_rank(-data_world_wide$pop_living_slums) 
+data_world_wide$rank_pop_living_slums = 
+  dense_rank(-data_world_wide$pop_living_slums) 
+```
 
+```{r}
 # Ordering data by rank
 data_world_wide=arrange(data_world_wide, rank_pop_living_slums)
 
@@ -201,7 +219,16 @@ quantile(data_world_wide$pop_living_slums, probs=.1, na.rm = T)
 
 Working on the opposite: _What is the value for which I get the bottom 10% of highest values?_
 
-The 90th percentile is the answer, `quantile(data_world_wide$pop_living_slums, probs=.9, na.rm = T)`. We can filter all the cases above this value.
+The 90th percentile is the answer, we can filter all the cases above this value:
+
+```{r}
+quantile(data_world_wide$pop_living_slums, 
+         probs=.9, 
+         na.rm = T
+         ) 
+```
+
+
 
 ### Percentile in scoring data
 
@@ -330,7 +357,7 @@ Note:
 
 #### `freq`: Getting frequency distributions for categoric variables 
 
-```{r distribution_categorical_variable, message=FALSE, fig.height=3, fig.width=5, warning=FALSE}
+```{r distribution_categorical_variable, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, warning=FALSE}
 library(dplyr)
 
 # Select only two variables for this example
@@ -396,7 +423,7 @@ Note: It analyzes numerical and categorical variables. It is also used with the 
 Retrieves the relative and absolute distribution between an input and target variable. 
 Useful to explain and report if a variable is important or not.
 
-```{r profiling_variable_predictive_modeling, fig.height=4, fig.width=8}
+```{r profiling_variable_predictive_modeling, fig.height=4, fig.width=8, results=FALSE}
 cross_plot(data=heart_disease, input=c("age", "oldpeak"), target="has_heart_disease")
 ```
 
@@ -476,9 +503,16 @@ Example converting only two variables from a dataset.
 ```{r}
 # Step 1: Getting the thresholds for the desired variables: "max_heart_rate" and "oldpeak"
 d_bins=discretize_get_bins(data=heart_disease, input=c("max_heart_rate", "oldpeak"), n_bins=5)
+```
 
-# Step 2: Applying the threshold to get the final processed data frame
-heart_disease_discretized=discretize_df(data=heart_disease, data_bins=d_bins, stringsAsFactors=T)
+```{r, tidy=FALSE}
+# Step 2: Applying the threshold to get the final 
+# processed data frame
+heart_disease_discretized = 
+  discretize_df(data=heart_disease, 
+                data_bins=d_bins, 
+                stringsAsFactors=T
+                )
 ```
 
 The following image illustrates the result. Please note that the variable name remains the same.
@@ -501,7 +535,7 @@ Notes:
 
 Binning, or discretization criterion for any numerical variable is equal frequency. Factor variables are directly converted to character variables.
 
-```{r}
+```{r, results=FALSE}
 iris_char=convert_df_to_categoric(data = iris, n_bins = 5)
 
 # checking first rows
