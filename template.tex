@@ -10,11 +10,17 @@ $if(linestretch)$
 $endif$
 \usepackage{amssymb,amsmath}
 \usepackage[utf8]{inputenc}
+\usepackage[hyphens]{url}
+\usepackage{float}
 
 % Define all emojis :) :( :P
-
 \usepackage{coloremoji}
 
+% Define book size
+\usepackage[paperwidth=6in, paperheight=9in]{geometry} %  margin=2cm
+
+% wrap url
+\Urlmuskip=0mu plus 1mu\relax
 
 \NewDocumentCommand{\emojiInsert}{m G{}}
  {%

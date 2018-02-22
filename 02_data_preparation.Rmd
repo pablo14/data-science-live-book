@@ -3,6 +3,7 @@ if(!knitr:::is_html_output())
 {
   options("width"=56)
   knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
+  knitr::opts_chunk$set(fig.pos = 'H')
 }
 ```
 
@@ -15,7 +16,7 @@ if(!knitr:::is_html_output())
 One of the first things to do when we start a data project is to assign the correct data type for each variable. Although this seems a straightforward task, some algorithms work with certain data types. Here, we'll try to cover these conversions while explaining with examples the implications in each case.
 
 
-```{r Fibonnacci_curve, echo=FALSE, out.height="150px"}
+```{r Fibonnacci-curve, echo=FALSE, out.height="150px", fig.cap="Fibonacci spiral", out.extra=''}
 knitr::include_graphics("data_preparation/fibonacci_spiral.jpg")
 ```
 
@@ -138,10 +139,9 @@ Consider two numerical input variables and a target binary variable. The algorit
 For example, a **Supported Vector Machine** (SVM) will create _several_ vectors in order to separate the target variable class. It will **find regions** based on these vectors. How would it be possible to find these regions based on categorical variables? It isn't possible and that's why SVM only supports numerical variables as with artificial neural networks.
 
 
-```{r Support_Vector_Machine, echo=FALSE, out.width="200px"}
+```{r Support-Vector-Machine, echo=FALSE, out.width="200px", fig.cap="Support Vector Machine", out.extra=''}
 knitr::include_graphics("data_preparation/svm.png")
 ```
-
 
 _Image credit: ZackWeinberg_
 
@@ -182,7 +182,7 @@ The following code will show the `visits` depending on `postal_code` transformed
 * `transformation_1`: Assign a sequence number based on the given order.
 * `transformation_2`: Assign a number based on the number of `visits`.
 
-```{r, data_types_in_machine_learning, warning=FALSE, fig.width=9, fig.height=3, message=FALSE}
+```{r, data-types-in-machine-learning, warning=FALSE, fig.width=9, fig.height=3, message=FALSE, fig.cap="Data transformations comparison", out.extra=''}
 # creating data -toy- sample 
 df_pc=data.frame(visits=c(10, 59, 27, 33), postal_code=c("AA1", "BA5", "CG3", "HJ1"), transformation_1=c(1,2,3,4), transformation_2=c(1, 4, 2, 3 ))
 
@@ -225,7 +225,7 @@ Data source: [ourworldindata.org, hunger and undernourishment](https://ourworldi
 
 First of all, we have to do a quick **data preparation**. Each row represents a country–year pair, so we have to obtain the most recent indicator per country. 
 
-```{r equal_range_discretization_a, tidy=FALSE}
+```{r equal-range-discretization-a, tidy=FALSE}
 data_stunting=read.csv(file = "https://goo.gl/hFEUfN", 
                        header = T, 
                        stringsAsFactors = F)
@@ -262,7 +262,7 @@ There are all explained below.
 The range is commonly found in histograms looking at distribution, but is highly susceptible to outliers. To create, for example, four bins, requires the min and max values divided by 4. 
 
 
-```{r, equal_range_discretization, fig.width=4, fig.height=3, tidy=FALSE}
+```{r, equal-range-discretization, fig.width=4, fig.height=3, tidy=FALSE, fig.cap="Equal frequency discretization", out.extra=''}
 # funModeling contains equal_freq (discretization)
 library(funModeling)
 
@@ -301,7 +301,7 @@ This technique groups the same number of observations using criteria based on pe
 The `funModeling` package includes the `equal_freq` function to create bins based on these criteria:
 
 
-```{r equal_frequency_discretization, fig.width=4, fig.height=3, tidy=FALSE}
+```{r equal-frequency-discretization, fig.width=4, fig.height=3, tidy=FALSE, fig.cap="", out.extra='Equal frequency example'}
 
 d_stunt_grp$stunt_child_ef=
   equal_freq(var = d_stunt_grp$share_stunted_child, 
@@ -325,7 +325,7 @@ In this case, we select four bins so that each bin will contain an approximate 2
 
 If we already have the points for which we want the segments, we can use the `cut` function.
 
-```{r discretization_custom_bins, fig.width=4, fig.height=3, tidy=FALSE}
+```{r discretization-custom-bins, fig.width=4, fig.height=3, tidy=FALSE, fig.cap="Manual discretization", out.extra=''}
 # parameter dig.lab "disable" scientific notation 
 d_stunt_grp$share_stunted_child_custom=
   cut(d_stunt_grp$share_stunted_child, 
@@ -490,7 +490,7 @@ df_compare
 
 Final distribution: 
 
-```{r, binning_variable, tidy=FALSE}
+```{r, binning-variable, tidy=FALSE, fig.cap="", out.extra='Automatic discretization results'}
 describe(heart_disease_discretized %>% 
            select(max_heart_rate,oldpeak))
 
@@ -590,7 +590,7 @@ When we work with categorical variables, we can change their distribution by re-
 
 Let's go back to the discretization variable section and plot all the transformations we've seen so far:
 
-```{r discretization_methods, fig.width=9, fig.height=4}
+```{r discretization-methods, fig.width=9, fig.height=4, fig.cap="Same data, different visualizations", out.extra=''}
 grid.arrange(p2, p3, p4, ncol = 3)
 ```
 
@@ -639,7 +639,7 @@ library(funModeling)
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r data_preparation_nominal_variable, fig.height=9, fig.width=5, dpi=300}
+```{r data-preparation-nominal-variable, fig.height=9, fig.width=5, dpi=300, fig.cap="Country frequency analysis", out.extra=''}
 # plotting first 10 rows
 head(data_country, 10)
 
@@ -647,7 +647,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-```{r data_preparation_nominal_variable_2, fig.height=1.5, fig.width=5}
+```{r data-preparation-nominal-variable-2, fig.height=1.5, fig.width=5, fig.cap="Has flue frequency analysis", out.extra=''}
 # exploring data
 freq(data_country, "has_flu")
 ```
@@ -658,7 +658,7 @@ The last table shows there are **70 different countries**, and ~9% of people who
 
 But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present in a high percentage of data share, for example 70, 80 or 90%, the Pareto principle.
 
-```{r data_preparation_profiling_nominal_variable}
+```{r data-preparation-profiling-nominal-variable}
 # 'freq' function, from 'funModeling' package, retrieves the cumulative_percentage that will help to do the cut. 
 country_freq=freq(data_country, 'country', plot = F)
 
@@ -670,7 +670,7 @@ country_freq[1:10,]
 
 So 10 countries represent more the 70% of cases. We can assign the category `other` to the remaining cases and plot:
 
-```{r data_preparation_profiling_nominal_variable_2, fig.height=2.3, fig.width=4.2}
+```{r data-preparation-profiling-nominal-variable_2, fig.height=2.3, fig.width=4.2}
 data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'country'], data_country$country, 'other')
 freq(data_country, 'country_2')
 ```
@@ -737,7 +737,7 @@ Profiling `data_country`, which comes inside `funModeling` package (please updat
 
 Quick `data_country` profiling (first 10 rows)
 
-```{r high_cardinality_variable,  fig.height=11, fig.width=6, dpi=200}
+```{r high-cardinality-variable,  fig.height=11, fig.width=6, dpi=200, fig.cap="First 10 countries", out.extra=''}
 
 # plotting first 10 rows
 head(data_country, 10)
@@ -746,7 +746,7 @@ head(data_country, 10)
 head(freq(data_country, "country"), 10)
 ```
 
-```{r data_preparation_high_cardinality_variable, fig.height=2, fig.width=5.3}
+```{r data-preparation-high-cardinality-variable, fig.height=2, fig.width=5.3, fig.cap="Has flu distribution", out.extra=''}
 # exploring data
 freq(data_country, "has_flu")
 ```
@@ -772,7 +772,7 @@ head(country_profiling, 15)
 ```
 
 
-```{r data_preparation_in_predictive_modeling, echo=FALSE ,out.width="75%"}
+```{r data-preparation-in-predictivemodeling, echo=FALSE ,out.width="75%", fig.cap="Analyzing target vs. input", out.extra=''}
 knitr::include_graphics("data_preparation/country_profiling.png")
 ```
 
@@ -1174,7 +1174,7 @@ The concept of extreme values, much like other topics in machine learning, is no
 
 <br>
 
-```{r outliers_intuition, echo=FALSE ,out.width="100%"}
+```{r outliers-intuition, echo=FALSE ,out.width="100%", fig.cap="Outliers", out.extra=''}
 knitr::include_graphics("data_preparation/outlier_intuition.png")
 ```
 
@@ -1199,7 +1199,7 @@ _Image created by: [Guillermo Mesyngier](https://dribbble.com/gmesyngier)_
 
 For example, consider the following distribution:
   
-```{r dealing_with_outliers}
+```{r dealing-with-outliers}
 # Loading ggplot2 to visualize the distribution
 library(ggplot2)
 
@@ -1216,7 +1216,7 @@ The variable is skewed to the left, showing some outlier points on the right. We
 
 Both cases could be right. In fact, taking another number as the threshold (i.e., 2% or 0.1%), may be right too. Let's visualize them:
 
-```{r dealing_with_outliers_4}
+```{r dealing-with-outliers-4}
 # Calculating the percentiles for the top 3% and top 1%
 percentile_var=quantile(df_1$var, c(0.98, 0.99, 0.999), na.rm = T)
 df_p=data.frame(value=percentile_var, percentile=c("a_98th", "b_99th", "c_99.9th"))
@@ -1229,7 +1229,7 @@ To understand more about percentiles, please go to the [Annex 1: The magic of pe
 
 For now, we'll keep with the top 1% (99th percentile), as the threshold to flag all the points after it as outliers.
   
-```{r dealing_with_outliers_2, fig.height=3, fig.width=4, echo=FALSE}
+```{r dealing-with-outliers-2, fig.height=3, fig.width=4, echo=FALSE}
 
 # Plotting the same distribution plus the percentiles
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
@@ -1246,7 +1246,7 @@ One interesting conceptual element arises here: when we define **abnormal** (or 
 This “normal” behavior is shown as the green area:
 
 
-```{r dealing_with_outliers_3, fig.height=3, fig.width=4, echo=FALSE,tidy=TRUE}
+```{r dealing-with-outliers-3, fig.height=3, fig.width=4, echo=FALSE,tidy=TRUE}
 # Plotting the same distribution plus the percentiles
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
   geom_rect(aes(xmin = -Inf, xmax = df_p$value[2], ymin = -Inf, ymax = Inf), fill = "lightgreen", alpha = 0.01)+
@@ -1272,7 +1272,7 @@ Let's make this section more philosophical. Some good mathematicians were also p
 Where can we put the threshold to indicate where the hot weather begins or, conversely, where does the cold weather end?
 
 
-```{r Finding_the_cutpoint, echo=FALSE, out.width="30%"}
+```{r Finding-the-cutpoint, echo=FALSE, out.width="30%"}
 knitr::include_graphics("data_preparation/where_is_the_cutpoint.png")
 ```
 
@@ -1330,7 +1330,7 @@ It's better to show a nonbiased number than justifying that the model _will hand
 
 * **Numerical** `r emo::ji("straight_ruler")`: Like the one we saw before:
 
-```{r numerical_outliers_1, echo=FALSE}
+```{r numerical-outliers-1, echo=FALSE}
 
 ## Plotting the same distribution plus the percentiles
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
@@ -1344,7 +1344,7 @@ ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
 
 * **Categorical** `r emo::ji("bar_chart")`: Having a variable in which the dispersion of categories is quite high (high cardinality): for example, postal code. More about dealing with outliers in categorical variables in the [High Cardinality Variable in Descriptive Stats](#high_cardinality_descriptive_stats) chapter.
 
-```{r categorical_outliers_1, echo=FALSE, message=FALSE, warning=FALSE}
+```{r categorical-outliers-1, echo=FALSE, message=FALSE, warning=FALSE}
 library(funModeling)
 library(dplyr)
 data_country_sample=filter(data_country, country %in% c("France", "China", "Uruguay", "Peru", "Vietnam"))
@@ -1364,14 +1364,14 @@ So far, we have observed one-dimensional univariate outliers. We also can consid
 
 For instance, we have the following dataset, `df_hello_world`, with two variables: `v1` and `v2`. Doing the same analysis as before:
 
-```{r outlier_analysis_2_in_r, echo=FALSE}
+```{r outlier-analysis-2-in-r, echo=FALSE}
 # Creating the dataset
 v1=c(rep("Argentina",50), rep("Uruguay",50), rep("Uruguay",30), "Argentina", "Argentina", "Argentina", "Argentina")
 v2=c(rep("cat_A",50), rep("cat_B",50), rep("cat_A",30), "cat_B", "cat_A", "cat_A", "cat_A")
 df_hello_world=data.frame(v1, v2)
 ```
 
-```{r outlier_analysis_in_r, echo=FALSE}
+```{r outlier-analysis-in-r, echo=FALSE}
 freq(df_hello_world)
 ```
 
@@ -1379,7 +1379,7 @@ No outlier so far, right?
 
 Now we build a contingency table that tells us the distribution of both variables against each other:
 
-```{r outlier_analysis, echo=FALSE}
+```{r outlier-analysis, echo=FALSE}
 # First, it is needed to create the table object and then calculate the percentage per cell
 tbl_hello_world=table(df_hello_world)
 
@@ -1451,7 +1451,7 @@ The formula:
 The value 3 is to consider the "extreme" boundary detection. This method comes from the box plot, where the multiplier is 1.5 (not 3). This causes a lot more values to be flagged as shown in the next image.
 
 
-```{r boxplot_in_r, echo=FALSE, out.width="80%"}
+```{r boxplot-in-r, echo=FALSE, out.width="80%"}
 knitr::include_graphics("data_preparation/boxplot.png")
 ```
 
@@ -1619,7 +1619,7 @@ prof_num
 
 **Plotting**
 
-```{r, comparing_outliers_methods, warning=FALSE, message=FALSE}
+```{r, comparing-outliers-methods, warning=FALSE, message=FALSE}
 # First we need to convert the dataset into wide format
 df_1_m=reshape2::melt(df_1) 
 plotar(df_1_m,  target= "variable", input = "value", plot_type = "boxplot")
@@ -1683,7 +1683,7 @@ Some predictive models are more **noise tolerant** than others. We can help them
 
 First, we create a dataset with some outliers. Now the example has two variables.
 
-```{r outliers_treatment1,  fig.height=3, fig.width=4}
+```{r outliers-treatment1,  fig.height=3, fig.width=4}
 # Creating data frame with outliers
 
 # deactivating scientific notation
@@ -1698,13 +1698,13 @@ df_2=rbind(df_2, 135, rep(400, 30), 245, 300, 303, 200)
 
 Dealing with outliers in both variables (`var1` and `var2`) using Tukey's method:
 
-```{r outliers_treatment_3,  fig.height=3, fig.width=4}
+```{r outliers-treatment-3,  fig.height=3, fig.width=4}
 df_2_tukey=prep_outliers(data = df_2, input = c("var1", "var2"), type='stop', method = "tukey")
 ```
 
 Checking some metrics before and after the imputation:
 
-```{r outliers_treatment_4,  fig.height=3, fig.width=4}
+```{r outliers-treatment-4,  fig.height=3, fig.width=4}
 profiling_num(df_2, print_results = F) %>% select(variable, mean, std_dev, variation_coef)
 profiling_num(df_2_tukey, print_results = F) %>% select(variable, mean, std_dev, variation_coef)
 ```
@@ -1761,7 +1761,7 @@ Pretty clear, right?
 
 Now let's replicate the example we did in the last section with only one variable in order to compare all three methods.
 
-```{r outliers_treatment3,  fig.height=3, fig.width=4}
+```{r outliers-treatment3,  fig.height=3, fig.width=4}
 df_2$tukey_var2=prep_outliers(data=df_2$var2, type='stop', method = "tukey")
 df_2$hampel_var2=prep_outliers(data=df_2$var2, type='stop', method = "hampel")
 df_2$bot_top_var2=prep_outliers(data=df_2$var2, type='stop', method = "bottom_top", bottom_percent=0.01, top_percent = 0.01)
@@ -1784,7 +1784,7 @@ All three methods show very similar results with these data.
 **Plotting**
 
 
-```{r, outliers_method_comparison, warning=FALSE, message=FALSE}
+```{r, outliers-method-comparison, warning=FALSE, message=FALSE}
 # First we need to convert the dataset into wide format
 df_2_m=reshape2::melt(df_2_b) %>% filter(value<100) 
 plotar(df_2_m,  target= "variable", input = "value", plot_type = "boxplot")
@@ -2159,7 +2159,7 @@ If we see that the variable seems to be correlated when it's not empty (same as 
 
 The function `equal_freq` splits the variable into the desired bins:
 
-```{r na_missing_values_analysis, fig.height=3, fig.width=6, echo=FALSE}
+```{r na-missing-values-analysis, fig.height=3, fig.width=6, echo=FALSE}
 HollywoodMovies2011$TheatersOpenWeek_2=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
 
 freq(HollywoodMovies2011, "TheatersOpenWeek_2")
@@ -2306,7 +2306,7 @@ df_imputed=imputation_res$ximp
 Now it's time to compare the distributions of some of the imputed variables. Hopefully, they will look similar on a visual analysis. 
 
 
-```{r how_to_impute_missing_values, warning=FALSE, message=FALSE, fig.height=4, fig.width=5}
+```{r how-to-impute-missing-values, warning=FALSE, message=FALSE, fig.height=4, fig.width=5}
 # Creating another imputation based on na.rougfix from the random forest package
 df_rough=na.roughfix(df_holly)
 
@@ -2340,7 +2340,7 @@ If we want to take an analytical point of view, then we can run a statistical te
  
 <br>
 
-```{r missing_value_imputation, fig.height=4, fig.width=7, tidy=FALSE}
+```{r missing-value-imputation, fig.height=4, fig.width=7, tidy=FALSE}
 # An ugly hack to plot NA as a category
 levels(df_all$TheatersOpenWeek_3)=
   c(levels(df_all$TheatersOpenWeek_3), "NA")
@@ -2486,7 +2486,7 @@ knitr::include_graphics("introduction/spacer_bar.png")
 ### What is this about?
 
 
-```{r Heraclitus_doing_machine_learning, echo=FALSE, out.width="150px"}
+```{r Heraclitus-doing-machine-learning, echo=FALSE, out.width="150px"}
 knitr::include_graphics("data_preparation/Heraklit.jpeg")
 ```
 
@@ -2510,7 +2510,7 @@ As time goes by, variables may change their values, making the time-analysis cru
 #### Don't use information from the future
 
 
-```{r data_preparation_variable_selection, echo=FALSE, out.width="200px"}
+```{r data-preparation-variable-selection, echo=FALSE, out.width="200px"}
 knitr::include_graphics("data_preparation/back_to_the_future.png")
 ```
 
@@ -2557,7 +2557,7 @@ Two people, `Ouro` and `Borus`, are users of a web application which has a certa
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
-```{r data_preparation_time_variable,echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable,echo=FALSE, fig.height=3, fig.width=4}
 library(ggplot2)
 d4=data.frame(user=c('Ouro','Ouro','Ouro','Ouro','Ouro','Borus','Borus','Borus','Borus','Borus', 'Ouro','Ouro'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
 pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) +  theme_minimal() + theme(panel.grid.minor = element_blank())  + geom_point()
@@ -2583,7 +2583,7 @@ The behavior in this kick-off period may be more relevant -regarding prediction 
 #### Fighting the infinite
 
 
-```{r Cutting_the_inifinity, echo=FALSE, out.width="150px"}
+```{r Cutting-the-inifinity, echo=FALSE, out.width="150px"}
 knitr::include_graphics("data_preparation/infinity.png")
 ```
 
@@ -2596,7 +2596,7 @@ Consider the following example. _How much hours are needed to reach the 0 value?
 
 How about 100 hours?
 
-```{r data_preparation_time_variable_1, echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable-1, echo=FALSE, fig.height=3, fig.width=4}
 # generating 3 series example
 y1=round(1/log(1:100), 2)
 y2=round(1/log(1:1000), 2)
@@ -2607,20 +2607,20 @@ plot(y1, xlab = "time (hs)", col="coral")
 
 Hmm let's check the minimum value.
 
-```{r data_preparation_time_variable_2, echo=FALSE}
+```{r data-preparation-time-variable-2, echo=FALSE}
 sprintf("Min value after 100 hours: %s", min(y1))
 ```
 
 It's close to zero, but _what if we wait 1000 hours?_
 
-```{r data_preparation_time_variable_3, echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable-3, echo=FALSE, fig.height=3, fig.width=4}
 plot(y2, xlab = "time (hs)", col="coral")
 sprintf("Min value after 1,000 hours: %s", min(y2))
 ```
 
 Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times more? (10,000 hours)
 
-```{r data_preparation_time_variable_4, echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable-4, echo=FALSE, fig.height=3, fig.width=4}
 plot(y3, xlab = "time (hs)", col="coral")
 sprintf("Min value after 10,000 hours: %s", min(y3))
 ```

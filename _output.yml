@@ -6,8 +6,6 @@ bookdown::pdf_book:
   keep_tex: yes
   template: template.tex
 
-
-
 bookdown::epub_book: default
 
 bookdown::gitbook:
