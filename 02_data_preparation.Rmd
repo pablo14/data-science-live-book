@@ -301,7 +301,7 @@ This technique groups the same number of observations using criteria based on pe
 The `funModeling` package includes the `equal_freq` function to create bins based on these criteria:
 
 
-```{r equal-frequency-discretization, fig.width=4, fig.height=3, tidy=FALSE, fig.cap="", out.extra='Equal frequency example'}
+```{r equal-frequency-discretization, fig.width=4, fig.height=3, tidy=FALSE, fig.cap="Equal frequency example", out.extra=''}
 
 d_stunt_grp$stunt_child_ef=
   equal_freq(var = d_stunt_grp$share_stunted_child, 
@@ -490,7 +490,7 @@ df_compare
 
 Final distribution: 
 
-```{r, binning-variable, tidy=FALSE, fig.cap="", out.extra='Automatic discretization results'}
+```{r, binning-variable, tidy=FALSE, fig.cap="Automatic discretization results", out.extra=''}
 describe(heart_disease_discretized %>% 
            select(max_heart_rate,oldpeak))
 
@@ -670,7 +670,7 @@ country_freq[1:10,]
 
 So 10 countries represent more the 70% of cases. We can assign the category `other` to the remaining cases and plot:
 
-```{r data-preparation-profiling-nominal-variable_2, fig.height=2.3, fig.width=4.2}
+```{r data-preparation-profiling-nominal-variable_2, fig.height=2.3, fig.width=4.2, fig.cap="country_2 frequency analysis", out.extra=''}
 data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'country'], data_country$country, 'other')
 freq(data_country, 'country_2')
 ```
@@ -874,7 +874,7 @@ Likelihood of target variable has been stabilised a little more in `other` categ
 
 Watch out about applying this technique blindly. Sometimes in a **highly unbalanced** target prediction -e.g. **anomaly detection**- the abnormal behavior is present in less than 1% of cases.
 
-```{r}
+```{r anomaly-data-analysis, fig.cap="Inspecting anomaly data", out.extra=''}
 # replicating the data
 d_abnormal=data_country
 
@@ -1174,7 +1174,7 @@ The concept of extreme values, much like other topics in machine learning, is no
 
 <br>
 
-```{r outliers-intuition, echo=FALSE ,out.width="100%", fig.cap="Outliers", out.extra=''}
+```{r outliers-intuition, echo=FALSE ,out.width="100%", fig.cap="", out.extra=''}
 knitr::include_graphics("data_preparation/outlier_intuition.png")
 ```
 
@@ -1199,7 +1199,7 @@ _Image created by: [Guillermo Mesyngier](https://dribbble.com/gmesyngier)_
 
 For example, consider the following distribution:
   
-```{r dealing-with-outliers}
+```{r dealing-with-outliers, fig.cap="Sample distribution with long tail", out.extra=''}
 # Loading ggplot2 to visualize the distribution
 library(ggplot2)
 
@@ -1216,7 +1216,7 @@ The variable is skewed to the left, showing some outlier points on the right. We
 
 Both cases could be right. In fact, taking another number as the threshold (i.e., 2% or 0.1%), may be right too. Let's visualize them:
 
-```{r dealing-with-outliers-4}
+```{r dealing-with-outliers-4, fig.cap="Different thresholds for outliers", out.extra=''}
 # Calculating the percentiles for the top 3% and top 1%
 percentile_var=quantile(df_1$var, c(0.98, 0.99, 0.999), na.rm = T)
 df_p=data.frame(value=percentile_var, percentile=c("a_98th", "b_99th", "c_99.9th"))
@@ -1229,9 +1229,9 @@ To understand more about percentiles, please go to the [Annex 1: The magic of pe
 
 For now, we'll keep with the top 1% (99th percentile), as the threshold to flag all the points after it as outliers.
   
-```{r dealing-with-outliers-2, fig.height=3, fig.width=4, echo=FALSE}
+```{r dealing-with-outliers-2, fig.height=3, fig.width=4, echo=FALSE, fig.cap="Flagging top 1% as outlier", out.extra=''}
 
-# Plotting the same distribution plus the percentiles
+# Plotting the same distribution plus the the outlier area
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
   geom_rect(aes(xmin = df_p$value[2], xmax = Inf, ymin = -Inf, ymax = Inf), fill = "pink", alpha = 0.01)+
   geom_vline(data=df_p, 
@@ -1246,8 +1246,8 @@ One interesting conceptual element arises here: when we define **abnormal** (or 
 This “normal” behavior is shown as the green area:
 
 
-```{r dealing-with-outliers-3, fig.height=3, fig.width=4, echo=FALSE,tidy=TRUE}
-# Plotting the same distribution plus the percentiles
+```{r dealing-with-outliers-3, fig.height=3, fig.width=4, echo=FALSE, tidy=TRUE, fig.cap="Same threshold, different perspective", out.extra=''}
+# Plotting the same distribution plus the non-outlier area
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
   geom_rect(aes(xmin = -Inf, xmax = df_p$value[2], ymin = -Inf, ymax = Inf), fill = "lightgreen", alpha = 0.01)+
   geom_vline(data=df_p, 
@@ -1272,7 +1272,7 @@ Let's make this section more philosophical. Some good mathematicians were also p
 Where can we put the threshold to indicate where the hot weather begins or, conversely, where does the cold weather end?
 
 
-```{r Finding-the-cutpoint, echo=FALSE, out.width="30%"}
+```{r Finding-the-cutpoint, echo=FALSE, out.width="30%", fig.cap="Where is the cutpoint?", out.extra=''}
 knitr::include_graphics("data_preparation/where_is_the_cutpoint.png")
 ```
 
@@ -1330,9 +1330,9 @@ It's better to show a nonbiased number than justifying that the model _will hand
 
 * **Numerical** `r emo::ji("straight_ruler")`: Like the one we saw before:
 
-```{r numerical-outliers-1, echo=FALSE}
+```{r numerical-outliers-1, echo=FALSE, fig.cap="Numerical variable with outliers", out.extra=''}
 
-## Plotting the same distribution plus the percentiles
+## Plotting the same distribution plus outlier area
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
   geom_rect(aes(xmin = df_p$value[2], xmax = Inf, ymin = -Inf, ymax = Inf), fill = "pink", alpha = 0.01)+
   geom_vline(data=df_p, 
@@ -1344,7 +1344,7 @@ ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
 
 * **Categorical** `r emo::ji("bar_chart")`: Having a variable in which the dispersion of categories is quite high (high cardinality): for example, postal code. More about dealing with outliers in categorical variables in the [High Cardinality Variable in Descriptive Stats](#high_cardinality_descriptive_stats) chapter.
 
-```{r categorical-outliers-1, echo=FALSE, message=FALSE, warning=FALSE}
+```{r categorical-outliers-1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Categorical variable with outliers", out.extra=''}
 library(funModeling)
 library(dplyr)
 data_country_sample=filter(data_country, country %in% c("France", "China", "Uruguay", "Peru", "Vietnam"))
@@ -1371,7 +1371,7 @@ v2=c(rep("cat_A",50), rep("cat_B",50), rep("cat_A",30), "cat_B", "cat_A", "cat_A
 df_hello_world=data.frame(v1, v2)
 ```
 
-```{r outlier-analysis-in-r, echo=FALSE}
+```{r outlier-analysis-in-r, echo=FALSE, fig.cap="Outliers by dimensionality", out.extra=''}
 freq(df_hello_world)
 ```
 
@@ -1451,7 +1451,7 @@ The formula:
 The value 3 is to consider the "extreme" boundary detection. This method comes from the box plot, where the multiplier is 1.5 (not 3). This causes a lot more values to be flagged as shown in the next image.
 
 
-```{r boxplot-in-r, echo=FALSE, out.width="80%"}
+```{r boxplot-in-r, echo=FALSE, out.width="80%", fig.cap="How to interpret a boxplot", out.extra=''}
 knitr::include_graphics("data_preparation/boxplot.png")
 ```
 
@@ -1784,7 +1784,7 @@ All three methods show very similar results with these data.
 **Plotting**
 
 
-```{r, outliers-method-comparison, warning=FALSE, message=FALSE}
+```{r, outliers-method-comparison, warning=FALSE, message=FALSE, fig.cap="Comparing outliers methods", out.extra=''}
 # First we need to convert the dataset into wide format
 df_2_m=reshape2::melt(df_2_b) %>% filter(value<100) 
 plotar(df_2_m,  target= "variable", input = "value", plot_type = "boxplot")
@@ -2157,31 +2157,36 @@ If we see that the variable seems to be correlated when it's not empty (same as 
 
 #### Method 1: Converting into categorical
 
-The function `equal_freq` splits the variable into the desired bins:
+The function `equal_freq` splits the variable into the desired bins. It takes a numeric variable (`TheatersOpenWeek`) and returns a categorical one (`TheatersOpenWeek_cat`), based on equal frequency criteria.
 
-```{r na-missing-values-analysis, fig.height=3, fig.width=6, echo=FALSE}
-HollywoodMovies2011$TheatersOpenWeek_2=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
+```{r na-missing-values-analysis, fig.height=3, fig.width=6, echo=FALSE, fig.cap="Missing values in categorical data", out.extra=''}
+HollywoodMovies2011$TheatersOpenWeek_cat=equal_freq(HollywoodMovies2011$TheatersOpenWeek, n_bins=5)
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_2")
+freq(HollywoodMovies2011, "TheatersOpenWeek_cat")
 ```
 
-As we can see, `TheatersOpenWeek_2` contains five buckets of 24 cases each, where each represents 20% of total cases. But, the `NA` values are still there.
+As we can see, `TheatersOpenWeek_cat` contains five buckets of 24 cases each, where each represents 20% of total cases. But, the `NA` values are still there.
 
 Finally, we have to convert the NA into the string `empty`.
 
 ```{r, fig.height=3, fig.width=6, echo=FALSE, results=FALSE}
-HollywoodMovies2011$TheatersOpenWeek_2=as.character(HollywoodMovies2011$TheatersOpenWeek_2)
-HollywoodMovies2011$TheatersOpenWeek_2=ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_2), "empty", HollywoodMovies2011$TheatersOpenWeek_2)
+HollywoodMovies2011$TheatersOpenWeek_cat_fill=as.character(HollywoodMovies2011$TheatersOpenWeek_cat)
+HollywoodMovies2011$TheatersOpenWeek_cat_fill=
+  ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_cat_fill),
+         "empty", 
+         HollywoodMovies2011$TheatersOpenWeek_cat_fill
+         )
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_2")
+freq(HollywoodMovies2011$TheatersOpenWeek_cat_fill)
 ```
 
 And that's it: the variable is ready to be used. 
 
 **Custom cuts**:
-If we want to use custom bucket sizes instead of the ones provided by equal frequency, then we can do the following:
 
-```{r, tidy=FALSE}
+If we want to use custom bucket sizes instead of the ones provided by equal frequency, then we can use `cut` function. In this case it takes the numerical variable `TheatersOpenWeek` and returns `TheatersOpenWeek_cat_cust`.
+
+```{r, tidy=FALSE, fig.cap="Custom binning", out.extra=''}
 # disabling scientific notation in current R session
 options(scipen=999) 
 
@@ -2189,13 +2194,13 @@ options(scipen=999)
 # 2,300, and a max of 4,100. Values above 4,100 
 # will be assigned to NA.
 
-HollywoodMovies2011$TheatersOpenWeek_3=
+HollywoodMovies2011$TheatersOpenWeek_cat_cust=
   cut(HollywoodMovies2011$TheatersOpenWeek, 
       breaks = c(0, 1000, 2300, 4100), 
       include.lowest = T,
       dig.lab = 10)
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_3", plot = F)
+freq(HollywoodMovies2011, "TheatersOpenWeek_cat_cust", plot = F)
 ```
 
 
@@ -2211,9 +2216,9 @@ As with categorical variables, we can replace values by a number such as the mea
 
 In this case, we'll replace `NA` by the average and plot the before and after results side-by-side.
 
-```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE, tidy=FALSE}
+```{r, fig.height=3, fig.width=6, warning=FALSE, message=FALSE, tidy=FALSE, fig.cap="Filling NA with the mean value", out.extra=''}
 # Filling all NA values with the mean of the variable
-HollywoodMovies2011$opweek_mean=
+HollywoodMovies2011$TheatersOpenWeek_mean=
   ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek), 
          mean(HollywoodMovies2011$TheatersOpenWeek, 
               na.rm = T), 
@@ -2226,7 +2231,7 @@ p1=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek)) +
   ylim(0, 30)
  
 # Plotting transformed variable
-p2=ggplot(HollywoodMovies2011, aes(x=opweek_mean)) + 
+p2=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek_mean)) + 
   geom_histogram(colour="black", fill="white") + 
   ylim(0, 30)
 
@@ -2269,12 +2274,20 @@ The [missForest](https://cran.r-project.org/web/packages/missForest/missForest.p
 Regardless of missing value imputation, the random forest model has one of the best performances of many different kinds of data.
 In next example, we will complete the `HollywoodMovies2011` data we were working with before. These data contain `NA` values in both numerical and categorical variables.
 
+
 ```{r, message=FALSE, tidy=FALSE}
 # install.packages("missForest")
 library(missForest)
 
 # Copying the data
-df_holly=HollywoodMovies2011
+df_holly=Lock5Data::HollywoodMovies2011
+
+# Creating again the TheatersOpenWeek_cat_cust
+df_holly$TheatersOpenWeek_cat_cust=
+  cut(HollywoodMovies2011$TheatersOpenWeek, 
+      breaks = c(0, 1000, 2300, 4100), 
+      include.lowest = T,
+      dig.lab = 10)
 
 # We will introduce 15% more NA values in 
 # TheatersOpenWeek_3 to produce a better example. 
@@ -2284,15 +2297,10 @@ df_holly=HollywoodMovies2011
 # NA values
 set.seed(31415) 
 
-df_holly$TheatersOpenWeek_3=
-  prodNA(select(df_holly, TheatersOpenWeek_3), 0.15)[,1]
+df_holly$TheatersOpenWeek_cat_cust=
+  prodNA(select(df_holly, TheatersOpenWeek_cat_cust), 0.15)[,1]
 
-# missForest fails if it has any character variable, 
-# so we convert the only character into the factor:
-df_holly$TheatersOpenWeek_2 = 
-  as.factor(df_holly$TheatersOpenWeek_2)
-
-# Excluding the .id column
+# Excluding the unuseful variables 
 df_holly=select(df_holly, -Movie)
 
 # Now the magic! Imputing the data frame
@@ -2303,10 +2311,13 @@ imputation_res=missForest(xmis = df_holly)
 df_imputed=imputation_res$ximp
 ```
 
-Now it's time to compare the distributions of some of the imputed variables. Hopefully, they will look similar on a visual analysis. 
+Note: `missForest` fails will fail if it has any character variable.
 
 
-```{r how-to-impute-missing-values, warning=FALSE, message=FALSE, fig.height=4, fig.width=5}
+Now it's time to compare the distributions of some of the imputed variables, we will use the original variable before discretization: `TheatersOpenWeek`. Hopefully, they will look similar on a visual analysis. 
+
+
+```{r how-to-impute-missing-values, warning=FALSE, message=FALSE, fig.height=4, fig.width=5, fig.cap="Comparing imputation methods (numeric variable)", out.extra=''}
 # Creating another imputation based on na.rougfix from the random forest package
 df_rough=na.roughfix(df_holly)
 
@@ -2326,32 +2337,34 @@ ggplot(df_all, aes(TheatersOpenWeek, colour=imputation)) + geom_density() + them
 ```
 
 
-* The green curve shows the distribution after the imputation based on the `missForest` package.
-* The orange shows the imputation method we discussed at the beginning, which replaces all `NA` by the median using the `na.roughfix` function in the `randomForest` package.
-* The blue one shows the distribution without any imputation (of course, NA values are not displayed). 
+* The orange curve shows the distribution after the imputation based on the `missForest` package.
+* The blue shows the imputation method we discussed at the beginning, which replaces all `NA` by the median using the `na.roughfix` function in the `randomForest` package.
+* The green one shows the distribution without any imputation (of course, NA values are not displayed). 
 
 **Analysis:**
 
 Replacement of `NA` by the median tends to concentrate, as expected, all the values around 3000. On the other side, the imputation given by the missForest package provides a **more natural distribution** because it doesn't concentrate around a single value. That's why the peak around 3000 is lower than the original one.
 
-The orange and blue look pretty similar!
+The orange and green look pretty similar!
 
 If we want to take an analytical point of view, then we can run a statistical test to compare, for example, the means or the variance.
  
+Next we'll visualize `TheatersOpenWeek` discretized custom variable (`TheatersOpenWeek_cat_cust`).
+
 <br>
 
-```{r missing-value-imputation, fig.height=4, fig.width=7, tidy=FALSE}
+```{r missing-value-imputation, fig.height=4, fig.width=7, tidy=FALSE, fig.cap="Comparing imputation methods", out.extra=''}
 # An ugly hack to plot NA as a category
-levels(df_all$TheatersOpenWeek_3)=
-  c(levels(df_all$TheatersOpenWeek_3), "NA")
+levels(df_all$TheatersOpenWeek_cat_cust)=
+  c(levels(df_all$TheatersOpenWeek_cat_cust), "NA")
 
-flag_na=is.na(df_all$TheatersOpenWeek_3)
+flag_na=is.na(df_all$TheatersOpenWeek_cat_cust)
 
-df_all$TheatersOpenWeek_3[flag_na]="NA"
+df_all$TheatersOpenWeek_cat_cust[flag_na]="NA"
 
 # Now the plot!
-ggplot(df_all, aes(x = TheatersOpenWeek_3, 
-                   fill = TheatersOpenWeek_3)
+ggplot(df_all, aes(x = TheatersOpenWeek_cat_cust, 
+                   fill = TheatersOpenWeek_cat_cust)
        ) +
   geom_bar(na.rm=T) + 
   facet_wrap(~imputation) + 
@@ -2373,9 +2386,9 @@ ggplot(df_all, aes(x = TheatersOpenWeek_3,
 
 **Analysis:**
 
-The original variable contains 31 `NA` values that were replaced using the mode (most frequent value) in `na.roughfix`, and with smoother and more reasonable criteria using `missForest`.
+The original variable contains 35 `NA` values that were replaced using the mode or most frequent value in `na.roughfix`: `(2300, 4100]`. On the other hand we got an slighlty different result using `missForest`, the  completeness was based on other variables.
 
-`missForest` added two rows in the category `[0, 1000]`, 1 in `[1000, 2300]`, and 32 in the `[2300, 4100]` category, whereas `na.roughfix` added only 35 to `[2300, 4100]`.
+`missForest` added 15 rows in the category `[0, 1000]`, 3 in `[1000, 2300]`, and 17 in the `[2300, 4100]` category.
 
 
 <br>
@@ -2430,7 +2443,7 @@ In the original data, `nhanes` has 25 rows and data_all contains 125 rows, which
 
 Time to check the results:
 
-```{r, fig.height=3, fig.width=6}
+```{r, fig.height=3, fig.width=6, fig.cap="Analyzing missing values results using MICE", out.extra=''}
 densityplot(imp_data)
 ```
 
@@ -2458,7 +2471,7 @@ A quick review of the strategies follows:
 
 A) Excluding the rows and columns with missing values. Only applicable if there is _a few_ rows (or columns) with missing values, **and** if the remaining data are enough to achieve the project goal. However, when we exclude rows with missing values and we build a predictive model that will run on production, when a **new case arrives** that contains missing values, we must assign a value to process these. 
 
-B) The strategies of **converting numerical variables to categorical** and then creating the “empty” value (also applicable to categorical variables), is the quickest option and we are introducing the missing value to the model so that it will consider the uncertainty. 
+B) The strategies of **converting numerical variables to categorical** and then creating the “empty” value (also applicable to categorical variables), is the quickest -and recommended- option to deal with empty valies. This way we introduce the missing values to the model so that it will handle the uncertainty. 
 
 C) The **imputation methods** like the ones we covered with MICE and missForest are considerably more complex. With these methods, we introduce a **controlled-bias** so that we don't have to exclude any rows or columns. 
 
@@ -2489,8 +2502,6 @@ knitr::include_graphics("introduction/spacer_bar.png")
 ```{r Heraclitus-doing-machine-learning, echo=FALSE, out.width="150px"}
 knitr::include_graphics("data_preparation/Heraklit.jpeg")
 ```
-
-
 
 > Everything changes and nothing stands still. - Heraclitus, (535 – 475 BC), pre-Socratic Greek philosopher.
 
@@ -2553,11 +2564,11 @@ The easiest solution is: setting minimum since begin and the maximum as the whol
 
 **Case study:** 
 
-Two people, `Ouro` and `Borus`, are users of a web application which has a certain functionality called `feature_A`, and we need to build a predictive model which forecast based on `feature_A` usage  -measured in 'clicks" if the person is going to acquire `full_subscription`.
+Two people, `Ouro` and `Borus`, are users of a web application which has a certain functionality called `feature_A`, and we need to build a predictive model which forecast based on `feature_A` usage  -measured in clicks- if the person is going to acquire `full_subscription`.
 
 The current data says: Borus has `full_subscription`, while Ouro doesn't. 
 
-```{r data-preparation-time-variable,echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable,echo=FALSE, fig.height=3, fig.width=4, fig.cap="Be careful about time considerations", out.extra=''}
 library(ggplot2)
 d4=data.frame(user=c('Ouro','Ouro','Ouro','Ouro','Ouro','Borus','Borus','Borus','Borus','Borus', 'Ouro','Ouro'), days_since_signup=c(1,2,3,4,5,1,2,3,4,5,6,7), feature_A=c(2,3,3,5,12, 0, 0, 1, 6, 15, 20,24), stringsAsFactors = F)
 pd4=ggplot(d4, aes(x=days_since_signup, y=feature_A, colour=user)) + geom_line() +  scale_x_continuous(breaks = 1:7) +  theme_minimal() + theme(panel.grid.minor = element_blank())  + geom_point()
@@ -2596,7 +2607,7 @@ Consider the following example. _How much hours are needed to reach the 0 value?
 
 How about 100 hours?
 
-```{r data-preparation-time-variable-1, echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable-1, echo=FALSE, fig.height=3, fig.width=4, fig.cap="100 hours", out.extra=''}
 # generating 3 series example
 y1=round(1/log(1:100), 2)
 y2=round(1/log(1:1000), 2)
@@ -2613,14 +2624,14 @@ sprintf("Min value after 100 hours: %s", min(y1))
 
 It's close to zero, but _what if we wait 1000 hours?_
 
-```{r data-preparation-time-variable-3, echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable-3, echo=FALSE, fig.height=3, fig.width=4, fig.cap="1,000 hours", out.extra=''}
 plot(y2, xlab = "time (hs)", col="coral")
 sprintf("Min value after 1,000 hours: %s", min(y2))
 ```
 
 Hurra! We are approaching it! From `0.21` to `0.14` But what if we wait 10 times more? (10,000 hours)
 
-```{r data-preparation-time-variable-4, echo=FALSE, fig.height=3, fig.width=4}
+```{r data-preparation-time-variable-4, echo=FALSE, fig.height=3, fig.width=4, fig.cap="10,000 hours", out.extra=''}
 plot(y3, xlab = "time (hs)", col="coral")
 sprintf("Min value after 10,000 hours: %s", min(y3))
 ```

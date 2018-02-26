@@ -11,3 +11,12 @@ tmp-*.tex
 figure/
 .Rapp.history
 data-science-live-book.rds
+data-science-live-book.fls
+data-science-live-book.log
+data-science-live-book.md
+data-science-live-book.out
+data-science-live-book.tex
+data-science-live-book.fdb_latexmk
+data-science-live-book.aux
+dbg_01.Rmd
+data-science-live-book.toc
