@@ -482,7 +482,7 @@ Parameters:
 
 Before and after:
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 df_compare=data.frame(max_heart_rate_before=heart_disease_2$max_heart_rate[29:34], max_heart_rate_after=heart_disease_discretized$max_heart_rate[29:34], oldpeak_before=heart_disease_2$oldpeak[29:34], oldpeak_after=heart_disease_discretized$oldpeak[29:34])
 
 df_compare
@@ -670,7 +670,7 @@ country_freq[1:10,]
 
 So 10 countries represent more the 70% of cases. We can assign the category `other` to the remaining cases and plot:
 
-```{r data-preparation-profiling-nominal-variable_2, fig.height=2.3, fig.width=4.2, fig.cap="country_2 frequency analysis", out.extra=''}
+```{r data-preparation-profiling-nominal-variable-2, fig.height=2.3, fig.width=4.2, fig.cap="Modified country variable - frequency analysis", out.extra=''}
 data_country$country_2=ifelse(data_country$country %in% country_freq[1:10,'country'], data_country$country, 'other')
 freq(data_country, 'country_2')
 ```
@@ -1229,7 +1229,7 @@ To understand more about percentiles, please go to the [Annex 1: The magic of pe
 
 For now, we'll keep with the top 1% (99th percentile), as the threshold to flag all the points after it as outliers.
   
-```{r dealing-with-outliers-2, fig.height=3, fig.width=4, echo=FALSE, fig.cap="Flagging top 1% as outlier", out.extra=''}
+```{r dealing-with-outliers-2, fig.height=3, fig.width=4, echo=FALSE, fig.cap="Flagging top 1 percent as outlier", out.extra=''}
 
 # Plotting the same distribution plus the the outlier area
 ggplot(df_1, aes(var)) + geom_histogram(bins=20) +
@@ -1619,7 +1619,7 @@ prof_num
 
 **Plotting**
 
-```{r, comparing-outliers-methods, warning=FALSE, message=FALSE}
+```{r, comparing-outliers-methods, warning=FALSE, message=FALSE, fig.cap="Outliers methods comparison", out.extra=''}
 # First we need to convert the dataset into wide format
 df_1_m=reshape2::melt(df_1) 
 plotar(df_1_m,  target= "variable", input = "value", plot_type = "boxplot")
@@ -2200,7 +2200,8 @@ HollywoodMovies2011$TheatersOpenWeek_cat_cust=
       include.lowest = T,
       dig.lab = 10)
 
-freq(HollywoodMovies2011, "TheatersOpenWeek_cat_cust", plot = F)
+freq(HollywoodMovies2011$TheatersOpenWeek_cat_cust, 
+     plot = F)
 ```
 
 
@@ -2298,7 +2299,10 @@ df_holly$TheatersOpenWeek_cat_cust=
 set.seed(31415) 
 
 df_holly$TheatersOpenWeek_cat_cust=
-  prodNA(select(df_holly, TheatersOpenWeek_cat_cust), 0.15)[,1]
+  prodNA(
+    select(df_holly, TheatersOpenWeek_cat_cust), 
+    0.15
+    )[,1]
 
 # Excluding the unuseful variables 
 df_holly=select(df_holly, -Movie)
@@ -2376,7 +2380,8 @@ ggplot(df_all, aes(x = TheatersOpenWeek_cat_cust,
   theme_minimal() + 
   theme(axis.text.x=
           element_text(angle = 45, hjust = 0.7)
-        )
+        ) +
+  theme(legend.position="bottom")
 
 
 ```

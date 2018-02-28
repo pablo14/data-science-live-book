@@ -168,7 +168,7 @@ Also, you can check the **Github** repositories for both, the b ook and `funMode
 <br>
 
 
-### Acknowledgements
+### Acknowledgements {-}
 
 Special thanks to my mentors in this data world, Miguel Spindiak and Marcelo Ferreyra.
 
@@ -180,7 +180,7 @@ This book is dedicated to _[The Nobodies](https://holywaters.wordpress.com/2011/
 
 <br>
 
-### Book's information
+### Book's information {-}
 
 First published at: [livebook.datascienceheroes.com](http://livebook.datascienceheroes.com).
 
