@@ -3,6 +3,8 @@ if(!knitr:::is_html_output())
 {
   options("width"=56)
   knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
+  knitr::opts_chunk$set(fig.pos = 'H')
+
 }
 ```
 
@@ -22,10 +24,9 @@ This chapter covers the following topics:
 _Selecting the best variables is also known as feature selection, selecting the most important predictors, selecting the best predictors, among others._
 
 
-```{r Millennium_Simulation_Project, echo=FALSE, out.width="250px"}
+```{r Millennium-Simulation-Project, echo=FALSE, out.width="200px",fig.cap="As above, so below", out.extra=""}
 knitr::include_graphics("selecting_best_variables/dark_matter_simulation.png")
 ```
-
 
 _Image: Is it a neural network? Nope. Dark matter, from the "The Millennium Simulation Project"._
 
@@ -123,7 +124,7 @@ final_res$rank_diff=final_res$rank_rf-final_res$rank_gbm
 final_res
 ```
 
-```{r ranking_best_vars_comparison, echo=FALSE}
+```{r ranking-best-vars-comparison, echo=FALSE, fig.cap="Comparing different variable ranking", out.extra=""}
 knitr::include_graphics("selecting_best_variables/ranking_best_vars_comparison.png")
 ```
 
@@ -193,7 +194,7 @@ To go further on this point, we should do a deeper exploratory data analysis. Bo
 
 ### Variables work in groups
 
-```{r variables_work_in_groups, echo=FALSE, out.width="40%"}
+```{r variables-work-in-groups, echo=FALSE, out.width="54%", fig.cap="Variables work in groups", out.extra=""}
 knitr::include_graphics("selecting_best_variables/variable_groups.png")
 ```
 
@@ -216,7 +217,7 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 #### Example in R: Variables working in groups
 
-```{r selecting_best_variables_5, echo=FALSE, out.width="40%"}
+```{r selecting-best-variables-5, echo=FALSE, out.width="54%", fig.cap="Aristotle (367 BC–347 BC)", out.extra=""}
 knitr::include_graphics("selecting_best_variables/aristotle.png")
 ```
 
@@ -294,7 +295,7 @@ detach("package:caret")
 
 Consider the following _big data_ table `r emo::ji("stuck_out_tongue_winking_eye")` 4 rows, 2 input variables (`var_1`, `var_2`) and one outcome (`target`):
 
-```{r Aristotle_philosopher_and_data_scientist, echo=FALSE, out.width="250px"}
+```{r variables-work-in-groups-2, echo=FALSE, out.width="200px", fig.cap="Unity gives strength: Combining variables", out.extra=""}
 knitr::include_graphics("selecting_best_variables/variables_work_in_gropus.png")
 ```
 
@@ -335,7 +336,7 @@ As introduced at the beginning of the chapter, we can get variable importance wi
 
 From version 1.6.6 the package `funModeling` introduces the function `var_rank_info`, which takes two arguments, the data and the target variable, because it follows:
 
-```{r variable_ranking_using_information_theory, fig.width=6, fig.height=4.5, tidy=FALSE}
+```{r variable-ranking-using-information-theory, fig.width=6, fig.height=4.5, tidy=FALSE, fig.cap="Variable Importance (based on Information Gain)", out.extra=""}
 variable_importance = 
   var_rank_info(heart_disease, "has_heart_disease")
 
@@ -401,7 +402,7 @@ The problem is that we're adding complexity to the model: it's usually more time
 
 ### Keep it simple
 
-```{r fractals_nature, echo=FALSE, out.width="38%"}
+```{r fractals-nature, echo=FALSE, out.width="38%", fig.cap="Fractals in Nature", out.extra=""}
 knitr::include_graphics("selecting_best_variables/fractals_nature.png")
 ```
 
@@ -420,7 +421,7 @@ A predictive model with a _high_ number of variables will tend to do **overfitti
 The concept of _high_ and _low_ is **highly subjective** to the data that is being analyzed. In practice, we may have some accuracy metric, for example, the ROC value. i.e. we would see something like:
 
 
-```{r variable_selection_in_r_2, echo=FALSE}
+```{r variable-selection-in-r-2, echo=FALSE, fig.cap="ROC values for different variables subset", out.extra=""}
 knitr::include_graphics("selecting_best_variables/variable_selection_table.png")
 ```
 
@@ -432,7 +433,9 @@ We We can check that the highest ROC appears when the model is built with 30 var
 Take a closer look at the difference between the subset of 20 and the 30; there is only an improvement of **1.8%** -from 0.9324 to 0.95- choosing **10 more variables.** In other words: _Choosing 50% more variables will impact in less than 2% of improvement._
 
 Even more, this 2% may be an error margin given the variance in the prediction that every predictive model has, as we seen in [Knowing the error](#knowing_the_error) chapter.
-Conclusion:**
+
+
+**Conclusion:**
 
 In this case, and being consequent with Occam's Razor principle, the best solution is to build the model with the subset of 20 variables.
 
@@ -442,7 +445,7 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 ### Variable selection in Clustering?
 
-```{r variable_selection_in_clustering, echo=FALSE, out.width="30%"}
+```{r variable-selection-in-clustering, echo=FALSE, out.width="54%", fig.cap="Example of cluster segmentation", out.extra=""}
 knitr::include_graphics("selecting_best_variables/cluster.png")
 ```
 
@@ -512,8 +515,8 @@ This plot intent to show in real scenarios if a variable is or not important, ma
 
 ### Example 1: Is gender correlated with heart disease?
 
-```{r cross_plot_data_viz, results="hide", , fig.height=4, fig.width=9.5}
-cross_gender=cross_plot(heart_disease, input="gender", target="has_heart_disease")
+```{r cross-plot-data-viz, results="hide", fig.height=4, fig.width=9.5, fig.cap="Using cross-plot to analyze and report variable importance", out.extra=""}
+cross_plot(heart_disease, input="gender", target="has_heart_disease")
 ```
 
 Last two plots have the same data source, showing the distribution of `has_heart_disease` regarding `gender`. The one on the left shows in percentage value, while the one on the right shows in absolute value.
@@ -554,7 +557,7 @@ There is a function included in the package (inherited from Hmisc package): `equ
 
 For numerical variables, `cross_plot` has by default the `auto_binning=T`, which automatically calls the `equal_freq` function with `n_bins=10` (or the closest number).
 
-```{r cross_plot_feature_engineering, results="hide",fig.height=4, fig.width=9.5}
+```{r cross-plot-feature-engineering, results="hide",fig.height=4, fig.width=9.5, fig.cap="Numeric variable as input (automatic binning)", out.extra=""}
 cross_plot(heart_disease, input="max_heart_rate", target="has_heart_disease")
 ```
 
@@ -564,13 +567,14 @@ If you don't want the automatic binning, then set the `auto_binning=F` in `cross
 
 For example, creating `oldpeak_2` based on equal frequency, with three buckets.
 
-```{r variable_importance_c3}
-heart_disease$oldpeak_2=equal_freq(var=heart_disease$oldpeak, n_bins = 3)
+```{r variable-importance-c3, tidy=FALSE}
+heart_disease$oldpeak_2 = 
+  equal_freq(var=heart_disease$oldpeak, n_bins = 3)
 summary(heart_disease$oldpeak_2)
 ```
 
 Plotting the binned variable (`auto_binning = F`):
-```{r selecting_best_variables_3, results="hide", fig.height=4, fig.width=9.5}
+```{r selecting-best-variables-3, results="hide", fig.height=4, fig.width=9.5,fig.cap="Disabling automatic binning shows the original variable", out.extra=""}
 cross_oldpeak_2=cross_plot(heart_disease, input="oldpeak_2", target="has_heart_disease", auto_binning = F)
 ```
 
@@ -582,7 +586,7 @@ This new plot based on `oldpeak_2` shows clearly how: the likelihood of **having
 
 Converting variable `max_heart_rate` into a one of 10 bins:
 
-```{r variable_importance_c5, results="hide",fig.height=4, fig.width=9.9, tidy=FALSE}
+```{r variable-importance-c5, results="hide",fig.height=4, fig.width=9.9, tidy=FALSE,fig.cap="Plotting using custom binning", out.extra=""}
 heart_disease$max_heart_rate_2 = 
   equal_freq(var=heart_disease$max_heart_rate, n_bins = 10)
 
@@ -596,7 +600,7 @@ At first glance, `max_heart_rate_2` shows a negative and linear relationship. Ho
 
 **Key note**: One way to reduce the **noise** (at the cost of **losing** some information), is to split with less bins:
 
-```{r feature_engineering, results="hide", fig.height=4, fig.width=9.5, tidy=FALSE}
+```{r feature-engineering, results="hide", fig.height=4, fig.width=9.5, tidy=FALSE, fig.cap="Reducing the bins may help to better expose the relationship", out.extra=""}
 heart_disease$max_heart_rate_3 = 
   equal_freq(var=heart_disease$max_heart_rate, n_bins = 5)
 
@@ -613,7 +617,7 @@ cross_plot(heart_disease,
 
 Just set the parameter `path_out` with the folder you want -It creates a new one if it doesn't exists-.
 
-```{r several_cross_plot_c1, eval=FALSE}
+```{r several-cross-plot-c1, eval=FALSE, fig.cap="Easy plot exportation", out.extra=""}
 cross_plot(heart_disease, input="max_heart_rate_3", target="has_heart_disease", path_out="my_plots")
 ```
 
@@ -624,11 +628,11 @@ It creates the folder `my_plots` into the working directory.
 Imagine you want to run cross_plot for several variables at the same time. To achieve this goal just define a vector containing the variable names.
 
 If you want to analyze these 3 variables:
-```{r several_cross_plot2_c, eval=FALSE}
+```{r several-cross-plot2-c, eval=FALSE}
 vars_to_analyze=c("age", "oldpeak", "max_heart_rate")
 ```
 
-```{r several_cross_plot_c3, eval=FALSE}
+```{r several-cross-plot-c3, eval=FALSE, fig.cap="Easy analysis for several variables at once", out.extra=""}
 cross_plot(data=heart_disease, target="has_heart_disease", input=vars_to_analyze)
 ```
 
@@ -638,7 +642,7 @@ cross_plot(data=heart_disease, target="has_heart_disease", input=vars_to_analyze
 ### Exporting plots
 
 `plotar` and `cross_plot` can handle from 1 to N input variables, and plots generated by them can be easily exported in high quality with parameter `path_out`.
-```{r variable_importance_2c, results="hide", fig.height=2, fig.width=4, eval=F}
+```{r variable-importance-2c, results="hide", fig.height=2, fig.width=4, eval=FALSE}
 plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'),  target="has_heart_disease", plot_type = "boxplot", path_out = "my_awsome_folder")
 ```
 
@@ -660,13 +664,13 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 The use of Boxplots in importance variable analysis gives a quick view of how different the quartiles are among the various values in a binary target variable.
 
-`````{r loading_lib, results="hide", message=FALSE}
+`````{r loading-lib, results="hide", message=FALSE}
 # Loading funModeling !
 library(funModeling)
 data(heart_disease)
 ```
 
-```{r variable_importance2b,  fig.height=3, fig.width=5}
+```{r variable-importance2b,  fig.height=3, fig.width=5, fig.cap="Pofiling target using boxplot", out.extra=""}
 plotar(data=heart_disease, input="age", target="has_heart_disease", plot_type = "boxplot")
 ```
 
@@ -674,7 +678,7 @@ _Rhomboid near the mean line represents the **median**._
 
 <br>
 
-```{r boxplot_analysis, echo=FALSE, out.width="230px"}
+```{r boxplot-analysis, echo=FALSE, out.width="230px", fig.cap="How to interpret a boxplot", out.extra=""}
 knitr::include_graphics("selecting_best_variables/boxplot.png")
 ```
 
@@ -690,7 +694,7 @@ When yoweeed to analyze different percentiles across the classes to predict. Not
 
 Using more than one variable as inputs is useful in order to compare boxplots quickly, and thus getting the best variables...
 
-```{r variable_importance2e,  fig.height=3, fig.width=5}
+```{r variable-importance2e,  fig.height=3, fig.width=5, fig.cap="plotar function for multiple variables", out.extra=""}
 plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'),  target="has_heart_disease", plot_type = "boxplot")
 ```
 
@@ -706,7 +710,7 @@ _Statistical tests: percentiles are another used feature used by them in order t
 
 `plotar` and `cross_plot` can handle from 1 to N input variables, and plots generated by them can be easily exported in high quality with parameter `path_out`.
 
-```{r variable_importance_2d, eval=FALSE, fig.height=2, fig.width=5, eval=F}
+```{r variable-importance_2d, eval=FALSE, fig.height=2, fig.width=5, eval=FALSE}
 plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'),  target="has_heart_disease", plot_type = "boxplot", path_out = "my_awsome_folder")
 ```
 
@@ -725,7 +729,7 @@ plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'), 
 
 Density histograms are quite standard in any book/resource when plotting distributions. To use them in selecting variables gives a quick view on how well certain variable separates the class.
 
-```{r variable_importance1, results='hide',  fig.height=3, fig.width=5}
+```{r variable-importance1, results='hide',  fig.height=3, fig.width=5, fig.cap="Profiling target using density histograms", out.extra=""}
 plotar(data=heart_disease, input="age", target="has_heart_disease", plot_type = "histdens")
 ```
 
@@ -745,7 +749,7 @@ Something similar is what a **statistical test** sees: they measured **how diffe
 
 ### Good vs. bad variable
 
-```{r variable_importance2,  fig.height=2, fig.width=5}
+```{r variable-importance2,  fig.height=2, fig.width=5, fig.cap="plotar function for multiple variables", out.extra=""}
 plotar(data=heart_disease, input=c('resting_blood_pressure', 'max_heart_rate'),  target="has_heart_disease", plot_type = "histdens")
 ```
 

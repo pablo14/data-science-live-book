@@ -3,8 +3,10 @@ if(!knitr:::is_html_output())
 {
   options("width"=56)
   knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
+  knitr::opts_chunk$set(fig.pos = 'H')
 }
 ```
+
 
 # Assesing Model Performance {#model-performance}
 
@@ -20,7 +22,7 @@ There is also a chapter about how to validate models when time is involved, whic
 
 **Methodological Aspects on Model Validation**
 
-```{r Error_in_predictive_models, echo=FALSE, out.width="30%"}
+```{r Error-in-predictive-models, echo=FALSE, out.width="30%"}
 knitr::include_graphics("model_performance/magnifier.png")
 ```
 
@@ -57,16 +59,16 @@ _So what is the real value? The one to report?_ **Re-sampling** and **cross-vali
 
 There is no sense in removing cases like that, but it gets an idea of how sensible the accuracy metric is, remember we're working with a sample from an *_unknown population_*.
 
-> If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurate in all cases, we wouldn't need all of this.
+If we'd have a fully deterministic model, a model that contains 100% of all cases we are studying, and predictions were 100% accurate in all cases, we wouldn't need all of this.
 
-> As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data through repetition, re-sampling, cross-validation, and so on...
+As far as we always analyze samples, we just need to getting closer to the _real and unknown truthness_ of data through repetition, re-sampling, cross-validation, and so on...
 
 
 <br>
 
 ### Let's illustrate this with Cross-Validation (CV)
 
-```{r Cross_Validation, echo=FALSE, out.width="80%"}
+```{r Cross-Validation, echo=FALSE, out.width="80%", fig.cap="k-fold cross validation", out.extra=''}
 knitr::include_graphics("model_performance/k-fold_cross_validation.png")
 ```
 
@@ -91,7 +93,7 @@ There 150 rows in the `iris` data frame, using [caret package](http://topepo.git
 
 This part of the output:
 
-```{r caret_cross_validation_output, echo=FALSE, out.width="70%"}
+```{r caret-cross-validation-output, echo=FALSE, out.width="86%", fig.cap="caret cross validation output", out.extra=''}
 knitr::include_graphics("model_performance/caret_cross_validation_output.png")
 ```
 
@@ -100,11 +102,11 @@ knitr::include_graphics("model_performance/caret_cross_validation_output.png")
 
 Rather a single number -the average-, we can see a distribution:
 
-```{r Accuracy_predictive_models, echo=FALSE, out.width="50%"}
+```{r Accuracy-predictive-models, echo=FALSE, out.width="50%", fig.cap="Visual analysis of the accuracy distribution", out.extra=''}
 knitr::include_graphics("model_performance/accuracy_distribution_plot.png")
 ```
 
-```{r Accuracy_predictive_models_2, echo=FALSE, out.width="50%"}
+```{r Accuracy-predictive-models-2, echo=FALSE, out.width="70%", fig.cap="Accuracy distribution", out.extra=''}
 knitr::include_graphics("model_performance/accuracy_distribution.png")
 ```
 
@@ -133,7 +135,7 @@ When the model doesn't work well, there may be several causes:
 
 More info here in _"In Machine Learning, What is Better: More Data or better Algorithms"_ [@more_data_or_better_algorithms].
 
-```{r bias_variance, echo=FALSE, out.width="75%"}
+```{r bias-variance, echo=FALSE, out.width="75%", fig.cap="Bias vs. variance tradeoff", out.extra=''}
 knitr::include_graphics("model_performance/bias_variance.png")
 ```
 
@@ -143,7 +145,7 @@ _Image credit: Scott Fortmann-Roe_  [@bias_variance_tradeoff]. It also contains 
 
 #### Complexity vs Accuracy Tradeoff
 
-```{r accuracy_machine_learning, echo=FALSE, out.width="100px"}
+```{r accuracy-machine-learning, echo=FALSE, out.width="100px"}
 knitr::include_graphics("model_performance/complexity_accuracy_balance.png")
 ```
 
@@ -185,7 +187,8 @@ Another good option is **gradient boosting machines**, it has more parameters to
 ### Don't forget: Data Preparation
 
 Tweaking input data by transforming and cleaning it, will impact on model quality. Sometimes more than optimizing the model through its parameters.
-The [Data Preparation](#data_preparation) chapter of this book is under heavy development. Coming soon.
+
+Expand this point with the [Data Preparation](#data_preparation) chapter.
 
 
 ### Final thoughts
@@ -224,7 +227,7 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 ## Out-of-Time Validation {#out-of-time_validation}
 
-```{r error_in_machine_learning, echo=FALSE, out.width="100px"}
+```{r error-in-machine-learning, echo=FALSE, out.width="100px"}
 knitr::include_graphics("model_performance/calendar.png")
 ```
 
@@ -257,9 +260,9 @@ Since the output of a binary model should be a number indicating the likelihood 
 
 <br>
 
-**So the validation workflow looks something like...**
+Following **validation workflow** may be helpful when building a predictive model involving time.
 
-```{r model_performance_workflow, echo=FALSE, out.width="100%"}
+```{r model-performance-workflow, echo=FALSE, out.width="100%", fig.cap="A validation worflow for time dependant problems", out.extra=''}
 knitr::include_graphics("model_performance/model_validation_workflow.png")
 ```
 
@@ -270,7 +273,7 @@ _[Enlarge image.](http://datascienceheroes.com/img/blog/model_validation_workflo
 
 ### Using Gain and Lift Analysis
 
-```{r gain_lift_analysis, echo=FALSE, out.width="300px"}
+```{r gain-lift-analysis, echo=FALSE, out.width="300px", fig.cap="Gain and lift curves", out.extra=''}
 knitr::include_graphics("model_performance/gain_lift.png")
 ```
 
@@ -315,7 +318,7 @@ We also have in these cases the difference between: **"what was expected" vs. "w
 
 This difference can take any number. This is the error or residuals.
 
-```{r gain_lift_analysis_in_r, echo=FALSE, out.width="100%"}
+```{r gain-lift-analysis-in-r, echo=FALSE, out.width="100%", fig.cap="Prediction and error analysis", out.extra=''}
 knitr::include_graphics("model_performance/numerical_variable.png")
 ```
 
@@ -327,7 +330,7 @@ If the model is good, this error should be **white noise**, more info in _"Time 
 * There has to be no correlation between the errors.
 * **Normal distribution**: expect the majority of errors around 0, having the biggest ones in a **smaller proportion** as the error increases -likelihood of finding bigger errors decreases exponentially-.
 
-```{r error_curve_in_r, echo=FALSE, out.width="60%"}
+```{r error-curve-in-r, echo=FALSE, out.width="60%", fig.cap="A nice error curve (normal distribution)", out.extra=''}
 knitr::include_graphics("model_performance/normal_error_curve.png")
 ```
 
@@ -362,12 +365,12 @@ Both metrics are extremely useful to validate the predictive model (binary outco
 
 Make sure we have the latest `funModeling` version (>= 1.3).
 
-```{r lib_loading, results="hide", message=FALSE}
+```{r lib-loading, results="hide", message=FALSE}
 ## Loading funModeling
 library(funModeling)
 ```
 
-```{r model_performance_gain_curve, fig.width=12, fig.height=3}
+```{r model-performance-gain-curve, fig.width=12, fig.height=3, fig.cap="Gain and lift curves", out.extra=''}
 # Create a GLM model
 fit_glm=glm(has_heart_disease ~ age + oldpeak, data=heart_disease, family = binomial)
 
@@ -422,7 +425,16 @@ As a result, the model with a higher gain at the beginning will have captured mo
 
 Let's illustrate it...
 
-[![model comparison](model_performance/model_comparison.png)](http://datascienceheroes.com/img/blog/model_comparison.png)
+
+```{r predictive-model-comparison, echo=FALSE, out.width="100%", fig.cap="Comparing the gain and lift curves for two models", out.extra=''}
+knitr::include_graphics("model_performance/model_comparison.png")
+```
+
+_[Enlarge image.](http://datascienceheroes.com/img/blog/model_comparison.png)_
+
+<br>
+
+
 **Cumulative Gain Analysis**: Model 1 reaches the ~20% of positive cases around the 10% of the population, while model 2 reaches a similar proportion approaching the 20% of the population. _Model 1 is better._
 
 **Lift analysis**: Same as before, but also it is suspicious that not every lift number follow a decreasing pattern. Maybe the model is not ordering the first percentiles of the population.
@@ -447,7 +459,7 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 Events can occur, or not... although we don't have _tomorrow's newspaper_ `r emo::ji("newspaper")`, we can make a good guess about how is it going to be.
 
-```{r error_curve, echo=FALSE, out.width="170px"}
+```{r error-curve, echo=FALSE, out.width="170px"}
 knitr::include_graphics("scoring/cover.png")
 ```
 
@@ -503,7 +515,7 @@ So first we get the score, and then according to our needs we set the **cut poin
 
 ### Let see an example
 
-```{r scoring_1, echo=FALSE, out.width="100%"}
+```{r scoring-1, echo=FALSE, out.width="100%", fig.cap="Simple dataset example", out.extra='' }
 knitr::include_graphics("scoring/tbl_example_1.png")
 ```
 
@@ -514,7 +526,7 @@ Example table showing the following
 * `target`=variable to predict
 
 
-```{r scoring_machine_learning, echo=FALSE, out.width="50%"}
+```{r scoring-machine-learning, echo=FALSE, out.width="50%", fig.cap="Getting the score (predictive model output)", out.extra=''}
 knitr::include_graphics("scoring/tbl_example_2.png")
 ```
 
@@ -549,7 +561,7 @@ Since target variable can be `no` or `yes`, the `[, 2]` return the likelihood of
 ### It's all about the cut point `r emo::ji("straight_ruler")`
 
 
-```{r scoring_machine_learning_9, echo=FALSE, out.width="50%"}
+```{r scoring-machine-learning-9, echo=FALSE, out.width="50%", fig.cap="Cases ordered by highest score", out.extra=''}
 knitr::include_graphics("scoring/tbl_example_3.png")
 ```
 
@@ -570,7 +582,7 @@ After assigning the cut point, we can see the classification results getting the
 
 
 
-```{r scoring_machine_learning_2, echo=FALSE, out.width="100%"}
+```{r scoring-machine-learning-2, echo=FALSE, out.width="100%", fig.cap="Assigning the predicted label (cutoff=0.5)", out.extra='' }
 knitr::include_graphics("scoring/tbl_example_4.png")
 ```
 
@@ -618,7 +630,7 @@ The intuition behind ROC curve is to get an **sanity measure** regarding the **s
 
 <br>
 
-```{r scoring_machine_learning_3, echo=FALSE, out.width="100%"}
+```{r scoring-machine-learning-3, echo=FALSE, out.width="100%", fig.cap="Comparing two predictive model scores", out.extra=''}
 knitr::include_graphics("scoring/tbl_example_5.png")
 ```
 
@@ -630,7 +642,7 @@ Wikipedia has an extensive and good article on this: https://en.wikipedia.org/wi
 
 There is the comparission of 4 models, given a cutpoint of 0.5:
 
-```{r roc_curve_machine_learning, echo=FALSE, out.width="100%"}
+```{r roc-curve-machine-learning, echo=FALSE, out.width="100%", fig.cap="Comparing four predictive models", out.extra=''}
 knitr::include_graphics("scoring/4_models_roc.png")
 ```
 
@@ -669,7 +681,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 ```
 
 
-```{r Scoring_machine_learning_5, echo=FALSE, out.width="70%"}
+```{r Scoring-machine-learning-5, echo=FALSE, out.width="85%", fig.cap="Confusion matrix (metric: count)", out.extra=''}
 knitr::include_graphics("scoring/count_1.png")
 ```
 
@@ -677,13 +689,13 @@ knitr::include_graphics("scoring/count_1.png")
 Another view, now each column sums **100%**. Good to answer the following questions: 
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, fig.cap="Confusion matrix (metric: percentage per column)", out.extra=''}
 rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorName = "Count as Fraction of Columns", rendererName = "Table", width="100%", height="400px")
 
 ```
 
 
-```{r Scoring_machine_learning_6, echo=FALSE, out.width="70%"}
+```{r Scoring-machine-learning-6, echo=FALSE, out.width="85%", fig.cap="Confusion matrix  (cutpoint at 0.5)", out.extra=''}
 knitr::include_graphics("scoring/percentage_1.png")
 ```
 
@@ -713,7 +725,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 ```
 
-```{r Scoring_machine_learning_7, echo=FALSE, out.width="70%"}
+```{r Scoring-machine-learning-7, echo=FALSE, out.width="85%", fig.cap="Confusion matrix (cutpoint at 0.4)", out.extra=''}
 knitr::include_graphics("scoring/percentage_2.png")
 ```
 
@@ -733,7 +745,7 @@ rpivotTable(data = data, rows = "predicted_target", cols="target", aggregatorNam
 
 ```
 
-```{r scoring_machine_learning_8, echo=FALSE, out.width="70%"}
+```{r scoring-machine-learning-8, echo=FALSE, out.width="85%", fig.cap="Confusion matrix (cutpoint at 0.8)", out.extra=''}
 knitr::include_graphics("scoring/percentage_3.png")
 ```
 
