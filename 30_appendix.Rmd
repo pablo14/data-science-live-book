@@ -3,6 +3,7 @@ if(!knitr:::is_html_output())
 {
   options("width"=56)
   knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
+  knitr::opts_chunk$set(fig.pos = 'H')
 }
 ```
 
@@ -19,7 +20,7 @@ Percentiles are used in profiling as well as evaluating the performance of a pre
 
 <br>
 
-```{r how_to_calculate_percentiles, echo=FALSE, out.width="100%"}
+```{r how-to-calculate-percentiles, echo=FALSE, out.width="100%", fig.cap="How to calculate percentiles", out.extra=''}
 knitr::include_graphics("exploratory_data_analysis/how_to_calculate_percentiles.png")
 ```
 
@@ -47,7 +48,7 @@ Now we are going to use the technique of keeping a small sample so that we can h
 
 We retain the random 10 countries and print the vector of `rural_poverty_headcount` which is the variable we are going to use.
 
-```{r, tidy=FALSE, warning=FALSE}
+```{r, tidy=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
 
 data_world_wide =
@@ -148,7 +149,7 @@ Credits: [@perc_quan_quar].
 
 Plotting a histogram alongisde the places where each percentile is can help us understand the concept:
 
-```{r, profiling_numerical_variable, warning=FALSE, message=FALSE, fig.height=3, fig.width=4, tidy=FALSE}
+```{r, profiling-numerical-variable, warning=FALSE, message=FALSE, fig.height=3.5, fig.width=5, tidy=FALSE, fig.cap="Visualizing quantiles", out.extra=''}
 quantiles_var = 
   quantile(data_world_wide$poverty_headcount_1.9, 
            c(0.25, 0.5, 0.75), 
@@ -241,7 +242,7 @@ The basic idea is to develop a predictive model that predicts a binary variable 
 
 _What is the score value to suggest to sales people in order to capture 50% of potential new sales?_ The answer comes from a combination of percentile analysis on the scoring value plus the cumulative analysis of the current target.
 
-```{r gain_lift_curve, echo=FALSE, out.width="70%"}
+```{r gain-lift-curve, echo=FALSE, out.width="80%", fig.cap="Gain and lift curves (model performance)", out.extra=''}
 knitr::include_graphics("model_performance/gain_curve.png")
 ```
 
@@ -325,7 +326,7 @@ df_status(heart_disease)
 
 Plots only numeric variables.
 
-```{r, fig.height=3, fig.width=5}
+```{r, fig.height=3, fig.width=5, fig.cap="plot num: visualizing numerical variables", out.extra=''}
 plot_num(heart_disease)
 ```
 
@@ -357,7 +358,7 @@ Note:
 
 #### `freq`: Getting frequency distributions for categoric variables 
 
-```{r distribution_categorical_variable, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, warning=FALSE}
+```{r distribution-categorical-variable, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, fig.cap="freq: visualizing categorical variables", out.extra=''}
 library(dplyr)
 
 # Select only two variables for this example
@@ -423,7 +424,7 @@ Note: It analyzes numerical and categorical variables. It is also used with the 
 Retrieves the relative and absolute distribution between an input and target variable. 
 Useful to explain and report if a variable is important or not.
 
-```{r profiling_variable_predictive_modeling, fig.height=4, fig.width=8, results=FALSE}
+```{r profiling-variable-predictive-modeling, fig.height=4, fig.width=8, results=FALSE,fig.cap="cross plot: visualzing input vs. target variable", out.extra=''}
 cross_plot(data=heart_disease, input=c("age", "oldpeak"), target="has_heart_disease")
 ```
 
@@ -444,7 +445,7 @@ Useful to explain and report if a variable is important or not.
 
 **Boxplot:**
 
-```{r boxplot_analysis, fig.height=2, fig.width=4}
+```{r boxplot-analysis, fig.height=2, fig.width=4, fig.cap="plotar (1): visualizing boxplot", out.extra=''}
 plotar(data=heart_disease, input = c("age", "oldpeak"), target="has_heart_disease", plot_type="boxplot")
 ```
 
@@ -454,7 +455,7 @@ plotar(data=heart_disease, input = c("age", "oldpeak"), target="has_heart_diseas
 
 **Density histograms:**
 
-```{r density_histogram, fig.height=2, fig.width=4}
+```{r density-histogram, fig.height=2, fig.width=4,fig.cap="plotar (2): visualizing density histogram", out.extra=''}
 plotar(data=mtcars, input = "gear", target="cyl", plot_type="histdens")
 ```
 
@@ -517,7 +518,10 @@ heart_disease_discretized =
 
 The following image illustrates the result. Please note that the variable name remains the same.
 
-![data discretization](appendix/data_discretization_1.png)
+```{r data-discretization, echo=FALSE, out.width="80%", fig.cap="discretize get bins -and- discretize df: automatic data discretization", out.extra=''}
+knitr::include_graphics("appendix/data_discretization_1.png")
+```
+
 
 
 Notes: 
@@ -652,7 +656,7 @@ Notes:
 
 After computing the scores or probabilities for the class we want to predict, we pass it to the `gain_lift` function, which returns a data frame with performance metrics.
 
-```{r predictive_model_performance, fig.height=3, fig.width=7}
+```{r predictive-model-performance, fig.height=3, fig.width=7, fig.cap="gain lift: visualizing predictive model performance", out.extra=''}
 # Create machine learning model and get its scores for positive case 
 fit_glm=glm(has_heart_disease ~ age + oldpeak, data=heart_disease, family = binomial)
 heart_disease$score=predict(fit_glm, newdata=heart_disease, type='response')

@@ -273,11 +273,6 @@ _[Enlarge image.](http://datascienceheroes.com/img/blog/model_validation_workflo
 
 ### Using Gain and Lift Analysis
 
-```{r gain-lift-analysis, echo=FALSE, out.width="300px", fig.cap="Gain and lift curves", out.extra=''}
-knitr::include_graphics("model_performance/gain_lift.png")
-```
-
-
 This analysis explained in another chapter ([Gain &  Lift](#gain_and_lift)) and it can be used following the out-of-time validation.
 
 Keeping only with those cases that were `negative` on `Oct-31`, we get the `score` returned by the model on that date, and the `target` variable is the value that those cases had on `Jan-1`.
