@@ -518,7 +518,7 @@ heart_disease_discretized =
 
 The following image illustrates the result. Please note that the variable name remains the same.
 
-```{r data-discretization, echo=FALSE, out.width="80%", fig.cap="discretize get bins -and- discretize df: automatic data discretization", out.extra=''}
+```{r data-discretization, echo=FALSE, out.width="80%", fig.cap="Results of the automatic discretization process", out.extra=''}
 knitr::include_graphics("appendix/data_discretization_1.png")
 ```
 
