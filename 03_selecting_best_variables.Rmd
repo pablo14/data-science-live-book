@@ -32,7 +32,7 @@ _Image: Is it a neural network? Nope. Dark matter, from the "The Millennium Simu
 
 <br>
 
-### Intuition
+## Intuition
 
 Selecting the best variables is like doing a summary of a story, we want to focus on those few details that best describe what we're talking about. The balance threads between talking _too much_ about unnecessary details (overfitting) and talking _too little_ about the essence of the story (underfitting).
 
@@ -42,7 +42,7 @@ From the **Information Theory** point of view -a key point in machine learning-,
 
 <br>
 
-### The "best" selection?
+## The "best" selection?
 
 The chapter says "best", but we'd better mention a conceptual point, in general terms _there is no unique best variable selection._
 
@@ -61,7 +61,7 @@ However going to the extremes, there will be a set of variables that will rank h
 
 <br>
 
-#### Going deeper into variable ranking
+### Going deeper into variable ranking
 
 It's quite common to find in literature and algorithms, that covers this topic an univariate analysis, which is a ranking of variables given a particular metric.
 
@@ -141,7 +141,7 @@ Although the ranking will vary from algorithm to algorithm, in general terms the
 <br>
 
 
-### The nature of the selection
+## The nature of the selection
 
 There are two main approaches when doing variable selection:
 
@@ -161,7 +161,7 @@ Another not model-depandent algorithm is `var_rank_info`, a function provided by
 
 <br>
 
-### Improving variables
+## Improving variables
 
 Variables can increase their predictive power by treating them.
 
@@ -176,7 +176,7 @@ _And more to come..._
 
 <br>
 
-### Cleaning by domain knowledge
+## Cleaning by domain knowledge
 
 It's not related to algorithmic procedures, but to the area from which the data comes.
 
@@ -192,7 +192,7 @@ To go further on this point, we should do a deeper exploratory data analysis. Bo
 
 <br>
 
-### Variables work in groups
+## Variables work in groups
 
 ```{r variables-work-in-groups, echo=FALSE, out.width="54%", fig.cap="Variables work in groups", out.extra=""}
 knitr::include_graphics("selecting_best_variables/variable_groups.png")
@@ -215,7 +215,7 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 <br>
 
-#### Example in R: Variables working in groups
+### Example in R: Variables working in groups
 
 ```{r selecting-best-variables-5, echo=FALSE, out.width="54%", fig.cap="Aristotle (367 BC–347 BC)", out.extra=""}
 knitr::include_graphics("selecting_best_variables/aristotle.png")
@@ -291,7 +291,7 @@ detach("package:caret")
 
 <br>
 
-#### Tiny example (based on Information Theory)
+### Tiny example (based on Information Theory)
 
 Consider the following _big data_ table `r emo::ji("stuck_out_tongue_winking_eye")` 4 rows, 2 input variables (`var_1`, `var_2`) and one outcome (`target`):
 
@@ -319,7 +319,7 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 
 <br>
 
-#### Conclusions 
+### Conclusions 
 
 * The proposed R example based on `heart_disease` data shows an average **improvement of 9%** when considering two variables at a time, not too bad. This percentage of improvement is the result of the **variables working in groups**.
 * This effect appears if the variables contain information, such is the case of `max_heart_rate` and `chest_pain` (or `var_1` and `var_2`).
@@ -330,7 +330,7 @@ Nonetheless, it's a deeper topic to cover, considering the last analysis; how ab
 <br>
 
 
-#### Rank best features using information theory {#select_features_var_rank_info}
+### Rank best features using information theory {#select_features_var_rank_info}
 
 As introduced at the beginning of the chapter, we can get variable importance without using a predictive model using information theory.
 
@@ -383,7 +383,7 @@ To _select best features_ is related to _̣exploratory data analysis_ and vice-v
 <br>
 
 
-### Correlation between input variables
+## Correlation between input variables
 
 The ideal scenario is to build a predictive model with only variables not correlated between them. In practice, it's complicated to keep such a scenario for all variables.
 
@@ -400,7 +400,7 @@ The problem is that we're adding complexity to the model: it's usually more time
 
 <br>
 
-### Keep it simple
+## Keep it simple
 
 ```{r fractals-nature, echo=FALSE, out.width="38%", fig.cap="Fractals in Nature", out.extra=""}
 knitr::include_graphics("selecting_best_variables/fractals_nature.png")
@@ -443,7 +443,7 @@ Explaining to others -and understanding- a model with 20 variables is easier tha
 
 <br>
 
-### Variable selection in Clustering?
+## Variable selection in Clustering?
 
 ```{r variable-selection-in-clustering, echo=FALSE, out.width="54%", fig.cap="Example of cluster segmentation", out.extra=""}
 knitr::include_graphics("selecting_best_variables/cluster.png")
@@ -464,9 +464,9 @@ Finally, we could run, for example, a random forest model with the cluster as a 
 
 <br>
 
-### Selecting the best variables in practice
+## Selecting the best variables in practice
 
-#### The short answer
+### The short answer
 
 Pick up the top _N_ variables from the algorithm you're using and then re-build the model with this subset. Not every predictive model retrieves variable rankings, but if it does, use the same model (for example gradient boosting machine) to get the ranking and to build the final model.
 
@@ -474,7 +474,7 @@ For those models like k-nearest neighbors which don't have a built-in select bes
 
 <br>
 
-#### The long answer
+### The long answer
 
 * When possible, **validate** the list with someone who knows about the context, the business or the data source. Either for the top _N_ or the bottom _M_ variables. As regards those _bad_ variables, we may be missing something in the data munging that could be destroying their predictive power.
 * Understand each variable, its meaning in context (business, medical, other).
@@ -486,7 +486,7 @@ For those models like k-nearest neighbors which don't have a built-in select bes
 
 <br>
 
-#### Generate your own knowledge
+### Generate your own knowledge
 
 It's difficult to generalize when the nature of the data is so different, from **genetics** in which there are thousands of variables and a few rows, to web-navigation when new data is coming all the time.
 
@@ -506,14 +506,15 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 <br>
 
-## Target profiling with `cross_plot` (dataViz) {#profiling_target_cross_plot}
+## Target profiling 
 
+### Using `cross_plot` (dataViz) {#profiling_target_cross_plot}
 
-### What is this about?
+#### What is this about?
 
 This plot intent to show in real scenarios if a variable is or not important, making a visual summary of it, _(by grouping numerical variables into bins/groups)_.
 
-### Example 1: Is gender correlated with heart disease?
+#### Example 1: Is gender correlated with heart disease?
 
 ```{r cross-plot-data-viz, results="hide", fig.height=4, fig.width=9.5, fig.cap="Using cross-plot to analyze and report variable importance", out.extra=""}
 cross_plot(heart_disease, input="gender", target="has_heart_disease")
@@ -521,11 +522,11 @@ cross_plot(heart_disease, input="gender", target="has_heart_disease")
 
 Last two plots have the same data source, showing the distribution of `has_heart_disease` regarding `gender`. The one on the left shows in percentage value, while the one on the right shows in absolute value.
 
-#### How to extract conclusions from the plots? (Short version)
+##### How to extract conclusions from the plots? (Short version)
 
 `Gender` variable seems to be a **good predictor**, since the likelihood of having heart disease is different given the female/male groups.  **it gives an order to the data**.
 
-### How to extract conclusions from the plots? (Long version)
+#### How to extract conclusions from the plots? (Long version)
 
 **From 1st plot (%):**
 
@@ -546,12 +547,12 @@ Last two plots have the same data source, showing the distribution of `has_heart
 
 *Note: What would it happened if instead of having the rates of 25.8% vs. 55.3% (female vs. male), they had been more similar like 30.2% vs. 30.6%). In this case variable `gender` it would have been much less relevant, since it doesn't separate the `has_heart_disease` event.*
 
-### Example 2: Crossing with numerical variables
+#### Example 2: Crossing with numerical variables
 
 Numerical variables should be **binned** to plot them with a histogram, otherwise, the plot is not showing information, as it can be seen here:
 
 
-#### Equal frequency binning
+##### Equal frequency binning
 
 There is a function included in the package (inherited from Hmisc package): `equal_freq`, which returns the bins/buckets based on the **equal frequency criteria**. Which is *-or tries to-* have the same quantity of rows per bin.
 
@@ -561,7 +562,7 @@ For numerical variables, `cross_plot` has by default the `auto_binning=T`, which
 cross_plot(heart_disease, input="max_heart_rate", target="has_heart_disease")
 ```
 
-### Example 3: Manual binning
+#### Example 3: Manual binning
 
 If you don't want the automatic binning, then set the `auto_binning=F` in `cross_plot` function.
 
@@ -578,11 +579,11 @@ Plotting the binned variable (`auto_binning = F`):
 cross_oldpeak_2=cross_plot(heart_disease, input="oldpeak_2", target="has_heart_disease", auto_binning = F)
 ```
 
-#### **Conclusion**
+##### **Conclusion**
 
 This new plot based on `oldpeak_2` shows clearly how: the likelihood of **having heart disease increases** as **oldpeak_2 increases** as well. *Again, it gives an order to the data.*
 
-### Example 4: Noise reducing
+#### Example 4: Noise reducing
 
 Converting variable `max_heart_rate` into a one of 10 bins:
 
@@ -623,7 +624,7 @@ cross_plot(heart_disease, input="max_heart_rate_3", target="has_heart_disease", 
 
 It creates the folder `my_plots` into the working directory.
 
-### Example 5: `cross_plot` on multiple variables
+#### Example 5: `cross_plot` on multiple variables
 
 Imagine you want to run cross_plot for several variables at the same time. To achieve this goal just define a vector containing the variable names.
 
@@ -639,7 +640,7 @@ cross_plot(data=heart_disease, target="has_heart_disease", input=vars_to_analyze
 
 <br>
 
-### Exporting plots
+#### Exporting plots
 
 `plotar` and `cross_plot` can handle from 1 to N input variables, and plots generated by them can be easily exported in high quality with parameter `path_out`.
 ```{r variable-importance-2c, results="hide", fig.height=2, fig.width=4, eval=FALSE}
@@ -658,9 +659,9 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 <br>
 
-## Target profiling using BoxPlots
+### Using BoxPlots
 
-### What is this about?
+#### What is this about?
 
 The use of Boxplots in importance variable analysis gives a quick view of how different the quartiles are among the various values in a binary target variable.
 
@@ -690,7 +691,7 @@ When yoweeed to analyze different percentiles across the classes to predict. Not
 
 <br>
 
-### Boxplot: Good vs. Bad variable
+#### Boxplot: Good vs. Bad variable
 
 Using more than one variable as inputs is useful in order to compare boxplots quickly, and thus getting the best variables...
 
@@ -706,7 +707,7 @@ _Statistical tests: percentiles are another used feature used by them in order t
 
 <br>
 
-### Exporting plots
+#### Exporting plots
 
 `plotar` and `cross_plot` can handle from 1 to N input variables, and plots generated by them can be easily exported in high quality with parameter `path_out`.
 
@@ -723,9 +724,9 @@ plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'), 
 <br>
 
 
-## Target profiling using Density Histograms
+### Using Density Histograms
 
-### What is this about?
+#### What is this about?
 
 Density histograms are quite standard in any book/resource when plotting distributions. To use them in selecting variables gives a quick view on how well certain variable separates the class.
 
@@ -742,12 +743,12 @@ This *general shape* is calculated based on a technique called **Kernel Smoother
 <br>
 
 
-### What is the relationship with a statistical test?
+#### What is the relationship with a statistical test?
 
 Something similar is what a **statistical test** sees: they measured **how different** the curves are reflecting it in some statistics like the p-value using in the frequentist approach. It gives to the analyst reliable information to determine if the curves have -for example- the same mean.
 
 
-### Good vs. bad variable
+#### Good vs. bad variable
 
 ```{r variable-importance2,  fig.height=2, fig.width=5, fig.cap="plotar function for multiple variables", out.extra=""}
 plotar(data=heart_disease, input=c('resting_blood_pressure', 'max_heart_rate'),  target="has_heart_disease", plot_type = "histdens")

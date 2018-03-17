@@ -84,7 +84,7 @@ For sure you will get closer to the data science world. All the code is well com
 
 ### Programming language {-}
 
-You could learn some `R` but it can be tough to learn directly from this book. If you want to learn R programming, there are other books or courses specialized in programming
+You could learn some `R` but it can be tough to learn directly from this book. If you want to learn R programming, there are other books or courses specialized in programming.
 
 Time for next section.
 
@@ -119,7 +119,7 @@ An open question.
 
 ### What do I need to start? {-}
 
-In general terms, time and patience. Most of the concepts are independent from the language, but when a technical example is required it is done in **[R language](https://cloud.r-project.org)**. 
+In general terms, time and patience. Most of the concepts are independent from the language, but when a technical example is required it is done in **[R language](https://cloud.r-project.org)**, (`r R.version.string`). 
 
 The book uses the following libraries, (between parenthesis it's the package version):
 
@@ -160,7 +160,7 @@ pcasas.biz (at) gmail.com. I'm constantly learning so it's nice to exchange know
 * [Github](https://github.com/pablo14)
 * [Data Science Heroes Blog](http://blog.datascienceheroes.com)
 
-Also, you can check the **Github** repositories for both, the b ook and `funModeling`, so you can report bugs, suggestions, new ideas, etc:
+Also, you can check the **Github** repositories for both, the book and `funModeling`, so you can report bugs, suggestions, new ideas, etc:
 
 * [funModeling](https://github.com/pablo14/funModeling)
 * [Data Science Live Book](https://github.com/pablo14/data-science-live-book)
@@ -174,7 +174,7 @@ Special thanks to my mentors in this data world, Miguel Spindiak and Marcelo Fer
 
 Book technical reviewer: [Pablo Seibelt (aka The Sicarul)](https://www.linkedin.com/in/pabloseibelt) `r emo::ji("hammer_and_wrench")`. Thank you for your sincere and selfless help.
 
-Art cover made: [Bárbara Muñoz](https://www.linkedin.com/in/barbaramercedes/)`r emo::ji("art")`.
+The art cover was made by: [Bárbara Muñoz](https://www.linkedin.com/in/barbaramercedes/)`r emo::ji("art")`.
 
 This book is dedicated to _[The Nobodies](https://holywaters.wordpress.com/2011/12/08/los-nadiesthe-nobodies-by-eduardo-galeano)_, a short story written by Eduardo Galeano.
 
@@ -190,7 +190,7 @@ Licensed under [Attribution-NonCommercial-ShareAlike 4.0 International](https://
 knitr::include_graphics('introduction/by-nc-sa.png')
 ```
 
-ISBN: 978-987-42-5911-0
+ISBN: 978-987-42-5911-0 (eBook version).
 
 ```{r echo=FALSE, out.width='20%'}
 knitr::include_graphics('introduction/ISBN_number.jpg')

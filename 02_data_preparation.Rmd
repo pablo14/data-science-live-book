@@ -795,7 +795,7 @@ These are the metrics returned by `categ_analysis`:
 
 #### What conclusions can we draw from this?
 
-Reading example based on 1st row, `France`:
+Reading example based on 1st `France` row:
 
 * 41 people have flu (`sum_target=41`). These 41 people represent almost 50% of the total people having flu (`perc_target=0.494`).
 * Likelihood of having flu in France is 14.2% (`mean_target=0.142`)
@@ -949,8 +949,8 @@ Last table is ordered by `mean_target`, so we can quickly see groups maximizing 
 * `group_4`, `group_5` and `group_9` looks the same. They can be one group since likelihood is 0 in all the cases.
 * `group_7` and `group_3` have 1 and 2 countries with positive cases. We could consider these numbers as the same, grouping them into one group, which in the end will represent the countries with the lowest likelihood.
 
-All the groups seems to have a good representation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
 
+First we need to add the new category column to the original dataset.
 
 ```{r, message=F}
 data_country_2=data_country %>% inner_join(country_groups$df_equivalence, by="country")
@@ -958,26 +958,24 @@ data_country_2=data_country %>% inner_join(country_groups$df_equivalence, by="co
 
 Now we do the additional transformations replacing:
 
-* `group_4` and `group_5` will be `group_5`.
-* `group_7` will be `group_3`.
+* `group_4`, `group_5` and `group_5` will be `low_likelihood`, (countries with no positive cases or low target share).
+* `group_7` and `group_3` will be the `low_target_share`.
 
 ```{r, hide=TRUE, tidy=FALSE}
 data_country_2$country_rec=
-  ifelse(data_country_2$country_rec == "group_4", 
-         "group_5", 
+  ifelse(data_country_2$country_rec %in% 
+           c("group_4", "group_5", "group_9"), 
+         "low_likelihood", 
          data_country_2$country_rec
          )
 
 data_country_2$country_rec=
-  ifelse(data_country_2$country_rec == "group_9", 
-         "group_5", 
+  ifelse(data_country_2$country_rec %in% 
+           c("group_7", "group_3"),
+         "low_target_share", 
          data_country_2$country_rec
          )
 
-data_country_2$country_rec=
-  ifelse(data_country_2$country_rec == "group_3", 
-         "group_7", 
-         data_country_2$country_rec)
 
 ```
 
@@ -987,7 +985,11 @@ Checking the final grouping (`country_rec` variable):
 categ_analysis(data=data_country_2, input="country_rec", target = "has_flu")
 ```
 
-Each group seems to have a good sample size regarding the `sum_target` distribution. Our transformation left `group_5` with a representation of 21% of total cases, still with 0 positive cases (`sum_target`=0). And `group_7` with 3 positive cases, which represents 3.36% of positive cases.
+Each group seems to have a good sample size regarding the `sum_target` distribution. Our transformation left `low_likelihood` with a representation of 21% of total cases, still with 0 positive cases (`sum_target`=0). And `low_target_share` with 3 positive cases, which represents 3.36% of positive cases.
+
+All the groups seems to have a good representation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
+
+Trying a lower number of cluster may help to reduce this manual task a little. It was just a demonstration of how to optimize a variable having lots of different categories.
 
 <br>
 
@@ -2165,12 +2167,13 @@ HollywoodMovies2011$TheatersOpenWeek_cat=equal_freq(HollywoodMovies2011$Theaters
 freq(HollywoodMovies2011, "TheatersOpenWeek_cat")
 ```
 
-As we can see, `TheatersOpenWeek_cat` contains five buckets of 24 cases each, where each represents 20% of total cases. But, the `NA` values are still there.
+As we can see, `TheatersOpenWeek_cat` contains five buckets of 24 cases each, where each represents ~18% of total cases. But, the `NA` values are still there.
 
 Finally, we have to convert the NA into the string `empty`.
 
 ```{r, fig.height=3, fig.width=6, echo=FALSE, results=FALSE}
 HollywoodMovies2011$TheatersOpenWeek_cat_fill=as.character(HollywoodMovies2011$TheatersOpenWeek_cat)
+
 HollywoodMovies2011$TheatersOpenWeek_cat_fill=
   ifelse(is.na(HollywoodMovies2011$TheatersOpenWeek_cat_fill),
          "empty", 
@@ -2232,7 +2235,9 @@ p1=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek)) +
   ylim(0, 30)
  
 # Plotting transformed variable
-p2=ggplot(HollywoodMovies2011, aes(x=TheatersOpenWeek_mean)) + 
+p2=ggplot(HollywoodMovies2011, 
+          aes(x=TheatersOpenWeek_mean)
+          ) + 
   geom_histogram(colour="black", fill="white") + 
   ylim(0, 30)
 

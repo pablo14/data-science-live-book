@@ -346,7 +346,7 @@ data_world_2 =
 Any indicator meaning can be checked in data.worldbank.org. For example, if we want to know what `EN.POP.SLUM.UR.ZS` means, then we type: http://data.worldbank.org/indicator/EN.POP.SLUM.UR.ZS
 
 
-```{r}
+```{r, warning=FALSE}
 # The package 'reshape2' contains both 'dcast' and 'melt' functions
 library(reshape2)
 
