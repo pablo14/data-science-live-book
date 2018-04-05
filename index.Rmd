@@ -25,13 +25,22 @@ if(!knitr:::is_html_output())
 {
   options("width"=56)
   knitr::opts_chunk$set(tidy.opts=list(width.cutoff=56, indent = 2), tidy = TRUE)
+  knitr::opts_chunk$set(fig.pos = 'H')
 }
 ```
 
 
+
+
+
 # Preface {-}
 
-<img src="introduction/data_science_live_book_cover.png" alt="Data Science Live Book">
+```{r, echo=FALSE}
+if (knitr:::is_html_output())
+{
+  knitr::include_graphics("introduction/data-science-live-book.png")
+}
+```
 
 ### Why this book? {-}
 

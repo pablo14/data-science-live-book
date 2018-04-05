@@ -491,8 +491,9 @@ df_compare
 Final distribution: 
 
 ```{r, binning-variable, tidy=FALSE, fig.cap="Automatic discretization results", out.extra=''}
-describe(heart_disease_discretized %>% 
-           select(max_heart_rate,oldpeak))
+freq(heart_disease_discretized %>% 
+           select(max_heart_rate,oldpeak),
+     plot = F)
 
 p5=ggplot(heart_disease_discretized, 
           aes(max_heart_rate)) + 
@@ -1447,6 +1448,7 @@ This method flags outliers considering the quartiles values, Q1, Q2, and Q3, whe
 The IQR (Inter-quartile range) comes from Q3 − Q1.
 
 The formula:
+
 * The bottom threshold is: Q1 − 3*IQR. All below are considered as outliers.
 * The top threshold is: Q1 + 3*IQR. All above are considered as outliers.
 
@@ -1474,6 +1476,7 @@ A subtle visual and step-by-step example can be found in [tukey_outliers].
 ##### Hampel's method {#detecting-outliers-using-hampel-method}
 
 The formula:
+
 * The bottom threshold is: `median_value − 3*mad_value`. All below are considered as outliers.
 * The top threshold is: `median_value + 3*mad_value`. All above are considered as outliers.
 
