@@ -42,6 +42,15 @@ if (knitr:::is_html_output())
 }
 ```
 
+### Paperback & Kindle at Amazon {-}
+
+This book is now available at Amazon. **[Check it out!](https://www.amazon.com/dp/9874269049)** `r emo::ji("green_book")` `r emo::ji("rocket")`.
+
+
+_Link to the black & white version, also available on full-color. It can be shipped to over 100 countries._ `r emo::ji("earth_americas")`
+
+<br>
+
 ### Why this book? {-}
 
 The book will facilitate the understanding of common issues when data analysis and machine learning are done. 
