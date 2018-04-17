@@ -20,7 +20,12 @@ If the above form did not appear or you want to buy it directly from the Gumroad
 
 ---
 
+**Paperback and Kindle at Amazon!**
+
 This book is now available at Amazon. **[Check it out!](https://www.amazon.com/dp/9874269049)** `r emo::ji("green_book")` `r emo::ji("rocket")`.
+
+
+---
 
 _Is there any difference between the on-line and the PDF, mobi or Kindle versions?_
 
