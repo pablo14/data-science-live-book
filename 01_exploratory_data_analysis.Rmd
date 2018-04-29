@@ -187,11 +187,11 @@ freq(data=heart_disease)
 
 If we only want to print the table excluding the plot, then we set the `plot` parameter to `FALSE`.
 The `freq` example can also handle a **single variable** as an input. 
-By _default_, `NA` values **are considered** in both the table and the plot. If it is needed to exclude the `NA` then set `na.rm = FALSE`.
+By _default_, `NA` values **are considered** in both the table and the plot. If it is needed to exclude the `NA` then set `na.rm = TRUE`.
 Both examples in the following line: 
 
 ```{r profiling-categorical-variable-5, eval=F}
-freq(data=heart_disease$thal, plot = FALSE, na.rm = FALSE)
+freq(data=heart_disease$thal, plot = FALSE, na.rm = TRUE)
 ```
 
 If only one variable is provided, then `freq` returns the printed table; thus, it is easy to perform some calculations based on the variables it provides. 
@@ -254,7 +254,7 @@ This section is separated into two parts:
 * Part 1: Introducing the “World Data” case study
 * Part 2: Doing the numerical profiling in R
 
-If you don’t wan't to know how the data preparation stage from Data World is calculated, then you can jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
+If you don’t want to know how the data preparation stage from Data World is calculated, then you can jump to "Part 2: Doing the numerical profiling in R", when the profiling started.
 
 #### Part 1: Introducing the World Data case study
 
