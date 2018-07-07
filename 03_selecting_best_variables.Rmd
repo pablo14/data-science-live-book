@@ -336,7 +336,7 @@ As introduced at the beginning of the chapter, we can get variable importance wi
 
 From version 1.6.6 the package `funModeling` introduces the function `var_rank_info`, which takes two arguments, the data and the target variable, because it follows:
 
-```{r variable-ranking-using-information-theory, fig.width=6, fig.height=4.5, tidy=FALSE, fig.cap="Variable Importance (based on Information Gain)", out.extra=""}
+```{r variable-ranking-using-information-theory, fig.width=6, fig.height=4.5, tidy=FALSE, fig.cap="Variable Importance (based on Gain Ratio)", out.extra=""}
 variable_importance = 
   var_rank_info(heart_disease, "has_heart_disease")
 

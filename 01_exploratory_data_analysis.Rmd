@@ -843,7 +843,7 @@ A monotonic series is such it never changes its tendency, it always goes up or d
 
 Following example simulates two-time series, one not-monotonic `y_1` and the other monotonic `y_2`.
 
-```{r monotonic-non-monotonic-function, fig.height=3.5, fig.width=8, tidy=FALSE, fig.cap="Function monotonicity", out.extra = ''}
+```{r monotonic-non-monotonic-function, fig.height=3.5, fig.width=8, tidy=FALSE, fig.cap="Monotonicity in functions", out.extra = ''}
 # creating sample data (simulating time series)
 time_x=sort(runif(n=1000, min=0, max=1))
 y_1=4*(time_x-0.5)^2
@@ -882,6 +882,36 @@ grid.arrange(p_y_1,p_y_2,ncol=2)
 
 <br>
 
+From another perspective, MAS is also useful to detect periodic relationships. Let's illustrate this with an example
+
+```{r periodical-function, fig.height=3.5, fig.width=8, tidy=FALSE, fig.cap="Periodicity in functions", out.extra = '', echo=FALSE}
+
+# creating data for non-periodic function
+x_per=seq(-2*pi,2*pi,0.2)
+df_per=data.frame(x=x_per, y=sin(2*x_per))
+
+# creating data for periodic function
+x_non_per=1:100
+df_non_per=data.frame(x=x_non_per, y=2*x_non_per*x_non_per+2)
+
+# Calculating MAS for both series
+mas_y1_b=mine(df_per$x,df_per$y)$MAS
+mas_y2_b=round(mine(df_non_per$x,df_non_per$y)$MAS,2)
+
+# Plotting
+p_y_1_b=ggplot(df_per, aes(x=x, y=y)) + 
+  geom_line(color='steelblue') + 
+  theme_minimal() +
+  ggtitle(sprintf("MAS=%s (periodic)", round(mas_y1_b,2)))
+
+p_y_2_b=ggplot(df_non_per, aes(x=x, y=y)) + 
+  geom_line(color='steelblue') + 
+  theme_minimal()  + 
+  ggtitle(sprintf("MAS=%s (non-periodic)", mas_y2_b))
+
+grid.arrange(p_y_1_b, p_y_2_b, ncol=2)
+```
+
 #### A more real example: Time Series
 
 Consider the following case which contains three-time series: `y1`, `y2` and `y3`. They can be profiled concerning its non-monotonicity or overall growth trend.
@@ -914,12 +944,12 @@ mine_ts$MAS
 <br>
 
 We need to look at `time` column, so we've got the MAS value of each series regarding the time.
-`y2` is the most not-monotonic series, and it can be confirmed by looking at it. It seems to be always up.
+`y2` is the most monotonic (and less periodic) series, and it can be confirmed by looking at it. It seems to be always up.
 
 **MAS summary:**
 
-* MAS ~ 0 indicates monotonic function
-* MAS ~ 1 indicates non-monotonic function (_always_ up or down)
+* MAS ~ 0 indicates monotonic or non-periodic function ("always" up or down)
+* MAS ~ 1 indicates non-monotonic or periodic function 
 
 
 <br>
