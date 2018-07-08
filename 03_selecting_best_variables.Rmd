@@ -679,7 +679,7 @@ _Rhomboid near the mean line represents the **median**._
 
 <br>
 
-```{r boxplot-analysis, echo=FALSE, out.width="230px", fig.cap="How to interpret a boxplot", out.extra=""}
+```{r boxplot-analysis, echo=FALSE, out.width="400px", fig.cap="How to interpret a boxplot", out.extra=""}
 knitr::include_graphics("selecting_best_variables/boxplot.png")
 ```
 
@@ -687,7 +687,8 @@ knitr::include_graphics("selecting_best_variables/boxplot.png")
 <br>
 
 *When to use boxplots?*
-When yoweeed to analyze different percentiles across the classes to predict. Note this is a powerful technique since the bias produced due to outliers doesn't affect as much as it does to the mean.
+
+When we need to analyze different percentiles across the classes to predict. Note this is a powerful technique since the bias produced due to outliers doesn't affect as much as it does to the mean.
 
 <br>
 
