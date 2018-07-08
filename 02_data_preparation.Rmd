@@ -235,7 +235,7 @@ data_stunting=
   dplyr::rename(
     data_stunting,
     share_stunted_child=
-      WHO....Share.of.stunted.children.under.5.
+      Share.of.stunted.children.under.5
     )
 
 # doing the grouping mentioned before
