@@ -6,10 +6,14 @@
  
 <font size="+2">**`tl;dr`**</font>: Hi there! I invite you to <a href="https://livebook.datascienceheroes.com" target="blank">read the book online</a> and/or <a href="https://livebook.datascienceheroes.com/download-book.html" target="blank">download here</a>. Thanks and have a nice day :)
 
+#### Paperback & Kindle at Amazon
 
+This book is now available at Amazon in [Kindle]( Link: http://a.co/d/dIj1XwD) [Black & White](https://www.amazon.com/dp/9874269049) and [color](https://www.amazon.com/dp/9874273666) 📗 🚀.
 
+LiIt can be shipped to over 100 countries. 🌎
 
-#### `!(tl;dr)`: An overview...
+Also available in P[PDF](https://gumroad.com/l/tORBv) :)
+### `!(tl;dr)`: An overview...
 
 It's a book to learn data science, machine learning, data analysis with tons of examples and explanations around several topics like:
  
@@ -49,14 +53,6 @@ To develop a critical thinking, without taking any statement as the "truly truth
 
 <br>
 
-#### Hmmm... next releases?
-
-It could vary, but I have some ideas like how to put more information on the predictive model creation and validation, validating clustering models, dimension reduction techniques, "how to become a data scientist", among others.
-
-<br>
-
-
-
 ### I put some random errors...
 
 ... both technical and grammatical, the problem is **I don't know where!** So if you want to raise your hand and shout: `"That's not correct! I think the correct form is... {replace-with-your-detailed-answer-here}"`, I invite you to report on the github repository, or email me at pcasas.biz -at- gmail.com
@@ -73,7 +69,6 @@ If you learn anything new with this book, or it helped you somehow to saving tim
 There is no difference between the portable and web versions :)
 
 After the purchase you'll will receive an email to download it in the three formats.
-
 
 <font size="+2"><b><a href="https://gumroad.com/l/tORBv" target="blank">Download here!</a> </b></font>
 
