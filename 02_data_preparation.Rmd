@@ -1593,8 +1593,6 @@ df_status(df_1, print_results = F) %>% select(variable, q_na, p_na)
 
 This last method is much more severe in spotting outliers, identifying 36% of values as outliers. This is probably because the variable is _quite_ skewed to the left.
 
-More info can be found at [finding_outliers]. 
-
 <br>
 
 **Bottom and top X% method**

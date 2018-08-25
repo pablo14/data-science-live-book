@@ -217,7 +217,7 @@ For example: Building a model based on variable `var_1` could lead to an overall
 
 ### Example in R: Variables working in groups
 
-```{r selecting-best-variables-5, echo=FALSE, out.width="54%", fig.cap="Aristotle (367 BC–347 BC)", out.extra=""}
+```{r selecting-best-variables-5, echo=FALSE, out.width="54%", fig.cap="Aristotle (384 BC–322 BC)", out.extra=""}
 knitr::include_graphics("selecting_best_variables/aristotle.png")
 ```
 

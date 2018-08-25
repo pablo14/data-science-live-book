@@ -1,24 +1,27 @@
-create_site <- function(is_pdf=F)
+create_book <- function(type)
 {
   fn="data-science-live-book.Rmd"
   if (file.exists(fn)) file.remove(fn)
   rmarkdown::clean_site()
-  if(!is_pdf)
+
+  if(type=='pdf')
   {
-    rmarkdown::render_site(output_format = 'bookdown::gitbook', encoding = 'UTF-8')
+    rmarkdown::render_site(output_format =
+                             bookdown::pdf_book(template='template.tex',
+                                                latex_engine = "pdflatex",
+                                                toc_unnumbered=F))
+  } else if(type=='html'){
+    rmarkdown::render_site(output_format = 'bookdown::gitbook',
+                           encoding = 'UTF-8')
   } else {
-    #rmarkdown::render_site(output_format = bookdown::pdf_book(template='template.tex', latex_engine = "pdflatex",
-     #                                                         split_bib = T,toc_unnumbered=F))
-    rmarkdown::render_site(output_format = bookdown::pdf_book(template='template.tex', latex_engine = "pdflatex",
-                                                              toc_unnumbered=F))
-  }
+    print('nope')
+    }
 }
 
+## Creating the PDF
+create_book('pdf')
 
-create_site(is_pdf = F)
+## Creating the HTML
+create_book('html')
 
-create_site(is_pdf = T)
-
-
-#rmarkdown::render_site(output_format =  bookdown::epub_book(toc=T,toc_depth = 2), encoding = 'UTF-8')
-#rmarkdown::render_site(output_format = bookdown::pdf_book(template='template.tex', latex_engine = "pdflatex"))
+## To create thhe epub, use the Build Book icon on RStudio.

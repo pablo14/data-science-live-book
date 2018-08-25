@@ -1145,7 +1145,7 @@ Combining raw tables plus different plots gives us a more real and complementary
 
 Based on MIC measure, mine function can receive the index of the column to predict (or to get all the correlations against only one variable).
 
-```{r importance-variable-ranking, fig.width=6, fig.height=4.5, tidy=FALSE, fig.cap="Correlation using information theory"}
+```{r importance-variable-ranking, fig.width=6, fig.height=4.5, tidy=FALSE, fig.cap="Correlation using information theory", out.extra=''}
 
 # Getting the index of the variable to 
 # predict: has_heart_disease
