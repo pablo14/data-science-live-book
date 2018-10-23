@@ -481,7 +481,8 @@ For those models like k-nearest neighbors which don't have a built-in select bes
 * Do **exploratory data analysis** to see the distributions of the most important variables regarding a target variable, _does the selection make sense?_ If the target is binary then the function [Profiling target using cross_plot](#profiling_target_cross_plot) can be used.
 * Does the average of any variable _significantly_ change over time? Check for abrupt changes in distributions.
 * Suspect about high cardinality top-ranked variables (like postal code, let's say above +100 categories). More information at [High Cardinality Variable in Predictive Modeling](#high_cardinality_predictive_modeling). 
-* When making the selection -as well as a predictive modeling-, try and use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in Refowing the error](#knowing_the_error) chapter Try other methods to find **groups of variables**, like the one mentioned before: mRMR.
+* When making the selection -as well as a predictive modeling-, try and use methods which contain some mechanism of re-sampling (like bootstrapping), and cross-validation. More information in the [knowing the error](#knowing_the_error) chapter. 
+* Try other methods to find **groups of variables**, like the one mentioned before: mRMR.
 * If the selection doesn't meet the needs, try creating new variables, you can check the **data preparation** chapter. Coming soon: Feature engineering chapter.
 
 <br>
@@ -490,7 +491,7 @@ For those models like k-nearest neighbors which don't have a built-in select bes
 
 It's difficult to generalize when the nature of the data is so different, from **genetics** in which there are thousands of variables and a few rows, to web-navigation when new data is coming all the time.
 
-The same applies to the objective of the analysis. Is it to be used in a competition where precision is highly necessary? Perhaps the solution may include more varcorrelated iables thn comparison to with ad-hoc study in which the primary goal is a simple explanation.
+The same applies to the objective of the analysis. Is it to be used in a competition where precision is highly necessary? Perhaps the solution may include more correlated variables in comparison to an ad-hoc study in which the primary goal is a simple explanation.
 
 There is no one-size-fits-all answer to face all possible challenges; you'll find powerful insights using your experience. It's just a matter of practice.
 
@@ -671,7 +672,7 @@ library(funModeling)
 data(heart_disease)
 ```
 
-```{r variable-importance2b,  fig.height=3, fig.width=5, fig.cap="Pofiling target using boxplot", out.extra=""}
+```{r variable-importance2b,  fig.height=3, fig.width=5, fig.cap="Profiling target using boxplot", out.extra=""}
 plotar(data=heart_disease, input="age", target="has_heart_disease", plot_type = "boxplot")
 ```
 
@@ -718,7 +719,7 @@ plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'), 
 
 <br>
 
-* **Key in mind this when using Histograms and BoxPlots** They are nice to see when the variable:
+* **Keep in mind this when using Histograms and BoxPlots** They are nice to see when the variable:
     + Has a good spread -not concentrated on a bunch of _3, 4..6.._ different values, **and**
     + It has not extreme outliers... _(this point can be treated with `prep_outliers` function present in this package)_
    

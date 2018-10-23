@@ -655,7 +655,7 @@ freq(data_country, "has_flu")
 
 <br>
 
-The last table shows there are **70 different countries**, and ~9% of people who had flu -`has_flu="yes"`.
+The last table shows there are only 83 rows where `has_flu="yes"`, representing around a 9% of total people.
 
 But many of them have almost no participation in the data. This is the _long tail_, so one technique to reduce cardinality is to keep those categories that are present in a high percentage of data share, for example 70, 80 or 90%, the Pareto principle.
 
@@ -704,7 +704,7 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 ### What is this about?
 
-As we've seen in the other chapter, _Reducing categories in descriptive stats_, we keep the categories with the major representativeness, but how about having another variable to predict with it? That is, to predict `has_flu` based on `country`.
+As we've seen in the last chapter, _High Cardinality in Descriptive Statistics_, we keep the categories with the major representativeness, but how about having another variable to predict with it? That is, to predict `has_flu` based on `country`.
 
 Using the last method may destroy the information of the variable, thus it **loses predictive power**. In this chapter we'll go further in the method described above, using an automatic grouping function -`auto_grouping`- surfing through the variable's structure, giving some ideas about how to optimize a categorical variable, but more importantly: encouraging the reader to perform her-his own optimizations.
 
@@ -920,7 +920,7 @@ The combination of both will lead to find groups considering likelihood and repr
 
 We define the `n_groups` parameter, it's the number of desired groups. The number is relative to the data and the number of total categories. But a general number would be between 3 and 10.
 
-Function `auto_grouping` comes in `funModeling` >=1.6. Please note that the `target` parameter only supports for now binary variables.
+Function `auto_grouping` comes in `funModeling` >=1.6. Please note that the `target` parameter only supports for non binary variables.
 
 _Note: the `seed` parameter is optional, but assigning a number will retrieve always the same results._
 
@@ -934,7 +934,7 @@ country_groups$df_equivalence
 
 * `df_equivalence`: data frame which contains a table to map old to new values.
 * `fit_cluster`: k-means model used to reduce the cardinality (values are scaled).
-* `recateg_results`: data frame containing the profiling of each group regarding target variable, first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many cainput's categoriesariable (as seen in `df_equivalence`).
+* `recateg_results`: data frame containing the profiling of each group regarding target variable, first column adjusts its name to the input variable in this case we've got: `country_rec`. Each group correspond to one or many categories of the input variable (as seen in `df_equivalence`).
 
 Let's explore how the new groups behave, this is what the predictive model will _see_:
 
@@ -959,7 +959,7 @@ data_country_2=data_country %>% inner_join(country_groups$df_equivalence, by="co
 
 Now we do the additional transformations replacing:
 
-* `group_4`, `group_5` and `group_5` will be `low_likelihood`, (countries with no positive cases or low target share).
+* `group_4`, `group_5` and `group_9` will be `low_likelihood`, (countries with no positive cases or low target share).
 * `group_7` and `group_3` will be the `low_target_share`.
 
 ```{r, hide=TRUE, tidy=FALSE}
@@ -1123,7 +1123,7 @@ The same goes for multi-nominal output variable, there will be some categories m
 
 Knowing how categories fell into groups give us information that -in some cases- is good to report. Each category between the group will share similar behavior -in terms of representativeness and prediction power-.
 
-If `Argentine` and `Chile` are in `group_1`, then they are the same, and this is how the model will _see_ it.
+If `Argentina` and `Chile` are in `group_1`, then they are the same, and this is how the model will _see_ it.
 
 <br>
 
@@ -1658,7 +1658,7 @@ max(heart_disease$age)
 ```
 
 * The bottom threshold is 9, and the minimum value is 29. 
-* The top threshold is 100, and the minimum value is 77.
+* The top threshold is 100, and the maximum value is 77.
 
 Ergo: the `age` variable has not outliers.
 
@@ -2072,14 +2072,9 @@ Note: To apply a function to certain columns is a very common task in any data p
 
 #### Case B: Assign the most frequent category
 
-The intuition behind this method is _to add more of the same as to not affect the variable_. However,  sometimes it does. It will not have the same impact if the most common value appears 90% of the time than if it does 10%; that is, it depends on the distribution.
+The intuition behind this method is _to add more of the same as to not affect the variable_. However, sometimes it does. It will not have the same impact if the most common value appears 90% of the time than if it does 10%; that is, it depends on the distribution.
 
-This technique is more suitable in a predictive model that is run on production and a new value for categorical variables. If the predictive model is robust, like **random forest** is, then it will throw the message: `New factor levels not present in the training data` where `factor level` is equal to `new category value`. 
-
-This book covered this point in [High Cardinality Variable in Predictive Modeling](#high_cardinality_predictive_modeling).
-
-As you can see, the situation is not the same if we are building a predictive model to go live or doing an ad hoc report.
-
+There are other scenarios in which we can imput new missing values based on other predictive models just like k-NN. This approach is more suitable than replacing by the most frequent value. However, the recommended technique is the one we seen in _Case A: Convert the empty value into a string_.
 
 <br>
 
@@ -2660,8 +2655,6 @@ _What do we have to do?_ Time to go to the next section.
 
 The last example can be seen in the analysis of customer age in the company. _This value can be infinite._
 
-When selecting customers that have been with the company for at least 3 months, and a maximum of 12.
-
 For example, if the project goal is to predict a binary outcome, like `buy`/`don't buy`, one useful analysis is to calculate the `buy` rate according to age's user. Coming to conclusions like: _In average, a customer needs around 6 months to buy this product_.
 
 This answer may come by the joint work of the data scientist and the domain expert. 
@@ -2699,7 +2692,7 @@ But this also happens in _"real life"_, like the case when we write a data scien
 
 Defining a time frame to create a training and validation set **is not a free-lunch** when the data is dynamic, as well as deciding how to handle variables that change over time. That's why the **Exploratory Data Analysis** is important in order to get in touch with the data we're analyzing. 
 
-Topics are inter-connected. Now, it's the time to mention the relationship of this chapter with the assessing model performance [Out-of-time Validation](#out-of-time_validation). When we predict events in the future, we have to analyze how time is it needed for the target variable to change.
+Topics are inter-connected. Now, it's the time to mention the relationship of this chapter with the assessing model performance [Out-of-time Validation](#out-of-time_validation). When we predict events in the future, we have to analyze how much time is it needed for the target variable to change.
 
 The key concept here: **how to handle time in predictive modeling**. It's a good opportunity to ask: _How would it be possible to address this time issues with automatic systems?_ 
 

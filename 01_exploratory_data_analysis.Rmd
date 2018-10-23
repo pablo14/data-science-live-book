@@ -1259,7 +1259,7 @@ More to come on **Information Theory**. By now you check these didactical lectur
 
 <br>
 
-### Conclussions
+### Conclusions
 
 Anscombe's quartet taught us the good practice of getting the _raw statistic_ together with a plot.
 
