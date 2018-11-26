@@ -128,7 +128,7 @@ Consider the `chest_pain` variable, which can take values `1`, `2`, `3`, or `4`.
 
 If the values are ordered, then it can be considered as numerical as it exhibits an **order** i.e., 1 is less than 2, 2 is less than 3, and 3 is less than 4. 
 
-If we create a decision tree model, then we may find rules like: "`If chest_pain > 2.5, then...`". Does it make sense? The algorithm splits the variable by a value that is not present (`2.5`); however, the interpretation by us is "if `chest_pain` is equal or higher than 3, then…”
+If we create a decision tree model, then we may find rules like: "`If chest_pain > 2.5, then...`". Does it make sense? The algorithm splits the variable by a value that is not present (`2.5`); however, the interpretation by us is "if `chest_pain` is equal or higher than 3, then…”.
 
 <br>
 
@@ -276,7 +276,7 @@ library(ggplot2)
 d_stunt_grp$share_stunted_child_eq_range=
   cut_interval(d_stunt_grp$share_stunted_child, n = 4)
 
-# The ‘describe’ function from Hmiscpackage is 
+# The ‘describe’ function from Hmisc package is 
 # extremely useful to profile data
 describe(d_stunt_grp$share_stunted_child_eq_range)
 
@@ -734,7 +734,7 @@ library(funModeling)
 library(dplyr)
 ```
 
-Profiling `data_country`, which comes inside `funModeling` package (please update to release 1.6.5).
+Profiling `data_country`, which comes inside `funModeling` package (please update to release > 1.6.5).
 
 Quick `data_country` profiling (first 10 rows)
 
@@ -1396,7 +1396,7 @@ Oh `r emo::ji("scream")`! The combination of `Argentina` and `cat_B` is _really 
 
 #### Some thoughts...
 
-The last examples show  the _potential_ of extreme values or outliers and are presented as considerations we must make with a new dataset.
+The last examples show the _potential_ of extreme values or outliers and are presented as considerations we must make with a new dataset.
 
 We mention **1%** as a possible threshold to flag a value as an outlier. This value could be 0.5% or 3%, depending on the case.
 
@@ -1414,7 +1414,7 @@ The core is as follows:
 
 * It supports three different methods (`method` parameter) to consider a value as an outlier: bottom_top, Tukey, and Hampel.
 * It works in two modes (`type` parameter) by setting an `NA` value or by _stopping the variable_ at a particular value. 
-Besides the explanation below, `prep_outliers` is a well-documented type: `help("prep_outliers")`.
+Besides the explanation below, `prep_outliers` is a well-documented function: `help("prep_outliers")`.
 
 <br>
 
@@ -1805,7 +1805,7 @@ We've covered the outliers issue from both philosophical and technical perspecti
 
 In technical terms, we covered three methods to spot outliers whose bases are different: 
 
-* **Top/Bottom X%**: This will always detect points as outliers as there is always a bottom and top X%.
+* **Bottom/Top X%**: This will always detect points as outliers as there is always a bottom and top X%.
 * **Tukey**: Based on the classical boxplot, which uses the quartiles.
 * **Hampel**: Quite restrictive if default parameter is not changed. It's based on the median and MAD values (similar to standard deviation, but less sensitive to outliers).
 
@@ -2023,46 +2023,39 @@ Next, we propose two methods intended to cover typical scenarios.
 **Example in R:**
 
 ```{r, tidy=FALSE}
-# Method 1: Converting just one variable and create
-# a new variable
+library(tidyr)
 
-# making a copy
-web_navigation_data_1=web_navigation_data 
-
-# Creating a new variable
-web_navigation_data_1$source_page_2=
-  ifelse(is.na(web_navigation_data$source_page), 
-         "unknown_source", 
-         web_navigation_data$source_page
+# Method 1: Converting just one variable
+web_navigation_data_1=web_navigation_data %>% 
+  mutate(source_page = 
+           replace_na(source_page, 
+                      "unknown_source")
          )
+
 
 # Method 2: It's a typical situation only to apply a 
 # function to specific variables and then return the 
 # original data frame
 
-# First, we define the conversion function
-convert_categ<-function(x)
-{
-  # If NA, then put “unknown,” otherwise return the 
-  # same value
-  ifelse(is.na(x), "unknown", x)                                                                 
-}                                 
-
 # Imagine we want to convert all variables with less
 # than 6% NA values:
-vars_to_process=filter(stat_nav_data, p_na<6) 
+vars_to_process = 
+  filter(stat_nav_data, p_na<6)[,"variable"]  
+
+vars_to_process
 
 # Create the new data frame with the transformed 
 # variables
 web_navigation_data_2=web_navigation_data %>%
-  mutate_at(.vars=vars(vars_to_process$variable),
-            .funs=funs(convert_categ)
+  mutate_at(.vars=vars(vars_to_process),
+            .funs=funs(replace_na(.,"other"))
             )
 ```
 
 Checking the results:
 
 ```{r}
+df_status(web_navigation_data_1)
 df_status(web_navigation_data_2)
 ```
 
