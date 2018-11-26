@@ -172,7 +172,6 @@ This book covers by now:
 * [How to deal with outliers in R](#how_to_deal_with_outliers_in_r).
 * [Missing Data: Analysis, Handling, and Imputation of](#missing_data)
 
-_And more to come..._
 
 <br>
 
@@ -377,8 +376,6 @@ We've just seen how to calculate importance based on information theory metrics.
 
 To _select best features_ is related to _̣exploratory data analysis_ and vice-versa.
 
-<br>
-
 
 <br>
 
@@ -395,7 +392,7 @@ Regarding how to measure correlation. Results can be highly different based on l
 
 _What is the problem with adding correlated variables?_
 
-The problem is that we're adding complexity to the model: it's usually more time-consuming, harder to understand, less explainable, less accurate, etc. This is an effect we reviewed in [Don't predictive models handle high cardinality?](#high_cardinality_in_predictive_models_part_2).The general rule would be: Try to add the top N variables that are correlated with the output but not correlated between them. This leads us to the next section.
+The problem is that we're adding complexity to the model: it's usually more time-consuming, harder to understand, less explainable, less accurate, etc. This is an effect we reviewed in [Don't predictive models handle high cardinality?](#high_cardinality_in_predictive_models_part_2). The general rule would be: Try to add the top N variables that are correlated with the output but not correlated between them. This leads us to the next section.
 
 
 <br>
@@ -660,7 +657,7 @@ knitr::include_graphics("introduction/spacer_bar.png")
 
 <br>
 
-### Using BoxPlots
+### Using BoxPlots {#target-profiling-using-boxplots}
 
 #### What is this about?
 
@@ -726,7 +723,7 @@ plotar(data=heart_disease, input=c('max_heart_rate', 'resting_blood_pressure'), 
 <br>
 
 
-### Using Density Histograms
+### Using Density Histograms {#target-profiling-using-density-histograms}
 
 #### What is this about?
 
