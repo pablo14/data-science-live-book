@@ -677,7 +677,7 @@ _Rhomboid near the mean line represents the **median**._
 
 <br>
 
-```{r boxplot-analysis, echo=FALSE, out.width="400px", fig.cap="How to interpret a boxplot", out.extra=""}
+```{r boxplot-analysis, echo=FALSE, out.width="85%", fig.cap="How to interpret a boxplot", out.extra=""}
 knitr::include_graphics("selecting_best_variables/boxplot.png")
 ```
 

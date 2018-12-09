@@ -179,7 +179,7 @@ In the last plot, the IQR appears between the first and the last dashed lines an
 
 ### Rank and top/bottom '_X%_' concepts
 
-The ranking concept is the same as the one seen in competitions. It allows us to answer _what is the country with the highest rate in ?_
+The ranking concept is the same as the one seen in competitions. It allows us to answer _what is the country with the highest rate in variable pop_living_slums?_
 
 We'll use the `dense_rank` function from the `ggplot2` package. It assigns the position (rank) to each country, but we need them in reverse order; that is, we assign the `rank = 1` to the highest value.
 
@@ -210,7 +210,7 @@ filter(data_world_wide, Country.Name=="Ecuador") %>% select(rank_pop_living_slum
 
 ##### Top and bottom 'X%' concepts
 
-Other questions that we may be interested in answered: _What is the value for which I get the top 10% of lowest values?_
+Other questions that we may be interested in answering: _What is the value for which I get the top 10% of lowest values?_
 
 The 10th percentile is the answer:
 
@@ -251,7 +251,7 @@ knitr::include_graphics("model_performance/gain_curve.png")
 #### Case study: distribution of wealth
 
 The distribution of wealth is similar to the Gini index and is focused on inequality. It measures owner assets (which is different from income), making the comparison across countries more even to what people can acquire according to the place where they live. 
-For a better definition, please go to the _Wikipedia_ article and _Global Wealth Report 2013_. Refs. [@distr_wealth] and [@global_wealth] respectevely.
+For a better definition, please go to the _Wikipedia_ article and _Global Wealth Report 2013_. Refs. [@distr_wealth] and [@global_wealth] respectively.
 
 Quoting _Wikipedia_ (Ref. [@distr_wealth]):
 
@@ -424,7 +424,7 @@ Note: It analyzes numerical and categorical variables. It is also used with the 
 Retrieves the relative and absolute distribution between an input and target variable. 
 Useful to explain and report if a variable is important or not.
 
-```{r profiling-variable-predictive-modeling, fig.height=4, fig.width=8, results=FALSE,fig.cap="cross plot: visualzing input vs. target variable", out.extra=''}
+```{r profiling-variable-predictive-modeling, fig.height=4, fig.width=8, results=FALSE,fig.cap="cross plot: visualizing input vs. target variable", out.extra=''}
 cross_plot(data=heart_disease, input=c("age", "oldpeak"), target="has_heart_disease")
 ```
 

@@ -1101,7 +1101,7 @@ fit_gbm_1$finalModel
 That is: 69 input variables are representing the countries, but the flag columns were reported as not being relevant to make the prediction. 
 
 
-This opens a new chapter which is going to be covered in this book `r emo::ji("wink")`: **Feature engineering**. Also, it's related to [Selecting best variables](#general_aspects_selecting_best_variables). It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
+This is related to **Feature engineering**. Also, it's related to [Selecting best variables](#general_aspects_selecting_best_variables). It is a highly recommended practise to first select those variables which carry the most information, and then create the predictive model.
 
 **Conclusion: reducing the cardinality will reduce the quantity of variables in these models.**
 
@@ -2091,7 +2091,10 @@ vars_to_keep$variable
 
 # Next line will exclude variables above the threshold and transform the remaining ones
 web_navigation_data_3=select(web_navigation_data, -one_of(vars_to_exclude$variable)) %>%
-  mutate_at(.vars=vars_to_keep$variable, .funs=funs(convert_categ))
+    mutate_at(.vars=vars(vars_to_keep$variable),
+            .funs=funs(replace_na(.,"unknown"))
+            )
+
 
 # Checking there are no NA values and the variable above the NA threshold has disappeared
 df_status(web_navigation_data_3)

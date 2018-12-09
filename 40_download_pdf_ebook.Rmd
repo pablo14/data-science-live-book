@@ -47,13 +47,6 @@ No worries, we all have rough times, just contact me at pcasas.biz (at) gmail.co
 I like the idea of having -when possible- free access to education, such is the case of college education in Argentina, Finland (among others few countries). So anyone who wants to study and explore new horizons can do it. Money shouldn't be a barrier to acquiring knowledge. 
 
 
-
-**So what's next?!**
-
-The following releases will be more focus on the creation of the predictive model itslef, rather than the data preparation stage which is already covered in the book.
-
-The other point will be creating short case studies, or well, a sort of summary of current book content. Putting in a few pages several approaches from different parts of the book.
-
 Stay tuned at [twitter](https://twitter.com/pabloc_ds).
 
 

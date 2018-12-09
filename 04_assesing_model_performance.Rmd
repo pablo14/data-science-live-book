@@ -162,13 +162,12 @@ The lower, the better: The accuracy in prediction will lower the value, while th
 
 * **Bootstrapping** is mostly used when estimating a parameter.
 * **Cross-Validation** is the choice when choosing among different predictive models.
-* Probably there will be a post soon in Data Science Heroes Blog explaining their differences
 
 Note: For a deeper coverage about bias and variance, please go to [@bias_variance_tradeoff] and [@more_data_or_better_algorithms] at the bottom of the page.
 
 ### Any advice on practice?
 
-It depends on the data, but it's common to find examples cases `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`. Other: `5 fold CV, repeated 3 times`.
+It depends on the data, but it's common to find examples such as `10 fold CV`, plus repetition: `10 fold CV, repeated 5 times`. Other times we find: `5 fold CV, repeated 3 times`.
 
 And using the average of the desired metric. It's also recommended to use the `ROC` for being less biased to unbalanced target variables.
 
@@ -262,7 +261,7 @@ Since the output of a binary model should be a number indicating the likelihood 
 
 Following **validation workflow** may be helpful when building a predictive model involving time.
 
-```{r model-performance-workflow, echo=FALSE, out.width="100%", fig.cap="A validation worflow for time dependant problems", out.extra=''}
+```{r model-performance-workflow, echo=FALSE, out.width="100%", fig.cap="A validation workflow for time dependant problems", out.extra=''}
 knitr::include_graphics("model_performance/model_validation_workflow.png")
 ```
 
@@ -279,28 +278,9 @@ Keeping only with those cases that were `negative` on `Oct-31`, we get the `scor
 
 ### How about a numerical target variable?
 
-Now the common sense and business need is more present. A numerical outcome can take any value, it can increase or decrease through time, so we may have to consider these two scenarios to help us thinking what we consider success.
+Now the common sense and business need is more present. A numerical outcome can take any value, it can increase or decrease through time, so we may have to consider these two scenarios to help us thinking what we consider success. This is the case of linear regression.
 
-
-**Example scenario**: We measure some app usage, the standard thing is as the days pass, the users use it more.
-
-
-<br>
-
-#### Case A: Convert the numerical target into categorical?
-
-For an app user, she/he can be more active through time measured in page views, so to do an out of time validation we would predict if the user visit more than the average, or more than the top 10%, or twice what he spent up to the model's creation day, etc.
-
-
-Examples of this case can be:
-
-* **Binary**: "yes/no" above average.
-* **Multi-label**: "low increase"/"mid increase"/"high increase"
-
-
-<br>
-
-#### Case B: Leave it numerical (linear regression)?
+**Example scenario**: We measure some web app usage (like the homebanking), the standard thing is as the days pass, the users use it more.
 
 Examples:
 
@@ -361,7 +341,7 @@ Both metrics are extremely useful to validate the predictive model (binary outco
 Make sure we have the latest `funModeling` version (>= 1.3).
 
 ```{r lib-loading, results="hide", message=FALSE}
-## Loading funModeling
+# Loading funModeling
 library(funModeling)
 ```
 
@@ -761,7 +741,7 @@ Now the FP rate decreased to `10%` (from `20%`), and the model still captures th
 
 * There is not a unique and best **cut point value**, it relies on the project needs, and is constrained by the rate of `False Positive` and `False Negative` we can accept. 
 
-This book addresses general aspects on model performance in [Knowing the error](http://livebook.datascienceheroes.com/model_performance/knowing_the_error.html)
+This book addresses general aspects on model performance in [Knowing the error](#knowing_the_error).
 
 ---
 
