@@ -645,7 +645,7 @@ Notes:
 * `method` can be: `bottom_top`, `tukey` or `hampel`.
 * `type` can be: `stop` or `set_na`. If `stop` all values flagged as outliers will be set to the threshold. If `set_na`, then the flagged values will set to `NA`.
 
-[`r emo::ji("mag_right")` [**Read more here.**](#analyze-binary-outcome-vs-categorical-variable)]
+[`r emo::ji("mag_right")` [**Read more here.**](#how_to_deal_with_outliers_in_r)]
 
 
 <br>
