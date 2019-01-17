@@ -15,6 +15,8 @@ description: "An intuitive and practical approach to data analysis, data prepara
 linestretch: 1.15
 linkcolor: NavyBlue
 links-as-notes: true
+url: 'https\://livebook.datascienceheroes.com/'
+twitter-handle: pabloc_ds
 ---
 
 
