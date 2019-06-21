@@ -986,7 +986,7 @@ Checking the final grouping (`country_rec` variable):
 categ_analysis(data=data_country_2, input="country_rec", target = "has_flu")
 ```
 
-Each group seems to have a good sample size regarding the `sum_target` distribution. Our transformation left `low_likelihood` with a representation of 21% of total cases, still with 0 positive cases (`sum_target`=0). And `low_target_share` with 3 positive cases, which represents 3.36% of positive cases.
+Each group seems to have a good sample size regarding the `sum_target` distribution. Our transformation left `low_likelihood` with a representation of 21% of total cases, still with 0 positive cases (`sum_target`=0). And `low_target_share` with 3 positive cases, which represents 3.6% of positive cases.
 
 All the groups seems to have a good representation. This can be checked in `perc_rows` variable. All cases are above of 7% share. 
 
@@ -1538,7 +1538,7 @@ profiling_num(df_1$var)
 
 
 
-Here we can see several indicators that give us some clues. The `std_dev` is really high compared with the `mean`, and it is reflected on the `variation_coef`. In addition, the kurtosis is high (16) and the `p_99` is almost twice the `p_95` value (5767 vs. 3382).
+Here we can see several indicators that give us some clues. The `std_dev` is really high compared with the `mean`, and it is reflected on the `variation_coef`. In addition, the kurtosis is high (16) and the `p_99` is almost twice the `p_95` value (5467 vs. 3382).
 
 
 _This last task of looking at some numbers and visualize the variable distribution is like imaging a picture by what another person tells us: we convert the voice (which is a signal) into an image in our brain._ `r emo::ji("speaking_head")` `r emo::ji("roll_eyes")` ... => `r emo::ji("mountain_snow")` 
