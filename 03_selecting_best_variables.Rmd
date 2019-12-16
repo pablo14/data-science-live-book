@@ -556,7 +556,7 @@ There is a function included in the package (inherited from Hmisc package): `equ
 
 For numerical variables, `cross_plot` has by default the `auto_binning=T`, which automatically calls the `equal_freq` function with `n_bins=10` (or the closest number).
 
-```{r cross-plot-feature-engineering, results="hide",fig.height=4, fig.width=9.5, fig.cap="Numeric variable as input (automatic binning)", out.extra=""}
+```{r cross-plot-feature-engineering, results="hide",  message=FALSE,fig.height=4, fig.width=9.5, fig.cap="Numeric variable as input (automatic binning)", out.extra=""}
 cross_plot(heart_disease, input="max_heart_rate", target="has_heart_disease")
 ```
 

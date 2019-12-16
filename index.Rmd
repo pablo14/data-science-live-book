@@ -165,6 +165,10 @@ This book, both in pdf and web format, was created with Rstudio, using the incre
 
 It's all free and open-source, Bookdown, R, Rstudio and this book `r emo::ji("slightly_smiling_face")`
 
+You can review the behind the scenes of how the book was generated in bookdown, and how to publish it in Amazon in: [How to self-publish a book: A handy list of resources](https://blog.datascienceheroes.com/how-to-self-publish-a-book/) and [How to self publish a book: customizing Bookdown](https://blog.datascienceheroes.com/how-to-self-publish-a-book-customizing-bookdown/).
+
+Last two resourses alongside the book, were awardeded by RStudio in the [1st Bookdown Contest](https://community.rstudio.com/t/announcing-winners-of-the-1st-bookdown-contest/16394).
+
 Hope you enjoy it!
 
 <br>
