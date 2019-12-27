@@ -8,11 +8,11 @@
 
 #### Paperback & Kindle at Amazon
 
-This book is now available at Amazon in [Kindle]( Link: http://a.co/d/dIj1XwD) [Black & White](https://www.amazon.com/dp/9874269049) and [color](https://www.amazon.com/dp/9874273666) 📗 🚀.
+This book is now available at Amazon in [Kindle](http://a.co/d/dIj1XwD) [Black & White](https://www.amazon.com/dp/9874269049) and [color](https://www.amazon.com/dp/9874273666) 📗 🚀.
 
 LiIt can be shipped to over 100 countries. 🌎
 
-Also available in P[PDF](https://gumroad.com/l/tORBv) :)
+Also available in [PDF](https://gumroad.com/l/tORBv) :)
 ### `!(tl;dr)`: An overview...
 
 It's a book to learn data science, machine learning, data analysis with tons of examples and explanations around several topics like:
