@@ -1450,7 +1450,7 @@ The IQR (Inter-quartile range) comes from Q3 − Q1.
 The formula:
 
 * The bottom threshold is: Q1 − 3*IQR. All below are considered as outliers.
-* The top threshold is: Q1 + 3*IQR. All above are considered as outliers.
+* The top threshold is: Q3 + 3*IQR. All above are considered as outliers.
 
 The value 3 is to consider the "extreme" boundary detection. This method comes from the box plot, where the multiplier is 1.5 (not 3). This causes a lot more values to be flagged as shown in the next image.
 
